@@ -11,6 +11,60 @@
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* --- Custom Global Styles for Premium Look --- */
+      :root {
+        --color-primary-600: #2563eb;
+        --color-primary-700: #1d4ed8;
+      }
+
+      /* Primary Button: Elevated and responsive */
+      .btn-primary {
+        background-color: var(--color-primary-600);
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2),
+          0 1px 3px rgba(37, 99, 235, 0.1);
+      }
+      .btn-primary:hover {
+        background-color: var(--color-primary-700);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3),
+          0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Feature Cards: Subtle shadow for depth */
+      .feature-card {
+        transition: transform 0.2s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Step Number Styling (The "Big Tech" Look) */
+      .step-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 4rem; /* 64px */
+        height: 4rem; /* 64px */
+        font-size: 2rem; /* 32px */
+        font-weight: 800;
+        color: var(--color-primary-600);
+        background-color: #eff6ff; /* blue-50 */
+        border-radius: 50%;
+        border: 4px solid var(--color-primary-600);
+        flex-shrink: 0;
+      }
+      /* Comparison List Item */
+      .comparison-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-bottom: 1px solid #e5e7eb; /* gray-200 */
+      }
+    </style>
 
     <script type="application/ld+json">
       {
@@ -79,28 +133,25 @@
             >Home</a
           ><a
             href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            class="text-blue-600 font-semibold transition duration-150"
             >Bulk Downloader</a
           ><a
             href="./how-to-use.html"
-            class="text-gray-700 hover:text-blue-600 font-semibold transition duration-150"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
             >How to Use</a
           ><a
             href="./faq.html"
             class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
             >FAQ</a
-          >
-          <a
+          ><a
             href="./what-is-an-srt-file.html"
             class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
             >Srt File</a
-          >
-          <a
+          ><a
             href="./terms-of-service.html"
             class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
             >Terms</a
-          >
-          <a
+          ><a
             href="./privacy-policy.html"
             class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
             >Privacy</a
@@ -182,7 +233,7 @@
               >Home</a
             ><a
               href="./bulk-youtube-subtitle-downloader.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              class="text-blue-600 font-bold text-lg py-3 border-b border-gray-100"
               >Bulk Downloader</a
             ><a
               href="./how-to-use.html"
@@ -193,7 +244,6 @@
               class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
               >FAQ</a
             >
-
             <a
               href="./what-is-an-srt-file.html"
               class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
@@ -215,236 +265,376 @@
     </header>
 
     <main>
-      <section class="bg-blue-50 py-20 md:py-28">
+      <section class="bg-blue-600 py-24 md:py-36 text-white">
         <div class="container mx-auto px-6 text-center">
           <h1
-            class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight"
+            class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tighter"
           >
             Bulk YouTube Subtitle Downloader
           </h1>
-          <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-            Stop downloading subtitles one by one. Paste a list of YouTube URLs
-            and get all your SRT or TXT files in a single, organized ZIP
-            archive.
+          <p class="mt-4 text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto">
+            Stop downloading subtitles one by one.
+            <strong class="font-extrabold"
+              >Paste a list of URLs and get all your SRT/TXT files in a single,
+              organized ZIP</strong
+            >—instantly and 100% free.
           </p>
           <a
             href="/#tool"
-            class="mt-8 inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-md hover:bg-blue-700 transition text-lg"
+            class="mt-10 inline-block bg-white text-blue-600 font-bold py-4 px-12 rounded-lg shadow-xl hover:bg-gray-100 transition text-lg transform hover:scale-[1.02]"
           >
-            Try the Bulk Downloader Now
+            Start Bulk Download Now →
           </a>
         </div>
       </section>
 
-      <section class="py-20">
+      <section class="bg-white py-20 md:py-28">
         <div class="container mx-auto px-6">
-          <div class="text-center mb-12">
+          <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
-              The Old Way vs. The YTVidHub Way
+              Why YTVidHub is the Fastest Way
             </h2>
-            <p class="mt-3 text-gray-600 max-w-2xl mx-auto">
-              See how our batch processing feature revolutionizes your workflow.
+            <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+              We built this for power users. Speed, organization, and simplicity
+              are our priorities.
             </p>
           </div>
-          <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <div class="bg-red-50 border border-red-200 p-8 rounded-lg">
-              <h3 class="text-2xl font-bold text-red-800 mb-4">
-                The Old Way: Slow and Tedious
+
+          <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div class="bg-gray-50 p-8 rounded-xl feature-card">
+              <div
+                class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">
+                Lightning Fast Processing
               </h3>
-              <ul class="space-y-3 text-red-700">
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-red-500">❌</span> Open
-                  dozens of browser tabs for each video.
-                </li>
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-red-500">❌</span> Find a
-                  downloader, paste a URL, wait for processing.
-                </li>
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-red-500">❌</span> Download
-                  one file, find it in your downloads folder.
-                </li>
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-red-500">❌</span> Manually
-                  rename each cryptic file name.
-                </li>
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-red-500">❌</span> Repeat
-                  this painful process for every single video.
-                </li>
-              </ul>
+              <p class="text-gray-600">
+                Process dozens of videos simultaneously. Our backend is optimized
+                for bulk requests, minimizing your waiting time.
+              </p>
             </div>
-            <div class="bg-green-50 border border-green-200 p-8 rounded-lg">
-              <h3 class="text-2xl font-bold text-green-800 mb-4">
-                The YTVidHub Way: Fast and Efficient
+
+            <div class="bg-gray-50 p-8 rounded-xl feature-card">
+              <div
+                class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">
+                Single ZIP, Perfect Organization
               </h3>
-              <ul class="space-y-3 text-green-700">
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-green-500">✅</span> Gather
-                  all your video URLs into a simple list.
-                </li>
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-green-500">✅</span> Paste
-                  the entire list into our tool at once.
-                </li>
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-green-500">✅</span> Click
-                  one button to process everything.
-                </li>
-                <li class="flex items-start">
-                  <span class="font-bold mr-2 text-green-500">✅</span> Download
-                  a single ZIP file with all subtitles, automatically named for
-                  you.
-                </li>
-              </ul>
+              <p class="text-gray-600">
+                All subtitles are compiled into one ZIP file. Files are
+                automatically named after the video title for easy sorting.
+              </p>
+            </div>
+
+            <div class="bg-gray-50 p-8 rounded-xl feature-card">
+              <div
+                class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2">
+                SRT & TXT Flexibility
+              </h3>
+              <p class="text-gray-600">
+                Download subtitles (.SRT) for video editing or simple transcripts
+                (.TXT) for content analysis and reading.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="bg-white py-20">
-        <div class="container mx-auto px-6 max-w-4xl">
+      <section class="py-20 md:py-28 bg-gray-100">
+        <div class="container mx-auto px-6 max-w-5xl">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+              The Old Way vs. The YTVidHub Way
+            </h2>
+            <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
+              Time is money. Stop wasting it on tedious repetition.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-red-500"
+            >
+              <h3
+                class="text-2xl font-bold text-red-700 mb-6 flex items-center gap-3"
+              >
+                <span class="text-3xl">❌</span> Tedious Manual Downloads
+              </h3>
+              <div class="space-y-2">
+                <div class="comparison-item">
+                  <span class="text-red-500 font-bold mr-3 text-xl">—</span>
+                  <p class="text-gray-700">
+                    Open dozens of tabs and repeat the same steps.
+                  </p>
+                </div>
+                <div class="comparison-item">
+                  <span class="text-red-500 font-bold mr-3 text-xl">—</span>
+                  <p class="text-gray-700">
+                    Manually wait for each video to process.
+                  </p>
+                </div>
+                <div class="comparison-item">
+                  <span class="text-red-500 font-bold mr-3 text-xl">—</span>
+                  <p class="text-gray-700">
+                    Cryptic, unhelpful file names like `download-1.srt`.
+                  </p>
+                </div>
+                <div class="comparison-item">
+                  <span class="text-red-500 font-bold mr-3 text-xl">—</span>
+                  <p class="text-gray-700">
+                    Requires manual organization and renaming post-download.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-blue-600"
+            >
+              <h3
+                class="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-3"
+              >
+                <span class="text-3xl">✅</span> Efficient Batch Processing
+              </h3>
+              <div class="space-y-2">
+                <div class="comparison-item">
+                  <span class="text-green-500 font-bold mr-3 text-xl">✓</span>
+                  <p class="text-gray-700">Paste up to 50 URLs in one go.</p>
+                </div>
+                <div class="comparison-item">
+                  <span class="text-green-500 font-bold mr-3 text-xl">✓</span>
+                  <p class="text-gray-700">
+                    System handles parallel processing in the background.
+                  </p>
+                </div>
+                <div class="comparison-item">
+                  <span class="text-green-500 font-bold mr-3 text-xl">✓</span>
+                  <p class="text-gray-700">
+                    Files automatically named by video title.
+                  </p>
+                </div>
+                <div class="comparison-item">
+                  <span class="text-green-500 font-bold mr-3 text-xl">✓</span>
+                  <p class="text-gray-700">
+                    All results delivered in one convenient ZIP archive.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white py-20 md:py-28">
+        <div class="container mx-auto px-6 max-w-6xl">
           <h2
-            class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
+            class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16"
           >
-            A Step-by-Step Guide to Bulk Downloading
+            A 3-Step Guide to Bulk Subtitles
           </h2>
-          <div class="space-y-12">
-            <div class="flex flex-col md:flex-row items-center gap-8">
-              <div class="md:w-1/2">
-                <h3 class="text-2xl font-bold mb-3">
-                  Step 1: Gather Your YouTube URLs
+          <div class="space-y-20">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+              <div class="md:w-1/2 flex flex-col items-start">
+                <div class="step-number mb-6">1</div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-3">
+                  Gather Your YouTube URLs
                 </h3>
-                <p class="text-gray-600">
+                <p class="text-lg text-gray-600">
                   Collect the URLs of all the YouTube videos you need subtitles
                   for. You can get these from a playlist, a channel page, or
                   your own list. The key is to have them ready to copy.
                 </p>
               </div>
-              <div class="md:w-1/2">
+              <div class="md:w-1/2 w-full">
                 <img
                   src="https://placehold.co/500x300/e2e8f0/334155?text=Gather+URLs"
                   alt="A list of YouTube video URLs in a text document."
-                  class="rounded-lg shadow-md"
+                  class="rounded-xl shadow-lg w-full"
                 />
               </div>
             </div>
-            <div class="flex flex-col md:flex-row-reverse items-center gap-8">
-              <div class="md:w-1/2">
-                <h3 class="text-2xl font-bold mb-3">
-                  Step 2: Paste Your Entire List
+
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+              <div class="md:w-1/2 flex flex-col items-start">
+                <div class="step-number mb-6">2</div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-3">
+                  Paste Your Entire List
                 </h3>
-                <p class="text-gray-600">
+                <p class="text-lg text-gray-600">
                   Navigate to our homepage tool and paste the entire list of
                   URLs into the input box. Make sure that each URL is on its own
                   separate line for our tool to process them correctly.
                 </p>
               </div>
-              <div class="md:w-1/2">
+              <div class="md:w-1/2 w-full">
                 <img
                   src="https://placehold.co/500x300/e2e8f0/334155?text=Paste+List"
                   alt="Text area showing a list of multiple YouTube URLs ready for bulk subtitle download."
-                  class="rounded-lg shadow-md"
+                  class="rounded-xl shadow-lg w-full"
                 />
               </div>
             </div>
-            <div class="flex flex-col md:flex-row items-center gap-8">
-              <div class="md:w-1/2">
-                <h3 class="text-2xl font-bold mb-3">
-                  Step 3: Download Your Organized ZIP File
+
+            <div class="flex flex-col md:flex-row items-center gap-12">
+              <div class="md:w-1/2 flex flex-col items-start">
+                <div class="step-number mb-6">3</div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-3">
+                  Download Your Organized ZIP File
                 </h3>
-                <p class="text-gray-600">
+                <p class="text-lg text-gray-600">
                   Click the "Download Subtitles" button. In seconds, you'll
                   receive a single ZIP file containing all the subtitle files.
                   Each file is intelligently named after its corresponding video
                   title, saving you the final, tedious step of organization.
                 </p>
               </div>
-              <div class="md:w-1/2">
+              <div class="md:w-1/2 w-full">
                 <img
                   src="https://placehold.co/500x300/e2e8f0/334155?text=Get+ZIP"
                   alt="An icon representing a downloaded ZIP archive file."
-                  class="rounded-lg shadow-md"
+                  class="rounded-xl shadow-lg w-full"
                 />
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section class="py-20">
-        <div class="container mx-auto px-6">
-          <h2
-            class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
-          >
-            The Perfect Tool for Professionals and Power Users
-          </h2>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-bold">Video Editors & Creators</h3>
-              <p class="mt-2 text-gray-600">
-                Quickly gather all the transcripts from a video series to create
-                show notes, blog posts, or social media content without hassle.
-              </p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-bold">Researchers & Academics</h3>
-              <p class="mt-2 text-gray-600">
-                Process hundreds of video lectures or interviews for textual
-                analysis. Our tool dramatically speeds up the data collection
-                phase of your research.
-              </p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-bold">Language Learning Groups</h3>
-              <p class="mt-2 text-gray-600">
-                Create comprehensive study materials by downloading subtitles
-                from an entire language course playlist on YouTube.
-              </p>
-            </div>
+          <div class="text-center mt-16">
+            <a
+              href="/#tool"
+              class="mt-8 inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg btn-primary text-lg"
+            >
+              Go to Bulk Downloader
+            </a>
           </div>
         </div>
       </section>
 
-      <section class="bg-white py-20">
-        <div class="container mx-auto px-6 max-w-3xl">
+      <section class="bg-gray-50 py-20 md:py-28">
+        <div class="container mx-auto px-6 max-w-4xl">
           <h2
             class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
           >
-            Your Bulk Downloading Questions Answered
+            Bulk Downloading Questions Answered
           </h2>
           <div class="space-y-4">
-            <details class="p-6 bg-gray-50 rounded-lg cursor-pointer">
-              <summary class="font-semibold text-lg">
+            <details class="p-6 bg-white rounded-xl shadow-md group">
+              <summary
+                class="font-semibold text-lg flex justify-between items-center cursor-pointer list-none text-gray-900 hover:text-blue-600 transition"
+              >
                 Is there a limit to how many URLs I can paste at once?
+                <svg
+                  class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
               </summary>
-              <p class="mt-4 text-gray-600">
-                While our system is designed to handle a large number of URLs,
-                we recommend processing up to 50 URLs at a time for optimal
+              <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
+                While our system is designed to handle a large number of URLs, we
+                recommend processing up to **50 URLs at a time** for optimal
                 performance. This ensures a fast and smooth experience without
                 browser timeouts.
               </p>
             </details>
-            <details class="p-6 bg-gray-50 rounded-lg cursor-pointer">
-              <summary class="font-semibold text-lg">
+            <details class="p-6 bg-white rounded-xl shadow-md group">
+              <summary
+                class="font-semibold text-lg flex justify-between items-center cursor-pointer list-none text-gray-900 hover:text-blue-600 transition"
+              >
                 How are the files named inside the ZIP archive?
+                <svg
+                  class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
               </summary>
-              <p class="mt-4 text-gray-600">
+              <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
                 To keep things organized, each subtitle file inside the ZIP
-                archive is named after the original YouTube video's title. This
+                archive is named after the **original YouTube video's title**. This
                 makes it incredibly easy to match each subtitle file to its
                 corresponding video.
               </p>
             </details>
-            <details class="p-6 bg-gray-50 rounded-lg cursor-pointer">
-              <summary class="font-semibold text-lg">
+            <details class="p-6 bg-white rounded-xl shadow-md group">
+              <summary
+                class="font-semibold text-lg flex justify-between items-center cursor-pointer list-none text-gray-900 hover:text-blue-600 transition"
+              >
                 Can I download transcripts in bulk as .TXT files?
+                <svg
+                  class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
               </summary>
-              <p class="mt-4 text-gray-600">
-                Yes! Our bulk downloader supports both SRT and TXT formats. You
+              <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
+                Yes! Our bulk downloader supports both **SRT and TXT formats**. You
                 can choose your preferred format before initiating the download,
-                and all files in the resulting ZIP archive will be in that
-                format.
+                and all files in the resulting ZIP archive will be in that format.
               </p>
             </details>
           </div>
@@ -452,57 +642,87 @@
       </section>
     </main>
 
-    <footer class="bg-gray-800 text-white">
+    <footer class="bg-gray-900 text-white">
       <div class="container mx-auto px-6 py-12">
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 class="text-xl font-bold">YTVidHub</h3>
-            <p class="mt-2 text-gray-400">
+            <h3 class="text-2xl font-extrabold text-white">YTVidHub</h3>
+            <p class="mt-3 text-gray-400 text-sm">
               Your free, fast, and reliable solution for downloading YouTube
               subtitles, featuring a powerful bulk download capability.
             </p>
           </div>
           <div>
-            <h3 class="text-lg font-semibold">Quick Links</h3>
-            <ul class="mt-4 space-y-2">
-              <li><a href="/" class="hover:text-blue-400">Home</a></li>
+            <h3 class="text-lg font-semibold text-gray-200">Product</h3>
+            <ul class="mt-4 space-y-3 text-sm">
+              <li>
+                <a href="/" class="text-gray-400 hover:text-blue-400 transition"
+                  >Single Downloader</a
+                >
+              </li>
               <li>
                 <a
                   href="/bulk-youtube-subtitle-downloader.html"
-                  class="hover:text-blue-400"
+                  class="text-gray-400 hover:text-blue-400 transition"
                   >Bulk Downloader</a
                 >
               </li>
               <li>
-                <a href="/how-to-use.html" class="hover:text-blue-400"
+                <a href="/how-to-use.html" class="text-gray-400 hover:text-blue-400 transition"
                   >How to Use</a
                 >
               </li>
             </ul>
           </div>
           <div>
-            <h3 class="text-lg font-semibold">Legal</h3>
-            <ul class="mt-4 space-y-2">
+            <h3 class="text-lg font-semibold text-gray-200">Resources</h3>
+            <ul class="mt-4 space-y-3 text-sm">
               <li>
-                <a href="#" class="hover:text-blue-400 text-gray-400"
-                  >Privacy Policy</a
+                <a href="/faq.html" class="text-gray-400 hover:text-blue-400 transition"
+                  >FAQ</a
                 >
               </li>
               <li>
-                <a href="#" class="hover:text-blue-400 text-gray-400"
+                <a
+                  href="/what-is-an-srt-file.html"
+                  class="text-gray-400 hover:text-blue-400 transition"
+                  >What is SRT?</a
+                >
+              </li>
+              <li>
+                <a href="/about.html" class="text-gray-400 hover:text-blue-400 transition"
+                  >About Us</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-200">Legal</h3>
+            <ul class="mt-4 space-y-3 text-sm">
+              <li>
+                <a
+                  href="/terms-of-service.html"
+                  class="text-gray-400 hover:text-blue-400 transition"
                   >Terms of Service</a
                 >
               </li>
               <li>
-                <a href="#" class="hover:text-blue-400 text-gray-400"
-                  >Contact Us</a
+                <a
+                  href="/privacy-policy.html"
+                  class="text-gray-400 hover:text-blue-400 transition"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a href="/contact.html" class="text-gray-400 hover:text-blue-400 transition"
+                  >Contact</a
                 >
               </li>
             </ul>
           </div>
         </div>
         <div
-          class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-500"
+          class="mt-16 border-t border-gray-800 pt-8 text-center text-gray-500 text-sm"
         >
           <p>
             &copy; 2025 YTVidHub. All rights reserved. We are not affiliated
@@ -513,6 +733,8 @@
     </footer>
 
     <script>
+      // 保持移动端菜单逻辑不变
+      const MOBILE_MENU_TRANSITION_DURATION = 300;
       const mobileMenuButton = document.getElementById("mobile-menu-button");
       const mobileMenuCloseButton = document.getElementById(
         "mobile-menu-close-button"

@@ -11,6 +11,54 @@
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* 基础样式：定义主色调和过渡效果 */
+      :root {
+        --color-primary-600: #2563eb;
+      }
+
+      /* 问答列表项样式 */
+      .faq-item {
+        border-bottom: 1px solid #e5e7eb; /* 极细的灰色分隔线 */
+        transition: background-color 0.2s;
+      }
+      .faq-item summary {
+        padding: 24px 0; /* 增加上下间距，提升呼吸感 */
+        outline: none;
+        user-select: none;
+        transition: color 0.2s;
+      }
+      /* 悬停/聚焦时，问题文本变蓝，提供交互反馈 */
+      .faq-item summary:hover,
+      .faq-item summary:focus {
+        color: var(--color-primary-600);
+      }
+      /* 隐藏原生的 details 箭头 */
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+      /* 答案内容样式 */
+      .faq-item p {
+        padding-bottom: 24px;
+        padding-right: 2rem;
+      }
+
+      /* 侧边目录样式 */
+      .toc-link {
+        border-left: 2px solid transparent;
+        transition: all 0.2s;
+      }
+      .toc-link:hover {
+        color: #2563eb; /* blue-600 */
+        border-left-color: #93c5fd; /* blue-300 */
+      }
+      /* 当前活跃链接的样式 (需要JavaScript实现) */
+      .toc-link.active {
+        color: #2563eb; /* blue-600 */
+        font-weight: 600;
+        border-left-color: #2563eb; /* blue-600 */
+      }
+    </style>
 
     <script type="application/ld+json">
       {
@@ -24,80 +72,80 @@
               "@type": "Answer",
               "text": "Yes, our tool is 100% free. There are no daily limits, subscription fees, or hidden charges. Our goal is to provide a powerful and accessible tool for everyone."
             }
-          },
-          {
-            "@type": "Question",
-            "name": "Do I need to create an account to use the service?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No registration is required. YTVidHub is designed to be as simple as possible. Just visit our site, paste your URL(s), and download your files instantly."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How do I download subtitles for a single video?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Simply copy the URL of the YouTube video you're interested in, paste it into the input box on our homepage, and click the 'Download Subtitles' button. You'll then be given the option to save the subtitles as an SRT or TXT file."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "How does the bulk subtitle downloader work?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "To download subtitles from multiple videos at once, paste each YouTube URL on a new line in the input box. When you click download, our tool will process all of them and bundle the resulting subtitle files into a single, convenient ZIP archive for you."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What's the difference between SRT and TXT formats?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "SRT files include timestamps and are used for displaying subtitles in video players. TXT files are plain text transcripts without any timing information, which are ideal for reading, quoting, or content analysis. We offer both so you can choose the format that best suits your needs."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Why does the tool say 'Subtitles not found'?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "This message appears if the YouTube video either does not have any subtitles available (neither manual nor auto-generated) or if the subtitles have been disabled by the video owner. Our tool can only access publicly available captions."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "The download isn't working. What should I do?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "First, ensure the YouTube URL is correct and public. If it is, try clearing your browser cache or disabling any ad-blocking extensions, which can sometimes interfere with the download process. If the issue persists, please contact us for support."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Do you store my data or the videos I download?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No. We have a strict privacy policy. We do not store the URLs you enter, the files you download, or your IP address. The entire process is automated and anonymous."
-            }
           }
         ]
       }
     </script>
   </head>
-  <body class="bg-gray-50 text-gray-800 font-sans">
+  <body class="bg-white text-gray-800 font-sans">
     <header
-      class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
+    class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
+  >
+    <nav
+      class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
     >
-      <nav
-        class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+      <a
+        href="/"
+        class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
       >
+        <svg
+          class="w-6 h-6 text-blue-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          ></path>
+        </svg>
+        YTVidHub
+      </a>
+
+      <div class="hidden md:flex space-x-8 items-center text-sm">
         <a
           href="/"
-          class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Home</a
+        ><a
+          href="./bulk-youtube-subtitle-downloader.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Bulk Downloader</a
+        ><a
+          href="./how-to-use.html"
+          class="text-gray-700 hover:text-blue-600 font-semibold transition duration-150"
+          >How to Use</a
+        ><a
+          href="./faq.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >FAQ</a
+        >
+        <a
+          href="./what-is-an-srt-file.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Srt File</a
+        >
+        <a
+          href="./terms-of-service.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Terms</a
+        >
+        <a
+          href="./privacy-policy.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Privacy</a
+        >
+      </div>
+
+      <div class="md:hidden">
+        <button
+          id="mobile-menu-button"
+          class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
         >
           <svg
-            class="w-6 h-6 text-blue-600"
+            class="w-6 h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -106,50 +154,41 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              d="M4 6h16M4 12h16m-7 6h7"
             ></path>
           </svg>
-          YTVidHub
-        </a>
+        </button>
+      </div>
+    </nav>
 
-        <div class="hidden md:flex space-x-8 items-center text-sm">
+    <div
+      id="mobile-menu"
+      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+    >
+      <div class="flex flex-col h-full">
+        <div
+          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+        >
           <a
             href="/"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Home</a
-          ><a
-            href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Bulk Downloader</a
-          ><a
-            href="./how-to-use.html"
-            class="text-gray-700 hover:text-blue-600 font-semibold transition duration-150"
-            >How to Use</a
-          ><a
-            href="./faq.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >FAQ</a
+            class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
           >
-          <a
-            href="./what-is-an-srt-file.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Srt File</a
-          >
-          <a
-            href="./terms-of-service.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Terms</a
-          >
-          <a
-            href="./privacy-policy.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Privacy</a
-          >
-        </div>
-
-        <div class="md:hidden">
-          <button
-            id="mobile-menu-button"
+            <svg
+              class="w-6 h-6 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              ></path>
+            </svg>
+            YTVidHub </a
+          ><button
+            id="mobile-menu-close-button"
             class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
           >
             <svg
@@ -162,322 +201,538 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M4 6h16M4 12h16m-7 6h7"
+                d="M6 18L18 6M6 6l12 12"
               ></path>
             </svg>
           </button>
         </div>
-      </nav>
 
-      <div
-        id="mobile-menu"
-        class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
-      >
-        <div class="flex flex-col h-full">
-          <div
-            class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+        <div class="flex flex-col p-6 space-y-4 flex-grow">
+          <a
+            href="/"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Home</a
+          ><a
+            href="./bulk-youtube-subtitle-downloader.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Bulk Downloader</a
+          ><a
+            href="./how-to-use.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >How to Use</a
+          ><a
+            href="./faq.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >FAQ</a
           >
-            <a
-              href="/"
-              class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
-            >
-              <svg
-                class="w-6 h-6 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                ></path>
-              </svg>
-              YTVidHub </a
-            ><button
-              id="mobile-menu-close-button"
-              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-            >
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </button>
-          </div>
 
-          <div class="flex flex-col p-6 space-y-4 flex-grow">
-            <a
-              href="/"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Home</a
-            ><a
-              href="./bulk-youtube-subtitle-downloader.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Bulk Downloader</a
-            ><a
-              href="./how-to-use.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >How to Use</a
-            ><a
-              href="./faq.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >FAQ</a
-            >
-
-            <a
-              href="./what-is-an-srt-file.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Srt File</a
-            >
-            <a
-              href="./terms-of-service.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Terms</a
-            >
-            <a
-              href="./privacy-policy.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Privacy</a
-            >
-          </div>
+          <a
+            href="./what-is-an-srt-file.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Srt File</a
+          >
+          <a
+            href="./terms-of-service.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Terms</a
+          >
+          <a
+            href="./privacy-policy.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Privacy</a
+          >
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
     <main class="bg-white">
-      <section class="bg-blue-50 py-20">
-        <div class="container mx-auto px-6 text-center">
+      <section class="py-16 md:py-20 border-b border-gray-100">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
           <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">
             Frequently Asked Questions
           </h1>
-          <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+          <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">
             Your questions, answered. Find everything you need to know about
             using YTVidHub below.
           </p>
         </div>
       </section>
 
-      <section class="py-20">
-        <div class="container mx-auto px-6 max-w-4xl">
-          <div class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">
-              General Questions
-            </h2>
-            <div class="space-y-4">
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  Is YTVidHub completely free to use?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  Yes, our tool is 100% free. There are no daily limits,
-                  subscription fees, or hidden charges. Our goal is to provide a
-                  powerful and accessible tool for everyone.
-                </p>
-              </details>
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  Do I need to create an account to use the service?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  No registration is required. YTVidHub is designed to be as
-                  simple as possible. Just visit our site, paste your URL(s),
-                  and download your files instantly.
-                </p>
-              </details>
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  Is this service legal?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  Downloading publicly available subtitles for personal use,
-                  such as for accessibility, language learning, or research,
-                  generally falls under fair use. However, you should always
-                  respect the copyright of the content creator. Do not reuse
-                  subtitles in your own commercial work without permission.
-                </p>
-              </details>
-            </div>
-          </div>
-
-          <div class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">
-              Using the Tool
-            </h2>
-            <div class="space-y-4">
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  How do I download subtitles for a single video?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  Simply copy the URL of the YouTube video you're interested in,
-                  paste it into the input box on our
-                  <a href="/" class="text-blue-600 hover:underline">homepage</a
-                  >, and click the 'Download Subtitles' button. You'll then be
-                  given the option to save the subtitles as an SRT or TXT file.
-                </p>
-              </details>
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  How does the bulk subtitle downloader work?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  To download subtitles from multiple videos at once, paste each
-                  YouTube URL on a new line in the input box. When you click
-                  download, our tool will process all of them and bundle the
-                  resulting subtitle files into a single, convenient ZIP archive
-                  for you. See our
+      <section class="py-16 md:py-20">
+        <div
+          class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-[200px_1fr] lg:gap-12 xl:gap-20 max-w-6xl"
+        >
+          <nav class="hidden lg:block">
+            <div class="sticky top-24 pt-2">
+              <p class="text-sm font-bold text-gray-900 uppercase mb-4">
+                Categories
+              </p>
+              <ul class="space-y-2 text-sm">
+                <li>
                   <a
-                    href="/bulk-youtube-subtitle-downloader.html"
-                    class="text-blue-600 hover:underline"
-                    >Bulk Downloader</a
+                    href="#general"
+                    class="toc-link block py-2 px-3 text-gray-600 hover:text-blue-600"
+                    data-section-id="general"
+                    >General Questions</a
                   >
-                  page for more details.
-                </p>
-              </details>
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  What's the difference between SRT and TXT formats?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  SRT files include timestamps and are used for displaying
-                  subtitles in video players. TXT files are plain text
-                  transcripts without any timing information, which are ideal
-                  for reading, quoting, or content analysis. We offer both so
-                  you can choose the format that best suits your needs.
-                </p>
-              </details>
-            </div>
-          </div>
-
-          <div class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">
-              Troubleshooting
-            </h2>
-            <div class="space-y-4">
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  Why does the tool say 'Subtitles not found'?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  This message appears if the YouTube video either does not have
-                  any subtitles available (neither manual nor auto-generated) or
-                  if the subtitles have been disabled by the video owner. Our
-                  tool can only access publicly available captions.
-                </p>
-              </details>
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  The download isn't working. What should I do?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  First, ensure the YouTube URL is correct and public. If it is,
-                  try clearing your browser cache or disabling any ad-blocking
-                  extensions, which can sometimes interfere with the download
-                  process. If the issue persists, please
+                </li>
+                <li>
                   <a
-                    href="/about.html#contact"
-                    class="text-blue-600 hover:underline"
-                    >contact us</a
+                    href="#using-tool"
+                    class="toc-link block py-2 px-3 text-gray-600 hover:text-blue-600"
+                    data-section-id="using-tool"
+                    >Using the Tool</a
                   >
-                  for support.
-                </p>
-              </details>
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  Can I download subtitles for private or age-restricted videos?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  No. Our tool can only access content that is publicly
-                  available on YouTube. It cannot process private videos,
-                  unlisted videos you don't have access to, or content that
-                  requires a login to view.
-                </p>
-              </details>
-            </div>
-          </div>
-
-          <div>
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">
-              Privacy & Security
-            </h2>
-            <div class="space-y-4">
-              <details class="p-6 bg-gray-50 border rounded-lg cursor-pointer">
-                <summary class="font-semibold text-lg">
-                  Do you store my data or the videos I download?
-                </summary>
-                <p class="mt-4 text-gray-600">
-                  No. We have a strict privacy policy. We do not store the URLs
-                  you enter, the files you download, or your IP address. The
-                  entire process is automated and anonymous. You can read our
-                  full
+                </li>
+                <li>
                   <a
-                    href="/about.html#privacy"
-                    class="text-blue-600 hover:underline"
-                    >Privacy Policy here</a
-                  >.
-                </p>
-              </details>
+                    href="#troubleshooting"
+                    class="toc-link block py-2 px-3 text-gray-600 hover:text-blue-600"
+                    data-section-id="troubleshooting"
+                    >Troubleshooting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#privacy"
+                    class="toc-link block py-2 px-3 text-gray-600 hover:text-blue-600"
+                    data-section-id="privacy"
+                    >Privacy & Security</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+          <div class="lg:max-w-3xl">
+            <div class="mb-16">
+              <h2
+                id="general"
+                class="text-3xl font-bold text-gray-900 mb-8 pt-4 scroll-mt-20"
+              >
+                General Questions
+              </h2>
+              <div class="border-t border-gray-200">
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span>Is YTVidHub completely free to use?</span>
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    Yes, our tool is 100% free. There are no daily limits,
+                    subscription fees, or hidden charges. Our goal is to
+                    provide a powerful and accessible tool for everyone.
+                  </p>
+                </details>
+
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span
+                      >Do I need to create an account to use the service?</span
+                    >
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    No registration is required. YTVidHub is designed to be as
+                    simple as possible. Just visit our site, paste your URL(s),
+                    and download your files instantly.
+                  </p>
+                </details>
+
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span>Is this service legal?</span>
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    Downloading publicly available subtitles for personal use,
+                    such as for accessibility, language learning, or research,
+                    generally falls under fair use. However, you should always
+                    respect the copyright of the content creator. Do not reuse
+                    subtitles in your own commercial work without permission.
+                  </p>
+                </details>
+              </div>
+            </div>
+
+            <div class="mb-16">
+              <h2
+                id="using-tool"
+                class="text-3xl font-bold text-gray-900 mb-8 pt-4 scroll-mt-20"
+              >
+                Using the Tool
+              </h2>
+              <div class="border-t border-gray-200">
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span>How do I download subtitles for a single video?</span>
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    Simply copy the URL of the YouTube video you're interested
+                    in, paste it into the input box on our
+                    <a href="/" class="text-blue-600 hover:underline"
+                      >homepage</a
+                    >, and click the 'Download Subtitles' button. You'll then be
+                    given the option to save the subtitles as an SRT or TXT
+                    file.
+                  </p>
+                </details>
+
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span>How does the bulk subtitle downloader work?</span>
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    To download subtitles from multiple videos at once, paste
+                    each YouTube URL on a new line in the input box. When you
+                    click download, our tool will process all of them and bundle
+                    the resulting subtitle files into a single, convenient ZIP
+                    archive for you. See our
+                    <a
+                      href="/bulk-youtube-subtitle-downloader.html"
+                      class="text-blue-600 hover:underline"
+                      >Bulk Downloader</a
+                    >
+                    page for more details.
+                  </p>
+                </details>
+
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span
+                      >What's the difference between SRT and TXT formats?</span
+                    >
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    SRT files include timestamps and are used for displaying
+                    subtitles in video players. TXT files are plain text
+                    transcripts without any timing information, which are ideal
+                    for reading, quoting, or content analysis. We offer both so
+                    you can choose the format that best suits your needs.
+                  </p>
+                </details>
+              </div>
+            </div>
+
+            <div class="mb-16">
+              <h2
+                id="troubleshooting"
+                class="text-3xl font-bold text-gray-900 mb-8 pt-4 scroll-mt-20"
+              >
+                Troubleshooting
+              </h2>
+              <div class="border-t border-gray-200">
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span>Why does the tool say 'Subtitles not found'?</span>
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    This message appears if the YouTube video either does not
+                    have any subtitles available (neither manual nor
+                    auto-generated) or if the subtitles have been disabled by
+                    the video owner. Our tool can only access publicly
+                    available captions.
+                  </p>
+                </details>
+
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span>The download isn't working. What should I do?</span>
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    First, ensure the YouTube URL is correct and public. If it
+                    is, try clearing your browser cache or disabling any
+                    ad-blocking extensions, which can sometimes interfere with
+                    the download process. If the issue persists, please
+                    <a
+                      href="/about.html#contact"
+                      class="text-blue-600 hover:underline"
+                      >contact us</a
+                    >
+                    for support.
+                  </p>
+                </details>
+
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span
+                      >Can I download subtitles for private or age-restricted
+                      videos?</span
+                    >
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    No. Our tool can only access content that is publicly
+                    available on YouTube. It cannot process private videos,
+                    unlisted videos you don't have access to, or content that
+                    requires a login to view.
+                  </p>
+                </details>
+              </div>
+            </div>
+
+            <div>
+              <h2
+                id="privacy"
+                class="text-3xl font-bold text-gray-900 mb-8 pt-4 scroll-mt-20"
+              >
+                Privacy & Security
+              </h2>
+              <div class="border-t border-gray-200">
+                <details class="group faq-item">
+                  <summary
+                    class="flex justify-between items-center font-semibold text-xl text-gray-900 list-none cursor-pointer"
+                  >
+                    <span
+                      >Do you store my data or the videos I download?</span
+                    >
+                    <svg
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="3"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </summary>
+                  <p class="text-lg text-gray-600 leading-relaxed">
+                    No. We have a strict privacy policy. We do not store the
+                    URLs you enter, the files you download, or your IP address.
+                    The entire process is automated and anonymous. You can read
+                    our full
+                    <a
+                      href="/about.html#privacy"
+                      class="text-blue-600 hover:underline"
+                      >Privacy Policy here</a
+                    >.
+                  </p>
+                </details>
+                <div class="border-b border-gray-200"></div>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="bg-gray-800 text-white">
+    <footer class="bg-gray-50 text-gray-700 border-t border-gray-200">
       <div class="container mx-auto px-6 py-12">
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 class="text-xl font-bold">YTVidHub</h3>
-            <p class="mt-2 text-gray-400">
+            <h3 class="text-xl font-bold text-gray-900">YTVidHub</h3>
+            <p class="mt-3 text-gray-500 text-sm">
               Your free, fast, and reliable solution for downloading YouTube
               subtitles, featuring a powerful bulk download capability.
             </p>
           </div>
           <div>
-            <h3 class="text-lg font-semibold">Quick Links</h3>
-            <ul class="mt-4 space-y-2">
-              <li><a href="/" class="hover:text-blue-400">Home</a></li>
+            <h3 class="text-lg font-semibold text-gray-900">Product</h3>
+            <ul class="mt-4 space-y-3 text-sm">
+              <li>
+                <a href="/" class="hover:text-blue-600 transition"
+                  >Single Downloader</a
+                >
+              </li>
               <li>
                 <a
                   href="/bulk-youtube-subtitle-downloader.html"
-                  class="hover:text-blue-400"
+                  class="hover:text-blue-600 transition"
                   >Bulk Downloader</a
                 >
               </li>
-              <li><a href="/faq.html" class="hover:text-blue-400">FAQ</a></li>
+              <li>
+                <a href="/how-to-use.html" class="hover:text-blue-600 transition"
+                  >How to Use</a
+                >
+              </li>
             </ul>
           </div>
           <div>
-            <h3 class="text-lg font-semibold">Legal & Info</h3>
-            <ul class="mt-4 space-y-2">
+            <h3 class="text-lg font-semibold text-gray-900">Resources</h3>
+            <ul class="mt-4 space-y-3 text-sm">
               <li>
-                <a href="/about.html" class="hover:text-blue-400">About Us</a>
+                <a href="/faq.html" class="hover:text-blue-600 transition"
+                  >FAQ</a
+                >
               </li>
               <li>
-                <a href="/about.html#privacy" class="hover:text-blue-400"
+                <a
+                  href="/what-is-an-srt-file.html"
+                  class="hover:text-blue-600 transition"
+                  >What is SRT?</a
+                >
+              </li>
+              <li>
+                <a href="/about.html" class="hover:text-blue-600 transition"
+                  >About Us</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">Legal</h3>
+            <ul class="mt-4 space-y-3 text-sm">
+              <li>
+                <a
+                  href="/terms-of-service.html"
+                  class="hover:text-blue-600 transition"
+                  >Terms of Service</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/privacy-policy.html"
+                  class="hover:text-blue-600 transition"
                   >Privacy Policy</a
                 >
               </li>
               <li>
-                <a href="/about.html#contact" class="hover:text-blue-400"
-                  >Contact Us</a
+                <a href="/contact.html" class="hover:text-blue-600 transition"
+                  >Contact</a
                 >
               </li>
             </ul>
           </div>
         </div>
         <div
-          class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-500"
+          class="mt-16 border-t border-gray-200 pt-8 text-center text-gray-500 text-sm"
         >
           <p>
             &copy; 2025 YTVidHub. All rights reserved. We are not affiliated
@@ -487,7 +742,10 @@
       </div>
     </footer>
     <script>
-      //移动端menu
+      // 定义移动菜单过渡时间
+      const MOBILE_MENU_TRANSITION_DURATION = 300; 
+
+      //移动端menu - 保持不变
       const mobileMenuButton = document.getElementById("mobile-menu-button");
       const mobileMenuCloseButton = document.getElementById(
         "mobile-menu-close-button"
@@ -516,6 +774,44 @@
           }
         });
       }
+
+      // ** 新增：侧边导航 (TOC) 活跃状态控制逻辑 **
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const id = entry.target.id;
+            const link = document.querySelector(`.toc-link[data-section-id="${id}"]`);
+
+            // 检查当前元素是否进入视口
+            if (entry.isIntersecting) {
+              // 确保页面上只有一个 active 状态
+              document.querySelectorAll(".toc-link").forEach(l => l.classList.remove("active"));
+              if (link) {
+                link.classList.add("active");
+              }
+            } else {
+              // 当元素滚出视口时（这里可以简化，但保持一个 active 状态是关键）
+            }
+          });
+        },
+        {
+          // rootMargin 用于定义视口的边界，top: -25% 是为了让导航链接在标题出现时就切换
+          rootMargin: "0px 0px -75% 0px", 
+          threshold: 0.1,
+        }
+      );
+
+      // 观察所有 H2 标题
+      document.querySelectorAll("h2[id]").forEach((section) => {
+        observer.observe(section);
+      });
+      // 首次加载时，默认激活第一个
+      document.addEventListener('DOMContentLoaded', () => {
+        const firstLink = document.querySelector('.toc-link');
+        if (firstLink) {
+            firstLink.classList.add('active');
+        }
+      });
     </script>
   </body>
 </html>
