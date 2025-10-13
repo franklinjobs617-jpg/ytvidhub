@@ -102,6 +102,27 @@
       .dragging .drag-overlay {
         opacity: 1;
       }
+      /* New Tab Styles */
+      .tab-btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem 0.5rem 0 0;
+        cursor: pointer;
+        background-color: #e5e7eb;
+        color: #4b5563;
+        border: 1px solid #d1d5db;
+        border-bottom: none;
+        transition: all 0.2s ease-in-out;
+      }
+      .tab-btn.active {
+        background-color: #ffffff;
+        color: #2563eb;
+        border-color: #d1d5db;
+        position: relative;
+        z-index: 10;
+        border-bottom: 1px solid #ffffff;
+        margin-bottom: -1px;
+      }
     </style>
     <script type="application/ld+json">
       {
@@ -221,43 +242,74 @@
             Professional Subtitle Downloader
           </h1>
           <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-            Paste links, upload a file, or drag & drop. Get SRT, VTT, and TXT
-            subtitles with ease.
+            Easily download subtitles for single videos or in bulk. Supports
+            SRT, VTT, and TXT formats.
           </p>
 
           <div class="mt-12 max-w-4xl mx-auto text-left">
             <!-- STATE 1: INPUT AREA -->
             <div id="inputArea">
+              <!-- TABS START -->
+              <div class="flex">
+                <button id="singleTabBtn" class="tab-btn active">
+                  Single URL
+                </button>
+                <button id="bulkTabBtn" class="tab-btn">Bulk URLs</button>
+              </div>
+              <!-- TABS END -->
+
               <div
-                class="relative bg-white p-6 rounded-2xl shadow-2xl border border-gray-100"
+                class="relative bg-white p-6 rounded-b-2xl rounded-r-2xl shadow-2xl border border-gray-200"
               >
-                <textarea
-                  id="urlInput"
-                  class="w-full h-36 p-4 bg-gray-50 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
-                  placeholder="Paste YouTube URLs here (one per line)..."
-                ></textarea>
-                <div class="drag-overlay">
-                  <div class="text-center font-bold text-blue-600">
-                    <svg
-                      class="w-12 h-12 mx-auto"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                      ></path>
-                    </svg>
-                    <p>Drop your .txt or .csv file here</p>
-                  </div>
+                <!-- SINGLE URL TAB CONTENT -->
+                <div id="singleTabContent">
+                  <label
+                    for="singleUrlInput"
+                    class="block text-sm font-medium text-gray-700 mb-2"
+                    >Enter a single YouTube video URL:</label
+                  >
+                  <input
+                    type="text"
+                    id="singleUrlInput"
+                    class="w-full p-4 bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
+                    placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  />
                 </div>
-                <div
-                  class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4"
-                >
-                  <div class="flex items-center gap-2 text-sm text-gray-500">
+
+                <!-- BULK URLS TAB CONTENT -->
+                <div id="bulkTabContent" class="hidden">
+                  <label
+                    for="urlInput"
+                    class="block text-sm font-medium text-gray-700 mb-2"
+                    >Paste multiple YouTube URLs (one per line), or upload a
+                    file.</label
+                  >
+                  <textarea
+                    id="urlInput"
+                    class="w-full h-36 p-4 bg-gray-50 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
+                    placeholder="https://...&#10;https://...&#10;https://..."
+                  ></textarea>
+                  <div class="drag-overlay">
+                    <div class="text-center font-bold text-blue-600">
+                      <svg
+                        class="w-12 h-12 mx-auto"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                        ></path>
+                      </svg>
+                      <p>Drop your .txt or .csv file here</p>
+                    </div>
+                  </div>
+                  <div
+                    class="mt-2 flex items-center gap-2 text-sm text-gray-500"
+                  >
                     <label
                       for="fileInput"
                       class="cursor-pointer font-medium text-blue-600 hover:text-blue-800"
@@ -272,31 +324,35 @@
                       >(?)</a
                     >
                   </div>
-                  <div class="flex items-center gap-3">
-                    <button
-                      id="clearBtn"
-                      class="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition"
+                </div>
+
+                <!-- SHARED BUTTONS -->
+                <div
+                  class="mt-6 flex flex-col sm:flex-row items-center justify-end gap-3"
+                >
+                  <button
+                    id="clearBtn"
+                    class="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition w-full sm:w-auto"
+                  >
+                    Clear</button
+                  ><button
+                    id="analyzeBtn"
+                    class="btn-primary text-white font-bold py-3 px-8 rounded-lg text-lg flex items-center justify-center gap-2 w-full sm:w-auto"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      Clear</button
-                    ><button
-                      id="analyzeBtn"
-                      class="btn-primary text-white font-bold py-3 px-8 rounded-lg text-lg flex items-center justify-center gap-2"
-                    >
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        ></path></svg
-                      >Analyze
-                    </button>
-                  </div>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      ></path></svg
+                    >Analyze
+                  </button>
                 </div>
               </div>
             </div>
@@ -334,7 +390,7 @@
                     stroke-linejoin="round"
                   />
                   <path
-                    d="M33 12L30 22"
+                    d="33 12L30 22"
                     stroke="currentColor"
                     stroke-width="3"
                     stroke-linecap="round"
@@ -406,12 +462,12 @@
                     >
                   </div>
                   <div class="flex flex-wrap items-center gap-3">
-                    <span class="text-sm font-medium">For selected:</span
+                    <span class="text-sm font-medium"
+                      >Set format for selected:</span
                     ><select
                       id="globalLanguage"
                       class="rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500"
                     >
-                      <option value="auto">Auto-Detect Language</option>
                       <option value="en">English</option></select
                     ><select
                       id="globalFormat"
@@ -419,13 +475,8 @@
                     >
                       <option value="srt">SRT Format</option>
                       <option value="txt">TXT Format</option>
-                      <option value="vtt">VTT Format</option></select
-                    ><button
-                      id="applyGlobalsBtn"
-                      class="bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg text-sm hover:bg-gray-700"
-                    >
-                      Apply
-                    </button>
+                      <option value="vtt">VTT Format</option>
+                    </select>
                   </div>
                   <button
                     id="downloadSelectedBtn"
@@ -532,10 +583,11 @@
                 How does the bulk download feature work?
               </summary>
               <p class="mt-4 text-gray-600">
-                Simply paste multiple YouTube video URLs into the input box,
-                with each URL on a new line. Our tool will process all of them
-                simultaneously and bundle the subtitle files into a single,
-                convenient ZIP archive for you to download.
+                Select the "Bulk URLs" tab. You can then paste multiple YouTube
+                video URLs (each on a new line) into the text box, or upload a
+                .txt/.csv file containing the URLs. After analyzing, you can
+                select which videos you want and download all their subtitles
+                at once in a single ZIP file.
               </p>
             </details>
             <details class="p-6 bg-white rounded-lg shadow-md cursor-pointer">
@@ -543,10 +595,10 @@
                 What subtitle formats can I download?
               </summary>
               <p class="mt-4 text-gray-600">
-                You can download subtitles in the two most popular formats: SRT
-                (.srt) and TXT (.txt). SRT files contain timing information and
-                are ideal for video players, while TXT files are plain text
-                transcripts perfect for reading, quoting, or content analysis.
+                You can download subtitles in three popular formats: SRT (.srt),
+                VTT (.vtt), and TXT (.txt). SRT and VTT files contain timing
+                information and are ideal for video players, while TXT files are
+                plain text transcripts perfect for reading or analysis.
               </p>
             </details>
             <details class="p-6 bg-white rounded-lg shadow-md cursor-pointer">
@@ -636,14 +688,28 @@
         /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
       // --- DOM Elements ---
-      let inputArea, analyzingArea, resultsArea;
+      let inputArea,
+        analyzingArea,
+        resultsArea,
+        singleTabBtn,
+        bulkTabBtn,
+        singleTabContent,
+        bulkTabContent;
 
       // --- INITIALIZATION ---
       document.addEventListener("DOMContentLoaded", () => {
+        // Main areas
         inputArea = document.getElementById("inputArea");
         analyzingArea = document.getElementById("analyzingArea");
         resultsArea = document.getElementById("resultsArea");
 
+        // Tab elements
+        singleTabBtn = document.getElementById("singleTabBtn");
+        bulkTabBtn = document.getElementById("bulkTabBtn");
+        singleTabContent = document.getElementById("singleTabContent");
+        bulkTabContent = document.getElementById("bulkTabContent");
+
+        // Mobile Menu
         const mobileMenuButton = document.getElementById("mobile-menu-button");
         const mobileMenuCloseButton = document.getElementById(
           "mobile-menu-close-button"
@@ -661,6 +727,11 @@
             document.body.style.overflow = "";
           });
         }
+
+        // Event Listeners
+        singleTabBtn.addEventListener("click", () => switchTab("single"));
+        bulkTabBtn.addEventListener("click", () => switchTab("bulk"));
+
         document
           .getElementById("analyzeBtn")
           .addEventListener("click", handleAnalyzeClick);
@@ -670,39 +741,54 @@
         document
           .getElementById("fileInput")
           .addEventListener("change", handleFileUpload);
-        const inputContainer = document.querySelector("#inputArea div");
+
+        const dragContainer = document.querySelector("#bulkTabContent");
         ["dragenter", "dragover", "dragleave", "drop"].forEach((e) =>
-          inputContainer.addEventListener(e, preventDefaults, false)
+          dragContainer.addEventListener(e, preventDefaults, false)
         );
         ["dragenter", "dragover"].forEach((e) =>
-          inputContainer.addEventListener(
+          dragContainer.addEventListener(
             e,
-            () => inputContainer.classList.add("dragging"),
+            () => dragContainer.classList.add("dragging"),
             false
           )
         );
         ["dragleave", "drop"].forEach((e) =>
-          inputContainer.addEventListener(
+          dragContainer.addEventListener(
             e,
-            () => inputContainer.classList.remove("dragging"),
+            () => dragContainer.classList.remove("dragging"),
             false
           )
         );
-        inputContainer.addEventListener("drop", handleFileDrop, false);
+        dragContainer.addEventListener("drop", handleFileDrop, false);
+
         document
           .getElementById("selectAllCheckbox")
           .addEventListener("change", handleSelectAll);
-        document
-          .getElementById("applyGlobalsBtn")
-          .addEventListener("click", applyGlobalSettings);
         document
           .getElementById("downloadSelectedBtn")
           .addEventListener("click", handleBulkDownload);
       });
 
+      // --- NEW: Tab Switching Logic ---
+      function switchTab(tabName) {
+        if (tabName === "single") {
+          singleTabBtn.classList.add("active");
+          bulkTabBtn.classList.remove("active");
+          singleTabContent.classList.remove("hidden");
+          bulkTabContent.classList.add("hidden");
+        } else {
+          bulkTabBtn.classList.add("active");
+          singleTabBtn.classList.remove("active");
+          bulkTabContent.classList.remove("hidden");
+          singleTabContent.classList.add("hidden");
+        }
+      }
+
       // --- INPUT HANDLERS ---
       function handleClear() {
         document.getElementById("urlInput").value = "";
+        document.getElementById("singleUrlInput").value = "";
         resultsArea.classList.add("hidden");
         analyzingArea.classList.add("hidden");
         inputArea.classList.remove("hidden");
@@ -714,38 +800,53 @@
         e.stopPropagation();
       }
       async function handleFileUpload(e) {
-        const t = e.target.files[0];
-        t && (await processFile(t));
+        const file = e.target.files[0];
+        if (file) await processFile(file);
       }
       async function handleFileDrop(e) {
-        const t = e.dataTransfer.files[0];
-        t && (await processFile(t));
+        const file = e.dataTransfer.files[0];
+        if (file) await processFile(file);
       }
-      async function processFile(e) {
+      async function processFile(file) {
         if (
           !["text/plain", "text/csv", "application/vnd.ms-excel"].includes(
-            e.type
+            file.type
           )
-        )
+        ) {
           return showNotification(
             "Invalid file type. Please use .txt or .csv",
             "error"
           );
-        document.getElementById("urlInput").value = await e.text();
+        }
+        // Automatically switch to bulk tab and populate
+        switchTab("bulk");
+        document.getElementById("urlInput").value = await file.text();
         handleAnalyzeClick();
       }
 
       // --- CORE WORKFLOW ---
       async function handleAnalyzeClick() {
-        const urls = document
-          .getElementById("urlInput")
-          .value.split("\n")
-          .map((u) => u.trim())
-          .filter(Boolean);
-        if (urls.length === 0)
-          return showNotification("Please provide at least one URL.", "error");
+        let urls;
+        // Check which tab is active to get the URLs
+        if (singleTabBtn.classList.contains("active")) {
+          urls = [document.getElementById("singleUrlInput").value.trim()];
+        } else {
+          urls = document
+            .getElementById("urlInput")
+            .value.split("\n")
+            .map((u) => u.trim());
+        }
 
-        // --- NEW UX FLOW ---
+        urls = urls.filter(Boolean); // Filter out any empty lines
+
+        if (urls.length === 0) {
+          return showNotification(
+            "Please provide at least one URL.",
+            "error"
+          );
+        }
+
+        // --- UX FLOW ---
         inputArea.classList.add("hidden");
         resultsArea.classList.add("hidden");
         analyzingArea.classList.remove("hidden");
@@ -772,26 +873,29 @@
         }
       }
 
-      async function fetchVideoDetails(e) {
-        const t = await fetch("https://ytdlp.vistaflyer.com/api/batch_check", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ urls: e }),
-        });
-        if (!t.ok) throw new Error(`API Error: ${t.statusText}`);
-        const n = await t.json();
-        if ("completed" !== n.status)
+      async function fetchVideoDetails(urls) {
+        const response = await fetch(
+          "https://ytdlp.vistaflyer.com/api/batch_check",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ urls: urls }),
+          }
+        );
+        if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+        const data = await response.json();
+        if (data.status !== "completed")
           throw new Error("Server could not process URLs.");
-        return n.results.map((e) => ({
-          id: (e.url.match(youtubeRegex) || [])[1],
-          url: e.url,
-          title: e.video_info.title || "Untitled",
-          uploader: e.video_info.uploader || "Unknown",
+        return data.results.map((item) => ({
+          id: (item.url.match(youtubeRegex) || [])[1],
+          url: item.url,
+          title: item.video_info.title || "Untitled",
+          uploader: item.video_info.uploader || "Unknown",
           thumbnail: `https://i.ytimg.com/vi/${
-            (e.url.match(youtubeRegex) || [])[1]
+            (item.url.match(youtubeRegex) || [])[1]
           }/hqdefault.jpg`,
-          hasSubtitles: e.can_download,
-          availableLanguages: e.available_manual_captions || [],
+          hasSubtitles: item.can_download,
+          availableLanguages: item.available_manual_captions || [],
         }));
       }
 
@@ -813,185 +917,253 @@
         }, 400);
       }
 
-      // --- UI RENDERING & MANAGEMENT (Unchanged) ---
-      function displayResults(e) {
-        const t = document.getElementById("videoList"),
-          n = document.getElementById("bulkActions");
-        if (((t.innerHTML = ""), selectedVideos.clear(), !e || 0 === e.length))
-          return;
-        e.forEach((e) => {
-          e.hasSubtitles && selectedVideos.add(e.id),
-            t.appendChild(createVideoCard(e));
-        }),
-          n.classList.toggle("hidden", e.length <= 1),
-          updateSelectionUI();
-      }
-      function createVideoCard(e) {
-        const t = document.createElement("div");
-        (t.className = `bg-white p-4 rounded-xl shadow-md border-2 transition-all duration-200 ${
-          selectedVideos.has(e.id) ? "border-blue-500" : "border-transparent"
-        }`),
-          (t.id = `card-${e.id}`);
-        const n = e.availableLanguages
-          .map((e) => `<option value="${e.lang_code}">${e.lang_name}</option>`)
-          .join("");
-        return (
-          (t.innerHTML = `\n            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">\n                <div class="flex items-center gap-4 flex-shrink-0">\n                    ${
-            e.hasSubtitles
-              ? `<input type="checkbox" class="custom-checkbox" onchange="toggleVideoSelection('${
-                  e.id
-                }')" ${selectedVideos.has(e.id) ? "checked" : ""}>`
-              : '<div class="w-5 h-5"></div>'
-          }\n                    <img src="${
-            e.thumbnail
-          }" class="w-28 h-16 object-cover rounded-md">\n                </div>\n                <div class="flex-grow min-w-0">\n                    <p class="font-semibold text-gray-800 truncate" title="${e.title.replace(
-            /"/g,
-            "&quot;"
-          )}">${
-            e.title
-          }</p>\n                    <p class="text-sm text-gray-500">by ${
-            e.uploader
-          }</p>\n                    ${
-            e.hasSubtitles
-              ? '<span class="text-xs font-medium text-green-600">Subtitles Available</span>'
-              : '<span class="text-xs font-medium text-red-600">No Subtitles</span>'
-          }\n                </div>\n                ${
-            e.hasSubtitles
-              ? `\n                <div class="flex items-center gap-2 flex-shrink-0 ml-auto">\n                    <select onchange="updateVideoSetting('${e.id}', 'selectedLanguage', this.value)" class="per-video-lang rounded-md border-gray-300 shadow-sm text-sm w-32">\n                        <option value="auto">Auto-Detect</option>\n                        <option value="en">English</option>\n                        ${n}\n                    </select>\n                    <select onchange="updateVideoSetting('${e.id}', 'selectedFormat', this.value)" class="per-video-format rounded-md border-gray-300 shadow-sm text-sm">\n                        <option value="srt">SRT</option><option value="txt">TXT</option><option value="vtt">VTT</option>\n                    </select>\n                    <button onclick="handleSingleDownload('${e.id}')" title="Download this subtitle" class="bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition"><svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>\n                </div>`
-              : ""
-          }\n            </div>\n        `),
-          t
-        );
-      }
-      function updateVideoSetting(e, t, n) {
-        const a = videoData.find((t) => t.id === e);
-        a && (a[t] = n);
-      }
-      function toggleVideoSelection(e) {
-        selectedVideos.has(e)
-          ? selectedVideos.delete(e)
-          : selectedVideos.add(e),
-          updateSelectionUI();
-      }
-      function handleSelectAll() {
-        const e = document.getElementById("selectAllCheckbox").checked;
-        videoData.forEach((t) => {
-          t.hasSubtitles &&
-            (e ? selectedVideos.add(t.id) : selectedVideos.delete(t.id));
-        }),
-          updateSelectionUI();
-      }
-      function applyGlobalSettings() {
-        const e = document.getElementById("globalLanguage").value,
-          t = document.getElementById("globalFormat").value;
-        selectedVideos.forEach((n) => {
-          updateVideoSetting(n, "selectedLanguage", e),
-            updateVideoSetting(n, "selectedFormat", t);
-          const a = document.getElementById(`card-${n}`);
-          a &&
-            ((a.querySelector(".per-video-lang").value = e),
-            (a.querySelector(".per-video-format").value = t));
-        }),
-          showNotification(
-            `Settings applied to ${selectedVideos.size} videos.`,
-            "success"
-          );
-      }
-      function updateSelectionUI() {
-        const e = selectedVideos.size,
-          t = videoData.filter((e) => e.hasSubtitles).length;
-        (document.getElementById(
-          "downloadSelectedText"
-        ).textContent = `Download Selected (${e})`),
-          (document.getElementById("downloadSelectedBtn").disabled = 0 === e);
-        const n = document.getElementById("selectAllCheckbox");
-        (n.checked = e > 0 && e === t),
-          (n.indeterminate = e > 0 && e < t),
-          videoData.forEach((e) => {
-            const t = document.getElementById(`card-${e.id}`);
-            if (t) {
-              t.classList.toggle("border-blue-500", selectedVideos.has(e.id)),
-                t.classList.toggle(
-                  "border-transparent",
-                  !selectedVideos.has(e.id)
-                );
-              const n = t.querySelector('input[type="checkbox"]');
-              n && (n.checked = selectedVideos.has(e.id));
-            }
-          });
+      // --- UI RENDERING & MANAGEMENT ---
+      function displayResults(data) {
+        const videoList = document.getElementById("videoList");
+        const bulkActions = document.getElementById("bulkActions");
+        videoList.innerHTML = "";
+        selectedVideos.clear();
+        if (!data || data.length === 0) return;
+
+        data.forEach((video) => {
+          if (video.hasSubtitles) selectedVideos.add(video.id);
+          videoList.appendChild(createVideoCard(video));
+        });
+
+        bulkActions.classList.toggle("hidden", data.length <= 1);
+        updateSelectionUI();
       }
 
-      // --- DOWNLOAD & API LOGIC (Unchanged) ---
-      async function handleSingleDownload(e) {
-        const t = videoData.find((t) => t.id === e);
-        if (!t) return;
-        const n = event.target.closest("button"),
-          a = n.innerHTML;
-        (n.disabled = !0),
-          (n.innerHTML =
-            '<div class="loading-spinner rounded-full h-5 w-5 border-b-2 border-gray-700"></div>');
-        try {
-          await downloadFile(
-            t.url,
-            t.selectedLanguage,
-            t.selectedFormat,
-            t.title
-          );
-        } catch (l) {
-          showNotification(l.message, "error");
-        } finally {
-          (n.disabled = !1), (n.innerHTML = a);
+      function createVideoCard(video) {
+        const card = document.createElement("div");
+        card.className = `bg-white p-4 rounded-xl shadow-md border-2 transition-all duration-200 ${
+          selectedVideos.has(video.id)
+            ? "border-blue-500"
+            : "border-transparent"
+        }`;
+        card.id = `card-${video.id}`;
+
+        const langOptions = video.availableLanguages
+          .map(
+            (lang) =>
+              `<option value="${lang.lang_code}">${lang.lang_name}</option>`
+          )
+          .join("");
+
+        card.innerHTML = `
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div class="flex items-center gap-4 flex-shrink-0">
+                    ${
+                      video.hasSubtitles
+                        ? `<input type="checkbox" class="custom-checkbox" onchange="toggleVideoSelection('${
+                            video.id
+                          }')" ${selectedVideos.has(video.id) ? "checked" : ""}>`
+                        : '<div class="w-5 h-5"></div>'
+                    }
+                    <img src="${
+                      video.thumbnail
+                    }" class="w-28 h-16 object-cover rounded-md">
+                </div>
+                <div class="flex-grow min-w-0">
+                    <p class="font-semibold text-gray-800 truncate" title="${video.title.replace(
+                      /"/g,
+                      "&quot;"
+                    )}">${
+          video.title
+        }</p>
+                    <p class="text-sm text-gray-500">by ${video.uploader}</p>
+                    ${
+                      video.hasSubtitles
+                        ? '<span class="text-xs font-medium text-green-600">Subtitles Available</span>'
+                        : '<span class="text-xs font-medium text-red-600">No Subtitles</span>'
+                    }
+                </div>
+                ${
+                  video.hasSubtitles
+                    ? `
+                <div class="flex items-center gap-2 flex-shrink-0 ml-auto">
+                    <select onchange="updateVideoSetting('${video.id}', 'selectedLanguage', this.value)" class="per-video-lang rounded-md border-gray-300 shadow-sm text-sm w-32">
+                        <option value="en">English</option>
+                    </select>
+                    <select onchange="updateVideoSetting('${video.id}', 'selectedFormat', this.value)" class="per-video-format rounded-md border-gray-300 shadow-sm text-sm">
+                        <option value="srt">SRT</option><option value="txt">TXT</option><option value="vtt">VTT</option>
+                    </select>
+                    <button onclick="handleSingleDownload('${video.id}')" title="Download this subtitle" class="bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition"><svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+                </div>`
+                    : ""
+                }
+            </div>
+        `;
+        return card;
+      }
+
+      function updateVideoSetting(videoId, key, value) {
+        const video = videoData.find((v) => v.id === videoId);
+        if (video) {
+          video[key] = value;
         }
       }
+
+      function toggleVideoSelection(videoId) {
+        if (selectedVideos.has(videoId)) {
+          selectedVideos.delete(videoId);
+        } else {
+          selectedVideos.add(videoId);
+        }
+        updateSelectionUI();
+      }
+
+      function handleSelectAll() {
+        const isChecked = document.getElementById("selectAllCheckbox").checked;
+        videoData.forEach((video) => {
+          if (video.hasSubtitles) {
+            if (isChecked) {
+              selectedVideos.add(video.id);
+            } else {
+              selectedVideos.delete(video.id);
+            }
+          }
+        });
+        updateSelectionUI();
+      }
+
+      // REMOVED applyGlobalSettings() as it's no longer needed
+
+      function updateSelectionUI() {
+        const count = selectedVideos.size;
+        const totalSelectable = videoData.filter((v) => v.hasSubtitles).length;
+
+        document.getElementById(
+          "downloadSelectedText"
+        ).textContent = `Download Selected (${count})`;
+        document.getElementById("downloadSelectedBtn").disabled = count === 0;
+
+        const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+        selectAllCheckbox.checked = count > 0 && count === totalSelectable;
+        selectAllCheckbox.indeterminate = count > 0 && count < totalSelectable;
+
+        videoData.forEach((video) => {
+          const card = document.getElementById(`card-${video.id}`);
+          if (card) {
+            card.classList.toggle("border-blue-500", selectedVideos.has(video.id));
+            card.classList.toggle(
+              "border-transparent",
+              !selectedVideos.has(video.id)
+            );
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            if (checkbox) checkbox.checked = selectedVideos.has(video.id);
+          }
+        });
+      }
+
+      // --- DOWNLOAD & API LOGIC ---
+      async function handleSingleDownload(videoId) {
+        const video = videoData.find((v) => v.id === videoId);
+        if (!video) return;
+
+        const button = event.target.closest("button");
+        const originalContent = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML =
+          '<div class="loading-spinner rounded-full h-5 w-5 border-b-2 border-gray-700"></div>';
+
+        try {
+          // IMPORTANT: Apply global settings to single video if they've been changed
+          // This makes the UI more intuitive. What you see is what you get.
+          const globalLang = document.getElementById("globalLanguage").value;
+          const globalFormat = document.getElementById("globalFormat").value;
+          
+          const card = document.getElementById(`card-${videoId}`);
+          const selectedLang = card.querySelector(".per-video-lang").value;
+          const selectedFormat = card.querySelector(".per-video-format").value;
+
+          await downloadFile(
+            video.url,
+            selectedLang,
+            selectedFormat,
+            video.title
+          );
+        } catch (error) {
+          showNotification(error.message, "error");
+        } finally {
+          button.disabled = false;
+          button.innerHTML = originalContent;
+        }
+      }
+
       async function handleBulkDownload() {
-        const e = videoData
-          .filter((e) => selectedVideos.has(e.id))
-          .map((e) => ({ url: e.url, title: e.title }));
-        if (0 === e.length) return;
-        const t = document.getElementById("globalFormat").value,
-          n = document.getElementById("globalLanguage").value;
+        const videosToDownload = videoData
+          .filter((v) => selectedVideos.has(v.id))
+          .map((v) => ({ url: v.url, title: v.title }));
+        if (videosToDownload.length === 0) return;
+
+        // Directly use the values from the global dropdowns
+        const format = document.getElementById("globalFormat").value;
+        const lang = document.getElementById("globalLanguage").value;
+
+        // Apply these global settings to the internal data for consistency
+        selectedVideos.forEach(id => {
+            updateVideoSetting(id, 'selectedLanguage', lang);
+            updateVideoSetting(id, 'selectedFormat', format);
+        });
+
         try {
           showNotification(
-            `Starting bulk download for ${e.length} files...`,
+            `Starting bulk download for ${videosToDownload.length} files...`,
             "info"
           );
-          const a = await createBulkTask(e, n, t);
-          (currentTaskId = a.task_id), showProgressArea(), startPolling();
-        } catch (l) {
-          showNotification(l.message, "error");
+          const task = await createBulkTask(videosToDownload, lang, format);
+          currentTaskId = task.task_id;
+          showProgressArea();
+          startPolling();
+        } catch (error) {
+          showNotification(error.message, "error");
         }
       }
-      async function downloadFile(e, t, n, a) {
-        const l = await fetch("https://ytdlp.vistaflyer.com/api/download", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: e, lang: t, format: n, title: a }),
-        });
-        if (!l.ok) throw new Error("Download failed from server.");
-        const o = await l.blob(),
-          i = URL.createObjectURL(o),
-          s = document.createElement("a");
-        (s.href = i),
-          (s.download = `${a.replace(/[^a-z0-9]/gi, "_").slice(0, 60)}.${n}`),
-          document.body.appendChild(s),
-          s.click(),
-          s.remove(),
-          URL.revokeObjectURL(i);
+
+      async function downloadFile(url, lang, format, title) {
+        const response = await fetch(
+          "https://ytdlp.vistaflyer.com/api/download",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              url: url,
+              lang: lang,
+              format: format,
+              title: title,
+            }),
+          }
+        );
+        if (!response.ok) throw new Error("Download failed from server.");
+        const blob = await response.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = objectUrl;
+        a.download = `${title.replace(/[^a-z0-9]/gi, "_").slice(0, 60)}.${format}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(objectUrl);
       }
-      async function createBulkTask(e, t, n) {
-        const a = await fetch("https://ytdlp.vistaflyer.com/api/batch_submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ videos: e, lang: t, format: n }),
-        });
-        if (!a.ok) throw new Error("Failed to create bulk task.");
-        const l = await a.json();
-        if ("pending" !== l.status)
-          throw new Error(l.message || "Task submission failed.");
-        return l;
+      async function createBulkTask(videos, lang, format) {
+        const response = await fetch(
+          "https://ytdlp.vistaflyer.com/api/batch_submit",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ videos: videos, lang: lang, format: format }),
+          }
+        );
+        if (!response.ok) throw new Error("Failed to create bulk task.");
+        const data = await response.json();
+        if (data.status !== "pending")
+          throw new Error(data.message || "Task submission failed.");
+        return data;
       }
 
       // --- POLLING & PROGRESS (IMPROVED UX) ---
+      // This section remains the same as your provided code
       function startPolling() {
         if (pollingInterval) clearInterval(pollingInterval);
         startPerceivedProgress();
@@ -1021,42 +1193,49 @@
       }
 
       async function checkTaskStatus(taskId) {
-        const e = await fetch(
+        const response = await fetch(
           `https://ytdlp.vistaflyer.com/api/task_status?task_id=${taskId}`
         );
-        if (!e.ok) throw new Error("Status check failed.");
-        const t = await e.json(),
-          [n, a] = (t.progress || "0/0").split("/").map(Number);
+        if (!response.ok) throw new Error("Status check failed.");
+        const data = await response.json();
+        const [completed, total] = (data.progress || "0/0")
+          .split("/")
+          .map(Number);
         return {
           id: taskId,
-          status: t.status,
-          progress: a > 0 ? (n / a) * 100 : 0,
-          completed: n,
-          total: a,
-          progress_str: t.progress,
+          status: data.status,
+          progress: total > 0 ? (completed / total) * 100 : 0,
+          completed: completed,
+          total: total,
+          progress_str: data.progress,
         };
       }
 
       function showProgressArea() {
-        const e = document.getElementById("downloadProgress");
-        (e.innerHTML = `<div class="bg-white p-6 rounded-xl shadow-lg border"><h3 class="text-lg font-semibold text-center mb-4">Processing Bulk Download...</h3><div id="progressContent"><div class="flex justify-between mb-1 text-sm font-medium"><span>Progress</span><span id="percentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="progressText" class="text-center text-sm text-gray-500 mt-2">Connecting to server...</p></div></div>`),
-          e.classList.remove("hidden");
+        const progressContainer = document.getElementById("downloadProgress");
+        progressContainer.innerHTML = `<div class="bg-white p-6 rounded-xl shadow-lg border"><h3 class="text-lg font-semibold text-center mb-4">Processing Bulk Download...</h3><div id="progressContent"><div class="flex justify-between mb-1 text-sm font-medium"><span>Progress</span><span id="percentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="progressText" class="text-center text-sm text-gray-500 mt-2">Connecting to server...</p></div></div>`;
+        progressContainer.classList.remove("hidden");
       }
 
       function startPerceivedProgress() {
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
         currentPerceivedProgress = 0;
-        const e = document.getElementById("progressBar"),
-          t = document.getElementById("progressText"),
-          n = document.getElementById("percentageText");
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+        const percentageText = document.getElementById("percentageText");
         perceivedProgressInterval = setInterval(() => {
-          (currentPerceivedProgress += (90 - currentPerceivedProgress) * 0.05),
-            e && (e.style.width = `${currentPerceivedProgress}%`),
-            n && (n.textContent = `${Math.floor(currentPerceivedProgress)}%`),
-            t &&
-              (t.textContent = "Processing files... (this may take a moment)"),
-            currentPerceivedProgress >= 89.5 &&
-              clearInterval(perceivedProgressInterval);
+          currentPerceivedProgress += (90 - currentPerceivedProgress) * 0.05;
+          if (progressBar)
+            progressBar.style.width = `${currentPerceivedProgress}%`;
+          if (percentageText)
+            percentageText.textContent = `${Math.floor(
+              currentPerceivedProgress
+            )}%`;
+          if (progressText)
+            progressText.textContent =
+              "Processing files... (this may take a moment)";
+          if (currentPerceivedProgress >= 89.5)
+            clearInterval(perceivedProgressInterval);
         }, 200);
       }
 
@@ -1080,23 +1259,24 @@
 
       async function handleDownloadComplete() {
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
-        const e = document.getElementById("progressBar"),
-          t = document.getElementById("percentageText");
-        e && (e.style.width = "100%"), t && (t.textContent = "100%");
-        const n = document.getElementById("progressContent");
-        if (n) {
-          const a = document.createElement("div");
-          (a.className = "text-center mt-4"),
-            (a.innerHTML =
-              '<div class="text-green-500 text-2xl mb-2">✓</div><h4 class="text-lg font-bold text-green-600">Complete!</h4><p class="text-sm text-gray-600">Your ZIP download will start automatically.</p>'),
-            n.appendChild(a);
+        const progressBar = document.getElementById("progressBar");
+        const percentageText = document.getElementById("percentageText");
+        if (progressBar) progressBar.style.width = "100%";
+        if (percentageText) percentageText.textContent = "100%";
+        const progressContent = document.getElementById("progressContent");
+        if (progressContent) {
+          const completionDiv = document.createElement("div");
+          completionDiv.className = "text-center mt-4";
+          completionDiv.innerHTML =
+            '<div class="text-green-500 text-2xl mb-2">✓</div><h4 class="text-lg font-bold text-green-600">Complete!</h4><p class="text-sm text-gray-600">Your ZIP download will start automatically.</p>';
+          progressContent.appendChild(completionDiv);
         }
         await downloadBulkFile();
       }
 
       async function downloadBulkFile() {
         try {
-          const e = await fetch(
+          const response = await fetch(
             "https://ytdlp.vistaflyer.com/api/download_zip",
             {
               method: "POST",
@@ -1104,26 +1284,27 @@
               body: JSON.stringify({ task_id: currentTaskId }),
             }
           );
-          if (!e.ok) throw new Error(`HTTP error! status: ${e.status}`);
-          let t = "subtitles.zip";
-          const n = e.headers.get("content-disposition");
-          if (n) {
-            const a = n.match(/filename="(.+)"/);
-            a && (t = a[1]);
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          let filename = "subtitles.zip";
+          const disposition = response.headers.get("content-disposition");
+          if (disposition) {
+            const match = disposition.match(/filename="(.+)"/);
+            if (match) filename = match[1];
           }
-          const l = await e.blob(),
-            o = URL.createObjectURL(l),
-            i = document.createElement("a");
-          (i.href = o),
-            (i.download = t),
-            document.body.appendChild(i),
-            i.click(),
-            i.remove(),
-            URL.revokeObjectURL(o),
-            showNotification("ZIP file downloaded successfully!", "success");
-        } catch (s) {
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          showNotification("ZIP file downloaded successfully!", "success");
+        } catch (error) {
           showNotification(
-            `Failed to download ZIP file: ${s.message}`,
+            `Failed to download ZIP file: ${error.message}`,
             "error"
           );
         }
@@ -1131,19 +1312,20 @@
 
       // --- UTILITIES ---
       let notificationTimeout;
-      function showNotification(e, t = "info") {
+      function showNotification(message, type = "info") {
         clearTimeout(notificationTimeout);
-        const n = document.querySelector(".notification");
-        n && n.remove();
-        const a = document.createElement("div");
-        a.className = `notification ${t}`;
-        const l = { success: "✓", error: "✗", info: "ℹ" };
-        (a.innerHTML = `<span class="font-bold text-lg">${l[t]}</span><span>${e}</span>`),
-          document.body.appendChild(a),
-          requestAnimationFrame(() => a.classList.add("show")),
-          (notificationTimeout = setTimeout(() => {
-            a.classList.remove("show"), setTimeout(() => a.remove(), 400);
-          }, 5e3));
+        const existing = document.querySelector(".notification");
+        if (existing) existing.remove();
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        const icons = { success: "✓", error: "✗", info: "ℹ" };
+        notification.innerHTML = `<span class="font-bold text-lg">${icons[type]}</span><span>${message}</span>`;
+        document.body.appendChild(notification);
+        requestAnimationFrame(() => notification.classList.add("show"));
+        notificationTimeout = setTimeout(() => {
+          notification.classList.remove("show");
+          setTimeout(() => notification.remove(), 400);
+        }, 5000);
       }
     </script>
   </body>
