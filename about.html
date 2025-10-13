@@ -1,137 +1,462 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>About YTVidHub | Our Mission & Contact Information</title>
-    <meta name="description" content="Learn about the mission behind YTVidHub, the team dedicated to providing the best free subtitle downloader, and how you can contact us for support or feedback.">
+    <meta
+      name="description"
+      content="Learn about the mission behind YTVidHub, the team dedicated to providing the best free subtitle downloader, and how you can contact us for support or feedback."
+    />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .custom-focus:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-            border-color: #3B82F6;
-        }
+      .custom-focus:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        border-color: #3b82f6;
+      }
     </style>
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+  </head>
+  <body class="bg-gray-50 text-gray-800 font-sans">
+    <header
+      class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
+    >
+      <nav
+        class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+      >
+        <a
+          href="/"
+          class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
+        >
+          <svg
+            class="w-6 h-6 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            ></path>
+          </svg>
+          YTVidHub
+        </a>
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-blue-600">YTVidHub</a>
-            <div class="hidden md:flex space-x-6 items-center">
-                <a href="/" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
-                <a href="/bulk-youtube-subtitle-downloader.html" class="text-gray-600 hover:text-blue-600 font-medium">Bulk Downloader</a>
-                <a href="/how-to-use.html" class="text-gray-600 hover:text-blue-600 font-medium">How to Use</a>
-                <a href="/what-is-an-srt-file.html" class="text-gray-600 hover:text-blue-600 font-medium">Blog</a>
-                <a href="/faq.html" class="text-gray-600 hover:text-blue-600 font-medium">FAQ</a>
-            </div>
-            <a href="/about.html" class="hidden md:block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">About & Contact</a>
-        </nav>
+        <div class="hidden md:flex space-x-8 items-center text-sm">
+          <a
+            href="/"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Home</a
+          ><a
+            href="./bulk-youtube-subtitle-downloader.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Bulk Downloader</a
+          ><a
+            href="./how-to-use.html"
+            class="text-gray-700 hover:text-blue-600 font-semibold transition duration-150"
+            >How to Use</a
+          ><a
+            href="./faq.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >FAQ</a
+          >
+          <a
+            href="./what-is-an-srt-file.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Srt File</a
+          >
+          <a
+            href="./terms-of-service.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Terms</a
+          >
+          <a
+            href="./privacy-policy.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Privacy</a
+          >
+        </div>
+
+        <div class="md:hidden">
+          <button
+            id="mobile-menu-button"
+            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <div
+        id="mobile-menu"
+        class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+      >
+        <div class="flex flex-col h-full">
+          <div
+            class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+          >
+            <a
+              href="/"
+              class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
+            >
+              <svg
+                class="w-6 h-6 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path>
+              </svg>
+              YTVidHub </a
+            ><button
+              id="mobile-menu-close-button"
+              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col p-6 space-y-4 flex-grow">
+            <a
+              href="/"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Home</a
+            ><a
+              href="./bulk-youtube-subtitle-downloader.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Bulk Downloader</a
+            ><a
+              href="./how-to-use.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >How to Use</a
+            ><a
+              href="./faq.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >FAQ</a
+            >
+
+            <a
+              href="./what-is-an-srt-file.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Srt File</a
+            >
+            <a
+              href="./terms-of-service.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Terms</a
+            >
+            <a
+              href="./privacy-policy.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Privacy</a
+            >
+          </div>
+        </div>
+      </div>
     </header>
 
     <main class="container mx-auto px-6 py-16">
-        <article class="max-w-4xl mx-auto">
-            <header class="mb-12 text-center">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">About YTVidHub</h1>
-                <p class="mt-4 text-lg text-gray-600">Building a faster, simpler, and more powerful tool for the creative community.</p>
-            </header>
+      <article class="max-w-4xl mx-auto">
+        <header class="mb-12 text-center">
+          <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">
+            About YTVidHub
+          </h1>
+          <p class="mt-4 text-lg text-gray-600">
+            Building a faster, simpler, and more powerful tool for the creative
+            community.
+          </p>
+        </header>
 
-            <section class="mb-16 prose max-w-none text-gray-700">
-                <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-200 pb-2 mb-6">Our Mission</h2>
-                <p>YTVidHub was born from a simple frustration: downloading subtitles from multiple YouTube videos was a slow, repetitive, and inefficient process. As content creators, researchers, and language learners ourselves, we spent countless hours copying, pasting, and downloading files one by one. We knew there had to be a better way.</p>
-                <p>Our mission is to provide the most efficient and user-friendly YouTube subtitle downloader on the web. We are committed to three core principles:</p>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li><strong>Efficiency First:</strong> Our signature <a href="/bulk-youtube-subtitle-downloader.html" class="text-blue-600 hover:underline">bulk download feature</a> is the heart of our platform. We believe in building tools that respect your time and accelerate your workflow.</li>
-                    <li><strong>Free and Accessible for Everyone:</strong> Powerful tools shouldn't come with a price tag. YTVidHub is, and always will be, completely free to use without any limitations or hidden fees.</li>
-                    <li><strong>Privacy by Design:</strong> We believe in your right to privacy. Our service is built to be anonymous and secure. We do not track you, and we do not store the URLs you enter or the files you download.</li>
-                </ul>
-                <img src="https://placehold.co/800x400/e0f2fe/075985?text=Efficiency+and+Simplicity" alt="A graphic illustrating the efficient workflow of YTVidHub's bulk subtitle downloader." class="mt-4 rounded-lg shadow-md">
-            </section>
+        <section class="mb-16 prose max-w-none text-gray-700">
+          <h2
+            class="text-3xl font-bold text-gray-900 border-b-2 border-blue-200 pb-2 mb-6"
+          >
+            Our Mission
+          </h2>
+          <p>
+            YTVidHub was born from a simple frustration: downloading subtitles
+            from multiple YouTube videos was a slow, repetitive, and inefficient
+            process. As content creators, researchers, and language learners
+            ourselves, we spent countless hours copying, pasting, and
+            downloading files one by one. We knew there had to be a better way.
+          </p>
+          <p>
+            Our mission is to provide the most efficient and user-friendly
+            YouTube subtitle downloader on the web. We are committed to three
+            core principles:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>
+              <strong>Efficiency First:</strong> Our signature
+              <a
+                href="/bulk-youtube-subtitle-downloader.html"
+                class="text-blue-600 hover:underline"
+                >bulk download feature</a
+              >
+              is the heart of our platform. We believe in building tools that
+              respect your time and accelerate your workflow.
+            </li>
+            <li>
+              <strong>Free and Accessible for Everyone:</strong> Powerful tools
+              shouldn't come with a price tag. YTVidHub is, and always will be,
+              completely free to use without any limitations or hidden fees.
+            </li>
+            <li>
+              <strong>Privacy by Design:</strong> We believe in your right to
+              privacy. Our service is built to be anonymous and secure. We do
+              not track you, and we do not store the URLs you enter or the files
+              you download.
+            </li>
+          </ul>
+          <img
+            src="https://placehold.co/800x400/e0f2fe/075985?text=Efficiency+and+Simplicity"
+            alt="A graphic illustrating the efficient workflow of YTVidHub's bulk subtitle downloader."
+            class="mt-4 rounded-lg shadow-md"
+          />
+        </section>
 
-            <section id="contact" class="mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-200 pb-2 mb-6">Get in Touch</h2>
-                <div class="bg-white p-8 rounded-lg shadow-md">
-                    <p class="text-gray-700 mb-6">Have a question, feedback, or a feature request? We'd love to hear from you. The best way to reach our team is via email. We strive to respond to all inquiries within 48 hours.</p>
-                    <p class="text-center text-lg">
-                        <strong>Email:</strong> <a href="mailto:support@ytvidhub.com" class="text-blue-600 hover:underline">support@ytvidhub.com</a>
-                    </p>
-                    <p class="mt-6 text-sm text-gray-500">Please note: We do not provide phone support at this time. Email is the most effective way to ensure your message reaches the right person on our team.</p>
-                </div>
-            </section>
+        <section id="contact" class="mb-16">
+          <h2
+            class="text-3xl font-bold text-gray-900 border-b-2 border-blue-200 pb-2 mb-6"
+          >
+            Get in Touch
+          </h2>
+          <div class="bg-white p-8 rounded-lg shadow-md">
+            <p class="text-gray-700 mb-6">
+              Have a question, feedback, or a feature request? We'd love to hear
+              from you. The best way to reach our team is via email. We strive
+              to respond to all inquiries within 48 hours.
+            </p>
+            <p class="text-center text-lg">
+              <strong>Email:</strong>
+              <a
+                href="mailto:support@ytvidhub.com"
+                class="text-blue-600 hover:underline"
+                >support@ytvidhub.com</a
+              >
+            </p>
+            <p class="mt-6 text-sm text-gray-500">
+              Please note: We do not provide phone support at this time. Email
+              is the most effective way to ensure your message reaches the right
+              person on our team.
+            </p>
+          </div>
+        </section>
 
-            <section id="privacy" class="prose max-w-none text-gray-700">
-                <h2 class="text-3xl font-bold text-gray-900 border-b-2 border-blue-200 pb-2 mb-6">Privacy Policy</h2>
-                <p><em>Last Updated: October 10, 2025</em></p>
-                
-                <h3>1. Our Commitment to Privacy</h3>
-                <p>YTVidHub ("we," "us," or "our") is fundamentally committed to user privacy. This Privacy Policy outlines our practices concerning information. Simply put, we are designed from the ground up to collect as little information as possible.</p>
-                
-                <h3>2. Information We Do NOT Collect</h3>
-                <p>We believe the most secure user data is no data at all. Therefore, we DO NOT collect, store, or log any of the following:</p>
-                <ul class="list-disc pl-5">
-                    <li>The YouTube URLs you enter into our tool.</li>
-                    <li>The subtitle files (SRT or TXT) that you download.</li>
-                    <li>Your IP address or any other personally identifiable information (PII).</li>
-                    <li>Any tracking data that links your identity to your usage of the tool.</li>
-                </ul>
-                <p>The entire subtitle fetching and processing is done on-the-fly. Once your download is complete, the session's data is gone.</p>
+        <section id="privacy" class="prose max-w-none text-gray-700">
+          <h2
+            class="text-3xl font-bold text-gray-900 border-b-2 border-blue-200 pb-2 mb-6"
+          >
+            Privacy Policy
+          </h2>
+          <p><em>Last Updated: October 10, 2025</em></p>
 
-                <h3>3. Information We Do Collect (Anonymous Analytics)</h3>
-                <p>To maintain and improve our service, we use a privacy-focused analytics platform (like Fathom or a self-hosted solution) that does not use cookies and does not track individuals. We may collect anonymous, aggregated data, such as:</p>
-                <ul class="list-disc pl-5">
-                    <li>The total number of downloads per day.</li>
-                    <li>The general geographic region of our users (e.g., "United States," not "New York City").</li>
-                    <li>The type of browser used (e.g., "Chrome," not a specific user's browser fingerprint).</li>
-                </ul>
-                <p>This data is not and cannot be tied to an individual user. It helps us understand traffic patterns and make the service better.</p>
-                
-                <h3>4. Cookies</h3>
-                <p>YTVidHub does not use cookies for tracking or advertising purposes. The core functionality of our website does not require cookies to operate.</p>
-                
-                <h3>5. Third-Party Services</h3>
-                <p>Our service interacts directly with YouTube's servers to fetch publicly available subtitle data. Our use of this data is transient and is governed by YouTube's Terms of Service. We do not share any data with other third parties.</p>
-                
-                <h3>6. Changes to This Policy</h3>
-                <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date. We encourage you to review this page periodically.</p>
-                
-                <h3>7. Contact Us</h3>
-                <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:support@ytvidhub.com" class="text-blue-600 hover:underline">support@ytvidhub.com</a>.</p>
-            </section>
-        </article>
+          <h3>1. Our Commitment to Privacy</h3>
+          <p>
+            YTVidHub ("we," "us," or "our") is fundamentally committed to user
+            privacy. This Privacy Policy outlines our practices concerning
+            information. Simply put, we are designed from the ground up to
+            collect as little information as possible.
+          </p>
+
+          <h3>2. Information We Do NOT Collect</h3>
+          <p>
+            We believe the most secure user data is no data at all. Therefore,
+            we DO NOT collect, store, or log any of the following:
+          </p>
+          <ul class="list-disc pl-5">
+            <li>The YouTube URLs you enter into our tool.</li>
+            <li>The subtitle files (SRT or TXT) that you download.</li>
+            <li>
+              Your IP address or any other personally identifiable information
+              (PII).
+            </li>
+            <li>
+              Any tracking data that links your identity to your usage of the
+              tool.
+            </li>
+          </ul>
+          <p>
+            The entire subtitle fetching and processing is done on-the-fly. Once
+            your download is complete, the session's data is gone.
+          </p>
+
+          <h3>3. Information We Do Collect (Anonymous Analytics)</h3>
+          <p>
+            To maintain and improve our service, we use a privacy-focused
+            analytics platform (like Fathom or a self-hosted solution) that does
+            not use cookies and does not track individuals. We may collect
+            anonymous, aggregated data, such as:
+          </p>
+          <ul class="list-disc pl-5">
+            <li>The total number of downloads per day.</li>
+            <li>
+              The general geographic region of our users (e.g., "United States,"
+              not "New York City").
+            </li>
+            <li>
+              The type of browser used (e.g., "Chrome," not a specific user's
+              browser fingerprint).
+            </li>
+          </ul>
+          <p>
+            This data is not and cannot be tied to an individual user. It helps
+            us understand traffic patterns and make the service better.
+          </p>
+
+          <h3>4. Cookies</h3>
+          <p>
+            YTVidHub does not use cookies for tracking or advertising purposes.
+            The core functionality of our website does not require cookies to
+            operate.
+          </p>
+
+          <h3>5. Third-Party Services</h3>
+          <p>
+            Our service interacts directly with YouTube's servers to fetch
+            publicly available subtitle data. Our use of this data is transient
+            and is governed by YouTube's Terms of Service. We do not share any
+            data with other third parties.
+          </p>
+
+          <h3>6. Changes to This Policy</h3>
+          <p>
+            We may update this Privacy Policy from time to time. Any changes
+            will be posted on this page with an updated revision date. We
+            encourage you to review this page periodically.
+          </p>
+
+          <h3>7. Contact Us</h3>
+          <p>
+            If you have any questions about this Privacy Policy, please contact
+            us at
+            <a
+              href="mailto:support@ytvidhub.com"
+              class="text-blue-600 hover:underline"
+              >support@ytvidhub.com</a
+            >.
+          </p>
+        </section>
+      </article>
     </main>
 
     <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold">YTVidHub</h3>
-                    <p class="mt-2 text-gray-400">Your free, fast, and reliable solution for downloading YouTube subtitles, featuring a powerful bulk download capability.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold">Quick Links</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="/" class="hover:text-blue-400">Home</a></li>
-                        <li><a href="/bulk-youtube-subtitle-downloader.html" class="hover:text-blue-400">Bulk Downloader</a></li>
-                        <li><a href="/faq.html" class="hover:text-blue-400">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold">Legal & Info</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="/about.html" class="hover:text-blue-400">About Us</a></li>
-                        <li><a href="/about.html#privacy" class="hover:text-blue-400">Privacy Policy</a></li>
-                        <li><a href="/about.html#contact" class="hover:text-blue-400">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-500">
-                <p>&copy; 2025 YTVidHub. All rights reserved. We are not affiliated with YouTube.</p>
-            </div>
+      <div class="container mx-auto px-6 py-12">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-xl font-bold">YTVidHub</h3>
+            <p class="mt-2 text-gray-400">
+              Your free, fast, and reliable solution for downloading YouTube
+              subtitles, featuring a powerful bulk download capability.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold">Quick Links</h3>
+            <ul class="mt-4 space-y-2">
+              <li><a href="/" class="hover:text-blue-400">Home</a></li>
+              <li>
+                <a
+                  href="/bulk-youtube-subtitle-downloader.html"
+                  class="hover:text-blue-400"
+                  >Bulk Downloader</a
+                >
+              </li>
+              <li><a href="/faq.html" class="hover:text-blue-400">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold">Legal & Info</h3>
+            <ul class="mt-4 space-y-2">
+              <li>
+                <a href="/about.html" class="hover:text-blue-400">About Us</a>
+              </li>
+              <li>
+                <a href="/about.html#privacy" class="hover:text-blue-400"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a href="/about.html#contact" class="hover:text-blue-400"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
+        <div
+          class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-500"
+        >
+          <p>
+            &copy; 2025 YTVidHub. All rights reserved. We are not affiliated
+            with YouTube.
+          </p>
+        </div>
+      </div>
     </footer>
 
-</body>
+    <script>
+      //移动端menu
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenuCloseButton = document.getElementById(
+        "mobile-menu-close-button"
+      );
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      if (mobileMenuButton) {
+        mobileMenuButton.addEventListener("click", () => {
+          if (mobileMenu) {
+            mobileMenu.classList.remove("hidden");
+            setTimeout(() => {
+              mobileMenu.classList.remove("translate-x-full");
+            }, 10);
+            document.body.style.overflow = "hidden";
+          }
+        });
+      }
+      if (mobileMenuCloseButton) {
+        mobileMenuCloseButton.addEventListener("click", () => {
+          if (mobileMenu) {
+            mobileMenu.classList.add("translate-x-full");
+            document.body.style.overflow = "";
+            setTimeout(() => {
+              mobileMenu.classList.add("hidden");
+            }, MOBILE_MENU_TRANSITION_DURATION);
+          }
+        });
+      }
+    </script>
+  </body>
 </html>

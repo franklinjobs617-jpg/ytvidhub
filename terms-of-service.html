@@ -15,19 +15,173 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold text-blue-600">YTVidHub</a>
-            <div class="hidden md:flex space-x-6 items-center">
-                <a href="/" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
-                <a href="/bulk-youtube-subtitle-downloader.html" class="text-gray-600 hover:text-blue-600 font-medium">Bulk Downloader</a>
-                <a href="/how-to-use.html" class="text-gray-600 hover:text-blue-600 font-medium">How to Use</a>
-                <a href="/what-is-an-srt-file.html" class="text-gray-600 hover:text-blue-600 font-medium">Blog</a>
-                <a href="/faq.html" class="text-gray-600 hover:text-blue-600 font-medium">FAQ</a>
-            </div>
-            <a href="/about.html" class="hidden md:block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">About & Contact</a>
-        </nav>
-    </header>
+    <header
+    class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
+  >
+    <nav
+      class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+    >
+      <a
+        href="/"
+        class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
+      >
+        <svg
+          class="w-6 h-6 text-blue-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          ></path>
+        </svg>
+        YTVidHub
+      </a>
+
+      <div class="hidden md:flex space-x-8 items-center text-sm">
+        <a
+          href="/"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Home</a
+        ><a
+          href="./bulk-youtube-subtitle-downloader.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Bulk Downloader</a
+        ><a
+          href="./how-to-use.html"
+          class="text-gray-700 hover:text-blue-600 font-semibold transition duration-150"
+          >How to Use</a
+        ><a
+          href="./faq.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >FAQ</a
+        >
+        <a
+          href="./what-is-an-srt-file.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Srt File</a
+        >
+        <a
+          href="./terms-of-service.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Terms</a
+        >
+        <a
+          href="./privacy-policy.html"
+          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+          >Privacy</a
+        >
+      </div>
+
+      <div class="md:hidden">
+        <button
+          id="mobile-menu-button"
+          class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </nav>
+
+    <div
+      id="mobile-menu"
+      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+    >
+      <div class="flex flex-col h-full">
+        <div
+          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+        >
+          <a
+            href="/"
+            class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
+          >
+            <svg
+              class="w-6 h-6 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              ></path>
+            </svg>
+            YTVidHub </a
+          ><button
+            id="mobile-menu-close-button"
+            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex flex-col p-6 space-y-4 flex-grow">
+          <a
+            href="/"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Home</a
+          ><a
+            href="./bulk-youtube-subtitle-downloader.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Bulk Downloader</a
+          ><a
+            href="./how-to-use.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >How to Use</a
+          ><a
+            href="./faq.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >FAQ</a
+          >
+
+          <a
+            href="./what-is-an-srt-file.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Srt File</a
+          >
+          <a
+            href="./terms-of-service.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Terms</a
+          >
+          <a
+            href="./privacy-policy.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Privacy</a
+          >
+        </div>
+      </div>
+    </div>
+  </header>
 
     <main class="container mx-auto px-6 py-16">
         <article class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-lg shadow-lg">
@@ -104,5 +258,36 @@
         </div>
     </footer>
 
+    <script>
+        //移动端menu
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenuCloseButton = document.getElementById(
+          "mobile-menu-close-button"
+        );
+        const mobileMenu = document.getElementById("mobile-menu");
+  
+        if (mobileMenuButton) {
+          mobileMenuButton.addEventListener("click", () => {
+            if (mobileMenu) {
+              mobileMenu.classList.remove("hidden");
+              setTimeout(() => {
+                mobileMenu.classList.remove("translate-x-full");
+              }, 10);
+              document.body.style.overflow = "hidden";
+            }
+          });
+        }
+        if (mobileMenuCloseButton) {
+          mobileMenuCloseButton.addEventListener("click", () => {
+            if (mobileMenu) {
+              mobileMenu.classList.add("translate-x-full");
+              document.body.style.overflow = "";
+              setTimeout(() => {
+                mobileMenu.classList.add("hidden");
+              }, MOBILE_MENU_TRANSITION_DURATION);
+            }
+          });
+        }
+      </script>
 </body>
 </html>
