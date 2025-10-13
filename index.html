@@ -6,7 +6,7 @@
     <title>Free YouTube Subtitle Downloader (Single & Bulk) | YTVidHub</title>
     <meta
       name="description"
-      content="Instantly download YouTube subtitles in SRT or TXT format. Our free tool supports single videos and a unique bulk download feature for multiple URLs at once."
+      content="Instantly download YouTube subtitles, supporting SRT, VTT, or TXT formats. Our free tool supports single video downloads and offers a unique bulk download feature for multiple URLs at once."
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -90,7 +90,7 @@
         position: absolute;
         inset: 0;
         border-radius: 1rem;
-        background-color: rgba(239, 246, 255, 0.8);
+        background-color: rgba(239, 246, 255, 0.9);
         border: 3px dashed #3b82f6;
         display: flex;
         align-items: center;
@@ -98,35 +98,51 @@
         pointer-events: none;
         opacity: 0;
         transition: opacity 0.2s ease;
+        z-index: 20;
       }
       .dragging .drag-overlay {
         opacity: 1;
       }
-      /* New Tab Styles */
-      .tab-btn {
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        border-radius: 0.5rem 0.5rem 0 0;
-        cursor: pointer;
-        background-color: #e5e7eb;
-        color: #4b5563;
+
+      .custom-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-color: #f9fafb;
         border: 1px solid #d1d5db;
-        border-bottom: none;
-        transition: all 0.2s ease-in-out;
+        border-radius: 0.375rem;
+        padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.25rem;
+        color: #374151;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
       }
-      .tab-btn.active {
-        background-color: #ffffff;
-        color: #2563eb;
-        border-color: #d1d5db;
-        position: relative;
-        z-index: 10;
-        border-bottom: 1px solid #ffffff;
-        margin-bottom: -1px;
+      .custom-select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+      }
+      .custom-select:hover {
+        border-color: #9ca3af;
       }
     </style>
     <script type="application/ld+json">
       {
-        /* Your JSON-LD Schema remains the same */
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "YTVidHub - Free YouTube Subtitle Downloader",
+        "url": "https://www.yourwebsite.com/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.yourwebsite.com/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
       }
     </script>
   </head>
@@ -144,12 +160,10 @@
             class="text-gray-600 hover:text-blue-600 font-medium"
             >Bulk Downloader</a
           ><a
-            href="/how-to-use.html"
+            href="#usage-guide"
             class="text-gray-600 hover:text-blue-600 font-medium"
-            >How to Use</a
-          ><a
-            href="/faq.html"
-            class="text-gray-600 hover:text-blue-600 font-medium"
+            >Usage Guide</a
+          ><a href="#faq" class="text-gray-600 hover:text-blue-600 font-medium"
             >FAQ</a
           ><a
             href="#"
@@ -216,11 +230,11 @@
               class="text-gray-700 hover:text-blue-600 font-semibold text-lg py-2"
               >Bulk Downloader</a
             ><a
-              href="/how-to-use.html"
+              href="#usage-guide"
               class="text-gray-700 hover:text-blue-600 font-semibold text-lg py-2"
-              >How to Use</a
+              >Usage Guide</a
             ><a
-              href="./faq.html"
+              href="#faq"
               class="text-gray-700 hover:text-blue-600 font-semibold text-lg py-2"
               >FAQ</a
             ><a
@@ -239,103 +253,110 @@
           <h1
             class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight"
           >
-            Professional Subtitle Downloader
+            Professional, Free YouTube Subtitle Downloader
           </h1>
           <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-            Easily download subtitles for single videos or in bulk. Supports
-            SRT, VTT, and TXT formats.
+            Effortlessly download subtitles for single or multiple videos in one
+            go. Supports SRT, VTT, and TXT formats.
           </p>
 
           <div class="mt-12 max-w-4xl mx-auto text-left">
-            <!-- STATE 1: INPUT AREA -->
             <div id="inputArea">
-              <!-- TABS START -->
-              <div class="flex">
-                <button id="singleTabBtn" class="tab-btn active">
-                  Single URL
-                </button>
-                <button id="bulkTabBtn" class="tab-btn">Bulk URLs</button>
-              </div>
-              <!-- TABS END -->
-
               <div
-                class="relative bg-white p-6 rounded-b-2xl rounded-r-2xl shadow-2xl border border-gray-200"
+                class="relative bg-white p-8 rounded-2xl shadow-xl border border-gray-200/80"
               >
-                <!-- SINGLE URL TAB CONTENT -->
-                <div id="singleTabContent">
-                  <label
-                    for="singleUrlInput"
-                    class="block text-sm font-medium text-gray-700 mb-2"
-                    >Enter a single YouTube video URL:</label
-                  >
-                  <input
-                    type="text"
-                    id="singleUrlInput"
-                    class="w-full p-4 bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
-                    placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                  />
+                <div class="drag-overlay">
+                  <div class="text-center font-bold text-blue-600">
+                    <svg
+                      class="w-12 h-12 mx-auto"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                      ></path>
+                    </svg>
+                    <p>Drag & Drop file here to load URLs</p>
+                  </div>
                 </div>
 
-                <!-- BULK URLS TAB CONTENT -->
-                <div id="bulkTabContent" class="hidden">
-                  <label
-                    for="urlInput"
-                    class="block text-sm font-medium text-gray-700 mb-2"
-                    >Paste multiple YouTube URLs (one per line), or upload a
-                    file.</label
-                  >
-                  <textarea
-                    id="urlInput"
-                    class="w-full h-36 p-4 bg-gray-50 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
-                    placeholder="https://...&#10;https://...&#10;https://..."
-                  ></textarea>
-                  <div class="drag-overlay">
-                    <div class="text-center font-bold text-blue-600">
-                      <svg
-                        class="w-12 h-12 mx-auto"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                        ></path>
-                      </svg>
-                      <p>Drop your .txt or .csv file here</p>
-                    </div>
-                  </div>
-                  <div
-                    class="mt-2 flex items-center gap-2 text-sm text-gray-500"
-                  >
+                <label
+                  for="urlInput"
+                  class="block text-lg font-semibold text-gray-800 mb-3"
+                >
+                  Enter YouTube URL(s)
+                </label>
+
+                <div
+                  class="mb-5 p-3 bg-blue-50 border-l-4 border-blue-400 text-blue-800 rounded-lg"
+                >
+                  <p class="font-semibold flex items-center gap-2">
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    Bulk Operation Hint
+                  </p>
+                  <p class="text-sm mt-1">
+                    When pasting multiple URLs, please **ensure each URL is on a
+                    separate line**, or drag and drop a TXT/CSV file.
+                  </p>
+                </div>
+
+                <textarea
+                  id="urlInput"
+                  class="w-full h-32 p-4 bg-gray-50 rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-300 text-base transition-shadow duration-200 focus:shadow-lg"
+                  placeholder="E.g.:
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+https://www.youtube.com/watch?v=AnotherVideoID"
+                ></textarea>
+
+                <div
+                  class="mt-2 flex items-center justify-between text-sm text-gray-500"
+                >
+                  <div>
+                    Alternatively, drag & drop a file or
                     <label
                       for="fileInput"
-                      class="cursor-pointer font-medium text-blue-600 hover:text-blue-800"
-                      >Upload a file</label
-                    ><input
+                      class="cursor-pointer font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                    >
+                      Upload File (.txt/.csv)
+                    </label>
+                    <input
                       type="file"
                       id="fileInput"
                       class="hidden"
                       accept=".txt,.csv"
-                    /><span>or drag & drop.</span
-                    ><a href="#faq" class="ml-1 text-blue-500 hover:underline"
+                    />
+                    <a href="#faq" class="ml-1 text-blue-500 hover:underline"
                       >(?)</a
                     >
                   </div>
                 </div>
 
-                <!-- SHARED BUTTONS -->
                 <div
                   class="mt-6 flex flex-col sm:flex-row items-center justify-end gap-3"
                 >
                   <button
                     id="clearBtn"
-                    class="bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-300 transition w-full sm:w-auto"
+                    class="text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition w-full sm:w-auto"
                   >
-                    Clear</button
-                  ><button
+                    Clear Input
+                  </button>
+                  <button
                     id="analyzeBtn"
                     class="btn-primary text-white font-bold py-3 px-8 rounded-lg text-lg flex items-center justify-center gap-2 w-full sm:w-auto"
                   >
@@ -351,13 +372,12 @@
                         stroke-width="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       ></path></svg
-                    >Analyze
+                    >Start Analysis
                   </button>
                 </div>
               </div>
             </div>
 
-            <!-- STATE 2: ANALYZING/LOADING AREA -->
             <div id="analyzingArea" class="hidden">
               <div
                 class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center"
@@ -390,7 +410,7 @@
                     stroke-linejoin="round"
                   />
                   <path
-                    d="33 12L30 22"
+                    d="M33 12L30 22"
                     stroke="currentColor"
                     stroke-width="3"
                     stroke-linecap="round"
@@ -419,11 +439,11 @@
                   />
                 </svg>
                 <h3 class="mt-4 text-xl font-bold text-gray-800">
-                  Extracting video content...
+                  Extracting Video Information...
                 </h3>
                 <div class="mt-6 max-w-md mx-auto">
                   <div class="flex justify-between mb-1 text-sm font-medium">
-                    <span class="text-gray-600">Analyzing</span
+                    <span class="text-gray-600">Analysis Progress</span
                     ><span id="analysisPercentageText">0%</span>
                   </div>
                   <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -437,13 +457,12 @@
                     id="analysisProgressText"
                     class="text-center text-sm text-gray-500 mt-2"
                   >
-                    Initializing...
+                    Initializing connection...
                   </p>
                 </div>
               </div>
             </div>
 
-            <!-- STATE 3: RESULTS AREA -->
             <div id="resultsArea" class="hidden">
               <div
                 id="bulkActions"
@@ -462,19 +481,13 @@
                     >
                   </div>
                   <div class="flex flex-wrap items-center gap-3">
-                    <span class="text-sm font-medium"
-                      >Set format for selected:</span
-                    ><select
-                      id="globalLanguage"
-                      class="rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                      <option value="en">English</option></select
-                    ><select
-                      id="globalFormat"
-                      class="rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                      <option value="srt">SRT Format</option>
-                      <option value="txt">TXT Format</option>
+                    <span class="text-sm font-medium">Selected Settings:</span>
+                    <select id="globalLanguage" class="custom-select">
+                      <option value="en">English (Default)</option>
+                    </select>
+                    <select id="globalFormat" class="custom-select">
+                      <option value="srt">SRT Format (with timestamps)</option>
+                      <option value="txt">TXT Format (plain text)</option>
                       <option value="vtt">VTT Format</option>
                     </select>
                   </div>
@@ -494,9 +507,7 @@
                         stroke-width="2"
                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                       ></path></svg
-                    ><span id="downloadSelectedText"
-                      >Download Selected (0)</span
-                    >
+                    ><span id="downloadSelectedText">Bulk Download (0)</span>
                   </button>
                 </div>
               </div>
@@ -507,60 +518,130 @@
         </div>
       </section>
 
-      <!-- Other page sections -->
-      <section class="py-20">
-        <div class="container mx-auto px-6">
-          <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
-              More Than Just a Subtitle Downloader
-            </h2>
-            <p class="mt-3 text-gray-600 max-w-2xl mx-auto">
-              Discover the features that make YTVidHub the ultimate tool for
-              handling YouTube subtitles efficiently.
-            </p>
-          </div>
-          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-bold text-gray-900">
-                Batch Processing Power
+      <section class="py-20 bg-gray-100" id="usage-guide">
+        <div class="container mx-auto px-6 text-center">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
+            Three Easy Steps to Download Subtitles
+          </h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 transform hover:scale-[1.02] transition duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-4 shadow-lg"
+              >
+                1
+              </div>
+              <h3 class="text-xl font-bold text-gray-800 mb-3">
+                Paste URLs or Upload File
               </h3>
-              <p class="mt-2 text-gray-600">
-                Our standout feature. Save hours by downloading subtitles from
-                an entire playlist or a list of videos at once. We'll package
-                them in a neat ZIP file for you.
+              <p class="text-gray-600">
+                Paste single or multiple (one per line) YouTube video links into
+                the input box. Drag & drop TXT/CSV files for bulk import.
               </p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-bold text-gray-900">
-                Multiple Format Support
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 transform hover:scale-[1.02] transition duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-4 shadow-lg"
+              >
+                2
+              </div>
+              <h3 class="text-xl font-bold text-gray-800 mb-3">
+                Analyze, Filter, and Configure
               </h3>
-              <p class="mt-2 text-gray-600">
-                Choose between SRT for use in video players or TXT for a clean,
-                readable transcript. We provide the flexibility you need for any
-                project.
+              <p class="text-gray-600">
+                Click "Start Analysis". In the results list, select the videos
+                you need, choose the target language, and the subtitle format
+                (SRT, VTT, or TXT).
               </p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-bold text-gray-900">
-                Completely Free & Secure
+            <div
+              class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 transform hover:scale-[1.02] transition duration-300"
+            >
+              <div
+                class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-4 shadow-lg"
+              >
+                3
+              </div>
+              <h3 class="text-xl font-bold text-gray-800 mb-3">
+                One-Click Bulk Download
               </h3>
-              <p class="mt-2 text-gray-600">
-                No registration, no fees, no hassle. We respect your privacy and
-                never store your data. Just a straightforward, secure tool at
-                your fingertips.
-              </p>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-md">
-              <h3 class="text-xl font-bold text-gray-900">Fast and Reliable</h3>
-              <p class="mt-2 text-gray-600">
-                Our powerful servers process your requests in seconds. Get your
-                subtitle files instantly without waiting, every single time.
+              <p class="text-gray-600">
+                Click "Bulk Download," and all selected subtitle files will be
+                automatically compressed into a single ZIP archive, saving
+                instantly to your device.
               </p>
             </div>
           </div>
         </div>
       </section>
-      <section class="py-20" id="faq">
+
+      <section class="py-20">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+              Why Choose YTVidHub?
+            </h2>
+            <p class="mt-3 text-gray-600 max-w-2xl mx-auto">
+              We are dedicated to providing the smoothest, most reliable YouTube
+              subtitle downloading experience.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div
+              class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-blue-500"
+            >
+              <h3 class="text-xl font-bold text-gray-900">
+                Powerful Bulk Processing
+              </h3>
+              <p class="mt-2 text-gray-600">
+                Save significant time. Our system can analyze and process
+                playlists or multiple videos at once, delivering a clean ZIP
+                file.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-green-500"
+            >
+              <h3 class="text-xl font-bold text-gray-900">
+                Multi-Format Compatibility (SRT, VTT, TXT)
+              </h3>
+              <p class="mt-2 text-gray-600">
+                Freely choose SRT/VTT for video players, or TXT format for a
+                clean, readable text transcript.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-purple-500"
+            >
+              <h3 class="text-xl font-bold text-gray-900">
+                Permanently Free, Secure Guarantee
+              </h3>
+              <p class="mt-2 text-gray-600">
+                No registration, zero fees, zero hurdles. We strictly protect
+                your privacy and never store any download records or personal
+                data.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-xl border-t-4 border-yellow-500"
+            >
+              <h3 class="text-xl font-bold text-gray-900">
+                Fast, Stable, and Efficient
+              </h3>
+              <p class="mt-2 text-gray-600">
+                Utilizing high-performance backend services, we ensure your
+                subtitle requests are processed and delivered in seconds,
+                providing a super-fast and stable experience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-20 bg-gray-50" id="faq">
         <div class="container mx-auto px-6 max-w-3xl">
           <h2
             class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
@@ -570,12 +651,12 @@
           <div class="space-y-4">
             <details class="p-6 bg-white rounded-lg shadow-md cursor-pointer">
               <summary class="font-semibold text-lg">
-                Is this YouTube subtitle downloader completely free?
+                Is this YouTube Subtitle Downloader completely free?
               </summary>
               <p class="mt-4 text-gray-600">
-                Yes, YTVidHub is 100% free to use. There are no hidden charges,
-                subscription fees, or limits on the number of downloads. Our
-                goal is to provide a simple and accessible tool for everyone.
+                Yes, YTVidHub is 100% free to use. There are no hidden fees,
+                subscriptions, or limits on the number of downloads. Our goal is
+                to provide a simple and accessible tool for everyone.
               </p>
             </details>
             <details class="p-6 bg-white rounded-lg shadow-md cursor-pointer">
@@ -583,11 +664,11 @@
                 How does the bulk download feature work?
               </summary>
               <p class="mt-4 text-gray-600">
-                Select the "Bulk URLs" tab. You can then paste multiple YouTube
-                video URLs (each on a new line) into the text box, or upload a
-                .txt/.csv file containing the URLs. After analyzing, you can
-                select which videos you want and download all their subtitles
-                at once in a single ZIP file.
+                Simply paste multiple YouTube video URLs into the text box (one
+                per line is recommended), or upload a .txt/.csv file containing
+                the URLs. Once analyzed, you select the videos you need, and we
+                will package all selected subtitle files into a single ZIP file
+                for you to download instantly.
               </p>
             </details>
             <details class="p-6 bg-white rounded-lg shadow-md cursor-pointer">
@@ -595,21 +676,21 @@
                 What subtitle formats can I download?
               </summary>
               <p class="mt-4 text-gray-600">
-                You can download subtitles in three popular formats: SRT (.srt),
-                VTT (.vtt), and TXT (.txt). SRT and VTT files contain timing
-                information and are ideal for video players, while TXT files are
-                plain text transcripts perfect for reading or analysis.
+                You can download three popular formats: SRT (.srt), VTT (.vtt),
+                and TXT (.txt). SRT and VTT files include timestamp information,
+                suitable for video players, while TXT files are plain text,
+                perfect for reading or analysis.
               </p>
             </details>
             <details class="p-6 bg-white rounded-lg shadow-md cursor-pointer">
               <summary class="font-semibold text-lg">
-                Is it safe and private to use YTVidHub?
+                Is using YTVidHub safe and private?
               </summary>
               <p class="mt-4 text-gray-600">
-                Absolutely. Your privacy is our priority. We do not store your
-                video URLs or downloaded files on our servers. The entire
-                process is automated and secure, requiring no personal
-                information or registration.
+                Absolutely safe. Your privacy is our top priority. We do not
+                store your video URLs or downloaded files on our servers. The
+                entire process is automated and secure, requiring no
+                registration or personal information.
               </p>
             </details>
           </div>
@@ -622,8 +703,8 @@
           <div>
             <h3 class="text-xl font-bold">YTVidHub</h3>
             <p class="mt-2 text-gray-400">
-              Your free, fast, and reliable solution for downloading YouTube
-              subtitles, featuring a powerful bulk download capability.
+              Your free, fast, and reliable YouTube subtitle download solution,
+              featuring powerful bulk download capabilities.
             </p>
           </div>
           <div>
@@ -634,12 +715,12 @@
                 <a
                   href="/bulk-youtube-subtitle-downloader.html"
                   class="hover:text-blue-400"
-                  >Bulk Downloader</a
+                  >Bulk Downloader Tool</a
                 >
               </li>
               <li>
-                <a href="/how-to-use.html" class="hover:text-blue-400"
-                  >How to Use</a
+                <a href="#usage-guide" class="hover:text-blue-400"
+                  >Usage Guide</a
                 >
               </li>
             </ul>
@@ -688,13 +769,7 @@
         /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
       // --- DOM Elements ---
-      let inputArea,
-        analyzingArea,
-        resultsArea,
-        singleTabBtn,
-        bulkTabBtn,
-        singleTabContent,
-        bulkTabContent;
+      let inputArea, analyzingArea, resultsArea;
 
       // --- INITIALIZATION ---
       document.addEventListener("DOMContentLoaded", () => {
@@ -702,12 +777,6 @@
         inputArea = document.getElementById("inputArea");
         analyzingArea = document.getElementById("analyzingArea");
         resultsArea = document.getElementById("resultsArea");
-
-        // Tab elements
-        singleTabBtn = document.getElementById("singleTabBtn");
-        bulkTabBtn = document.getElementById("bulkTabBtn");
-        singleTabContent = document.getElementById("singleTabContent");
-        bulkTabContent = document.getElementById("bulkTabContent");
 
         // Mobile Menu
         const mobileMenuButton = document.getElementById("mobile-menu-button");
@@ -729,9 +798,6 @@
         }
 
         // Event Listeners
-        singleTabBtn.addEventListener("click", () => switchTab("single"));
-        bulkTabBtn.addEventListener("click", () => switchTab("bulk"));
-
         document
           .getElementById("analyzeBtn")
           .addEventListener("click", handleAnalyzeClick);
@@ -742,7 +808,7 @@
           .getElementById("fileInput")
           .addEventListener("change", handleFileUpload);
 
-        const dragContainer = document.querySelector("#bulkTabContent");
+        const dragContainer = document.querySelector("#inputArea");
         ["dragenter", "dragover", "dragleave", "drop"].forEach((e) =>
           dragContainer.addEventListener(e, preventDefaults, false)
         );
@@ -770,31 +836,44 @@
           .addEventListener("click", handleBulkDownload);
       });
 
-      // --- NEW: Tab Switching Logic ---
-      function switchTab(tabName) {
-        if (tabName === "single") {
-          singleTabBtn.classList.add("active");
-          bulkTabBtn.classList.remove("active");
-          singleTabContent.classList.remove("hidden");
-          bulkTabContent.classList.add("hidden");
-        } else {
-          bulkTabBtn.classList.add("active");
-          singleTabBtn.classList.remove("active");
-          bulkTabContent.classList.remove("hidden");
-          singleTabContent.classList.add("hidden");
+      // --- INPUT HANDLERS (OPTIMIZED) ---
+
+      // NEW/OPTIMIZED FUNCTION: Clears state and resets to the initial input area
+      function resetToInputArea() {
+        // 1. Clear input field
+        document.getElementById("urlInput").value = "";
+        // 2. Hide results and analysis areas
+        resultsArea.classList.add("hidden");
+        analyzingArea.classList.add("hidden");
+        // 3. Show the main input area
+        inputArea.classList.remove("hidden");
+
+        // 4. Reset internal state variables
+        videoData = [];
+        selectedVideos.clear();
+        currentTaskId = null;
+        if (pollingInterval) {
+          clearInterval(pollingInterval);
+          pollingInterval = null;
+        }
+        if (perceivedProgressInterval) {
+          clearInterval(perceivedProgressInterval);
+          perceivedProgressInterval = null;
+        }
+
+        // 5. Clear the progress area
+        const progressContainer = document.getElementById("downloadProgress");
+        if (progressContainer) {
+          progressContainer.innerHTML = "";
+          progressContainer.classList.add("hidden");
         }
       }
 
-      // --- INPUT HANDLERS ---
+      // OPTIMIZED: handleClear now uses the central reset function
       function handleClear() {
-        document.getElementById("urlInput").value = "";
-        document.getElementById("singleUrlInput").value = "";
-        resultsArea.classList.add("hidden");
-        analyzingArea.classList.add("hidden");
-        inputArea.classList.remove("hidden");
-        videoData = [];
-        selectedVideos.clear();
+        resetToInputArea();
       }
+
       function preventDefaults(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -814,39 +893,37 @@
           )
         ) {
           return showNotification(
-            "Invalid file type. Please use .txt or .csv",
+            "Invalid file type. Please use .txt or .csv files.",
             "error"
           );
         }
-        // Automatically switch to bulk tab and populate
-        switchTab("bulk");
         document.getElementById("urlInput").value = await file.text();
         handleAnalyzeClick();
       }
 
-      // --- CORE WORKFLOW ---
+      // --- CORE WORKFLOW (OPTIMIZED) ---
       async function handleAnalyzeClick() {
-        let urls;
-        // Check which tab is active to get the URLs
-        if (singleTabBtn.classList.contains("active")) {
-          urls = [document.getElementById("singleUrlInput").value.trim()];
-        } else {
-          urls = document
-            .getElementById("urlInput")
-            .value.split("\n")
-            .map((u) => u.trim());
-        }
+        const urlInputEl = document.getElementById("urlInput");
+        let urlInput = urlInputEl.value;
 
-        urls = urls.filter(Boolean); // Filter out any empty lines
+        // 1. Regex to find all URLs regardless of separation (improves robustness)
+        const urlRegex = /https?:\/\/[^\s/$.?#].[^\s]*/g;
+        const urls = urlInput.match(urlRegex) || [];
+
+        if (urls.length > 0) {
+          // 2. Format the input box for user readability (UX improvement)
+          // Even if the user pastes links without line breaks, the code extracts them
+          // and puts them back into the textarea with line breaks.
+          urlInputEl.value = urls.join("\n");
+        }
 
         if (urls.length === 0) {
           return showNotification(
-            "Please provide at least one URL.",
+            "No valid YouTube URLs found. Please check your input.",
             "error"
           );
         }
 
-        // --- UX FLOW ---
         inputArea.classList.add("hidden");
         resultsArea.classList.add("hidden");
         analyzingArea.classList.remove("hidden");
@@ -869,7 +946,7 @@
           if (perceivedProgressInterval)
             clearInterval(perceivedProgressInterval);
           analyzingArea.classList.add("hidden");
-          inputArea.classList.remove("hidden"); // Show input again on error
+          inputArea.classList.remove("hidden");
         }
       }
 
@@ -932,6 +1009,39 @@
 
         bulkActions.classList.toggle("hidden", data.length <= 1);
         updateSelectionUI();
+
+        // Update language options for bulk select (UX improvement)
+        updateGlobalLanguageOptions(data);
+      }
+
+      function updateGlobalLanguageOptions(data) {
+        const globalLanguageSelect = document.getElementById("globalLanguage");
+        globalLanguageSelect.innerHTML =
+          '<option value="en">English (Default)</option>'; // Reset to default
+
+        const allLangs = new Map(); // Use a Map to store unique language codes and names
+        data.forEach((video) => {
+          if (video.hasSubtitles && video.availableLanguages) {
+            video.availableLanguages.forEach((lang) => {
+              // Only add if it's not the default English
+              if (lang.lang_code !== "en") {
+                allLangs.set(lang.lang_code, lang.lang_name);
+              }
+            });
+          }
+        });
+
+        // Sort languages by name for better UX
+        const sortedLangs = Array.from(allLangs.entries()).sort((a, b) =>
+          a[1].localeCompare(b[1])
+        );
+
+        sortedLangs.forEach(([code, name]) => {
+          const option = document.createElement("option");
+          option.value = code;
+          option.textContent = `${name} (${code})`;
+          globalLanguageSelect.appendChild(option);
+        });
       }
 
       function createVideoCard(video) {
@@ -957,7 +1067,9 @@
                       video.hasSubtitles
                         ? `<input type="checkbox" class="custom-checkbox" onchange="toggleVideoSelection('${
                             video.id
-                          }')" ${selectedVideos.has(video.id) ? "checked" : ""}>`
+                          }')" ${
+                            selectedVideos.has(video.id) ? "checked" : ""
+                          }>`
                         : '<div class="w-5 h-5"></div>'
                     }
                     <img src="${
@@ -968,10 +1080,10 @@
                     <p class="font-semibold text-gray-800 truncate" title="${video.title.replace(
                       /"/g,
                       "&quot;"
-                    )}">${
-          video.title
-        }</p>
-                    <p class="text-sm text-gray-500">by ${video.uploader}</p>
+                    )}">${video.title}</p>
+                    <p class="text-sm text-gray-500">Uploader: ${
+                      video.uploader
+                    }</p>
                     ${
                       video.hasSubtitles
                         ? '<span class="text-xs font-medium text-green-600">Subtitles Available</span>'
@@ -982,13 +1094,14 @@
                   video.hasSubtitles
                     ? `
                 <div class="flex items-center gap-2 flex-shrink-0 ml-auto">
-                    <select onchange="updateVideoSetting('${video.id}', 'selectedLanguage', this.value)" class="per-video-lang rounded-md border-gray-300 shadow-sm text-sm w-32">
-                        <option value="en">English</option>
+                    <select onchange="updateVideoSetting('${video.id}', 'selectedLanguage', this.value)" class="per-video-lang custom-select w-36">
+                        <option value="en">English (Default)</option>
+                        ${langOptions}
                     </select>
-                    <select onchange="updateVideoSetting('${video.id}', 'selectedFormat', this.value)" class="per-video-format rounded-md border-gray-300 shadow-sm text-sm">
+                    <select onchange="updateVideoSetting('${video.id}', 'selectedFormat', this.value)" class="per-video-format custom-select">
                         <option value="srt">SRT</option><option value="txt">TXT</option><option value="vtt">VTT</option>
                     </select>
-                    <button onclick="handleSingleDownload('${video.id}')" title="Download this subtitle" class="bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition"><svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+                    <button onclick="handleSingleDownload('${video.id}')" title="Download Subtitle" class="bg-gray-200 hover:bg-gray-300 p-2 rounded-md transition flex-shrink-0"><svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
                 </div>`
                     : ""
                 }
@@ -1027,15 +1140,13 @@
         updateSelectionUI();
       }
 
-      // REMOVED applyGlobalSettings() as it's no longer needed
-
       function updateSelectionUI() {
         const count = selectedVideos.size;
         const totalSelectable = videoData.filter((v) => v.hasSubtitles).length;
 
         document.getElementById(
           "downloadSelectedText"
-        ).textContent = `Download Selected (${count})`;
+        ).textContent = `Bulk Download (${count})`;
         document.getElementById("downloadSelectedBtn").disabled = count === 0;
 
         const selectAllCheckbox = document.getElementById("selectAllCheckbox");
@@ -1045,7 +1156,10 @@
         videoData.forEach((video) => {
           const card = document.getElementById(`card-${video.id}`);
           if (card) {
-            card.classList.toggle("border-blue-500", selectedVideos.has(video.id));
+            card.classList.toggle(
+              "border-blue-500",
+              selectedVideos.has(video.id)
+            );
             card.classList.toggle(
               "border-transparent",
               !selectedVideos.has(video.id)
@@ -1068,11 +1182,6 @@
           '<div class="loading-spinner rounded-full h-5 w-5 border-b-2 border-gray-700"></div>';
 
         try {
-          // IMPORTANT: Apply global settings to single video if they've been changed
-          // This makes the UI more intuitive. What you see is what you get.
-          const globalLang = document.getElementById("globalLanguage").value;
-          const globalFormat = document.getElementById("globalFormat").value;
-          
           const card = document.getElementById(`card-${videoId}`);
           const selectedLang = card.querySelector(".per-video-lang").value;
           const selectedFormat = card.querySelector(".per-video-format").value;
@@ -1082,6 +1191,10 @@
             selectedLang,
             selectedFormat,
             video.title
+          );
+          showNotification(
+            "Single subtitle downloaded successfully!",
+            "success"
           );
         } catch (error) {
           showNotification(error.message, "error");
@@ -1097,14 +1210,13 @@
           .map((v) => ({ url: v.url, title: v.title }));
         if (videosToDownload.length === 0) return;
 
-        // Directly use the values from the global dropdowns
         const format = document.getElementById("globalFormat").value;
         const lang = document.getElementById("globalLanguage").value;
 
-        // Apply these global settings to the internal data for consistency
-        selectedVideos.forEach(id => {
-            updateVideoSetting(id, 'selectedLanguage', lang);
-            updateVideoSetting(id, 'selectedFormat', format);
+        // Apply global settings to all selected videos' state for consistent downloading
+        selectedVideos.forEach((id) => {
+          updateVideoSetting(id, "selectedLanguage", lang);
+          updateVideoSetting(id, "selectedFormat", format);
         });
 
         try {
@@ -1114,7 +1226,7 @@
           );
           const task = await createBulkTask(videosToDownload, lang, format);
           currentTaskId = task.task_id;
-          showProgressArea();
+          showProgressArea(videosToDownload.length);
           startPolling();
         } catch (error) {
           showNotification(error.message, "error");
@@ -1135,12 +1247,14 @@
             }),
           }
         );
-        if (!response.ok) throw new Error("Download failed from server.");
+        if (!response.ok) throw new Error("Download failed.");
         const blob = await response.blob();
         const objectUrl = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = objectUrl;
-        a.download = `${title.replace(/[^a-z0-9]/gi, "_").slice(0, 60)}.${format}`;
+        a.download = `${title
+          .replace(/[^a-z0-9]/gi, "_")
+          .slice(0, 60)}.${format}`;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -1152,7 +1266,11 @@
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ videos: videos, lang: lang, format: format }),
+            body: JSON.stringify({
+              videos: videos,
+              lang: lang,
+              format: format,
+            }),
           }
         );
         if (!response.ok) throw new Error("Failed to create bulk task.");
@@ -1162,8 +1280,7 @@
         return data;
       }
 
-      // --- POLLING & PROGRESS (IMPROVED UX) ---
-      // This section remains the same as your provided code
+      // --- POLLING & PROGRESS ---
       function startPolling() {
         if (pollingInterval) clearInterval(pollingInterval);
         startPerceivedProgress();
@@ -1182,12 +1299,14 @@
               if (perceivedProgressInterval)
                 clearInterval(perceivedProgressInterval);
               showNotification("Bulk download task failed.", "error");
+              handleDownloadFail();
             }
           } catch (error) {
             clearInterval(pollingInterval);
             if (perceivedProgressInterval)
               clearInterval(perceivedProgressInterval);
             showNotification("Error checking status.", "error");
+            handleDownloadFail();
           }
         }, 3000);
       }
@@ -1211,9 +1330,9 @@
         };
       }
 
-      function showProgressArea() {
+      function showProgressArea(totalFiles) {
         const progressContainer = document.getElementById("downloadProgress");
-        progressContainer.innerHTML = `<div class="bg-white p-6 rounded-xl shadow-lg border"><h3 class="text-lg font-semibold text-center mb-4">Processing Bulk Download...</h3><div id="progressContent"><div class="flex justify-between mb-1 text-sm font-medium"><span>Progress</span><span id="percentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="progressText" class="text-center text-sm text-gray-500 mt-2">Connecting to server...</p></div></div>`;
+        progressContainer.innerHTML = `<div class="bg-white p-6 rounded-xl shadow-lg border"><h3 class="text-xl font-bold text-center mb-4">Processing Bulk Download...</h3><div id="progressContent"><div class="flex justify-between mb-1 text-sm font-medium"><span>Progress</span><span id="percentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="progressText" class="text-center text-sm text-gray-500 mt-2">Connecting to server (Processed 0/${totalFiles})...</p></div></div>`;
         progressContainer.classList.remove("hidden");
       }
 
@@ -1233,7 +1352,7 @@
             )}%`;
           if (progressText)
             progressText.textContent =
-              "Processing files... (this may take a moment)";
+              "Processing files... (May take a few minutes)";
           if (currentPerceivedProgress >= 89.5)
             clearInterval(perceivedProgressInterval);
         }, 200);
@@ -1254,24 +1373,61 @@
         }
         const progressText = document.getElementById("progressText");
         if (progressText)
-          progressText.textContent = `${status.completed} of ${status.total} files processed.`;
+          progressText.textContent = `Processed ${status.completed} of ${status.total} files.`;
       }
 
+      // Optimization: Handle download completion, provide reset button
       async function handleDownloadComplete() {
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
         const progressBar = document.getElementById("progressBar");
         const percentageText = document.getElementById("percentageText");
         if (progressBar) progressBar.style.width = "100%";
         if (percentageText) percentageText.textContent = "100%";
+
         const progressContent = document.getElementById("progressContent");
         if (progressContent) {
+          progressContent.innerHTML = "";
+
           const completionDiv = document.createElement("div");
           completionDiv.className = "text-center mt-4";
-          completionDiv.innerHTML =
-            '<div class="text-green-500 text-2xl mb-2">✓</div><h4 class="text-lg font-bold text-green-600">Complete!</h4><p class="text-sm text-gray-600">Your ZIP download will start automatically.</p>';
+          completionDiv.innerHTML = `<div class="text-green-500 text-3xl mb-3">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h4 class="text-xl font-bold text-green-600">Download Complete!</h4>
+                <p class="text-md text-gray-600 mt-2">The ZIP file should start downloading automatically. Check your browser's download list if it doesn't.</p>
+                <button onclick="resetToInputArea()" class="mt-6 btn-primary text-white font-semibold py-3 px-6 rounded-lg transition w-full sm:w-auto">
+                    Start New Download
+                </button>`;
+
           progressContent.appendChild(completionDiv);
         }
+
         await downloadBulkFile();
+      }
+
+      // Optimization: Handle download failure, provide retry/reset button
+      function handleDownloadFail() {
+        const progressContent = document.getElementById("progressContent");
+        if (progressContent) {
+          progressContent.innerHTML = "";
+
+          const failureDiv = document.createElement("div");
+          failureDiv.className = "text-center mt-4";
+          failureDiv.innerHTML = `<div class="text-red-500 text-3xl mb-3">
+                      <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                  </div>
+                  <h4 class="text-xl font-bold text-red-600">Download Failed</h4>
+                  <p class="text-md text-gray-600 mt-2">The bulk download task could not be completed. Please check your URLs or try again later.</p>
+                  <button onclick="resetToInputArea()" class="mt-6 bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg hover:bg-gray-400 transition w-full sm:w-auto">
+                      Clear and Retry
+                  </button>`;
+
+          progressContent.appendChild(failureDiv);
+        }
       }
 
       async function downloadBulkFile() {
@@ -1285,7 +1441,7 @@
             }
           );
           if (!response.ok)
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP Error! Status code: ${response.status}`);
           let filename = "subtitles.zip";
           const disposition = response.headers.get("content-disposition");
           if (disposition) {
