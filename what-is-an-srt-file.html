@@ -1,196 +1,359 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What is an SRT File? A Complete Guide for 2025 | YTVidHub</title>
-  <meta
-    name="description"
-    content="An in-depth guide explaining the SRT file format. Learn its structure, how to open and edit .srt files, and why they are essential for video subtitles."
-  />
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Add Professional Font: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <style>
-    /* --- THEME & TYPOGRAPHY SETUP --- */
-    :root {
-      --font-sans: 'Inter', sans-serif;
-      --color-primary: #2563eb;
-      --color-primary-hover: #1d4ed8;
-      --color-muted-text: #6b7280;
-    }
-    html {
-      scroll-padding-top: 8rem; /* Offset for sticky header when jumping to anchors */
-    }
-    body {
-      font-family: var(--font-sans);
-      background-color: #f8fafc; /* Softer background */
-    }
-    .prose {
-      line-height: 1.8; 
-      color: #374151;
-    }
-    .prose h2 {
-      margin-top: 3.5rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid #e5e7eb;
-      font-weight: 700;
-      color: #111827;
-      letter-spacing: -0.02em;
-    }
-    .prose a {
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .prose a:hover {
-      text-decoration: underline;
-    }
-    .prose code {
-      background-color: #eef2ff; color: #3730a3; padding: 0.2rem 0.4rem;
-      font-size: 0.9em; border-radius: 0.375rem; font-weight: 500;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    .prose pre {
-      background-color: #1f2937; color: #d1d5db; padding: 1.5rem; border-radius: 0.75rem;
-    }
-    .prose strong {
-      color: #1f2937;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What is an SRT File? A Complete Guide for 2025 | YTVidHub</title>
+    <meta
+      name="description"
+      content="An in-depth guide explaining the SRT file format. Learn its structure, how to open and edit .srt files, and why they are essential for video subtitles."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    /* --- Smart Table of Contents (TOC) Styles --- */
-    .toc-link {
-        position: relative; display: block; padding: 0.5rem 1rem;
-        border-radius: 0.5rem; color: var(--color-muted-text);
+    <!-- Add Professional Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* --- THEME & TYPOGRAPHY SETUP --- */
+      :root {
+        --font-sans: "Inter", sans-serif;
+        --color-primary: #2563eb;
+        --color-primary-hover: #1d4ed8;
+        --color-muted-text: #6b7280;
+      }
+      html {
+        scroll-padding-top: 8rem; /* Offset for sticky header when jumping to anchors */
+      }
+      body {
+        font-family: var(--font-sans);
+        background-color: #f8fafc; /* Softer background */
+      }
+      .prose {
+        line-height: 1.8;
+        color: #374151;
+      }
+      .prose h2 {
+        margin-top: 3.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #e5e7eb;
+        font-weight: 700;
+        color: #111827;
+        letter-spacing: -0.02em;
+      }
+      .prose a {
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .prose a:hover {
+        text-decoration: underline;
+      }
+      .prose code {
+        background-color: #eef2ff;
+        color: #3730a3;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.9em;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+      }
+      .prose pre {
+        background-color: #1f2937;
+        color: #d1d5db;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+      }
+      .prose strong {
+        color: #1f2937;
+      }
+
+      /* --- Smart Table of Contents (TOC) Styles --- */
+      .toc-link {
+        position: relative;
+        display: block;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        color: var(--color-muted-text);
         transition: all 0.2s ease-in-out;
-    }
-    .toc-link:hover {
-        background-color: #f3f4f6; color: #1f2937;
-    }
-    .toc-link.active-toc {
-        background-color: #eef2ff; color: var(--color-primary); font-weight: 600;
-    }
-  </style>
-</head>
-<body class="text-gray-800">
-  <header
-    class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40 border-b border-gray-200"
-  >
-    <!-- Header (Unchanged) -->
-    <nav
-      class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+      }
+      .toc-link:hover {
+        background-color: #f3f4f6;
+        color: #1f2937;
+      }
+      .toc-link.active-toc {
+        background-color: #eef2ff;
+        color: var(--color-primary);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <header
+      class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
     >
-      <a
-        href="/"
-        class="text-2xl font-extrabold text-gray-900 flex items-center gap-2"
+      <nav
+        class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
       >
-        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-        </svg>
-        YTVidHub
-      </a>
-      <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
-        <a href="/" class="text-gray-700 hover:text-blue-600 transition duration-150">Home</a>
-        <a href="./bulk-youtube-subtitle-downloader.html" class="text-gray-700 hover:text-blue-600 transition duration-150">Bulk Downloader</a>
-        <a href="./how-to-use.html" class="text-gray-700 hover:text-blue-600 transition duration-150">How to Use</a>
-        <a href="./faq.html" class="text-gray-700 hover:text-blue-600 transition duration-150">FAQ</a>
-        <a href="./what-is-an-srt-file.html" class="text-blue-600 font-semibold">Srt File</a>
-        <a href="./terms-of-service.html" class="text-gray-700 hover:text-blue-600 transition duration-150">Terms</a>
-        <a href="./privacy-policy.html" class="text-gray-700 hover:text-blue-600 transition duration-150">Privacy</a>
-      </div>
-       <div class="md:hidden">
-        <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-          </svg>
-        </button>
-      </div>
-    </nav>
-     <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full">
-      <!-- Mobile Menu Content (Unchanged) -->
-    </div>
-  </header>
+        <!-- Optimized Logo: Image + Text -->
+        <a href="./index.html" class="flex items-center gap-3">
+          <!-- IMPORTANT: Replace './logo.png' with the path to your logo file -->
+          <img
+            src="./image/icon-removebg-preview.png"
+            alt="YTVidHub Logo"
+            class="h-10 w-auto"
+          />
+        </a>
+        <div class="hidden md:flex space-x-8 items-center text-sm">
+          <a
+            href="./index.html"
+            class="text-blue-600 font-semibold transition duration-150"
+            >Home</a
+          ><a
+            href="./bulk-youtube-subtitle-downloader.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Bulk Downloader</a
+          ><a
+            href="./how-to-use.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >How to Use</a
+          ><a
+            href="./faq.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >FAQ</a
+          >
+          <a
+            href="./what-is-an-srt-file.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Srt File</a
+          >
+          <a
+            href="./terms-of-service.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Terms</a
+          >
+          <a
+            href="./privacy-policy.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Privacy</a
+          >
 
-  <main class="container mx-auto px-6 py-16 lg:py-24">
-    <!-- Hero Section -->
-    <header class="max-w-4xl mx-auto text-center mb-12 lg:mb-16">
-      <p class="text-sm font-bold text-blue-600 tracking-widest uppercase">
-        Deep Dive
-      </p>
-      <h1 class="mt-4 text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
-        What is an SRT File? A Complete Guide for 2025
-      </h1>
-      <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-        If you've ever dealt with video subtitles, you've encountered the `.srt` extension. This guide breaks down everything you need to know about the most popular subtitle format in the world.
-      </p>
+          <a
+            href="./about.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >About</a
+          >
+        </div>
+
+        <div class="md:hidden">
+          <button
+            id="mobile-menu-button"
+            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Optimized Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+      >
+        <div class="flex flex-col h-full">
+          <div
+            class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+          >
+            <!-- Optimized Logo for Mobile Menu -->
+            <a href="./index.html" class="flex items-center gap-3">
+              <!-- IMPORTANT: Replace './logo.png' with the path to your logo file -->
+              <img
+                src="./image/icon-removebg-preview.png"
+                alt="YTVidHub Logo"
+                class="h-10 w-auto"
+              />
+            </a>
+            <button
+              id="mobile-menu-close-button"
+              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex flex-col p-6 space-y-4 flex-grow">
+            <a
+              href="./index.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Home</a
+            ><a
+              href="./bulk-youtube-subtitle-downloader.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Bulk Downloader</a
+            ><a
+              href="./how-to-use.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >How to Use</a
+            ><a
+              href="./faq.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >FAQ</a
+            >
+            <a
+              href="./what-is-an-srt-file.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Srt File</a
+            >
+            <a
+              href="./terms-of-service.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Terms</a
+            >
+            <a
+              href="./privacy-policy.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Privacy</a
+            >
+            <a
+              href="./about.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >About</a
+            >
+          </div>
+        </div>
+      </div>
     </header>
-    
-    <!-- Main Content Layout -->
-    <div class="max-w-7xl mx-auto lg:grid lg:grid-cols-12 lg:gap-x-12">
-      
-      <!-- Table of Contents (Sidebar) -->
-      <aside class="hidden lg:block lg:col-span-3">
-        <nav id="toc" class="sticky top-28">
-          <h3 class="text-sm font-semibold text-gray-900 tracking-wide uppercase">On this page</h3>
-          <ul class="mt-4 space-y-2 text-sm">
-            <li><a href="#anatomy" class="toc-link">1. The Anatomy of an SRT File</a></li>
-            <li><a href="#srt-vs-others" class="toc-link">2. SRT vs. Other Formats (VTT, TXT)</a></li>
-            <li><a href="#how-to-use" class="toc-link">3. How to Open and Edit SRT Files</a></li>
-            <li><a href="#why-srt" class="toc-link">4. Why SRT Remains the Industry Standard</a></li>
-          </ul>
-        </nav>
-      </aside>
 
-      <!-- Article Content -->
-      <article class="lg:col-span-9 bg-white p-8 md:p-12 rounded-2xl shadow-xl ring-1 ring-gray-900/5">
-        <img
-          src="https://placehold.co/900x500/e0e7ff/312e81?text=SRT+File+Format+Explained"
-          alt="A conceptual illustration of an SRT file with text and timestamps."
-          class="w-full rounded-xl mb-12"
-        />
-        <div class="prose lg:prose-lg max-w-none">
-          <!-- ORIGINAL, FULL CONTENT RESTORED BELOW -->
-          <p>
-            The SRT file, short for <strong>SubRip Subtitle file</strong>, is the de facto
-            standard for storing subtitle information. Its simplicity,
-            human-readability, and broad compatibility have made it the go-to
-            format for video creators, editors, and localization professionals.
-            Whether you're making your content accessible, learning a new
-            language, or repurposing video dialogue, understanding SRT files is
-            an essential skill.
-          </p>
-          <h2 id="anatomy">The Anatomy of an SRT File</h2>
-          <p>
-            At its core, an SRT file is just a plain text file that follows a
-            specific, rigid structure. This structure consists of four parts,
-            repeated for each subtitle entry:
-          </p>
-          <ol>
-            <li>
-              <strong>Sequence Number:</strong> A number that identifies the
-              order of the subtitle (1, 2, 3, etc.).
-            </li>
-            <li>
-              <strong>Timestamp:</strong> The exact time the subtitle should
-              appear on screen and disappear, formatted as
-              <code>hours:minutes:seconds,milliseconds</code>. The start and end times are
-              separated by <code>--></code>.
-            </li>
-            <li>
-              <strong>Subtitle Text:</strong> The actual text that will be
-              displayed. This can be one or more lines.
-            </li>
-            <li>
-              <strong>Blank Line:</strong> A blank line that signals the end of
-              one subtitle entry and the start of the next.
-            </li>
-          </ol>
-          <p>Here is what a typical SRT file block looks like:</p>
-          <pre><code class="language-srt">1
+    <main class="container mx-auto px-6 py-16 lg:py-24">
+      <!-- Hero Section -->
+      <header class="max-w-4xl mx-auto text-center mb-12 lg:mb-16">
+        <p class="text-sm font-bold text-blue-600 tracking-widest uppercase">
+          Deep Dive
+        </p>
+        <h1
+          class="mt-4 text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight"
+        >
+          What is an SRT File? A Complete Guide for 2025
+        </h1>
+        <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+          If you've ever dealt with video subtitles, you've encountered the
+          `.srt` extension. This guide breaks down everything you need to know
+          about the most popular subtitle format in the world.
+        </p>
+      </header>
+
+      <!-- Main Content Layout -->
+      <div class="max-w-7xl mx-auto lg:grid lg:grid-cols-12 lg:gap-x-12">
+        <!-- Table of Contents (Sidebar) -->
+        <aside class="hidden lg:block lg:col-span-3">
+          <nav id="toc" class="sticky top-28">
+            <h3
+              class="text-sm font-semibold text-gray-900 tracking-wide uppercase"
+            >
+              On this page
+            </h3>
+            <ul class="mt-4 space-y-2 text-sm">
+              <li>
+                <a href="#anatomy" class="toc-link"
+                  >1. The Anatomy of an SRT File</a
+                >
+              </li>
+              <li>
+                <a href="#srt-vs-others" class="toc-link"
+                  >2. SRT vs. Other Formats (VTT, TXT)</a
+                >
+              </li>
+              <li>
+                <a href="#how-to-use" class="toc-link"
+                  >3. How to Open and Edit SRT Files</a
+                >
+              </li>
+              <li>
+                <a href="#why-srt" class="toc-link"
+                  >4. Why SRT Remains the Industry Standard</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Article Content -->
+        <article
+          class="lg:col-span-9 bg-white p-8 md:p-12 rounded-2xl shadow-xl ring-1 ring-gray-900/5"
+        >
+          <img
+            src="https://placehold.co/900x500/e0e7ff/312e81?text=SRT+File+Format+Explained"
+            alt="A conceptual illustration of an SRT file with text and timestamps."
+            class="w-full rounded-xl mb-12"
+          />
+          <div class="prose lg:prose-lg max-w-none">
+            <!-- ORIGINAL, FULL CONTENT RESTORED BELOW -->
+            <p>
+              The SRT file, short for <strong>SubRip Subtitle file</strong>, is
+              the de facto standard for storing subtitle information. Its
+              simplicity, human-readability, and broad compatibility have made
+              it the go-to format for video creators, editors, and localization
+              professionals. Whether you're making your content accessible,
+              learning a new language, or repurposing video dialogue,
+              understanding SRT files is an essential skill.
+            </p>
+            <h2 id="anatomy">The Anatomy of an SRT File</h2>
+            <p>
+              At its core, an SRT file is just a plain text file that follows a
+              specific, rigid structure. This structure consists of four parts,
+              repeated for each subtitle entry:
+            </p>
+            <ol>
+              <li>
+                <strong>Sequence Number:</strong> A number that identifies the
+                order of the subtitle (1, 2, 3, etc.).
+              </li>
+              <li>
+                <strong>Timestamp:</strong> The exact time the subtitle should
+                appear on screen and disappear, formatted as
+                <code>hours:minutes:seconds,milliseconds</code>. The start and
+                end times are separated by <code>--></code>.
+              </li>
+              <li>
+                <strong>Subtitle Text:</strong> The actual text that will be
+                displayed. This can be one or more lines.
+              </li>
+              <li>
+                <strong>Blank Line:</strong> A blank line that signals the end
+                of one subtitle entry and the start of the next.
+              </li>
+            </ol>
+            <p>Here is what a typical SRT file block looks like:</p>
+            <pre><code class="language-srt">1
 00:00:05,500 --> 00:00:08,320
 Hello, and welcome to our guide
 on SRT files.
@@ -199,198 +362,277 @@ on SRT files.
 00:00:08,750 --> 00:00:11,120
 Today, we will break down the format.
 </code></pre>
-          <p>
-            This simple, text-based format is incredibly powerful. It contains
-            everything a video player needs to know to sync the text perfectly
-            with the audio, yet it's easy enough to be opened and edited in any
-            basic text editor.
-          </p>
+            <p>
+              This simple, text-based format is incredibly powerful. It contains
+              everything a video player needs to know to sync the text perfectly
+              with the audio, yet it's easy enough to be opened and edited in
+              any basic text editor.
+            </p>
 
-          <h2 id="srt-vs-others">SRT vs. Other Formats (VTT, TXT)</h2>
-          <p>
-            While SRT is king, you might encounter other formats. Here’s how
-            they compare:
-          </p>
-          <ul>
-            <li>
-              <strong>WebVTT (.vtt):</strong> The modern standard for web video
-              (HTML5). It's very similar to SRT but supports more advanced
-              features like text formatting (bold, italics), colors, and
-              positioning. Many online platforms, including YouTube, use VTT
-              internally but allow you to download as SRT for broader
-              compatibility.
-            </li>
-            <li>
-              <strong>Plain Text (.txt):</strong> This is simply a transcript of
-              the dialogue without any timing information. While useful for
-              reading or content repurposing, a TXT file cannot be used as a
-              subtitle track in a video player. This is why tools like
-              <a href="/">YTVidHub</a>
-              offer both SRT and TXT download options to serve different needs.
-            </li>
-          </ul>
+            <h2 id="srt-vs-others">SRT vs. Other Formats (VTT, TXT)</h2>
+            <p>
+              While SRT is king, you might encounter other formats. Here’s how
+              they compare:
+            </p>
+            <ul>
+              <li>
+                <strong>WebVTT (.vtt):</strong> The modern standard for web
+                video (HTML5). It's very similar to SRT but supports more
+                advanced features like text formatting (bold, italics), colors,
+                and positioning. Many online platforms, including YouTube, use
+                VTT internally but allow you to download as SRT for broader
+                compatibility.
+              </li>
+              <li>
+                <strong>Plain Text (.txt):</strong> This is simply a transcript
+                of the dialogue without any timing information. While useful for
+                reading or content repurposing, a TXT file cannot be used as a
+                subtitle track in a video player. This is why tools like
+                <a href="/">YTVidHub</a>
+                offer both SRT and TXT download options to serve different
+                needs.
+              </li>
+            </ul>
 
-          <div class="my-12 p-6 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
-            <div class="flex flex-col sm:flex-row items-center gap-6">
-              <div class="flex-shrink-0 bg-white p-3 rounded-full shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </div>
-              <div class="flex-grow text-center sm:text-left">
-                <h3 class="text-xl font-bold text-gray-900">Need to Get an SRT File from a Video?</h3>
-                <p class="mt-1 text-gray-600">Our free tool instantly extracts subtitles from any YouTube video into a perfectly formatted SRT file.</p>
-              </div>
-              <div class="flex-shrink-0 mt-4 sm:mt-0">
-                <a href="/" class="inline-block bg-blue-600 text-white font-semibold py-2.5 px-5 rounded-lg shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 duration-200">
-                  Try Our Downloader
-                </a>
+            <div
+              class="my-12 p-6 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100"
+            >
+              <div class="flex flex-col sm:flex-row items-center gap-6">
+                <div class="flex-shrink-0 bg-white p-3 rounded-full shadow-md">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8 text-blue-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                </div>
+                <div class="flex-grow text-center sm:text-left">
+                  <h3 class="text-xl font-bold text-gray-900">
+                    Need to Get an SRT File from a Video?
+                  </h3>
+                  <p class="mt-1 text-gray-600">
+                    Our free tool instantly extracts subtitles from any YouTube
+                    video into a perfectly formatted SRT file.
+                  </p>
+                </div>
+                <div class="flex-shrink-0 mt-4 sm:mt-0">
+                  <a
+                    href="/"
+                    class="inline-block bg-blue-600 text-white font-semibold py-2.5 px-5 rounded-lg shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 duration-200"
+                  >
+                    Try Our Downloader
+                  </a>
+                </div>
               </div>
             </div>
+
+            <h2 id="how-to-use">How to Open and Edit SRT Files</h2>
+            <p>
+              Since SRT files are plain text, you don't need fancy software to
+              work with them. Here are a few common methods:
+            </p>
+            <ul>
+              <li>
+                <strong>Text Editors:</strong> Programs like Notepad (Windows)
+                and TextEdit (Mac) can open SRT files perfectly. You can
+                manually correct typos or adjust text directly within them. Just
+                be careful not to alter the timestamps or sequence numbers
+                unless you know what you're doing.
+              </li>
+              <li>
+                <strong>Video Players:</strong> Media players like VLC can not
+                only play videos with SRT files but also allow you to adjust
+                subtitle timing on the fly. To use an SRT file, simply give it
+                the same name as your video file (e.g.,
+                <code>my_video.mp4</code> and <code>my_video.srt</code>) and
+                place them in the same folder. The player will automatically
+                detect and display the subtitles.
+              </li>
+              <li>
+                <strong>Dedicated Subtitle Editors:</strong> For more advanced
+                work, free software like Aegisub or Subtitle Edit provides a
+                professional interface. These tools show a video preview and an
+                audio waveform, allowing you to precisely sync text, translate
+                subtitles, and manage complex projects.
+              </li>
+            </ul>
+
+            <h2 id="why-srt">Why SRT Remains the Industry Standard</h2>
+            <p>
+              Despite newer formats like VTT, SRT's dominance continues for
+              several key reasons:
+            </p>
+            <ol>
+              <li>
+                <strong>Universal Compatibility:</strong> Virtually every video
+                player, editing software, and online platform on the planet
+                supports SRT. It's the most reliable choice for maximum reach.
+              </li>
+              <li>
+                <strong>Simplicity and Reliability:</strong> Its basic structure
+                means there's very little that can go wrong. The files are
+                small, easy to create, and easy to troubleshoot.
+              </li>
+              <li>
+                <strong>Human-Readable:</strong> You don't need to be a
+                developer to understand and edit an SRT file, making it
+                accessible to everyone.
+              </li>
+            </ol>
+            <p>
+              In conclusion, the SRT file is a small but mighty workhorse of the
+              digital video world. Its elegant simplicity has powered
+              accessibility and creativity for decades, and it remains an
+              indispensable tool for anyone working with video content.
+              Understanding how it works empowers you to take full control over
+              your subtitle workflow.
+            </p>
           </div>
-          
-          <h2 id="how-to-use">How to Open and Edit SRT Files</h2>
-          <p>
-            Since SRT files are plain text, you don't need fancy software to
-            work with them. Here are a few common methods:
-          </p>
-          <ul>
-            <li>
-              <strong>Text Editors:</strong> Programs like Notepad (Windows) and
-              TextEdit (Mac) can open SRT files perfectly. You can manually
-              correct typos or adjust text directly within them. Just be careful
-              not to alter the timestamps or sequence numbers unless you know
-              what you're doing.
-            </li>
-            <li>
-              <strong>Video Players:</strong> Media players like VLC can not
-              only play videos with SRT files but also allow you to adjust
-              subtitle timing on the fly. To use an SRT file, simply give it the
-              same name as your video file (e.g., <code>my_video.mp4</code> and
-              <code>my_video.srt</code>) and place them in the same folder. The player will
-              automatically detect and display the subtitles.
-            </li>
-            <li>
-              <strong>Dedicated Subtitle Editors:</strong> For more advanced
-              work, free software like Aegisub or Subtitle Edit provides a
-              professional interface. These tools show a video preview and an
-              audio waveform, allowing you to precisely sync text, translate
-              subtitles, and manage complex projects.
-            </li>
-          </ul>
-          
-          <h2 id="why-srt">Why SRT Remains the Industry Standard</h2>
-          <p>
-            Despite newer formats like VTT, SRT's dominance continues for
-            several key reasons:
-          </p>
-          <ol>
-            <li>
-              <strong>Universal Compatibility:</strong> Virtually every video
-              player, editing software, and online platform on the planet
-              supports SRT. It's the most reliable choice for maximum reach.
-            </li>
-            <li>
-              <strong>Simplicity and Reliability:</strong> Its basic structure
-              means there's very little that can go wrong. The files are small,
-              easy to create, and easy to troubleshoot.
-            </li>
-            <li>
-              <strong>Human-Readable:</strong> You don't need to be a developer
-              to understand and edit an SRT file, making it accessible to
-              everyone.
-            </li>
-          </ol>
-          <p>
-            In conclusion, the SRT file is a small but mighty workhorse of the
-            digital video world. Its elegant simplicity has powered
-            accessibility and creativity for decades, and it remains an
-            indispensable tool for anyone working with video content.
-            Understanding how it works empowers you to take full control over
-            your subtitle workflow.
-          </p>
-        </div>
-      </article>
-    </div>
-  </main>
+        </article>
+      </div>
+    </main>
 
-  <footer class="bg-gray-900 text-white">
-    <!-- Footer (Unchanged) -->
-    <div class="container mx-auto px-6 py-12">
-      <div class="grid md:grid-cols-3 gap-10">
-        <div>
-          <h3 class="text-2xl font-extrabold text-blue-400">YTVidHub</h3>
-          <p class="mt-3 text-gray-400 text-sm">Your free, fast, and reliable solution for downloading YouTube subtitles, featuring a powerful bulk download capability.</p>
+    <footer class="bg-gray-800 text-white">
+      <div class="container mx-auto px-6 lg:px-8 py-12">
+        <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+          <div class="md:col-span-1">
+            <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
+            <p class="mt-3 text-gray-400 text-sm">
+              The essential toolkit for video content data extraction, built for
+              speed and reliability.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="./index.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./bulk-youtube-subtitle-downloader.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Bulk Downloader</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./how-to-use.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >How to Use</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./faq.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./what-is-an-srt-file.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Srt File</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="./privacy-policy.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./terms-of-service.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Terms of Service</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <h3 class="text-lg font-semibold border-b border-gray-700 pb-2">Quick Links</h3>
-          <ul class="mt-4 space-y-3 text-gray-400">
-            <li><a href="/" class="hover:text-blue-400 transition">Home</a></li>
-            <li><a href="/bulk-youtube-subtitle-downloader.html" class="hover:text-blue-400 transition">Bulk Downloader</a></li>
-            <li><a href="/faq.html" class="hover:text-blue-400 transition">FAQ</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-lg font-semibold border-b border-gray-700 pb-2">Legal & Info</h3>
-          <ul class="mt-4 space-y-3 text-gray-400">
-            <li><a href="/terms-of-service.html" class="hover:text-blue-400 transition">Terms of Service</a></li>
-            <li><a href="/privacy-policy.html" class="hover:text-blue-400 transition">Privacy Policy</a></li>
-            <li><a href="/about.html" class="hover:text-blue-400 transition">About Us</a></li>
-          </ul>
+        <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
+          <p>
+            &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
+            affiliated with Google or YouTube.
+          </p>
         </div>
       </div>
-      <div class="mt-12 border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">
-        <p>&copy; 2025 YTVidHub. All rights reserved. We are not affiliated with YouTube.</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script>
-    // --- Mobile Menu Script (Restored) ---
-    const mobileMenuButton = document.getElementById("mobile-menu-button");
-    const mobileMenu = document.getElementById("mobile-menu");
-    // You may need a close button if you add one inside the mobile menu div.
-    if (mobileMenuButton && mobileMenu) {
-      mobileMenuButton.addEventListener("click", () => {
-        // This is a simple toggle, you might want more complex animations
-        mobileMenu.classList.toggle("hidden"); 
-      });
-    }
+    <script>
+      // --- Mobile Menu Script (Restored) ---
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenu = document.getElementById("mobile-menu");
+      // You may need a close button if you add one inside the mobile menu div.
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener("click", () => {
+          // This is a simple toggle, you might want more complex animations
+          mobileMenu.classList.toggle("hidden");
+        });
+      }
 
-    // --- **CORRECTED** Smart Table of Contents Highlighting Script ---
-    document.addEventListener('DOMContentLoaded', () => {
-      const tocLinks = document.querySelectorAll('.toc-link');
-      const headings = Array.from(document.querySelectorAll('article h2[id]'));
-      
-      if (tocLinks.length === 0 || headings.length === 0) return;
+      // --- **CORRECTED** Smart Table of Contents Highlighting Script ---
+      document.addEventListener("DOMContentLoaded", () => {
+        const tocLinks = document.querySelectorAll(".toc-link");
+        const headings = Array.from(
+          document.querySelectorAll("article h2[id]")
+        );
 
-      const observer = new IntersectionObserver(entries => {
-        let visibleHeadings = entries
-            .filter(entry => entry.isIntersecting)
-            .map(entry => entry.target);
+        if (tocLinks.length === 0 || headings.length === 0) return;
 
-        // If multiple are visible, find the one closest to the top
-        if (visibleHeadings.length > 0) {
-            visibleHeadings.sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
-            let currentActiveId = visibleHeadings[0].id;
-            
-            tocLinks.forEach(link => {
-                link.classList.remove('active-toc');
-                if (link.getAttribute('href') === `#${currentActiveId}`) {
-                    link.classList.add('active-toc');
+        const observer = new IntersectionObserver(
+          (entries) => {
+            let visibleHeadings = entries
+              .filter((entry) => entry.isIntersecting)
+              .map((entry) => entry.target);
+
+            // If multiple are visible, find the one closest to the top
+            if (visibleHeadings.length > 0) {
+              visibleHeadings.sort(
+                (a, b) =>
+                  a.getBoundingClientRect().top - b.getBoundingClientRect().top
+              );
+              let currentActiveId = visibleHeadings[0].id;
+
+              tocLinks.forEach((link) => {
+                link.classList.remove("active-toc");
+                if (link.getAttribute("href") === `#${currentActiveId}`) {
+                  link.classList.add("active-toc");
                 }
-            });
-        }
-      }, {
-        // Observe from the top of the viewport down to 40% of its height
-        rootMargin: '0px 0px -60% 0px',
-        threshold: 0
-      });
+              });
+            }
+          },
+          {
+            // Observe from the top of the viewport down to 40% of its height
+            rootMargin: "0px 0px -60% 0px",
+            threshold: 0,
+          }
+        );
 
-      headings.forEach(heading => {
-        observer.observe(heading);
+        headings.forEach((heading) => {
+          observer.observe(heading);
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
