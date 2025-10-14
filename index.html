@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale-1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
       Ultimate Free YouTube Subtitle Downloader (Bulk & Single) | YTVidHub
     </title>
@@ -24,6 +24,58 @@
         }
       }
     </script>
+    <style>
+      .tooltip-trigger {
+        position: relative;
+        cursor: help;
+      }
+      .tooltip-content {
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #1f2937;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        width: 220px;
+        text-align: left;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s, visibility 0.2s;
+        pointer-events: none;
+        z-index: 10;
+      }
+      .tooltip-trigger:hover .tooltip-content {
+        opacity: 1;
+        visibility: visible;
+      }
+      .highlight-change {
+        animation: flash-blue 0.8s ease-out;
+      }
+      @keyframes flash-blue {
+        0% {
+          background-color: #dbeafe; /* blue-100 */
+          box-shadow: 0 0 0 2px #93c5fd; /* blue-300 */
+        }
+        100% {
+          background-color: transparent;
+          box-shadow: 0 0 0 0px transparent;
+        }
+      }
+      .sticky-actions {
+        position: sticky;
+        top: 80px; /* Adjust based on your header's height */
+        z-index: 30;
+      }
+      @media (max-width: 768px) {
+        .sticky-actions {
+            top: 68px; /* Shorter header on mobile */
+        }
+      }
+    </style>
   </head>
 
   <body class="bg-gray-50 text-gray-800 font-sans antialiased">
@@ -172,7 +224,7 @@
             >
             <a
               href="./about.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-ray-100"
               >About</a
             >
           </div>
@@ -189,7 +241,6 @@
             <span class="text-blue-600">Extract & Manage</span> YouTube
             Subtitles At Scale
           </h1>
-          <!-- MOBILE OPTIMIZATION: Smaller font size on mobile -->
           <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">
             The professional, free utility for high-volume caption and
             transcript management. Supports **SRT, VTT, and TXT** for single
@@ -198,7 +249,6 @@
 
           <div class="mt-12 max-w-5xl mx-auto text-left">
             <div id="inputArea">
-              <!-- MOBILE OPTIMIZATION: Increased padding on mobile (p-6 vs p-4) -->
               <div
                 class="relative bg-white p-6 md:p-10 rounded-2xl shadow-xl main-card border border-gray-200"
               >
@@ -233,14 +283,12 @@
                 <textarea
                   id="urlInput"
                   class="w-full h-32 p-4 bg-gray-50 rounded-xl resize-y focus-blue-ring border border-gray-300 text-base transition duration-200 font-mono"
-                  placeholder="Paste single or multiple video/playlist links here (one per line, up to 500 URLs)..."
+                  placeholder="Paste links here (one per line), or drop a .txt file onto this area..."
                 ></textarea>
 
-                <!-- MOBILE OPTIMIZATION: Re-structured the entire bottom section for a clean mobile layout -->
                 <div
                   class="mt-6 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4"
                 >
-                  <!-- Links Section -->
                   <div
                     class="flex items-center justify-center md:justify-start gap-4 text-sm text-gray-500"
                   >
@@ -266,7 +314,6 @@
                     >
                   </div>
 
-                  <!-- Buttons Section: Stacks vertically on mobile -->
                   <div
                     class="flex flex-col-reverse sm:flex-row gap-3 w-full md:w-auto"
                   >
@@ -301,56 +348,45 @@
 
             <div id="analyzingArea" class="hidden mt-8"></div>
             <div id="resultsArea" class="hidden mt-8">
+              <div id="resultsSummary" class="hidden mb-4 text-center bg-blue-50 text-blue-800 p-4 rounded-lg border border-blue-200 text-sm font-medium"></div>
+
               <div
                 id="bulkActions"
-                class="hidden mb-6 bg-white p-5 rounded-xl shadow-lg border border-gray-200"
+                class="hidden mb-6 bg-white p-5 rounded-xl shadow-lg border border-gray-200 sticky-actions"
               >
-                <div
-                  class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4"
-                >
+                <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4">
                   <div class="flex items-center gap-4">
-                    <label
-                      class="flex items-center gap-2 cursor-pointer text-sm font-medium text-gray-700"
-                      ><input
-                        type="checkbox"
-                        id="selectAllCheckbox"
-                        class="custom-checkbox"
-                      />
-                      Select All Downloadable</label
-                    >
+                    <label class="flex items-center gap-2 cursor-pointer text-sm font-medium text-gray-700">
+                      <input type="checkbox" id="selectAllCheckbox" class="custom-checkbox"/> Select All
+                    </label>
                   </div>
-                  <div class="flex flex-wrap items-center gap-3">
-                    <span
-                      class="text-sm font-medium text-gray-700 hidden sm:inline"
-                      >Global Settings:</span
-                    >
-                    <select id="globalLanguage" class="custom-select w-36">
-                      <option value="en">English (Default)</option>
-                    </select>
-                    <select id="globalFormat" class="custom-select w-24">
-                      <option value="srt">SRT</option>
-                      <option value="txt">TXT</option>
-                      <option value="vtt">VTT</option>
-                    </select>
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-3">
+                    <span class="text-sm font-medium text-gray-700 hidden sm:inline">Global Settings:</span>
+                                        
+                    <div class="flex items-center gap-2">
+                        <select id="globalFormat" class="custom-select w-24">
+                          <option value="srt">SRT</option>
+                          <option value="txt">TXT</option>
+                          <option value="vtt">VTT</option>
+                        </select>
+                        <span class="tooltip-trigger text-gray-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div class="tooltip-content">
+                                <b>SRT:</b> Best for video editing software (Premiere, Final Cut).<br>
+                                <b>VTT:</b> Best for web video players (HTML5).<br>
+                                <b>TXT:</b> Plain text for reading or analysis.
+                            </div>
+                        </span>
+                    </div>
+
+                    <!-- MODIFICATION: Removed the non-functional filename selector -->
+
                     <button
                       id="downloadSelectedBtn"
                       class="btn-primary text-white font-semibold py-2 px-5 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                     >
-                      <svg
-                        class="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                        ></path></svg
-                      ><span id="downloadSelectedText"
-                        >Download Selected (0)</span
-                      >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                      <span id="downloadSelectedText">Download Selected (0)</span>
                     </button>
                   </div>
                 </div>
@@ -362,6 +398,7 @@
         </div>
       </section>
 
+      <!-- All other sections remain the same -->
       <section class="py-20 bg-gray-50 border-t border-b border-gray-100">
         <div class="container mx-auto px-6 lg:px-8">
           <div class="text-center mb-16">
@@ -530,16 +567,12 @@
               <summary
                 class="font-semibold text-lg text-gray-800 focus:outline-none"
               >
-                How does the global language setting affect my download?
+                What language are the subtitles downloaded in?
               </summary>
               <div
                 class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed text-base"
               >
-                The global setting allows you to specify a single subtitle
-                language (e.g., 'es' for Spanish) for all videos selected in
-                your batch download. If a video does not have the requested
-                language, the system will skip that specific file but continue
-                processing the rest of the batch.
+                This tool is optimized to download **English** subtitles. If a video has manually uploaded English captions, they will be downloaded. Other languages are not supported at this time.
               </div>
             </details>
             <details
@@ -670,186 +703,100 @@
       let pollingInterval = null;
       let perceivedProgressInterval = null;
       let currentPerceivedProgress = 0;
+      let initialUrlCount = 0; 
       const youtubeRegex =
         /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
       // --- DOM Elements ---
-      let inputArea, analyzingArea, resultsArea;
+      let inputArea, analyzingArea, resultsArea, globalFormatSelect;
 
-      const MOBILE_MENU_TRANSITION_DURATION = 400; // Match CSS duration + buffer for smooth hiding
+      const MOBILE_MENU_TRANSITION_DURATION = 400;
 
       document.addEventListener("DOMContentLoaded", () => {
-        // Main areas
         inputArea = document.getElementById("inputArea");
         analyzingArea = document.getElementById("analyzingArea");
         resultsArea = document.getElementById("resultsArea");
+        globalFormatSelect = document.getElementById("globalFormat");
 
-        // === FIX APPLIED HERE: Mobile Menu Logic ===
         const mobileMenuButton = document.getElementById("mobile-menu-button");
-        const mobileMenuCloseButton = document.getElementById(
-          "mobile-menu-close-button"
-        );
+        const mobileMenuCloseButton = document.getElementById("mobile-menu-close-button");
         const mobileMenu = document.getElementById("mobile-menu");
+        if (mobileMenuButton) mobileMenuButton.addEventListener("click", () => {
+            mobileMenu.classList.remove("hidden");
+            setTimeout(() => mobileMenu.classList.remove("translate-x-full"), 10);
+            document.body.style.overflow = "hidden";
+        });
+        if (mobileMenuCloseButton) mobileMenuCloseButton.addEventListener("click", () => {
+            mobileMenu.classList.add("translate-x-full");
+            document.body.style.overflow = "";
+            setTimeout(() => mobileMenu.classList.add("hidden"), MOBILE_MENU_TRANSITION_DURATION);
+        });
 
-        if (mobileMenuButton) {
-          mobileMenuButton.addEventListener("click", () => {
-            if (mobileMenu) {
-              // 1. Remove 'hidden' instantly (makes it visible but still off-screen via translate-x-full)
-              mobileMenu.classList.remove("hidden");
-              // 2. Schedule removal of translate-x-full to trigger slide-in animation
-              setTimeout(() => {
-                mobileMenu.classList.remove("translate-x-full");
-              }, 10);
-              document.body.style.overflow = "hidden";
-            }
-          });
-        }
-        if (mobileMenuCloseButton) {
-          mobileMenuCloseButton.addEventListener("click", () => {
-            if (mobileMenu) {
-              // 1. Add 'translate-x-full' to start slide-out animation
-              mobileMenu.classList.add("translate-x-full");
-              document.body.style.overflow = "";
-              // 2. Add 'hidden' after the animation completes
-              setTimeout(() => {
-                mobileMenu.classList.add("hidden");
-              }, MOBILE_MENU_TRANSITION_DURATION);
-            }
-          });
-        }
-        // === END FIX ===
-
-        // Event Listeners
-        document
-          .getElementById("analyzeBtn")
-          .addEventListener("click", handleAnalyzeClick);
-        document
-          .getElementById("clearBtn")
-          .addEventListener("click", handleClear);
-        document
-          .getElementById("fileInput")
-          .addEventListener("change", handleFileUpload);
-
+        document.getElementById("analyzeBtn").addEventListener("click", handleAnalyzeClick);
+        document.getElementById("clearBtn").addEventListener("click", handleClear);
+        document.getElementById("fileInput").addEventListener("change", handleFileUpload);
+        
         const dragContainer = document.querySelector("#inputArea");
-        ["dragenter", "dragover", "dragleave", "drop"].forEach((e) =>
-          dragContainer.addEventListener(e, preventDefaults, false)
-        );
-        ["dragenter", "dragover"].forEach((e) =>
-          dragContainer.addEventListener(
-            e,
-            () => dragContainer.classList.add("dragging"),
-            false
-          )
-        );
-        ["dragleave", "drop"].forEach((e) =>
-          dragContainer.addEventListener(
-            e,
-            () => dragContainer.classList.remove("dragging"),
-            false
-          )
-        );
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => dragContainer.addEventListener(e, preventDefaults, false));
+        ["dragenter", "dragover"].forEach((e) => dragContainer.addEventListener(e, () => dragContainer.classList.add("dragging"), false));
+        ["dragleave", "drop"].forEach((e) => dragContainer.addEventListener(e, () => dragContainer.classList.remove("dragging"), false));
         dragContainer.addEventListener("drop", handleFileDrop, false);
-
-        document
-          .getElementById("selectAllCheckbox")
-          .addEventListener("change", handleSelectAll);
-        document
-          .getElementById("downloadSelectedBtn")
-          .addEventListener("click", handleBulkDownload);
+        
+        document.getElementById("selectAllCheckbox").addEventListener("change", handleSelectAll);
+        document.getElementById("downloadSelectedBtn").addEventListener("click", handleBulkDownload);
+        
+        globalFormatSelect.addEventListener("change", () => applyGlobalSettingHighlight('format'));
       });
 
-      // --- INPUT HANDLERS ---
       function resetToInputArea() {
         document.getElementById("urlInput").value = "";
         resultsArea.classList.add("hidden");
         analyzingArea.classList.add("hidden");
         inputArea.classList.remove("hidden");
-
+        document.getElementById('resultsSummary').classList.add('hidden');
         videoData = [];
         selectedVideos.clear();
+        initialUrlCount = 0;
         currentTaskId = null;
-        if (pollingInterval) {
-          clearInterval(pollingInterval);
-          pollingInterval = null;
-        }
-        if (perceivedProgressInterval) {
-          clearInterval(perceivedProgressInterval);
-          perceivedProgressInterval = null;
-        }
-
+        if (pollingInterval) clearInterval(pollingInterval);
+        if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
+        pollingInterval = null;
+        perceivedProgressInterval = null;
         const progressContainer = document.getElementById("downloadProgress");
         if (progressContainer) {
           progressContainer.innerHTML = "";
           progressContainer.classList.add("hidden");
         }
-
-        const globalLanguageSelect = document.getElementById("globalLanguage");
-        if (globalLanguageSelect) {
-          // Resetting to default option
-          globalLanguageSelect.innerHTML =
-            '<option value="en">English (Default)</option>';
-        }
       }
 
-      function handleClear() {
-        resetToInputArea();
-      }
-
-      function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      async function handleFileUpload(e) {
-        const file = e.target.files[0];
-        if (file) await processFile(file);
-      }
-      async function handleFileDrop(e) {
-        const file = e.dataTransfer.files[0];
-        if (file) await processFile(file);
-      }
+      function handleClear() { resetToInputArea(); }
+      function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+      async function handleFileUpload(e) { const file = e.target.files[0]; if (file) await processFile(file); }
+      async function handleFileDrop(e) { const file = e.dataTransfer.files[0]; if (file) await processFile(file); }
       async function processFile(file) {
-        if (
-          !["text/plain", "text/csv", "application/vnd.ms-excel"].includes(
-            file.type
-          )
-        ) {
-          return showNotification(
-            "Invalid file type. Please use .txt or .csv",
-            "error"
-          );
+        if (!["text/plain", "text/csv", "application/vnd.ms-excel"].includes(file.type)) {
+          return showNotification("Invalid file type. Please use .txt or .csv", "error");
         }
         document.getElementById("urlInput").value = await file.text();
         handleAnalyzeClick();
       }
 
-      // --- CORE WORKFLOW ---
       async function handleAnalyzeClick() {
         const urlInput = document.getElementById("urlInput").value;
-
         const urlRegex = /https?:\/\/[^\s/$.?#].[^\s]*/g;
-        const urls = urlInput.match(urlRegex) || [];
-
+        const urls = [...new Set(urlInput.match(urlRegex) || [])]; 
+        initialUrlCount = (urlInput.match(urlRegex) || []).length;
         if (urls.length === 0) {
-          return showNotification(
-            "No valid YouTube URLs found. Please check your input.",
-            "error"
-          );
+          return showNotification("No valid YouTube URLs found. Please check your input.", "error");
         }
-
         inputArea.classList.add("hidden");
         resultsArea.classList.add("hidden");
         analyzingArea.classList.remove("hidden");
         startAnalysisProgress();
-
         try {
           const details = await fetchVideoDetails(urls);
-          if (perceivedProgressInterval)
-            clearInterval(perceivedProgressInterval);
-          videoData = details.map((d) => ({
-            ...d,
-            selectedLanguage: "en",
-            selectedFormat: "srt",
-          }));
+          if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
+          videoData = details.map((d) => ({ ...d, selectedFormat: "srt" }));
           displayResults(videoData);
           analyzingArea.classList.add("hidden");
           resultsArea.classList.remove("hidden");
@@ -860,287 +807,148 @@
       }
 
       async function fetchVideoDetails(urls) {
-        const response = await fetch(
-          "https://ytdlp.vistaflyer.com/api/batch_check",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ urls: urls }),
-          }
-        );
+        const response = await fetch("https://ytdlp.vistaflyer.com/api/batch_check", {
+            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ urls: urls }),
+        });
         if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
         const data = await response.json();
-        if (data.status !== "completed")
-          throw new Error("Server could not process URLs.");
+        if (data.status !== "completed") throw new Error("Server could not process URLs.");
         return data.results.map((item) => ({
-          id: (item.url.match(youtubeRegex) || [])[1],
-          url: item.url,
-          title: item.video_info.title || "Untitled",
-          uploader: item.video_info.uploader || "Unknown",
-          thumbnail: `https://i.ytimg.com/vi/${
-            (item.url.match(youtubeRegex) || [])[1]
-          }/hqdefault.jpg`,
-          hasSubtitles: item.can_download,
-          availableLanguages: item.available_manual_captions || [],
+          id: (item.url.match(youtubeRegex) || [])[1], url: item.url, title: item.video_info.title || "Untitled",
+          uploader: item.video_info.uploader || "Unknown", thumbnail: `https://i.ytimg.com/vi/${(item.url.match(youtubeRegex) || [])[1]}/hqdefault.jpg`,
+          hasSubtitles: item.can_download
         }));
       }
 
       function startAnalysisProgress() {
         let percent = 0;
         const progressBar = document.getElementById("analysisProgressBar");
-        const percentageText = document.getElementById(
-          "analysisPercentageText"
-        );
+        const percentageText = document.getElementById("analysisPercentageText");
         const progressText = document.getElementById("analysisProgressText");
-
+        const analysisMessages = ["Validating URLs...", "Establishing connection...", "Fetching video metadata...", "Checking for English subtitles..."];
+        let messageIndex = 0;
+        const messageInterval = setInterval(() => {
+            if(progressText) progressText.textContent = analysisMessages[messageIndex % analysisMessages.length];
+            messageIndex++;
+        }, 1500);
         perceivedProgressInterval = setInterval(() => {
           percent += (95 - percent) * 0.1;
           if (progressBar) progressBar.style.width = `${percent}%`;
-          if (percentageText)
-            percentageText.textContent = `${Math.floor(percent)}%`;
-          if (progressText)
-            progressText.textContent =
-              "Analyzing URLs and fetching video data...";
-          if (percent >= 94) clearInterval(perceivedProgressInterval);
+          if (percentageText) percentageText.textContent = `${Math.floor(percent)}%`;
+          if (percent >= 94) {
+              clearInterval(perceivedProgressInterval);
+              clearInterval(messageInterval);
+          }
         }, 400);
       }
 
       if (!document.getElementById("analyzingArea").innerHTML.trim()) {
-        document.getElementById("analyzingArea").innerHTML = `
-            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center">
-                <svg class="w-24 h-24 text-blue-500 mx-auto opacity-75 loading-spinner" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 4H38V12H10V4Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M10 36H38V44H10V36Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M15 12L18 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M33 12L30 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M18 22L16 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M30 22L32 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M20 22H28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <h3 class="mt-4 text-xl font-bold text-gray-800">Extracting video information, please wait...</h3>
-                <div class="mt-6 max-w-md mx-auto">
-                    <div class="flex justify-between mb-1 text-sm font-medium">
-                        <span class="text-gray-600">Analysis Progress</span><span id="analysisPercentageText">0%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div
-                            id="analysisProgressBar"
-                            class="bg-blue-600 h-2.5 rounded-full transition-width duration-300"
-                            style="width: 0%"
-                        ></div>
-                    </div>
-                    <p
-                        id="analysisProgressText"
-                        class="text-center text-sm text-gray-500 mt-2"
-                    >
-                        Initializing connection...
-                    </p>
-                </div>
-            </div>
-        `;
+        document.getElementById("analyzingArea").innerHTML = `<div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center"><svg class="w-24 h-24 text-blue-500 mx-auto opacity-75 loading-spinner" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4H38V12H10V4Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 36H38V44H10V36Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 12L18 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 12L30 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 22L16 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 22L32 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22H28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><h3 class="mt-4 text-xl font-bold text-gray-800">Extracting video information, please wait...</h3><div class="mt-6 max-w-md mx-auto"><div class="flex justify-between mb-1 text-sm font-medium"><span class="text-gray-600">Analysis Progress</span><span id="analysisPercentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="analysisProgressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="analysisProgressText" class="text-center text-sm text-gray-500 mt-2">Initializing...</p></div></div>`;
       }
-
-      // --- UI RENDERING & MANAGEMENT ---
+      
       function displayResults(data) {
         const videoList = document.getElementById("videoList");
         const bulkActions = document.getElementById("bulkActions");
+        const resultsSummary = document.getElementById('resultsSummary');
         videoList.innerHTML = "";
         selectedVideos.clear();
+        const successCount = data.length;
+        const failedCount = initialUrlCount - successCount;
+        resultsSummary.innerHTML = `Processed <strong>${initialUrlCount}</strong> URLs: Found <strong>${successCount}</strong> valid videos. ${failedCount > 0 ? `<strong>${failedCount}</strong> were invalid or duplicates.` : ''}`;
+        resultsSummary.classList.remove('hidden');
         if (!data || data.length === 0) return;
-
         data.forEach((video) => {
           if (video.hasSubtitles) selectedVideos.add(video.id);
           videoList.appendChild(createVideoCard(video));
         });
-
         bulkActions.classList.toggle("hidden", data.length < 1);
         updateSelectionUI();
-
-        updateGlobalLanguageOptions(data);
-      }
-
-      function updateGlobalLanguageOptions(data) {
-        const globalLanguageSelect = document.getElementById("globalLanguage");
-        globalLanguageSelect.innerHTML =
-          '<option value="en">English (Default)</option>';
-
-        const allLangs = new Map();
-        data.forEach((video) => {
-          if (video.hasSubtitles && video.availableLanguages) {
-            video.availableLanguages.forEach((lang) => {
-              // Filter out default English if it's already the default option, and filter out 'auto'
-              if (lang.lang_code !== "en" && lang.lang_code !== "auto") {
-                allLangs.set(lang.lang_code, lang.lang_name);
-              }
-            });
-          }
-        });
-
-        const sortedLangs = Array.from(allLangs.entries()).sort((a, b) =>
-          a[1].localeCompare(b[1])
-        );
-
-        sortedLangs.forEach(([code, name]) => {
-          const option = document.createElement("option");
-          option.value = code;
-          option.textContent = `${name} (${code})`;
-          globalLanguageSelect.appendChild(option);
-        });
       }
 
       function createVideoCard(video) {
         const card = document.createElement("div");
-        card.className = `bg-white p-4 rounded-xl shadow-md border-2 transition-all duration-200 ${
-          selectedVideos.has(video.id)
-            ? "border-blue-500"
-            : "border-gray-200 hover:border-blue-300" // Updated card hover style
-        }`;
+        card.className = `bg-white p-4 rounded-xl shadow-md border-2 transition-all duration-200 ${selectedVideos.has(video.id) ? "border-blue-500" : "border-gray-200 hover:border-blue-300"}`;
         card.id = `card-${video.id}`;
-
-        const langOptions = video.availableLanguages
-          .filter(
-            (lang) => lang.lang_code !== "en" && lang.lang_code !== "auto"
-          )
-          .map(
-            (lang) =>
-              `<option value="${lang.lang_code}">${lang.lang_name}</option>`
-          )
-          .join("");
-
+        const statusBadge = video.hasSubtitles
+          ? '<span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">English Subtitles Available</span>'
+          : `<span class="inline-flex items-center gap-1 text-xs font-medium text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">
+                No Manual Subtitles
+                <span class="tooltip-trigger text-yellow-500">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="tooltip-content">This tool only downloads high-quality, manually-created English subtitles. YouTube's auto-generated captions are not supported.</div>
+                </span>
+             </span>`;
         card.innerHTML = `
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div class="flex items-center gap-4 flex-shrink-0">
-                    ${
-                      video.hasSubtitles
-                        ? `<input type="checkbox" class="custom-checkbox" onchange="toggleVideoSelection('${
-                            video.id
-                          }')" ${
-                            selectedVideos.has(video.id) ? "checked" : ""
-                          }>`
-                        : '<div class="w-5 h-5"></div>'
-                    }
-                    <img src="${
-                      video.thumbnail
-                    }" class="w-28 h-16 object-cover rounded-lg border border-gray-200">
+                    ${video.hasSubtitles ? `<input type="checkbox" class="custom-checkbox" onchange="toggleVideoSelection('${video.id}')" ${selectedVideos.has(video.id) ? "checked" : ""}>` : '<div class="w-5 h-5"></div>'}
+                    <img src="${video.thumbnail}" class="w-28 h-16 object-cover rounded-lg border border-gray-200">
                 </div>
                 <div class="flex-grow min-w-0">
-                    <p class="font-semibold text-gray-800 truncate text-base" title="${video.title.replace(
-                      /"/g,
-                      "&quot;"
-                    )}">${video.title}</p>
+                    <p class="font-semibold text-gray-800 truncate text-base" title="${video.title.replace(/"/g, "&quot;")}">${video.title}</p>
                     <p class="text-sm text-gray-500">by ${video.uploader}</p>
-                    ${
-                      video.hasSubtitles
-                        ? '<span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Subtitles Available</span>' // Enhanced status badge
-                        : '<span class="text-xs font-medium text-red-600 bg-red-100 px-2 py-0.5 rounded-full">No Subtitles Found</span>' // Enhanced status badge
-                    }
+                    ${statusBadge}
                 </div>
-                ${
-                  video.hasSubtitles
-                    ? `
+                ${video.hasSubtitles ? `
                 <div class="flex flex-col sm:flex-row items-center gap-2 flex-shrink-0 ml-auto pt-2 sm:pt-0">
-                    <select onchange="updateVideoSetting('${video.id}', 'selectedLanguage', this.value)" class="per-video-lang custom-select w-full sm:w-32 text-sm">
-                        <option value="en">English</option>
-                        ${langOptions}
-                    </select>
                     <select onchange="updateVideoSetting('${video.id}', 'selectedFormat', this.value)" class="per-video-format custom-select w-full sm:w-20 text-sm">
                         <option value="srt">SRT</option><option value="txt">TXT</option><option value="vtt">VTT</option>
                     </select>
                     <button onclick="handleSingleDownload('${video.id}')" title="Download this subtitle" class="bg-gray-100 hover:bg-blue-500 hover:text-white text-gray-700 p-2 rounded-lg transition flex-shrink-0 w-full sm:w-auto"><svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
-                </div>`
-                    : ""
-                }
-            </div>
-        `;
+                </div>` : ""}
+            </div>`;
         return card;
       }
-
-      function updateVideoSetting(videoId, key, value) {
-        const video = videoData.find((v) => v.id === videoId);
-        if (video) {
-          video[key] = value;
-        }
-      }
-
-      function toggleVideoSelection(videoId) {
-        if (selectedVideos.has(videoId)) {
-          selectedVideos.delete(videoId);
-        } else {
-          selectedVideos.add(videoId);
-        }
-        updateSelectionUI();
-      }
-
-      function handleSelectAll() {
-        const isChecked = document.getElementById("selectAllCheckbox").checked;
-        videoData.forEach((video) => {
-          if (video.hasSubtitles) {
-            if (isChecked) {
-              selectedVideos.add(video.id);
-            } else {
-              selectedVideos.delete(video.id);
+      
+      function applyGlobalSettingHighlight(type) {
+        const targetClass = '.per-video-format';
+        selectedVideos.forEach(id => {
+            const card = document.getElementById(`card-${id}`);
+            if(card) {
+                const select = card.querySelector(targetClass);
+                if(select) {
+                    select.classList.add('highlight-change');
+                    setTimeout(() => select.classList.remove('highlight-change'), 800);
+                }
             }
-          }
         });
-        updateSelectionUI();
       }
 
+      function updateVideoSetting(videoId, key, value) { const video = videoData.find((v) => v.id === videoId); if (video) video[key] = value; }
+      function toggleVideoSelection(videoId) { if (selectedVideos.has(videoId)) selectedVideos.delete(videoId); else selectedVideos.add(videoId); updateSelectionUI(); }
+      function handleSelectAll() { const isChecked = document.getElementById("selectAllCheckbox").checked; videoData.forEach((video) => { if (video.hasSubtitles) { if (isChecked) selectedVideos.add(video.id); else selectedVideos.delete(video.id); }}); updateSelectionUI(); }
       function updateSelectionUI() {
         const count = selectedVideos.size;
         const totalSelectable = videoData.filter((v) => v.hasSubtitles).length;
-
-        document.getElementById(
-          "downloadSelectedText"
-        ).textContent = `Download Selected (${count})`;
+        document.getElementById("downloadSelectedText").textContent = `Download Selected (${count})`;
         document.getElementById("downloadSelectedBtn").disabled = count === 0;
-
         const selectAllCheckbox = document.getElementById("selectAllCheckbox");
         selectAllCheckbox.checked = count > 0 && count === totalSelectable;
         selectAllCheckbox.indeterminate = count > 0 && count < totalSelectable;
-
         videoData.forEach((video) => {
           const card = document.getElementById(`card-${video.id}`);
           if (card) {
-            card.classList.toggle(
-              "border-blue-500",
-              selectedVideos.has(video.id)
-            );
-            card.classList.toggle(
-              "border-gray-200",
-              !selectedVideos.has(video.id)
-            );
+            card.classList.toggle("border-blue-500", selectedVideos.has(video.id));
+            card.classList.toggle("border-gray-200", !selectedVideos.has(video.id));
             const checkbox = card.querySelector('input[type="checkbox"]');
             if (checkbox) checkbox.checked = selectedVideos.has(video.id);
           }
         });
       }
-
-      // --- DOWNLOAD & API LOGIC ---
+      
       async function handleSingleDownload(videoId) {
         const video = videoData.find((v) => v.id === videoId);
         if (!video) return;
-
         const button = event.target.closest("button");
         const originalContent = button.innerHTML;
         button.disabled = true;
-        button.innerHTML =
-          '<div class="loading-spinner rounded-full h-5 w-5 border-b-2 border-gray-700"></div>';
-
+        button.innerHTML = '<div class="loading-spinner rounded-full h-5 w-5 border-b-2 border-gray-700"></div>';
         try {
           const card = document.getElementById(`card-${videoId}`);
-          const selectedLang = card.querySelector(".per-video-lang").value;
+          const selectedLang = 'en'; 
           const selectedFormat = card.querySelector(".per-video-format").value;
-
-          await downloadFile(
-            video.url,
-            selectedLang,
-            selectedFormat,
-            video.title
-          );
-          showNotification(
-            "Single subtitle downloaded successfully!",
-            "success"
-          );
+          await downloadFile(video.url, selectedLang, selectedFormat, video.title);
+          showNotification("Single subtitle downloaded successfully!", "success");
         } catch (error) {
           showNotification(error.message, "error");
         } finally {
@@ -1150,83 +958,49 @@
       }
 
       async function handleBulkDownload() {
-        const videosToDownload = videoData
-          .filter((v) => selectedVideos.has(v.id))
-          .map((v) => ({ url: v.url, title: v.title }));
+        const videosToDownload = videoData.filter((v) => selectedVideos.has(v.id)).map((v) => ({ url: v.url, title: v.title, uploader: v.uploader }));
         if (videosToDownload.length === 0) return;
-
         const format = document.getElementById("globalFormat").value;
-        const lang = document.getElementById("globalLanguage").value;
-
-        selectedVideos.forEach((id) => {
-          updateVideoSetting(id, "selectedLanguage", lang);
-          updateVideoSetting(id, "selectedFormat", format);
-        });
-
+        const lang = 'en'; 
         try {
-          showNotification(
-            `Starting bulk download for ${videosToDownload.length} files...`,
-            "info"
-          );
+          showNotification(`Starting bulk download for ${videosToDownload.length} files...`, "info");
+          // MODIFICATION: Removed filenameTemplate from the call
           const task = await createBulkTask(videosToDownload, lang, format);
           currentTaskId = task.task_id;
           showProgressArea(videosToDownload.length);
           startPolling();
-        } catch (error) {
-          showNotification(error.message, "error");
-        }
+        } catch (error) { showNotification(error.message, "error"); }
       }
 
       async function downloadFile(url, lang, format, title) {
-        // Mocking API call URL for the previous version's functionality.
-        const response = await fetch(
-          "https://ytdlp.vistaflyer.com/api/download",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              url: url,
-              lang: lang,
-              format: format,
-              title: title,
-            }),
-          }
-        );
+        const response = await fetch("https://ytdlp.vistaflyer.com/api/download", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: url, lang: lang, format: format, title: title }),
+        });
         if (!response.ok) throw new Error("Download failed from server.");
         const blob = await response.blob();
         const objectUrl = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = objectUrl;
-        a.download = `${title
-          .replace(/[^a-z0-9]/gi, "_")
-          .slice(0, 60)}.${format}`;
+        a.download = `${title.replace(/[^a-z0-9]/gi, "_").slice(0, 60)}.${format}`;
         document.body.appendChild(a);
         a.click();
         a.remove();
         URL.revokeObjectURL(objectUrl);
       }
+      
+      // MODIFICATION: Removed filename_template from function signature and body
       async function createBulkTask(videos, lang, format) {
-        // Mocking API call URL for the previous version's functionality.
-        const response = await fetch(
-          "https://ytdlp.vistaflyer.com/api/batch_submit",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              videos: videos,
-              lang: lang,
-              format: format,
-            }),
-          }
-        );
+        const response = await fetch("https://ytdlp.vistaflyer.com/api/batch_submit", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ videos: videos, lang: lang, format: format }),
+        });
         if (!response.ok) throw new Error("Failed to create bulk task.");
         const data = await response.json();
-        if (data.status !== "pending")
-          throw new Error(data.message || "Task submission failed.");
+        if (data.status !== "pending") throw new Error(data.message || "Task submission failed.");
         return data;
       }
 
-      // --- POLLING & PROGRESS ---
       function startPolling() {
         if (pollingInterval) clearInterval(pollingInterval);
         startPerceivedProgress();
@@ -1234,55 +1008,26 @@
           if (!currentTaskId) return clearInterval(pollingInterval);
           try {
             const status = await checkTaskStatus(currentTaskId);
-            if (status && status.progress_str) {
-              updateProgressWithRealData(status);
-            }
-            if (status.status === "completed") {
-              clearInterval(pollingInterval);
-              handleDownloadComplete();
-            } else if (status.status === "failed") {
-              clearInterval(pollingInterval);
-              if (perceivedProgressInterval)
-                clearInterval(perceivedProgressInterval);
-              showNotification("Bulk download task failed.", "error");
-              handleDownloadFail();
-            }
+            if (status && status.progress_str) { updateProgressWithRealData(status); }
+            if (status.status === "completed") { clearInterval(pollingInterval); handleDownloadComplete(); } 
+            else if (status.status === "failed") { clearInterval(pollingInterval); if (perceivedProgressInterval) clearInterval(perceivedProgressInterval); showNotification("Bulk download task failed.", "error"); handleDownloadFail(); }
           } catch (error) {
-            clearInterval(pollingInterval);
-            if (perceivedProgressInterval)
-              clearInterval(perceivedProgressInterval);
-            showNotification("Error checking status.", "error");
-            handleDownloadFail();
+            clearInterval(pollingInterval); if (perceivedProgressInterval) clearInterval(perceivedProgressInterval); showNotification("Error checking status.", "error"); handleDownloadFail();
           }
         }, 3000);
       }
-
       async function checkTaskStatus(taskId) {
-        // Mocking API call URL for the previous version's functionality.
-        const response = await fetch(
-          `https://ytdlp.vistaflyer.com/api/task_status?task_id=${taskId}`
-        );
+        const response = await fetch(`https://ytdlp.vistaflyer.com/api/task_status?task_id=${taskId}`);
         if (!response.ok) throw new Error("Status check failed.");
         const data = await response.json();
-        const [completed, total] = (data.progress || "0/0")
-          .split("/")
-          .map(Number);
-        return {
-          id: taskId,
-          status: data.status,
-          progress: total > 0 ? (completed / total) * 100 : 0,
-          completed: completed,
-          total: total,
-          progress_str: data.progress,
-        };
+        const [completed, total] = (data.progress || "0/0").split("/").map(Number);
+        return { id: taskId, status: data.status, progress: total > 0 ? (completed / total) * 100 : 0, completed: completed, total: total, progress_str: data.progress, };
       }
-
       function showProgressArea(totalFiles) {
         const progressContainer = document.getElementById("downloadProgress");
         progressContainer.innerHTML = `<div class="bg-white p-6 rounded-xl shadow-lg border"><h3 class="text-lg font-semibold text-center mb-4 text-blue-600">Processing Bulk Download Task...</h3><div id="progressContent"><div class="flex justify-between mb-1 text-sm font-medium"><span>Progress</span><span id="percentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="progressText" class="text-center text-sm text-gray-500 mt-2">Connecting to server (Expected files: ${totalFiles})...</p></div></div>`;
         progressContainer.classList.remove("hidden");
       }
-
       function startPerceivedProgress() {
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
         currentPerceivedProgress = 0;
@@ -1291,139 +1036,71 @@
         const percentageText = document.getElementById("percentageText");
         perceivedProgressInterval = setInterval(() => {
           currentPerceivedProgress += (90 - currentPerceivedProgress) * 0.05;
-          if (progressBar)
-            progressBar.style.width = `${currentPerceivedProgress}%`;
-          if (percentageText)
-            percentageText.textContent = `${Math.floor(
-              currentPerceivedProgress
-            )}%`;
-          if (progressText)
-            progressText.textContent =
-              "Processing files... (This may take a few minutes)";
-          if (currentPerceivedProgress >= 89.5)
-            clearInterval(perceivedProgressInterval);
+          if (progressBar) progressBar.style.width = `${currentPerceivedProgress}%`;
+          if (percentageText) percentageText.textContent = `${Math.floor(currentPerceivedProgress)}%`;
+          if (progressText) progressText.textContent = "Processing files... (This may take a few minutes)";
+          if (currentPerceivedProgress >= 89.5) clearInterval(perceivedProgressInterval);
         }, 200);
       }
-
       function updateProgressWithRealData(status) {
         if (status.progress > currentPerceivedProgress) {
-          if (perceivedProgressInterval) {
-            clearInterval(perceivedProgressInterval);
-            perceivedProgressInterval = null;
-          }
+          if (perceivedProgressInterval) { clearInterval(perceivedProgressInterval); perceivedProgressInterval = null; }
           currentPerceivedProgress = status.progress;
           const progressBar = document.getElementById("progressBar");
           const percentageText = document.getElementById("percentageText");
           if (progressBar) progressBar.style.width = `${status.progress}%`;
-          if (percentageText)
-            percentageText.textContent = `${Math.round(status.progress)}%`;
+          if (percentageText) percentageText.textContent = `${Math.round(status.progress)}%`;
         }
         const progressText = document.getElementById("progressText");
-        if (progressText)
-          progressText.textContent = `Processed ${status.completed} / ${status.total} files.`;
+        if (progressText) progressText.textContent = `Processed ${status.completed} / ${status.total} files.`;
       }
-
       async function handleDownloadComplete() {
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
         const progressBar = document.getElementById("progressBar");
         const percentageText = document.getElementById("percentageText");
         if (progressBar) progressBar.style.width = "100%";
         if (percentageText) percentageText.textContent = "100%";
-
         const progressContent = document.getElementById("progressContent");
         if (progressContent) {
           progressContent.innerHTML = "";
-
           const completionDiv = document.createElement("div");
           completionDiv.className = "text-center mt-4";
-          completionDiv.innerHTML = `<div class="text-green-500 text-3xl mb-3">
-                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <h4 class="text-xl font-bold text-green-600">Download Complete!</h4>
-                <p class="text-md text-gray-600 mt-2">Your ZIP file should be automatically downloading. Please check your browser's download list.</p>
-                <button onclick="resetToInputArea()" class="mt-6 btn-primary text-white font-semibold py-3 px-6 rounded-lg transition w-full sm:w-auto">
-                    Start a New Download
-                </button>`;
-
+          completionDiv.innerHTML = `<div class="text-green-500 text-3xl mb-3"><svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><h4 class="text-xl font-bold text-green-600">Download Complete!</h4><p class="text-md text-gray-600 mt-2">Your ZIP file should be automatically downloading. Please check your browser's download list.</p><button onclick="resetToInputArea()" class="mt-6 btn-primary text-white font-semibold py-3 px-6 rounded-lg transition w-full sm:w-auto">Start a New Download</button>`;
           progressContent.appendChild(completionDiv);
         }
-
         await downloadBulkFile();
       }
-
       function handleDownloadFail() {
         const progressContent = document.getElementById("progressContent");
         if (progressContent) {
           progressContent.innerHTML = "";
-
           const failureDiv = document.createElement("div");
           failureDiv.className = "text-center mt-4";
-          failureDiv.innerHTML = `<div class="text-red-500 text-3xl mb-3">
-                      <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                  </div>
-                  <h4 class="text-xl font-bold text-red-600">Download Failed</h4>
-                  <p class="text-md text-gray-600 mt-2">The bulk download task could not be completed. Please check your URLs or try again later.</p>
-                  <button onclick="resetToInputArea()" class="mt-6 bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg hover:bg-gray-400 transition w-full sm:w-auto">
-                      Clear and Retry
-                  </button>`;
-
+          failureDiv.innerHTML = `<div class="text-red-500 text-3xl mb-3"><svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><h4 class="text-xl font-bold text-red-600">Download Failed</h4><p class="text-md text-gray-600 mt-2">The bulk download task could not be completed. Please check your URLs or try again later.</p><button onclick="resetToInputArea()" class="mt-6 bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg hover:bg-gray-400 transition w-full sm:w-auto">Clear and Retry</button>`;
           progressContent.appendChild(failureDiv);
         }
       }
-
       async function downloadBulkFile() {
         try {
-          // Mocking API call URL for the previous version's functionality.
-          const response = await fetch(
-            "https://ytdlp.vistaflyer.com/api/download_zip",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ task_id: currentTaskId }),
-            }
-          );
-          if (!response.ok)
-            throw new Error(`HTTP error! Status: ${response.status}`);
-
+          const response = await fetch("https://ytdlp.vistaflyer.com/api/download_zip", {
+              method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task_id: currentTaskId }),
+          });
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
           const now = new Date();
-          const timestamp = `${now.getFullYear()}${String(
-            now.getMonth() + 1
-          ).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}_${String(
-            now.getHours()
-          ).padStart(2, "0")}${String(now.getMinutes()).padStart(
-            2,
-            "0"
-          )}${String(now.getSeconds()).padStart(2, "0")}`;
+          const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}_${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2,"0")}${String(now.getSeconds()).padStart(2, "0")}`;
           let filename = `youtube_subtitles_bulk_${timestamp}.zip`;
-
           const disposition = response.headers.get("content-disposition");
-          if (disposition) {
-            const match = disposition.match(/filename="(.+)"/);
-            if (match) filename = match[1];
-          }
+          if (disposition) { const match = disposition.match(/filename="(.+)"/); if (match) filename = match[1]; }
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
-          a.href = url;
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
+          a.href = url; a.download = filename;
+          document.body.appendChild(a); a.click(); a.remove();
           URL.revokeObjectURL(url);
           showNotification("ZIP file downloaded successfully!", "success");
-        } catch (error) {
-          showNotification(
-            `Failed to download ZIP file: ${error.message}`,
-            "error"
-          );
-        }
+        } catch (error) { showNotification(`Failed to download ZIP file: ${error.message}`, "error"); }
       }
-
-      // --- UTILITIES (Notification retained) ---
+      
       let notificationTimeout;
       function showNotification(message, type = "info") {
         clearTimeout(notificationTimeout);
@@ -1431,21 +1108,9 @@
         if (existing) existing.remove();
         const notification = document.createElement("div");
         notification.className = `notification ${type}`;
-
-        // This style block is for the notification utility itself
         const style = document.createElement("style");
-        style.textContent = `
-            .notification {
-                position: fixed; top: 20px; right: 20px; padding: 16px; border-radius: 8px; color: white; font-weight: 500; z-index: 1000; min-width: 320px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-                transform: translateX(calc(100% + 20px)); opacity: 0; transition: all 0.4s cubic-bezier(0.21, 1.02, 0.73, 1); display: flex; align-items: center; gap: 12px;
-            }
-            .notification.show { transform: translateX(0); opacity: 1; }
-            .notification.success { background-color: #10b981; }
-            .notification.error { background-color: #ef4444; }
-            .notification.info { background-color: #3b82f6; }
-        `;
+        style.textContent = `.notification { position: fixed; top: 20px; right: 20px; padding: 16px; border-radius: 8px; color: white; font-weight: 500; z-index: 1000; min-width: 320px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); transform: translateX(calc(100% + 20px)); opacity: 0; transition: all 0.4s cubic-bezier(0.21, 1.02, 0.73, 1); display: flex; align-items: center; gap: 12px; } .notification.show { transform: translateX(0); opacity: 1; } .notification.success { background-color: #10b981; } .notification.error { background-color: #ef4444; } .notification.info { background-color: #3b82f6; }`;
         document.head.appendChild(style);
-
         const icons = { success: "✓", error: "✗", info: "ℹ" };
         notification.innerHTML = `<span class="font-bold text-lg">${icons[type]}</span><span>${message}</span>`;
         document.body.appendChild(notification);
