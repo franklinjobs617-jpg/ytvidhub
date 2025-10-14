@@ -766,6 +766,10 @@ video {
   margin-bottom: 0px;
 }
 
+.mb-20 {
+  margin-bottom: 5rem;
+}
+
 .block {
   display: block;
 }
@@ -1171,6 +1175,11 @@ video {
   border-radius: 0.75rem;
 }
 
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -1197,6 +1206,10 @@ video {
 
 .border-t-4 {
   border-top-width: 4px;
+}
+
+.border-l-4 {
+  border-left-width: 4px;
 }
 
 .border-blue-200 {
@@ -1568,6 +1581,10 @@ video {
 
 .pt-10 {
   padding-top: 2.5rem;
+}
+
+.pl-11 {
+  padding-left: 2.75rem;
 }
 
 .text-left {

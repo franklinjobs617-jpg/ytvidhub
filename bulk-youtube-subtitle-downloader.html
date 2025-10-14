@@ -101,103 +101,63 @@
   </head>
   <body class="bg-gray-50 text-gray-800 font-sans">
     <header
-    class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
-  >
-    <nav
-      class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+      class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
     >
-      <!-- Optimized Logo: Image + Text -->
-      <a href="./index.html" class="flex items-center gap-3">
-        <!-- IMPORTANT: Replace './logo.png' with the path to your logo file -->
-        <img
-          src="./image/icon-removebg-preview.png"
-          alt="YTVidHub Logo"
-          class="h-10 w-auto"
-        />
-      </a>
-      <div class="hidden md:flex space-x-8 items-center text-sm">
-        <a
-          href="./index.html"
-          class="text-blue-600 font-semibold transition duration-150"
-          >Home</a
-        ><a
-          href="./bulk-youtube-subtitle-downloader.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >Bulk Downloader</a
-        ><a
-          href="./how-to-use.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >How to Use</a
-        ><a
-          href="./faq.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >FAQ</a
-        >
-        <a
-          href="./what-is-an-srt-file.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >Srt File</a
-        >
-        <a
-          href="./terms-of-service.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >Terms</a
-        >
-        <a
-          href="./privacy-policy.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >Privacy</a
-        >
-
-        <a
-          href="./about.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >About</a
-        >
-      </div>
-
-      <div class="md:hidden">
-        <button
-          id="mobile-menu-button"
-          class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-        >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+      <nav
+        class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+      >
+        <a href="./index.html" class="flex items-center gap-3">
+          <img
+            src="./image/icon.webp"
+            alt="YTVidHub Logo"
+            class="h-10 w-auto"
+          />
+        </a>
+        <div class="hidden md:flex space-x-8 items-center text-sm">
+          <a
+            href="./index.html"
+            class="text-blue-600 font-semibold transition duration-150"
+            >Home</a
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            ></path>
-          </svg>
-        </button>
-      </div>
-    </nav>
-
-    <!-- Optimized Mobile Menu -->
-    <div
-      id="mobile-menu"
-      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
-    >
-      <div class="flex flex-col h-full">
-        <div
-          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
-        >
-          <!-- Optimized Logo for Mobile Menu -->
-          <a href="./index.html" class="flex items-center gap-3">
-            <!-- IMPORTANT: Replace './logo.png' with the path to your logo file -->
-            <img
-              src="./image/icon-removebg-preview.png"
-              alt="YTVidHub Logo"
-              class="h-10 w-auto"
-            />
-          </a>
+          <a
+            href="./bulk-youtube-subtitle-downloader.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Bulk Downloader</a
+          >
+          <a
+            href="./how-to-use.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >How to Use</a
+          >
+          <a
+            href="./faq.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >FAQ</a
+          >
+          <a
+            href="./what-is-an-srt-file.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Srt File</a
+          >
+          <a
+            href="./terms-of-service.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Terms</a
+          >
+          <a
+            href="./privacy-policy.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >Privacy</a
+          >
+          <a
+            href="./about.html"
+            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
+            >About</a
+          >
+        </div>
+        <div class="md:hidden">
           <button
-            id="mobile-menu-close-button"
+            id="mobile-menu-button"
             class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
           >
             <svg
@@ -210,54 +170,91 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
+                d="M4 6h16M4 12h16m-7 6h7"
               ></path>
             </svg>
           </button>
         </div>
-
-        <div class="flex flex-col p-6 space-y-4 flex-grow">
-          <a
-            href="./index.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Home</a
-          ><a
-            href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Bulk Downloader</a
-          ><a
-            href="./how-to-use.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >How to Use</a
-          ><a
-            href="./faq.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >FAQ</a
+      </nav>
+      <div
+        id="mobile-menu"
+        class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+      >
+        <div class="flex flex-col h-full">
+          <div
+            class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
           >
-          <a
-            href="./what-is-an-srt-file.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Srt File</a
-          >
-          <a
-            href="./terms-of-service.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Terms</a
-          >
-          <a
-            href="./privacy-policy.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Privacy</a
-          >
-          <a
-            href="./about.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >About</a
-          >
+            <a href="./index.html" class="flex items-center gap-3">
+              <img
+                src="./image/icon.webp"
+                alt="YTVidHub Logo"
+                class="h-10 w-auto"
+              />
+            </a>
+            <button
+              id="mobile-menu-close-button"
+              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div class="flex flex-col p-6 space-y-4 flex-grow">
+            <a
+              href="./index.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Home</a
+            >
+            <a
+              href="./bulk-youtube-subtitle-downloader.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Bulk Downloader</a
+            >
+            <a
+              href="./how-to-use.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >How to Use</a
+            >
+            <a
+              href="./faq.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >FAQ</a
+            >
+            <a
+              href="./what-is-an-srt-file.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Srt File</a
+            >
+            <a
+              href="./terms-of-service.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Terms</a
+            >
+            <a
+              href="./privacy-policy.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >Privacy</a
+            >
+            <a
+              href="./about.html"
+              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+              >About</a
+            >
+          </div>
         </div>
       </div>
-    </div>
-  </header>
+    </header>
 
     <main>
       <section class="bg-blue-600 py-24 md:py-36 text-white">
@@ -275,7 +272,7 @@
             >—instantly and 100% free.
           </p>
           <a
-            href="/#tool"
+            href="./index.html"
             class="mt-10 inline-block bg-white text-blue-600 font-bold py-4 px-12 rounded-lg shadow-xl hover:bg-gray-100 transition text-lg transform hover:scale-[1.02]"
           >
             Start Bulk Download Now →
@@ -294,7 +291,6 @@
               are our priorities.
             </p>
           </div>
-
           <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div class="bg-gray-50 p-8 rounded-xl feature-card">
               <div
@@ -318,11 +314,10 @@
                 Lightning Fast Processing
               </h3>
               <p class="text-gray-600">
-                Process dozens of videos simultaneously. Our backend is optimized
-                for bulk requests, minimizing your waiting time.
+                Process dozens of videos simultaneously. Our backend is
+                optimized for bulk requests, minimizing your waiting time.
               </p>
             </div>
-
             <div class="bg-gray-50 p-8 rounded-xl feature-card">
               <div
                 class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4"
@@ -349,7 +344,6 @@
                 automatically named after the video title for easy sorting.
               </p>
             </div>
-
             <div class="bg-gray-50 p-8 rounded-xl feature-card">
               <div
                 class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4"
@@ -372,8 +366,8 @@
                 SRT & TXT Flexibility
               </h3>
               <p class="text-gray-600">
-                Download subtitles (.SRT) for video editing or simple transcripts
-                (.TXT) for content analysis and reading.
+                Download subtitles (.SRT) for video editing or simple
+                transcripts (.TXT) for content analysis and reading.
               </p>
             </div>
           </div>
@@ -426,7 +420,6 @@
                 </div>
               </div>
             </div>
-
             <div
               class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-blue-600"
             >
@@ -464,6 +457,7 @@
         </div>
       </section>
 
+      <!-- === SECTION TO BE UPDATED START === -->
       <section class="bg-white py-20 md:py-28">
         <div class="container mx-auto px-6 max-w-6xl">
           <h2
@@ -472,6 +466,7 @@
             A 3-Step Guide to Bulk Subtitles
           </h2>
           <div class="space-y-20">
+            <!-- Step 1 -->
             <div class="flex flex-col md:flex-row items-center gap-12">
               <div class="md:w-1/2 flex flex-col items-start">
                 <div class="step-number mb-6">1</div>
@@ -486,13 +481,13 @@
               </div>
               <div class="md:w-1/2 w-full">
                 <img
-                  src="https://placehold.co/500x300/e2e8f0/334155?text=Gather+URLs"
-                  alt="A list of YouTube video URLs in a text document."
+                  src="./image/bulk-guide-step1-gather-urls.png"
+                  alt="A screenshot of a text editor showing a list of YouTube video URLs, one per line."
                   class="rounded-xl shadow-lg w-full"
                 />
               </div>
             </div>
-
+            <!-- Step 2 -->
             <div class="flex flex-col md:flex-row-reverse items-center gap-12">
               <div class="md:w-1/2 flex flex-col items-start">
                 <div class="step-number mb-6">2</div>
@@ -507,13 +502,13 @@
               </div>
               <div class="md:w-1/2 w-full">
                 <img
-                  src="https://placehold.co/500x300/e2e8f0/334155?text=Paste+List"
-                  alt="Text area showing a list of multiple YouTube URLs ready for bulk subtitle download."
+                  src="./image/bulk-guide-step2-paste-list.avif"
+                  alt="Screenshot of the YTVidHub tool showing a list of YouTube links ready for bulk subtitle extraction."
                   class="rounded-xl shadow-lg w-full"
                 />
               </div>
             </div>
-
+            <!-- Step 3 -->
             <div class="flex flex-col md:flex-row items-center gap-12">
               <div class="md:w-1/2 flex flex-col items-start">
                 <div class="step-number mb-6">3</div>
@@ -524,13 +519,13 @@
                   Click the "Download Subtitles" button. In seconds, you'll
                   receive a single ZIP file containing all the subtitle files.
                   Each file is intelligently named after its corresponding video
-                  title, saving you the final, tedious step of organization.
+                  title.
                 </p>
               </div>
               <div class="md:w-1/2 w-full">
                 <img
-                  src="https://placehold.co/500x300/e2e8f0/334155?text=Get+ZIP"
-                  alt="An icon representing a downloaded ZIP archive file."
+                  src="./image/bulk-guide-step3-download-zip.png"
+                  alt="A visual graphic of a ZIP file archive, representing the final download from the bulk subtitle tool."
                   class="rounded-xl shadow-lg w-full"
                 />
               </div>
@@ -546,6 +541,7 @@
           </div>
         </div>
       </section>
+      <!-- === SECTION TO BE UPDATED END === -->
 
       <section class="bg-gray-50 py-20 md:py-28">
         <div class="container mx-auto px-6 max-w-4xl">
@@ -575,8 +571,8 @@
                 </svg>
               </summary>
               <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
-                While our system is designed to handle a large number of URLs, we
-                recommend processing up to **50 URLs at a time** for optimal
+                While our system is designed to handle a large number of URLs,
+                we recommend processing up to **50 URLs at a time** for optimal
                 performance. This ensures a fast and smooth experience without
                 browser timeouts.
               </p>
@@ -602,8 +598,8 @@
               </summary>
               <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
                 To keep things organized, each subtitle file inside the ZIP
-                archive is named after the **original YouTube video's title**. This
-                makes it incredibly easy to match each subtitle file to its
+                archive is named after the **original YouTube video's title**.
+                This makes it incredibly easy to match each subtitle file to its
                 corresponding video.
               </p>
             </details>
@@ -627,9 +623,10 @@
                 </svg>
               </summary>
               <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
-                Yes! Our bulk downloader supports both **SRT and TXT formats**. You
-                can choose your preferred format before initiating the download,
-                and all files in the resulting ZIP archive will be in that format.
+                Yes! Our bulk downloader supports both **SRT and TXT formats**.
+                You can choose your preferred format before initiating the
+                download, and all files in the resulting ZIP archive will be in
+                that format.
               </p>
             </details>
           </div>
@@ -638,86 +635,85 @@
     </main>
 
     <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 lg:px-8 py-12">
-          <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
-            <div class="md:col-span-1">
-              <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
-              <p class="mt-3 text-gray-400 text-sm">
-                The essential toolkit for video content data extraction, built for
-                speed and reliability.
-              </p>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
-              <ul class="space-y-3 text-sm">
-                <li>
-                  <a
-                    href="./index.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Home</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./bulk-youtube-subtitle-downloader.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Bulk Downloader</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./how-to-use.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >How to Use</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./faq.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >FAQ</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./what-is-an-srt-file.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Srt File</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
-              <ul class="space-y-3 text-sm">
-                <li>
-                  <a
-                    href="./privacy-policy.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Privacy Policy</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./terms-of-service.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Terms of Service</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
-            <p>
-              &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
-              affiliated with Google or YouTube.
+      <div class="container mx-auto px-6 lg:px-8 py-12">
+        <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+          <div class="md:col-span-1">
+            <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
+            <p class="mt-3 text-gray-400 text-sm">
+              The essential toolkit for video content data extraction, built for
+              speed and reliability.
             </p>
           </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="./index.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./bulk-youtube-subtitle-downloader.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Bulk Downloader</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./how-to-use.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >How to Use</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./faq.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./what-is-an-srt-file.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Srt File</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="./privacy-policy.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./terms-of-service.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Terms of Service</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
-      </footer>
+        <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
+          <p>
+            &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
+            affiliated with Google or YouTube.
+          </p>
+        </div>
+      </div>
+    </footer>
 
     <script>
-      // 保持移动端菜单逻辑不变
       const MOBILE_MENU_TRANSITION_DURATION = 300;
       const mobileMenuButton = document.getElementById("mobile-menu-button");
       const mobileMenuCloseButton = document.getElementById(
