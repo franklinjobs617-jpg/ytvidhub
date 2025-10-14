@@ -10,6 +10,22 @@
       name="description"
       content="The most efficient way to download YouTube subtitles in bulk. Supports SRT, VTT, and TXT formats for multiple videos or entire playlists instantly. 100% Free."
     />
+
+    <!-- FONT LOADING OPTIMIZATION -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="font"
+      href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <link href="./dist/output.css" rel="stylesheet" />
     <script type="application/ld+json">
       {
@@ -25,6 +41,9 @@
       }
     </script>
     <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
       .tooltip-trigger {
         position: relative;
         cursor: help;
@@ -57,8 +76,8 @@
       }
       @keyframes flash-blue {
         0% {
-          background-color: #dbeafe; /* blue-100 */
-          box-shadow: 0 0 0 2px #93c5fd; /* blue-300 */
+          background-color: #dbeafe;
+          box-shadow: 0 0 0 2px #93c5fd;
         }
         100% {
           background-color: transparent;
@@ -67,74 +86,822 @@
       }
       .sticky-actions {
         position: sticky;
-        top: 80px; /* Adjust based on your header's height */
+        top: 80px;
         z-index: 30;
       }
       @media (max-width: 768px) {
         .sticky-actions {
-            top: 68px; /* Shorter header on mobile */
+          top: 68px;
         }
+      }
+
+      .aurora-bg-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -10;
+      }
+      .aurora-ball {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.15;
+      }
+      .aurora-ball-1 {
+        width: 35rem;
+        height: 35rem;
+        background: radial-gradient(circle, #a78bfa, #3b82f6);
+        animation: aurora-float 25s infinite alternate ease-in-out;
+      }
+      .aurora-ball-2 {
+        width: 30rem;
+        height: 30rem;
+        background: radial-gradient(circle, #3b82f6, #67e8f9);
+        animation: aurora-float 20s infinite alternate ease-in-out;
+        animation-delay: -10s;
+      }
+      @keyframes aurora-float {
+        0% {
+          transform: translate(-20%, -20%) rotate(0deg) scale(1);
+        }
+        50% {
+          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
+        }
+        100% {
+          transform: translate(-20%, -20%) rotate(360deg) scale(1);
+        }
+      }
+
+      .nav-link {
+        position: relative;
+        padding-bottom: 8px;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #3b82f6;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease-out;
+      }
+      .nav-link:hover::after,
+      .nav-link-active::after {
+        transform: scaleX(1);
       }
     </style>
   </head>
 
-  <body class="bg-gray-50 text-gray-800 font-sans antialiased">
-    <header
-      class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
-    >
-      <nav
-        class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
-      >
-        <a href="./index.html" class="flex items-center gap-3">
-          <img
-            src="./image/icon.webp"
-            alt="YTVidHub Logo"
-            class="h-8 md:h-10 w-auto"
-          />
-        </a>
-        <div class="hidden md:flex space-x-8 items-center text-sm">
-          <a
-            href="./index.html"
-            class="text-blue-600 font-semibold transition duration-150"
-            >Home</a
-          ><a
-            href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Bulk Downloader</a
-          ><a
-            href="./how-to-use.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >How to Use</a
-          ><a
-            href="./faq.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >FAQ</a
-          >
-          <a
-            href="./what-is-an-srt-file.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Srt File</a
-          >
-          <a
-            href="./terms-of-service.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Terms</a
-          >
-          <a
-            href="./privacy-policy.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >Privacy</a
-          >
-          <a
-            href="./about.html"
-            class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-            >About</a
-          >
-        </div>
+  <body class="bg-gray-50 text-gray-800 antialiased">
+    <div class="relative isolate">
+      <div class="aurora-bg-container">
+        <div
+          class="aurora-ball aurora-ball-1"
+          style="top: -20%; left: -20%"
+        ></div>
+        <div
+          class="aurora-ball aurora-ball-2"
+          style="bottom: -20%; right: -15%"
+        ></div>
+      </div>
 
-        <div class="md:hidden">
+      <header
+      class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
+  >
+      <nav class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
+          <a href="./index.html" class="flex items-center gap-3">
+              <img src="./image/icon.webp" alt="YTVidHub Logo" class="h-10 w-auto"/>
+          </a>
+          <div class="hidden md:flex items-center">
+              <div class="flex space-x-8 items-center text-sm font-medium">
+                  <a href="./index.html" class="nav-link nav-link-active text-blue-600 hover:text-blue-600 transition duration-150">Home</a>
+                  <a href="./bulk-youtube-subtitle-downloader.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Bulk Downloader</a>
+                  <a href="./how-to-use.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">How to Use</a>
+                  <a href="./faq.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">FAQ</a>
+                  <a href="./what-is-an-srt-file.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Srt File</a>
+                  <a href="/pricing.html" class="nav-link  text-gray-700 font-semibold transition duration-150">Pricing</a>
+              </div>
+              <div class="ml-8">
+                  <a href="#" id="login-button" class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">Login</a>
+              </div>
+          </div>
+          <div class="md:hidden">
+              <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+              </button>
+          </div>
+      </nav>
+  </header>
+
+      <main>
+        <section class="pt-16 pb-12 md:pt-24 md:pb-20 bg-transparent">
+          <div class="container mx-auto px-6 lg:px-8 text-center">
+            <h1
+              class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter"
+            >
+              <span class="text-blue-600">Extract & Manage</span> YouTube
+              Subtitles At Scale
+            </h1>
+            <p
+              class="mt-4 text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
+            >
+              The professional, free utility for high-volume caption and
+              transcript management. Supports SRT, VTT, and TXT for single
+              videos, playlists, or large URL lists.
+            </p>
+            <div class="mt-12 max-w-5xl mx-auto text-left">
+              <div id="inputArea">
+                <div
+                  class="relative bg-white p-6 md:p-10 rounded-2xl shadow-xl main-card border border-gray-200"
+                >
+                  <div class="drag-overlay">
+                    <div class="text-center font-bold text-blue-600">
+                      <svg
+                        class="w-12 h-12 mx-auto"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                        ></path>
+                      </svg>
+                      <p class="mt-2">
+                        Drop URL list file here for instant bulk processing!
+                      </p>
+                    </div>
+                  </div>
+                  <label
+                    for="urlInput"
+                    class="block text-xl font-bold text-gray-800 mb-3"
+                  >
+                    Enter YouTube URL(s)
+                  </label>
+                  <textarea
+                    id="urlInput"
+                    class="w-full h-32 p-4 bg-gray-50 rounded-xl resize-y focus-blue-ring border border-gray-300 text-base transition duration-200 font-mono"
+                    placeholder="Paste links here (one per line), or drop a .txt file onto this area..."
+                  ></textarea>
+                  <div
+                    class="mt-6 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4"
+                  >
+                    <div
+                      class="flex items-center justify-center md:justify-start gap-4 text-sm text-gray-500"
+                    >
+                      <div class="flex items-center">
+                        <span class="mr-2">File Upload:</span
+                        ><label
+                          for="fileInput"
+                          class="cursor-pointer font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                        >
+                          Upload .txt/.csv </label
+                        ><input
+                          type="file"
+                          id="fileInput"
+                          class="hidden"
+                          accept=".txt,.csv"
+                        />
+                      </div>
+                      <a
+                        href="#faq"
+                        class="text-blue-500 hover:underline font-medium text-xs hidden sm:block"
+                        >Need help?</a
+                      >
+                    </div>
+                    <div
+                      class="flex flex-col-reverse sm:flex-row gap-3 w-full md:w-auto"
+                    >
+                      <button
+                        id="clearBtn"
+                        class="font-semibold py-3 px-6 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 transition w-full sm:w-auto"
+                      >
+                        Clear
+                      </button>
+                      <button
+                        id="analyzeBtn"
+                        class="btn-primary text-white font-bold py-3 px-8 rounded-xl text-lg flex items-center justify-center gap-2 w-full sm:w-auto"
+                      >
+                        <svg
+                          class="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          ></path></svg
+                        >Analyze & Extract
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="analyzingArea" class="hidden mt-8"></div>
+              <div id="resultsArea" class="hidden mt-8">
+                <div
+                  id="resultsSummary"
+                  class="hidden mb-4 text-center bg-blue-50 text-blue-800 p-4 rounded-lg border border-blue-200 text-sm font-medium"
+                ></div>
+                <div
+                  id="bulkActions"
+                  class="hidden mb-6 bg-white p-5 rounded-xl shadow-lg border border-gray-200 sticky-actions"
+                >
+                  <div
+                    class="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4"
+                  >
+                    <div class="flex items-center gap-4">
+                      <label
+                        class="flex items-center gap-2 cursor-pointer text-sm font-medium text-gray-700"
+                        ><input
+                          type="checkbox"
+                          id="selectAllCheckbox"
+                          class="custom-checkbox"
+                        />
+                        Select All</label
+                      >
+                    </div>
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-3">
+                      <span
+                        class="text-sm font-medium text-gray-700 hidden sm:inline"
+                        >Global Settings:</span
+                      >
+                      <div class="flex items-center gap-2">
+                        <select id="globalFormat" class="custom-select w-24">
+                          <option value="srt">SRT</option>
+                          <option value="txt">TXT</option>
+                          <option value="vtt">VTT</option>
+                        </select>
+                        <span class="tooltip-trigger text-gray-400">
+                          <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                          <div class="tooltip-content">
+                            <b>SRT:</b> Best for video editing software.<br /><b
+                              >VTT:</b
+                            >
+                            Best for web video players.<br /><b>TXT:</b> Plain
+                            text for reading.
+                          </div>
+                        </span>
+                      </div>
+                      <button
+                        id="downloadSelectedBtn"
+                        class="btn-primary text-white font-semibold py-2 px-5 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                      >
+                        <svg
+                          class="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                          ></path>
+                        </svg>
+                        <span id="downloadSelectedText"
+                          >Download Selected (0)</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div id="videoList" class="space-y-4"></div>
+                <div id="downloadProgress" class="mt-8 hidden"></div>
+              </div>
+            </div>
+            <div
+              class="mt-12 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm text-gray-500 font-medium"
+            >
+              <div class="flex items-center gap-2">
+                <svg
+                  class="w-4 h-4 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  ></path></svg
+                >Bulk Processing Supported
+              </div>
+              <div class="flex items-center gap-2">
+                <svg
+                  class="w-4 h-4 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  ></path></svg
+                >No Installation Required
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-20 bg-gray-50/70">
+          <div class="container mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16">
+              <h2
+                class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight"
+              >
+                Effortless in Three Steps
+              </h2>
+              <p
+                class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed"
+              >
+                Our process is designed for speed and simplicity. Get your
+                subtitles in seconds.
+              </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+              <div class="p-8">
+                <div
+                  class="flex items-center justify-center h-20 w-20 mx-auto bg-blue-100 text-blue-600 rounded-full"
+                >
+                  <svg
+                    class="w-10 h-10"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="mt-6 text-xl font-bold text-gray-900">
+                  1. Paste URLs
+                </h3>
+                <p class="mt-2 text-gray-600 leading-relaxed">
+                  Copy and paste one or hundreds of YouTube links. Upload a file
+                  for even larger jobs.
+                </p>
+              </div>
+              <div class="p-8">
+                <div
+                  class="flex items-center justify-center h-20 w-20 mx-auto bg-blue-100 text-blue-600 rounded-full"
+                >
+                  <svg
+                    class="w-10 h-10"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="mt-6 text-xl font-bold text-gray-900">2. Analyze</h3>
+                <p class="mt-2 text-gray-600 leading-relaxed">
+                  Our system instantly checks each link for available,
+                  high-quality English subtitles.
+                </p>
+              </div>
+              <div class="p-8">
+                <div
+                  class="flex items-center justify-center h-20 w-20 mx-auto bg-blue-100 text-blue-600 rounded-full"
+                >
+                  <svg
+                    class="w-10 h-10"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="mt-6 text-xl font-bold text-gray-900">
+                  3. Download
+                </h3>
+                <p class="mt-2 text-gray-600 leading-relaxed">
+                  Download individual files or get a neatly organized ZIP for
+                  all selected videos.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-24 bg-transparent">
+          <div class="container mx-auto px-6 lg:px-8">
+            <div class="text-center mb-20">
+              <span
+                class="text-sm font-semibold uppercase text-blue-600 tracking-wider"
+                >Core Capabilities</span
+              >
+              <h2
+                class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 tracking-tight"
+              >
+                Engineered for Your Workflow
+              </h2>
+              <p
+                class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed"
+              >
+                Discover a suite of features designed to handle any task, from a
+                single video to an entire content library.
+              </p>
+            </div>
+            <div class="space-y-24">
+              <div class="grid md:grid-cols-2 items-center gap-12">
+                <div
+                  class="p-2 bg-white rounded-xl shadow-2xl border border-gray-200"
+                >
+                  <img
+                    src="./image/demo.gif"
+                    alt="A demonstration of the subtitle downloader in action"
+                    class="rounded-lg w-full"
+                  />
+                </div>
+                <div>
+                  <span class="text-blue-600 font-semibold"
+                    >SEE IT IN ACTION</span
+                  >
+                  <h3
+                    class="mt-2 text-3xl font-bold text-gray-900 tracking-tight"
+                  >
+                    From Complexity to Simplicity
+                  </h3>
+                  <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                    Whether it's an entire YouTube playlist or a text file with
+                    hundreds of links, just paste it in. Our tool intelligently
+                    parses, processes, and prepares everything for you, turning
+                    hours of manual work into seconds of waiting.
+                  </p>
+                </div>
+              </div>
+              <div class="grid md:grid-cols-2 items-center gap-12">
+                <div class="md:order-last px-6">
+                  <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                    <circle
+                      cx="60"
+                      cy="75"
+                      r="20"
+                      fill="none"
+                      stroke="#3B82F6"
+                      stroke-width="3"
+                    />
+                    <path d="M 55 68 L 70 75 L 55 82 Z" fill="#3B82F6" />
+                    <path
+                      d="M 80 75 L 120 40"
+                      fill="none"
+                      stroke="#93C5FD"
+                      stroke-width="2"
+                      stroke-dasharray="5 3"
+                    />
+                    <path
+                      d="M 80 75 L 120 75"
+                      fill="none"
+                      stroke="#93C5FD"
+                      stroke-width="2"
+                      stroke-dasharray="5 3"
+                    />
+                    <path
+                      d="M 80 75 L 120 110"
+                      fill="none"
+                      stroke="#93C5FD"
+                      stroke-width="2"
+                      stroke-dasharray="5 3"
+                    />
+                    <rect
+                      x="130"
+                      y="25"
+                      width="50"
+                      height="30"
+                      rx="5"
+                      fill="#EFF6FF"
+                      stroke="#BFDBFE"
+                      stroke-width="2"
+                    />
+                    <text
+                      x="141"
+                      y="44"
+                      font-family="monospace"
+                      font-size="10"
+                      fill="#3B82F6"
+                    >
+                      .SRT
+                    </text>
+                    <rect
+                      x="130"
+                      y="60"
+                      width="50"
+                      height="30"
+                      rx="5"
+                      fill="#EFF6FF"
+                      stroke="#BFDBFE"
+                      stroke-width="2"
+                    />
+                    <text
+                      x="141"
+                      y="79"
+                      font-family="monospace"
+                      font-size="10"
+                      fill="#3B82F6"
+                    >
+                      .VTT
+                    </text>
+                    <rect
+                      x="130"
+                      y="95"
+                      width="50"
+                      height="30"
+                      rx="5"
+                      fill="#EFF6FF"
+                      stroke="#BFDBFE"
+                      stroke-width="2"
+                    />
+                    <text
+                      x="141"
+                      y="114"
+                      font-family="monospace"
+                      font-size="10"
+                      fill="#3B82F6"
+                    >
+                      .TXT
+                    </text>
+                  </svg>
+                </div>
+                <div>
+                  <span class="text-blue-600 font-semibold"
+                    >ADAPTIVE OUTPUT</span
+                  >
+                  <h3
+                    class="mt-2 text-3xl font-bold text-gray-900 tracking-tight"
+                  >
+                    For Your Workflow, Not Against It
+                  </h3>
+                  <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                    Need timed captions for video editing? Choose SRT. Building
+                    an accessible web player? VTT is ready. Just need a
+                    transcript for analysis? Export as plain TXT. The choice is
+                    yours, for every single file.
+                  </p>
+                </div>
+              </div>
+              <div class="grid md:grid-cols-2 items-center gap-12">
+                <div class="px-6">
+                  <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M 100 20 L 140 40 L 140 80 C 140 110, 100 130, 100 130 C 100 130, 60 110, 60 80 L 60 40 Z"
+                      fill="#EFF6FF"
+                      stroke="#60A5FA"
+                      stroke-width="3"
+                    />
+                    <path
+                      d="M 90 70 L 100 80 L 115 65"
+                      fill="none"
+                      stroke="#1E40AF"
+                      stroke-width="4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <span class="text-blue-600 font-semibold">PRIVACY FIRST</span>
+                  <h3
+                    class="mt-2 text-3xl font-bold text-gray-900 tracking-tight"
+                  >
+                    Your Data is Yours. Period.
+                  </h3>
+                  <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                    We believe privacy is a fundamental right. YTVidHub
+                    processes everything in-browser or on our server
+                    momentarily. We never store, log, or analyze your URLs. No
+                    accounts, no tracking, just a pure and simple tool.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-20 bg-gray-50/70" id="faq">
+          <div class="container mx-auto px-6 lg:px-8 max-w-4xl">
+            <h2
+              class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-12 tracking-tight"
+            >
+              Technical Q&A
+            </h2>
+            <div class="space-y-4">
+              <details
+                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+              >
+                <summary
+                  class="font-semibold text-lg text-gray-800 focus:outline-none"
+                >
+                  What URL formats are supported?
+                </summary>
+                <div
+                  class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed"
+                >
+                  We support standard YouTube video URLs, playlist URLs, and
+                  channel page URLs. For bulk processing via file upload, ensure
+                  each URL is on a new line in a simple `.txt` or `.csv` file.
+                  The system automatically filters out invalid or duplicate
+                  links.
+                </div>
+              </details>
+              <details
+                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+              >
+                <summary
+                  class="font-semibold text-lg text-gray-800 focus:outline-none"
+                >
+                  What language are subtitles in?
+                </summary>
+                <div
+                  class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed"
+                >
+                  This tool is optimized to download
+                  <strong>English</strong> subtitles. If a video has manually
+                  uploaded English captions, they will be downloaded. Other
+                  languages are not supported at this time.
+                </div>
+              </details>
+              <details
+                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+              >
+                <summary
+                  class="font-semibold text-lg text-gray-800 focus:outline-none"
+                >
+                  Why do some videos show "No Subtitles"?
+                </summary>
+                <div
+                  class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed"
+                >
+                  Our tool prioritizes downloading *manually uploaded or
+                  generated* captions. Videos that only have YouTube's
+                  <strong>auto-generated</strong> captions are filtered out to
+                  ensure the highest quality and accuracy of the downloaded
+                  text.
+                </div>
+              </details>
+              <details
+                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+              >
+                <summary
+                  class="font-semibold text-lg text-gray-800 focus:outline-none"
+                >
+                  Is my usage data stored?
+                </summary>
+                <div
+                  class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed"
+                >
+                  <strong>No.</strong> We operate with a core commitment to user
+                  privacy. The system processes your request in memory to
+                  generate the output file, but all URL inputs and file contents
+                  are immediately discarded upon job completion. We do not
+                  maintain any logs of your activity.
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 lg:px-8 py-12">
+          <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+            <div class="md:col-span-1">
+              <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
+              <p class="mt-3 text-gray-400 text-sm">
+                The essential toolkit for video content data extraction, built
+                for speed and reliability.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./index.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Home</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./bulk-youtube-subtitle-downloader.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Bulk Downloader</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./how-to-use.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >How to Use</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./faq.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >FAQ</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./what-is-an-srt-file.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Srt File</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./privacy-policy.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Privacy Policy</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./terms-of-service.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Terms of Service</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
+            <p>
+              &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
+              affiliated with Google or YouTube.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- MODIFICATION: Mobile menu moved outside the main wrapper to solve stacking context/transparency issues -->
+    <div
+      id="mobile-menu"
+      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+    >
+      <div class="flex flex-col h-full">
+        <div
+          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+        >
+          <a href="./index.html" class="flex items-center gap-3"
+            ><img
+              src="./image/icon.webp"
+              alt="YTVidHub Logo"
+              class="h-8 md:h-10 w-auto"
+          /></a>
           <button
-            id="mobile-menu-button"
+            id="mobile-menu-close-button"
             class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
           >
             <svg
@@ -147,613 +914,197 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M4 6h16M4 12h16m-7 6h7"
+                d="M6 18L18 6M6 6l12 12"
               ></path>
             </svg>
           </button>
         </div>
-      </nav>
-
-      <div
-        id="mobile-menu"
-        class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
-      >
-        <div class="flex flex-col h-full">
-          <div
-            class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+        <div class="flex flex-col p-6 space-y-4 flex-grow">
+          <a
+            href="./index.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Home</a
           >
-            <a href="./index.html" class="flex items-center gap-3">
-              <img
-                src="./image/icon.webp"
-                alt="YTVidHub Logo"
-                class="h-8 md:h-10 w-auto"
-              />
-            </a>
-            <button
-              id="mobile-menu-close-button"
-              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-            >
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </button>
-          </div>
-
-          <div class="flex flex-col p-6 space-y-4 flex-grow">
-            <a
-              href="./index.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Home</a
-            ><a
-              href="./bulk-youtube-subtitle-downloader.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Bulk Downloader</a
-            ><a
-              href="./how-to-use.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >How to Use</a
-            ><a
-              href="./faq.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >FAQ</a
-            >
-            <a
-              href="./what-is-an-srt-file.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Srt File</a
-            >
-            <a
-              href="./terms-of-service.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Terms</a
-            >
-            <a
-              href="./privacy-policy.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-              >Privacy</a
-            >
-            <a
-              href="./about.html"
-              class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-ray-100"
-              >About</a
-            >
-          </div>
+          <a
+            href="./bulk-youtube-subtitle-downloader.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Bulk Downloader</a
+          >
+          <a
+            href="./how-to-use.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >How to Use</a
+          >
+          <a
+            href="./faq.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >FAQ</a
+          >
+          <a
+            href="./what-is-an-srt-file.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Srt File</a
+          >
+          <a
+            href="./terms-of-service.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Terms</a
+          >
+          <a
+            href="./privacy-policy.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Privacy</a
+          >
+          <a
+            href="./about.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >About</a
+          >
         </div>
       </div>
-    </header>
+    </div>
 
-    <main>
-      <section class="pt-16 pb-12 md:pt-32 md:pb-20 bg-white">
-        <div class="container mx-auto px-6 lg:px-8 text-center">
-          <h1
-            class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter"
-          >
-            <span class="text-blue-600">Extract & Manage</span> YouTube
-            Subtitles At Scale
-          </h1>
-          <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-4xl mx-auto">
-            The professional, free utility for high-volume caption and
-            transcript management. Supports **SRT, VTT, and TXT** for single
-            videos, playlists, or large URL lists.
+    <div id="login-modal-container" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop">
+      <div id="login-modal-content" class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content">
+          <!-- Close Button -->
+          <button id="modal-close-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+
+          <div class="text-center">
+              <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+              <p class="text-gray-500 mb-6">Log in to access your Pro features.</p>
+          </div>
+
+          <!-- Google Login -->
+          <button id="google-login" class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-4">
+              <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"></path><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"></path><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"></path><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"></path></svg>
+              <span class="text-sm font-semibold text-gray-700">Continue with Google</span>
+          </button>
+          
+          <!-- Divider -->
+          <div class="flex items-center my-6">
+              <hr class="flex-grow border-t border-gray-200">
+              <span class="px-3 text-xs font-medium text-gray-400">OR</span>
+              <hr class="flex-grow border-t border-gray-200">
+          </div>
+
+          <!-- Email/Password Form -->
+          <form action="#" method="POST">
+              <div class="space-y-4">
+                  <div>
+                      <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                      <input type="email" name="email" id="email" autocomplete="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                  <div>
+                      <div class="flex justify-between items-baseline">
+                         <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                         <a href="#" class="text-xs text-blue-600 hover:underline">Forgot password?</a>
+                      </div>
+                      <input type="password" name="password" id="password" autocomplete="current-password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                  <div>
+                      <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                          Log In
+                      </button>
+                  </div>
+              </div>
+          </form>
+
+          <p class="text-center text-sm text-gray-500 mt-8">
+              Don't have an account?
+              <a href="#" class="font-medium text-blue-600 hover:underline">Sign up</a>
           </p>
-
-          <div class="mt-12 max-w-5xl mx-auto text-left">
-            <div id="inputArea">
-              <div
-                class="relative bg-white p-6 md:p-10 rounded-2xl shadow-xl main-card border border-gray-200"
-              >
-                <div class="drag-overlay">
-                  <div class="text-center font-bold text-blue-600">
-                    <svg
-                      class="w-12 h-12 mx-auto"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-                      ></path>
-                    </svg>
-                    <p class="mt-2">
-                      Drop URL list file here for instant bulk processing!
-                    </p>
-                  </div>
-                </div>
-
-                <label
-                  for="urlInput"
-                  class="block text-xl font-bold text-gray-800 mb-3"
-                >
-                  Enter YouTube URL(s)
-                </label>
-
-                <textarea
-                  id="urlInput"
-                  class="w-full h-32 p-4 bg-gray-50 rounded-xl resize-y focus-blue-ring border border-gray-300 text-base transition duration-200 font-mono"
-                  placeholder="Paste links here (one per line), or drop a .txt file onto this area..."
-                ></textarea>
-
-                <div
-                  class="mt-6 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4"
-                >
-                  <div
-                    class="flex items-center justify-center md:justify-start gap-4 text-sm text-gray-500"
-                  >
-                    <div class="flex items-center">
-                      <span class="mr-2">File Upload:</span>
-                      <label
-                        for="fileInput"
-                        class="cursor-pointer font-medium text-blue-600 hover:text-blue-700 hover:underline"
-                      >
-                        Upload .txt/.csv
-                      </label>
-                      <input
-                        type="file"
-                        id="fileInput"
-                        class="hidden"
-                        accept=".txt,.csv"
-                      />
-                    </div>
-                    <a
-                      href="#faq"
-                      class="text-blue-500 hover:underline font-medium text-xs hidden sm:block"
-                      >Need help?</a
-                    >
-                  </div>
-
-                  <div
-                    class="flex flex-col-reverse sm:flex-row gap-3 w-full md:w-auto"
-                  >
-                    <button
-                      id="clearBtn"
-                      class="text-gray-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition w-full sm:w-auto"
-                    >
-                      Clear
-                    </button>
-                    <button
-                      id="analyzeBtn"
-                      class="btn-primary text-white font-bold py-3 px-8 rounded-xl text-lg flex items-center justify-center gap-2 w-full sm:w-auto"
-                    >
-                      <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        ></path></svg
-                      >Analyze & Extract
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div id="analyzingArea" class="hidden mt-8"></div>
-            <div id="resultsArea" class="hidden mt-8">
-              <div id="resultsSummary" class="hidden mb-4 text-center bg-blue-50 text-blue-800 p-4 rounded-lg border border-blue-200 text-sm font-medium"></div>
-
-              <div
-                id="bulkActions"
-                class="hidden mb-6 bg-white p-5 rounded-xl shadow-lg border border-gray-200 sticky-actions"
-              >
-                <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4">
-                  <div class="flex items-center gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer text-sm font-medium text-gray-700">
-                      <input type="checkbox" id="selectAllCheckbox" class="custom-checkbox"/> Select All
-                    </label>
-                  </div>
-                  <div class="flex flex-wrap items-center gap-x-4 gap-y-3">
-                    <span class="text-sm font-medium text-gray-700 hidden sm:inline">Global Settings:</span>
-                                        
-                    <div class="flex items-center gap-2">
-                        <select id="globalFormat" class="custom-select w-24">
-                          <option value="srt">SRT</option>
-                          <option value="txt">TXT</option>
-                          <option value="vtt">VTT</option>
-                        </select>
-                        <span class="tooltip-trigger text-gray-400">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            <div class="tooltip-content">
-                                <b>SRT:</b> Best for video editing software (Premiere, Final Cut).<br>
-                                <b>VTT:</b> Best for web video players (HTML5).<br>
-                                <b>TXT:</b> Plain text for reading or analysis.
-                            </div>
-                        </span>
-                    </div>
-
-                    <!-- MODIFICATION: Removed the non-functional filename selector -->
-
-                    <button
-                      id="downloadSelectedBtn"
-                      class="btn-primary text-white font-semibold py-2 px-5 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                      <span id="downloadSelectedText">Download Selected (0)</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div id="videoList" class="space-y-4"></div>
-              <div id="downloadProgress" class="mt-8 hidden"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- All other sections remain the same -->
-      <section class="py-20 bg-gray-50 border-t border-b border-gray-100">
-        <div class="container mx-auto px-6 lg:px-8">
-          <div class="text-center mb-16">
-            <span
-              class="text-sm font-semibold uppercase text-blue-600 tracking-wider"
-              >Core Capabilities</span
-            >
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">
-              Engineered for Scalability and Precision
-            </h2>
-            <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">
-              Leverage a robust infrastructure designed to handle thousands of
-              requests seamlessly while offering granular control over every
-              download.
-            </p>
-          </div>
-          <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-xl feature-card shadow-sm">
-              <div
-                class="text-blue-600 mb-4 bg-blue-50 p-3 rounded-xl inline-block"
-              >
-                <svg
-                  class="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                  ></path>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mt-2">
-                Batch Processing at High Speed
-              </h3>
-              <p class="mt-3 text-gray-600 text-base">
-                Process entire YouTube playlists or drop a text file containing
-                hundreds of links. Our service handles the load and bundles
-                everything into one clean ZIP file for you.
-              </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl feature-card shadow-sm">
-              <div
-                class="text-blue-600 mb-4 bg-blue-50 p-3 rounded-xl inline-block"
-              >
-                <svg
-                  class="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9.75 17L9 20l-1 1h8l-1-1-0.75-3M3 17h18M5 13h14a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 012-2zM12 9V7"
-                  ></path>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mt-2">
-                Flexible Output Formats
-              </h3>
-              <p class="mt-3 text-gray-600 text-base">
-                Export captions as structured SRT for video editing, simple TXT
-                for transcripts, or VTT for web accessibility. Choose the format
-                that best fits your workflow.
-              </p>
-            </div>
-            <div class="bg-white p-8 rounded-xl feature-card shadow-sm">
-              <div
-                class="text-blue-600 mb-4 bg-blue-50 p-3 rounded-xl inline-block"
-              >
-                <svg
-                  class="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 11V3m0 0L8 7m4-4l4 4m-4 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mt-2">
-                Secure, Private, and Free Forever
-              </h3>
-              <p class="mt-3 text-gray-600 text-base">
-                Our service is free, requires no login, and operates under a
-                strict no-log policy. Your data and URLs are processed
-                momentarily and are never stored or tracked.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-20 bg-white">
-        <div class="container mx-auto px-6 lg:px-8 text-center">
-          <div
-            class="max-w-4xl mx-auto p-12 rounded-xl bg-blue-50 border border-blue-200"
-          >
-            <h2 class="text-3xl font-extrabold text-gray-900">
-              Start Your Extraction Workflow Today
-            </h2>
-            <p class="mt-4 text-lg text-gray-600">
-              No sign-up, no limits. Just paste your links and get your data
-              instantly.
-            </p>
-            <a
-              href="#inputArea"
-              class="mt-8 inline-flex items-center btn-primary text-white font-bold py-3.5 px-12 rounded-xl text-lg hover:bg-blue-700 transition transform"
-            >
-              Access the Tool
-              <svg
-                class="w-5 h-5 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                ></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-20 bg-gray-50" id="faq">
-        <div class="container mx-auto px-6 lg:px-8 max-w-4xl">
-          <h2
-            class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
-          >
-            Technical Q&A
-          </h2>
-          <div class="space-y-4">
-            <details
-              class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
-            >
-              <summary
-                class="font-semibold text-lg text-gray-800 focus:outline-none"
-              >
-                What URL formats are supported for bulk input?
-              </summary>
-              <div
-                class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed text-base"
-              >
-                We support standard YouTube video URLs, playlist URLs, and
-                channel page URLs. For bulk processing via file upload, ensure
-                each URL is on a new line in a simple `.txt` or `.csv` file. The
-                system automatically filters out invalid or duplicate links.
-              </div>
-            </details>
-            <details
-              class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
-            >
-              <summary
-                class="font-semibold text-lg text-gray-800 focus:outline-none"
-              >
-                What language are the subtitles downloaded in?
-              </summary>
-              <div
-                class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed text-base"
-              >
-                This tool is optimized to download **English** subtitles. If a video has manually uploaded English captions, they will be downloaded. Other languages are not supported at this time.
-              </div>
-            </details>
-            <details
-              class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
-            >
-              <summary
-                class="font-semibold text-lg text-gray-800 focus:outline-none"
-              >
-                Why do some videos show "No Subtitles" even though they have
-                captions?
-              </summary>
-              <div
-                class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed text-base"
-              >
-                Our tool prioritizes downloading *manually uploaded or
-                generated* captions. Videos that only have YouTube's
-                **auto-generated** captions (which often require complex
-                server-side conversion) may be filtered out to ensure the
-                highest quality and accuracy of the downloaded text.
-              </div>
-            </details>
-            <details
-              class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
-            >
-              <summary
-                class="font-semibold text-lg text-gray-800 focus:outline-none"
-              >
-                Is my usage data or history stored by YTVidHub?
-              </summary>
-              <div
-                class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed text-base"
-              >
-                **No.** We operate with a core commitment to user privacy. The
-                system processes your request in memory to generate the output
-                file, but all URL inputs, file contents, and personal
-                identification data are immediately discarded upon job
-                completion. We do not maintain any logs of your activity.
-              </div>
-            </details>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="bg-gray-800 text-white">
-      <div class="container mx-auto px-6 lg:px-8 py-12">
-        <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
-          <div class="md:col-span-1">
-            <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
-            <p class="mt-3 text-gray-400 text-sm">
-              The essential toolkit for video content data extraction, built for
-              speed and reliability.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
-            <ul class="space-y-3 text-sm">
-              <li>
-                <a
-                  href="./index.html"
-                  class="hover:text-blue-400 text-gray-400 transition"
-                  >Home</a
-                >
-              </li>
-              <li>
-                <a
-                  href="./bulk-youtube-subtitle-downloader.html"
-                  class="hover:text-blue-400 text-gray-400 transition"
-                  >Bulk Downloader</a
-                >
-              </li>
-              <li>
-                <a
-                  href="./how-to-use.html"
-                  class="hover:text-blue-400 text-gray-400 transition"
-                  >How to Use</a
-                >
-              </li>
-              <li>
-                <a
-                  href="./faq.html"
-                  class="hover:text-blue-400 text-gray-400 transition"
-                  >FAQ</a
-                >
-              </li>
-              <li>
-                <a
-                  href="./what-is-an-srt-file.html"
-                  class="hover:text-blue-400 text-gray-400 transition"
-                  >Srt File</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
-            <ul class="space-y-3 text-sm">
-              <li>
-                <a
-                  href="./privacy-policy.html"
-                  class="hover:text-blue-400 text-gray-400 transition"
-                  >Privacy Policy</a
-                >
-              </li>
-              <li>
-                <a
-                  href="./terms-of-service.html"
-                  class="hover:text-blue-400 text-gray-400 transition"
-                  >Terms of Service</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
-          <p>
-            &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
-            affiliated with Google or YouTube.
-          </p>
-        </div>
       </div>
-    </footer>
+  </div>
+
+    <script src="./js/auth.js" defer></script>
 
     <script>
+      // The JavaScript remains 100% unchanged.
       let videoData = [];
       const selectedVideos = new Set();
       let currentTaskId = null;
       let pollingInterval = null;
       let perceivedProgressInterval = null;
       let currentPerceivedProgress = 0;
-      let initialUrlCount = 0; 
+      let initialUrlCount = 0;
       const youtubeRegex =
         /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-
-      // --- DOM Elements ---
       let inputArea, analyzingArea, resultsArea, globalFormatSelect;
-
       const MOBILE_MENU_TRANSITION_DURATION = 400;
-
       document.addEventListener("DOMContentLoaded", () => {
         inputArea = document.getElementById("inputArea");
         analyzingArea = document.getElementById("analyzingArea");
         resultsArea = document.getElementById("resultsArea");
         globalFormatSelect = document.getElementById("globalFormat");
-
         const mobileMenuButton = document.getElementById("mobile-menu-button");
-        const mobileMenuCloseButton = document.getElementById("mobile-menu-close-button");
+        const mobileMenuCloseButton = document.getElementById(
+          "mobile-menu-close-button"
+        );
         const mobileMenu = document.getElementById("mobile-menu");
-        if (mobileMenuButton) mobileMenuButton.addEventListener("click", () => {
+        if (mobileMenuButton)
+          mobileMenuButton.addEventListener("click", () => {
             mobileMenu.classList.remove("hidden");
-            setTimeout(() => mobileMenu.classList.remove("translate-x-full"), 10);
+            setTimeout(
+              () => mobileMenu.classList.remove("translate-x-full"),
+              10
+            );
             document.body.style.overflow = "hidden";
-        });
-        if (mobileMenuCloseButton) mobileMenuCloseButton.addEventListener("click", () => {
+          });
+        if (mobileMenuCloseButton)
+          mobileMenuCloseButton.addEventListener("click", () => {
             mobileMenu.classList.add("translate-x-full");
             document.body.style.overflow = "";
-            setTimeout(() => mobileMenu.classList.add("hidden"), MOBILE_MENU_TRANSITION_DURATION);
-        });
-
-        document.getElementById("analyzeBtn").addEventListener("click", handleAnalyzeClick);
-        document.getElementById("clearBtn").addEventListener("click", handleClear);
-        document.getElementById("fileInput").addEventListener("change", handleFileUpload);
-        
+            setTimeout(
+              () => mobileMenu.classList.add("hidden"),
+              MOBILE_MENU_TRANSITION_DURATION
+            );
+          });
+        document
+          .getElementById("analyzeBtn")
+          .addEventListener("click", handleAnalyzeClick);
+        document
+          .getElementById("clearBtn")
+          .addEventListener("click", handleClear);
+        document
+          .getElementById("fileInput")
+          .addEventListener("change", handleFileUpload);
         const dragContainer = document.querySelector("#inputArea");
-        ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => dragContainer.addEventListener(e, preventDefaults, false));
-        ["dragenter", "dragover"].forEach((e) => dragContainer.addEventListener(e, () => dragContainer.classList.add("dragging"), false));
-        ["dragleave", "drop"].forEach((e) => dragContainer.addEventListener(e, () => dragContainer.classList.remove("dragging"), false));
+        ["dragenter", "dragover", "dragleave", "drop"].forEach((e) =>
+          dragContainer.addEventListener(e, preventDefaults, false)
+        );
+        ["dragenter", "dragover"].forEach((e) =>
+          dragContainer.addEventListener(
+            e,
+            () => dragContainer.classList.add("dragging"),
+            false
+          )
+        );
+        ["dragleave", "drop"].forEach((e) =>
+          dragContainer.addEventListener(
+            e,
+            () => dragContainer.classList.remove("dragging"),
+            false
+          )
+        );
         dragContainer.addEventListener("drop", handleFileDrop, false);
-        
-        document.getElementById("selectAllCheckbox").addEventListener("change", handleSelectAll);
-        document.getElementById("downloadSelectedBtn").addEventListener("click", handleBulkDownload);
-        
-        globalFormatSelect.addEventListener("change", () => applyGlobalSettingHighlight('format'));
+        document
+          .getElementById("selectAllCheckbox")
+          .addEventListener("change", handleSelectAll);
+        document
+          .getElementById("downloadSelectedBtn")
+          .addEventListener("click", handleBulkDownload);
+        globalFormatSelect.addEventListener("change", () =>
+          applyGlobalSettingHighlight("format")
+        );
       });
-
       function resetToInputArea() {
         document.getElementById("urlInput").value = "";
         resultsArea.classList.add("hidden");
         analyzingArea.classList.add("hidden");
         inputArea.classList.remove("hidden");
-        document.getElementById('resultsSummary').classList.add('hidden');
+        document.getElementById("resultsSummary").classList.add("hidden");
         videoData = [];
         selectedVideos.clear();
         initialUrlCount = 0;
@@ -768,26 +1119,45 @@
           progressContainer.classList.add("hidden");
         }
       }
-
-      function handleClear() { resetToInputArea(); }
-      function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
-      async function handleFileUpload(e) { const file = e.target.files[0]; if (file) await processFile(file); }
-      async function handleFileDrop(e) { const file = e.dataTransfer.files[0]; if (file) await processFile(file); }
+      function handleClear() {
+        resetToInputArea();
+      }
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      async function handleFileUpload(e) {
+        const file = e.target.files[0];
+        if (file) await processFile(file);
+      }
+      async function handleFileDrop(e) {
+        const file = e.dataTransfer.files[0];
+        if (file) await processFile(file);
+      }
       async function processFile(file) {
-        if (!["text/plain", "text/csv", "application/vnd.ms-excel"].includes(file.type)) {
-          return showNotification("Invalid file type. Please use .txt or .csv", "error");
+        if (
+          !["text/plain", "text/csv", "application/vnd.ms-excel"].includes(
+            file.type
+          )
+        ) {
+          return showNotification(
+            "Invalid file type. Please use .txt or .csv",
+            "error"
+          );
         }
         document.getElementById("urlInput").value = await file.text();
         handleAnalyzeClick();
       }
-
       async function handleAnalyzeClick() {
         const urlInput = document.getElementById("urlInput").value;
         const urlRegex = /https?:\/\/[^\s/$.?#].[^\s]*/g;
-        const urls = [...new Set(urlInput.match(urlRegex) || [])]; 
+        const urls = [...new Set(urlInput.match(urlRegex) || [])];
         initialUrlCount = (urlInput.match(urlRegex) || []).length;
         if (urls.length === 0) {
-          return showNotification("No valid YouTube URLs found. Please check your input.", "error");
+          return showNotification(
+            "No valid YouTube URLs found. Please check your input.",
+            "error"
+          );
         }
         inputArea.classList.add("hidden");
         resultsArea.classList.add("hidden");
@@ -795,7 +1165,8 @@
         startAnalysisProgress();
         try {
           const details = await fetchVideoDetails(urls);
-          if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
+          if (perceivedProgressInterval)
+            clearInterval(perceivedProgressInterval);
           videoData = details.map((d) => ({ ...d, selectedFormat: "srt" }));
           displayResults(videoData);
           analyzingArea.classList.add("hidden");
@@ -805,57 +1176,80 @@
           resetToInputArea();
         }
       }
-
       async function fetchVideoDetails(urls) {
-        const response = await fetch("https://ytdlp.vistaflyer.com/api/batch_check", {
-            method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ urls: urls }),
-        });
+        const response = await fetch(
+          "https://ytdlp.vistaflyer.com/api/batch_check",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ urls: urls }),
+          }
+        );
         if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
         const data = await response.json();
-        if (data.status !== "completed") throw new Error("Server could not process URLs.");
+        if (data.status !== "completed")
+          throw new Error("Server could not process URLs.");
         return data.results.map((item) => ({
-          id: (item.url.match(youtubeRegex) || [])[1], url: item.url, title: item.video_info.title || "Untitled",
-          uploader: item.video_info.uploader || "Unknown", thumbnail: `https://i.ytimg.com/vi/${(item.url.match(youtubeRegex) || [])[1]}/hqdefault.jpg`,
-          hasSubtitles: item.can_download
+          id: (item.url.match(youtubeRegex) || [])[1],
+          url: item.url,
+          title: item.video_info.title || "Untitled",
+          uploader: item.video_info.uploader || "Unknown",
+          thumbnail: `https://i.ytimg.com/vi/${
+            (item.url.match(youtubeRegex) || [])[1]
+          }/hqdefault.jpg`,
+          hasSubtitles: item.can_download,
         }));
       }
-
       function startAnalysisProgress() {
         let percent = 0;
         const progressBar = document.getElementById("analysisProgressBar");
-        const percentageText = document.getElementById("analysisPercentageText");
+        const percentageText = document.getElementById(
+          "analysisPercentageText"
+        );
         const progressText = document.getElementById("analysisProgressText");
-        const analysisMessages = ["Validating URLs...", "Establishing connection...", "Fetching video metadata...", "Checking for English subtitles..."];
+        const analysisMessages = [
+          "Validating URLs...",
+          "Establishing connection...",
+          "Fetching video metadata...",
+          "Checking for English subtitles...",
+        ];
         let messageIndex = 0;
         const messageInterval = setInterval(() => {
-            if(progressText) progressText.textContent = analysisMessages[messageIndex % analysisMessages.length];
-            messageIndex++;
+          if (progressText)
+            progressText.textContent =
+              analysisMessages[messageIndex % analysisMessages.length];
+          messageIndex++;
         }, 1500);
         perceivedProgressInterval = setInterval(() => {
           percent += (95 - percent) * 0.1;
           if (progressBar) progressBar.style.width = `${percent}%`;
-          if (percentageText) percentageText.textContent = `${Math.floor(percent)}%`;
+          if (percentageText)
+            percentageText.textContent = `${Math.floor(percent)}%`;
           if (percent >= 94) {
-              clearInterval(perceivedProgressInterval);
-              clearInterval(messageInterval);
+            clearInterval(perceivedProgressInterval);
+            clearInterval(messageInterval);
           }
         }, 400);
       }
-
       if (!document.getElementById("analyzingArea").innerHTML.trim()) {
-        document.getElementById("analyzingArea").innerHTML = `<div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center"><svg class="w-24 h-24 text-blue-500 mx-auto opacity-75 loading-spinner" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4H38V12H10V4Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 36H38V44H10V36Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 12L18 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 12L30 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 22L16 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 22L32 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22H28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><h3 class="mt-4 text-xl font-bold text-gray-800">Extracting video information, please wait...</h3><div class="mt-6 max-w-md mx-auto"><div class="flex justify-between mb-1 text-sm font-medium"><span class="text-gray-600">Analysis Progress</span><span id="analysisPercentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="analysisProgressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="analysisProgressText" class="text-center text-sm text-gray-500 mt-2">Initializing...</p></div></div>`;
+        document.getElementById(
+          "analyzingArea"
+        ).innerHTML = `<div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center"><svg class="w-24 h-24 text-blue-500 mx-auto opacity-75 loading-spinner" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4H38V12H10V4Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 36H38V44H10V36Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 12L18 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 12L30 22" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 22L16 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 22L32 36" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 22H28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><h3 class="mt-4 text-xl font-bold text-gray-800">Extracting video information, please wait...</h3><div class="mt-6 max-w-md mx-auto"><div class="flex justify-between mb-1 text-sm font-medium"><span class="text-gray-600">Analysis Progress</span><span id="analysisPercentageText">0%</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div id="analysisProgressBar" class="bg-blue-600 h-2.5 rounded-full transition-width duration-300" style="width: 0%"></div></div><p id="analysisProgressText" class="text-center text-sm text-gray-500 mt-2">Initializing...</p></div></div>`;
       }
-      
       function displayResults(data) {
         const videoList = document.getElementById("videoList");
         const bulkActions = document.getElementById("bulkActions");
-        const resultsSummary = document.getElementById('resultsSummary');
+        const resultsSummary = document.getElementById("resultsSummary");
         videoList.innerHTML = "";
         selectedVideos.clear();
         const successCount = data.length;
         const failedCount = initialUrlCount - successCount;
-        resultsSummary.innerHTML = `Processed <strong>${initialUrlCount}</strong> URLs: Found <strong>${successCount}</strong> valid videos. ${failedCount > 0 ? `<strong>${failedCount}</strong> were invalid or duplicates.` : ''}`;
-        resultsSummary.classList.remove('hidden');
+        resultsSummary.innerHTML = `Processed <strong>${initialUrlCount}</strong> URLs: Found <strong>${successCount}</strong> valid videos. ${
+          failedCount > 0
+            ? `<strong>${failedCount}</strong> were invalid or duplicates.`
+            : ""
+        }`;
+        resultsSummary.classList.remove("hidden");
         if (!data || data.length === 0) return;
         data.forEach((video) => {
           if (video.hasSubtitles) selectedVideos.add(video.id);
@@ -864,63 +1258,78 @@
         bulkActions.classList.toggle("hidden", data.length < 1);
         updateSelectionUI();
       }
-
       function createVideoCard(video) {
         const card = document.createElement("div");
-        card.className = `bg-white p-4 rounded-xl shadow-md border-2 transition-all duration-200 ${selectedVideos.has(video.id) ? "border-blue-500" : "border-gray-200 hover:border-blue-300"}`;
+        card.className = `bg-white p-4 rounded-xl shadow-md border-2 transition-all duration-200 ${
+          selectedVideos.has(video.id)
+            ? "border-blue-500"
+            : "border-gray-200 hover:border-blue-300"
+        }`;
         card.id = `card-${video.id}`;
         const statusBadge = video.hasSubtitles
           ? '<span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full">English Subtitles Available</span>'
-          : `<span class="inline-flex items-center gap-1 text-xs font-medium text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">
-                No Manual Subtitles
-                <span class="tooltip-trigger text-yellow-500">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <div class="tooltip-content">This tool only downloads high-quality, manually-created English subtitles. YouTube's auto-generated captions are not supported.</div>
-                </span>
-             </span>`;
-        card.innerHTML = `
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div class="flex items-center gap-4 flex-shrink-0">
-                    ${video.hasSubtitles ? `<input type="checkbox" class="custom-checkbox" onchange="toggleVideoSelection('${video.id}')" ${selectedVideos.has(video.id) ? "checked" : ""}>` : '<div class="w-5 h-5"></div>'}
-                    <img src="${video.thumbnail}" class="w-28 h-16 object-cover rounded-lg border border-gray-200">
-                </div>
-                <div class="flex-grow min-w-0">
-                    <p class="font-semibold text-gray-800 truncate text-base" title="${video.title.replace(/"/g, "&quot;")}">${video.title}</p>
-                    <p class="text-sm text-gray-500">by ${video.uploader}</p>
-                    ${statusBadge}
-                </div>
-                ${video.hasSubtitles ? `
-                <div class="flex flex-col sm:flex-row items-center gap-2 flex-shrink-0 ml-auto pt-2 sm:pt-0">
-                    <select onchange="updateVideoSetting('${video.id}', 'selectedFormat', this.value)" class="per-video-format custom-select w-full sm:w-20 text-sm">
-                        <option value="srt">SRT</option><option value="txt">TXT</option><option value="vtt">VTT</option>
-                    </select>
-                    <button onclick="handleSingleDownload('${video.id}')" title="Download this subtitle" class="bg-gray-100 hover:bg-blue-500 hover:text-white text-gray-700 p-2 rounded-lg transition flex-shrink-0 w-full sm:w-auto"><svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
-                </div>` : ""}
-            </div>`;
+          : `<span class="inline-flex items-center gap-1 text-xs font-medium text-yellow-700 bg-yellow-100 px-2 py-0.5 rounded-full">No Manual Subtitles<span class="tooltip-trigger text-yellow-500"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><div class="tooltip-content">This tool only downloads high-quality, manually-created English subtitles. YouTube's auto-generated captions are not supported.</div></span></span>`;
+        card.innerHTML = `<div class="flex flex-col sm:flex-row items-start sm:items-center gap-4"><div class="flex items-center gap-4 flex-shrink-0">${
+          video.hasSubtitles
+            ? `<input type="checkbox" class="custom-checkbox" onchange="toggleVideoSelection('${
+                video.id
+              }')" ${selectedVideos.has(video.id) ? "checked" : ""}>`
+            : '<div class="w-5 h-5"></div>'
+        }<img src="${
+          video.thumbnail
+        }" class="w-28 h-16 object-cover rounded-lg border border-gray-200"></div><div class="flex-grow min-w-0"><p class="font-semibold text-gray-800 truncate text-base" title="${video.title.replace(
+          /"/g,
+          "&quot;"
+        )}">${video.title}</p><p class="text-sm text-gray-500">by ${
+          video.uploader
+        }</p>${statusBadge}</div>${
+          video.hasSubtitles
+            ? `<div class="flex flex-col sm:flex-row items-center gap-2 flex-shrink-0 ml-auto pt-2 sm:pt-0"><select onchange="updateVideoSetting('${video.id}', 'selectedFormat', this.value)" class="per-video-format custom-select w-full sm:w-20 text-sm"><option value="srt">SRT</option><option value="txt">TXT</option><option value="vtt">VTT</option></select><button onclick="handleSingleDownload('${video.id}')" title="Download this subtitle" class="bg-gray-100 hover:bg-blue-500 hover:text-white text-gray-700 p-2 rounded-lg transition flex-shrink-0 w-full sm:w-auto"><svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button></div>`
+            : ""
+        }</div>`;
         return card;
       }
-      
       function applyGlobalSettingHighlight(type) {
-        const targetClass = '.per-video-format';
-        selectedVideos.forEach(id => {
-            const card = document.getElementById(`card-${id}`);
-            if(card) {
-                const select = card.querySelector(targetClass);
-                if(select) {
-                    select.classList.add('highlight-change');
-                    setTimeout(() => select.classList.remove('highlight-change'), 800);
-                }
+        const targetClass = ".per-video-format";
+        selectedVideos.forEach((id) => {
+          const card = document.getElementById(`card-${id}`);
+          if (card) {
+            const select = card.querySelector(targetClass);
+            if (select) {
+              select.classList.add("highlight-change");
+              setTimeout(
+                () => select.classList.remove("highlight-change"),
+                800
+              );
             }
+          }
         });
       }
-
-      function updateVideoSetting(videoId, key, value) { const video = videoData.find((v) => v.id === videoId); if (video) video[key] = value; }
-      function toggleVideoSelection(videoId) { if (selectedVideos.has(videoId)) selectedVideos.delete(videoId); else selectedVideos.add(videoId); updateSelectionUI(); }
-      function handleSelectAll() { const isChecked = document.getElementById("selectAllCheckbox").checked; videoData.forEach((video) => { if (video.hasSubtitles) { if (isChecked) selectedVideos.add(video.id); else selectedVideos.delete(video.id); }}); updateSelectionUI(); }
+      function updateVideoSetting(videoId, key, value) {
+        const video = videoData.find((v) => v.id === videoId);
+        if (video) video[key] = value;
+      }
+      function toggleVideoSelection(videoId) {
+        if (selectedVideos.has(videoId)) selectedVideos.delete(videoId);
+        else selectedVideos.add(videoId);
+        updateSelectionUI();
+      }
+      function handleSelectAll() {
+        const isChecked = document.getElementById("selectAllCheckbox").checked;
+        videoData.forEach((video) => {
+          if (video.hasSubtitles) {
+            if (isChecked) selectedVideos.add(video.id);
+            else selectedVideos.delete(video.id);
+          }
+        });
+        updateSelectionUI();
+      }
       function updateSelectionUI() {
         const count = selectedVideos.size;
         const totalSelectable = videoData.filter((v) => v.hasSubtitles).length;
-        document.getElementById("downloadSelectedText").textContent = `Download Selected (${count})`;
+        document.getElementById(
+          "downloadSelectedText"
+        ).textContent = `Download Selected (${count})`;
         document.getElementById("downloadSelectedBtn").disabled = count === 0;
         const selectAllCheckbox = document.getElementById("selectAllCheckbox");
         selectAllCheckbox.checked = count > 0 && count === totalSelectable;
@@ -928,27 +1337,41 @@
         videoData.forEach((video) => {
           const card = document.getElementById(`card-${video.id}`);
           if (card) {
-            card.classList.toggle("border-blue-500", selectedVideos.has(video.id));
-            card.classList.toggle("border-gray-200", !selectedVideos.has(video.id));
+            card.classList.toggle(
+              "border-blue-500",
+              selectedVideos.has(video.id)
+            );
+            card.classList.toggle(
+              "border-gray-200",
+              !selectedVideos.has(video.id)
+            );
             const checkbox = card.querySelector('input[type="checkbox"]');
             if (checkbox) checkbox.checked = selectedVideos.has(video.id);
           }
         });
       }
-      
       async function handleSingleDownload(videoId) {
         const video = videoData.find((v) => v.id === videoId);
         if (!video) return;
         const button = event.target.closest("button");
         const originalContent = button.innerHTML;
         button.disabled = true;
-        button.innerHTML = '<div class="loading-spinner rounded-full h-5 w-5 border-b-2 border-gray-700"></div>';
+        button.innerHTML =
+          '<div class="loading-spinner rounded-full h-5 w-5 border-b-2 border-gray-700"></div>';
         try {
           const card = document.getElementById(`card-${videoId}`);
-          const selectedLang = 'en'; 
+          const selectedLang = "en";
           const selectedFormat = card.querySelector(".per-video-format").value;
-          await downloadFile(video.url, selectedLang, selectedFormat, video.title);
-          showNotification("Single subtitle downloaded successfully!", "success");
+          await downloadFile(
+            video.url,
+            selectedLang,
+            selectedFormat,
+            video.title
+          );
+          showNotification(
+            "Single subtitle downloaded successfully!",
+            "success"
+          );
         } catch (error) {
           showNotification(error.message, "error");
         } finally {
@@ -956,51 +1379,72 @@
           button.innerHTML = originalContent;
         }
       }
-
       async function handleBulkDownload() {
-        const videosToDownload = videoData.filter((v) => selectedVideos.has(v.id)).map((v) => ({ url: v.url, title: v.title, uploader: v.uploader }));
+        const videosToDownload = videoData
+          .filter((v) => selectedVideos.has(v.id))
+          .map((v) => ({ url: v.url, title: v.title, uploader: v.uploader }));
         if (videosToDownload.length === 0) return;
         const format = document.getElementById("globalFormat").value;
-        const lang = 'en'; 
+        const lang = "en";
         try {
-          showNotification(`Starting bulk download for ${videosToDownload.length} files...`, "info");
-          // MODIFICATION: Removed filenameTemplate from the call
+          showNotification(
+            `Starting bulk download for ${videosToDownload.length} files...`,
+            "info"
+          );
           const task = await createBulkTask(videosToDownload, lang, format);
           currentTaskId = task.task_id;
           showProgressArea(videosToDownload.length);
           startPolling();
-        } catch (error) { showNotification(error.message, "error"); }
+        } catch (error) {
+          showNotification(error.message, "error");
+        }
       }
-
       async function downloadFile(url, lang, format, title) {
-        const response = await fetch("https://ytdlp.vistaflyer.com/api/download", {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: url, lang: lang, format: format, title: title }),
-        });
+        const response = await fetch(
+          "https://ytdlp.vistaflyer.com/api/download",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              url: url,
+              lang: lang,
+              format: format,
+              title: title,
+            }),
+          }
+        );
         if (!response.ok) throw new Error("Download failed from server.");
         const blob = await response.blob();
         const objectUrl = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = objectUrl;
-        a.download = `${title.replace(/[^a-z0-9]/gi, "_").slice(0, 60)}.${format}`;
+        a.download = `${title
+          .replace(/[^a-z0-9]/gi, "_")
+          .slice(0, 60)}.${format}`;
         document.body.appendChild(a);
         a.click();
         a.remove();
         URL.revokeObjectURL(objectUrl);
       }
-      
-      // MODIFICATION: Removed filename_template from function signature and body
       async function createBulkTask(videos, lang, format) {
-        const response = await fetch("https://ytdlp.vistaflyer.com/api/batch_submit", {
-            method: "POST", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ videos: videos, lang: lang, format: format }),
-        });
+        const response = await fetch(
+          "https://ytdlp.vistaflyer.com/api/batch_submit",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              videos: videos,
+              lang: lang,
+              format: format,
+            }),
+          }
+        );
         if (!response.ok) throw new Error("Failed to create bulk task.");
         const data = await response.json();
-        if (data.status !== "pending") throw new Error(data.message || "Task submission failed.");
+        if (data.status !== "pending")
+          throw new Error(data.message || "Task submission failed.");
         return data;
       }
-
       function startPolling() {
         if (pollingInterval) clearInterval(pollingInterval);
         startPerceivedProgress();
@@ -1008,20 +1452,45 @@
           if (!currentTaskId) return clearInterval(pollingInterval);
           try {
             const status = await checkTaskStatus(currentTaskId);
-            if (status && status.progress_str) { updateProgressWithRealData(status); }
-            if (status.status === "completed") { clearInterval(pollingInterval); handleDownloadComplete(); } 
-            else if (status.status === "failed") { clearInterval(pollingInterval); if (perceivedProgressInterval) clearInterval(perceivedProgressInterval); showNotification("Bulk download task failed.", "error"); handleDownloadFail(); }
+            if (status && status.progress_str) {
+              updateProgressWithRealData(status);
+            }
+            if (status.status === "completed") {
+              clearInterval(pollingInterval);
+              handleDownloadComplete();
+            } else if (status.status === "failed") {
+              clearInterval(pollingInterval);
+              if (perceivedProgressInterval)
+                clearInterval(perceivedProgressInterval);
+              showNotification("Bulk download task failed.", "error");
+              handleDownloadFail();
+            }
           } catch (error) {
-            clearInterval(pollingInterval); if (perceivedProgressInterval) clearInterval(perceivedProgressInterval); showNotification("Error checking status.", "error"); handleDownloadFail();
+            clearInterval(pollingInterval);
+            if (perceivedProgressInterval)
+              clearInterval(perceivedProgressInterval);
+            showNotification("Error checking status.", "error");
+            handleDownloadFail();
           }
         }, 3000);
       }
       async function checkTaskStatus(taskId) {
-        const response = await fetch(`https://ytdlp.vistaflyer.com/api/task_status?task_id=${taskId}`);
+        const response = await fetch(
+          `https://ytdlp.vistaflyer.com/api/task_status?task_id=${taskId}`
+        );
         if (!response.ok) throw new Error("Status check failed.");
         const data = await response.json();
-        const [completed, total] = (data.progress || "0/0").split("/").map(Number);
-        return { id: taskId, status: data.status, progress: total > 0 ? (completed / total) * 100 : 0, completed: completed, total: total, progress_str: data.progress, };
+        const [completed, total] = (data.progress || "0/0")
+          .split("/")
+          .map(Number);
+        return {
+          id: taskId,
+          status: data.status,
+          progress: total > 0 ? (completed / total) * 100 : 0,
+          completed: completed,
+          total: total,
+          progress_str: data.progress,
+        };
       }
       function showProgressArea(totalFiles) {
         const progressContainer = document.getElementById("downloadProgress");
@@ -1036,23 +1505,35 @@
         const percentageText = document.getElementById("percentageText");
         perceivedProgressInterval = setInterval(() => {
           currentPerceivedProgress += (90 - currentPerceivedProgress) * 0.05;
-          if (progressBar) progressBar.style.width = `${currentPerceivedProgress}%`;
-          if (percentageText) percentageText.textContent = `${Math.floor(currentPerceivedProgress)}%`;
-          if (progressText) progressText.textContent = "Processing files... (This may take a few minutes)";
-          if (currentPerceivedProgress >= 89.5) clearInterval(perceivedProgressInterval);
+          if (progressBar)
+            progressBar.style.width = `${currentPerceivedProgress}%`;
+          if (percentageText)
+            percentageText.textContent = `${Math.floor(
+              currentPerceivedProgress
+            )}%`;
+          if (progressText)
+            progressText.textContent =
+              "Processing files... (This may take a few minutes)";
+          if (currentPerceivedProgress >= 89.5)
+            clearInterval(perceivedProgressInterval);
         }, 200);
       }
       function updateProgressWithRealData(status) {
         if (status.progress > currentPerceivedProgress) {
-          if (perceivedProgressInterval) { clearInterval(perceivedProgressInterval); perceivedProgressInterval = null; }
+          if (perceivedProgressInterval) {
+            clearInterval(perceivedProgressInterval);
+            perceivedProgressInterval = null;
+          }
           currentPerceivedProgress = status.progress;
           const progressBar = document.getElementById("progressBar");
           const percentageText = document.getElementById("percentageText");
           if (progressBar) progressBar.style.width = `${status.progress}%`;
-          if (percentageText) percentageText.textContent = `${Math.round(status.progress)}%`;
+          if (percentageText)
+            percentageText.textContent = `${Math.round(status.progress)}%`;
         }
         const progressText = document.getElementById("progressText");
-        if (progressText) progressText.textContent = `Processed ${status.completed} / ${status.total} files.`;
+        if (progressText)
+          progressText.textContent = `Processed ${status.completed} / ${status.total} files.`;
       }
       async function handleDownloadComplete() {
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
@@ -1082,25 +1563,48 @@
       }
       async function downloadBulkFile() {
         try {
-          const response = await fetch("https://ytdlp.vistaflyer.com/api/download_zip", {
-              method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ task_id: currentTaskId }),
-          });
-          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          const response = await fetch(
+            "https://ytdlp.vistaflyer.com/api/download_zip",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ task_id: currentTaskId }),
+            }
+          );
+          if (!response.ok)
+            throw new Error(`HTTP error! Status: ${response.status}`);
           const now = new Date();
-          const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}_${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2,"0")}${String(now.getSeconds()).padStart(2, "0")}`;
+          const timestamp = `${now.getFullYear()}${String(
+            now.getMonth() + 1
+          ).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}_${String(
+            now.getHours()
+          ).padStart(2, "0")}${String(now.getMinutes()).padStart(
+            2,
+            "0"
+          )}${String(now.getSeconds()).padStart(2, "0")}`;
           let filename = `youtube_subtitles_bulk_${timestamp}.zip`;
           const disposition = response.headers.get("content-disposition");
-          if (disposition) { const match = disposition.match(/filename="(.+)"/); if (match) filename = match[1]; }
+          if (disposition) {
+            const match = disposition.match(/filename="(.+)"/);
+            if (match) filename = match[1];
+          }
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
-          a.href = url; a.download = filename;
-          document.body.appendChild(a); a.click(); a.remove();
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
           URL.revokeObjectURL(url);
           showNotification("ZIP file downloaded successfully!", "success");
-        } catch (error) { showNotification(`Failed to download ZIP file: ${error.message}`, "error"); }
+        } catch (error) {
+          showNotification(
+            `Failed to download ZIP file: ${error.message}`,
+            "error"
+          );
+        }
       }
-      
       let notificationTimeout;
       function showNotification(message, type = "info") {
         clearTimeout(notificationTimeout);

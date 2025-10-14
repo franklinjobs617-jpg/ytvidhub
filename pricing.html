@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans for YTVidHub Pro | Bulk Subtitle Downloader</title>
+    <meta name="description" content="Choose the best plan for your data needs. YTVidHub offers free and paid tiers for unlimited bulk subtitle downloads and AI-powered transcription.">
+
+    <!-- FONT & PERFORMANCE OPTIMIZATION -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" type="font/woff2" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      h1, h2, h3 {
+        letter-spacing: -0.025em; /* Tighter tracking for headlines */
+      }
+      
+      .pricing-card { 
+        transition: all 0.3s ease; 
+        border: 1px solid transparent; /* Start with transparent border */
+      }
+      .pricing-card:hover { 
+        transform: translateY(-8px); 
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        border-color: rgba(59, 130, 246, 0.5);
+      }
+      .highlighted-card {
+        transform: scale(1.05);
+        border-color: #2563eb;
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      }
+      @media (max-width: 1024px) {
+        .highlighted-card {
+          transform: scale(1); /* Disable zoom on smaller screens */
+        }
+      }
+      .btn-primary {
+        background-color: #2563eb;
+        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2), 0 1px 3px rgba(37, 99, 235, 0.1);
+      }
+      .btn-primary:hover {
+        background-color: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25), 0 3px 6px rgba(0, 0, 0, 0.08);
+      }
+
+      /* --- AURORA BACKGROUND EFFECT --- */
+      .aurora-bg-container {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -10;
+      }
+      .aurora-ball {
+        position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15;
+      }
+      .aurora-ball-1 {
+        width: 35rem; height: 35rem; background: radial-gradient(circle, #a78bfa, #3b82f6); animation: aurora-float 25s infinite alternate ease-in-out;
+      }
+      .aurora-ball-2 {
+        width: 30rem; height: 30rem; background: radial-gradient(circle, #3b82f6, #67e8f9); animation: aurora-float 20s infinite alternate ease-in-out; animation-delay: -10s;
+      }
+      @keyframes aurora-float {
+        0% { transform: translate(-20%, -20%) rotate(0deg) scale(1); }
+        50% { transform: translate(20%, 10%) rotate(180deg) scale(1.2); }
+        100% { transform: translate(-20%, -20%) rotate(360deg) scale(1); }
+      }
+
+      /* --- HEADER LINK HOVER EFFECT --- */
+      .nav-link {
+        position: relative;
+        padding-bottom: 8px;
+      }
+      .nav-link::after {
+        content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: #3b82f6; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease-out;
+      }
+      .nav-link:hover::after,
+      .nav-link-active::after {
+        transform: scaleX(1);
+      }
+
+      /* --- START: LOGIN MODAL STYLES --- */
+      .modal-content {
+        animation: scaleIn 0.3s ease-out;
+      }
+      @keyframes scaleIn {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      .modal-backdrop {
+        animation: fadeIn 0.3s ease-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      /* --- END: LOGIN MODAL STYLES --- */
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <div class="relative isolate">
+        <div class="aurora-bg-container">
+            <div class="aurora-ball aurora-ball-1" style="top: -20%; left: -20%;"></div>
+            <div class="aurora-ball aurora-ball-2" style="bottom: -20%; right: -15%;"></div>
+        </div>
+
+        <header
+            class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
+        >
+            <nav class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
+                <a href="./index.html" class="flex items-center gap-3">
+                    <img src="./image/icon.webp" alt="YTVidHub Logo" class="h-10 w-auto"/>
+                </a>
+                <div class="hidden md:flex items-center">
+                    <div class="flex space-x-8 items-center text-sm font-medium">
+                        <a href="./index.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Home</a>
+                        <a href="./bulk-youtube-subtitle-downloader.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Bulk Downloader</a>
+                        <a href="./how-to-use.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">How to Use</a>
+                        <a href="./faq.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">FAQ</a>
+                        <a href="./what-is-an-srt-file.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Srt File</a>
+                        <a href="/pricing.html" class="nav-link nav-link-active text-blue-600 font-semibold transition duration-150">Pricing</a>
+                    </div>
+                    <div class="ml-8">
+                        <a href="#" id="login-button" class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">Login</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container mx-auto px-6 py-20">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl font-extrabold text-gray-900 mb-4">Find the Right Plan for Your Data</h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Scale your research and content analysis with flexible Credit packages. No more manual single-video downloads.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <div class="pricing-card bg-white/70 backdrop-blur-sm p-8 rounded-2xl ring-1 ring-gray-900/5 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-2 text-blue-600">Starter</h3>
+                    <p class="text-4xl font-extrabold mb-1 text-gray-900">$0</p>
+                    <p class="text-gray-500 mb-6">/ forever</p>
+                    <p class="text-gray-600 mb-6">Test our core bulk features and see the power of automated downloads.</p>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span><strong>5 Credits</strong> per day</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>1 Credit = 1 URL (Bulk or Single)</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Basic SRT/TXT Output</span></li>
+                        <li class="flex items-start text-gray-400"><svg class="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span>No AI Transcription</span></li>
+                    </ul>
+                    <button class="w-full mt-8 py-3 rounded-lg bg-gray-200 text-gray-500 font-semibold cursor-default">Current Plan</button>
+                </div>
+                
+                <div class="pricing-card bg-white/70 backdrop-blur-sm p-8 rounded-2xl ring-2 ring-blue-600 shadow-2xl relative highlighted-card">
+                    <span class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">Most Popular</span>
+                    <h3 class="text-2xl font-bold mb-2 text-gray-900">Pro Standard</h3>
+                    <p class="text-4xl font-extrabold mb-1 text-gray-900">$19.99</p>
+                    <p class="text-gray-500 mb-6">/ month</p>
+                    <p class="text-gray-600 mb-6">Ideal for regular creators and small data analysis projects.</p>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span><strong>2,000 Credits</strong> per month</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Bulk Download Priority</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Access to AI Transcription</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Clean TXT Output</span></li>
+                    </ul>
+                    <a href="/checkout?plan=pro-monthly" class="w-full block text-center mt-8 py-3 rounded-lg btn-primary text-white font-semibold">Get Started</a>
+                </div>
+
+                <div class="pricing-card bg-white/70 backdrop-blur-sm p-8 rounded-2xl ring-1 ring-gray-900/5 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-2 text-gray-900">Pro Premium</h3>
+                    <p class="text-4xl font-extrabold mb-1 text-gray-900">$29.99</p>
+                    <p class="text-gray-500 mb-6">/ month</p>
+                    <p class="text-gray-600 mb-6">Designed for high-volume data collection and dedicated researchers.</p>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span><strong>4,000 Credits</strong> per month</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Priority Processing & Support</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Full Access to AI Transcription</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Dedicated Data Export options</span></li>
+                    </ul>
+                    <a href="/checkout?plan=premium-monthly" class="w-full block text-center mt-8 py-3 rounded-lg btn-primary text-white font-semibold">Choose Premium</a>
+                </div>
+
+                <div class="pricing-card bg-white/70 backdrop-blur-sm p-8 rounded-2xl ring-1 ring-gray-900/5 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-2 text-purple-600">Researcher</h3>
+                    <p class="text-4xl font-extrabold mb-1 text-gray-900">$199</p>
+                    <p class="text-gray-500 mb-6">/ year <span class="text-sm text-green-600 font-semibold">(Save 44%)</span></p>
+                    <p class="text-gray-600 mb-6">The best value for long-term projects and institutional needs.</p>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span><strong>60,000 Credits</strong> per year</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Access to all Future Features</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Full AI Transcription & API Access</span></li>
+                        <li class="flex items-start"><svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg><span>Priority Support & Onboarding</span></li>
+                    </ul>
+                    <a href="/checkout?plan=annual-researcher" class="w-full block text-center mt-8 py-3 rounded-lg btn-primary text-white font-semibold">Go Annual & Save</a>
+                </div>
+
+            </div>
+
+            <div class="mt-20 p-8 bg-white/70 backdrop-blur-sm rounded-2xl ring-1 ring-gray-900/5 shadow-lg">
+                <h2 class="text-3xl font-bold mb-4 text-gray-900">How Credits Work</h2>
+                <p class="text-gray-600 mb-4">We use a simple Credit system to ensure fair resource allocation:</p>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                    <li><strong>1 Credit:</strong> Used for <strong>Bulk Download</strong> of <strong>1 YouTube URL</strong> (Official Subtitles only).</li>
+                    <li><strong>5 - 10 Credits:</strong> Used for <strong>AI Transcription</strong> of <strong>1 YouTube URL</strong> (Reflects external processing costs).</li>
+                    <li><strong>All Free Accounts</strong> receive 5 Credits/day, which reset every 24 hours.</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer class="bg-gray-800">
+            <div class="container mx-auto px-6 py-12">
+                <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+                  <div class="md:col-span-1"><h3 class="text-xl font-bold text-blue-400">YTVidHub</h3><p class="mt-3 text-gray-400 text-sm">The essential toolkit for video content data extraction, built for speed and reliability.</p></div>
+                  <div><h3 class="text-lg font-semibold text-white mb-4">Navigation</h3><ul class="space-y-3 text-sm"><li><a href="./index.html" class="hover:text-blue-400 text-gray-400 transition">Home</a></li><li><a href="./bulk-youtube-subtitle-downloader.html" class="hover:text-blue-400 text-gray-400 transition">Bulk Downloader</a></li><li><a href="./how-to-use.html" class="hover:text-blue-400 text-gray-400 transition">How to Use</a></li><li><a href="./faq.html" class="hover:text-blue-400 text-gray-400 transition">FAQ</a></li><li><a href="./what-is-an-srt-file.html" class="hover:text-blue-400 text-gray-400 transition">Srt File</a></li></ul></div>
+                  <div><h3 class="text-lg font-semibold text-white mb-4">Legal</h3><ul class="space-y-3 text-sm"><li><a href="./privacy-policy.html" class="hover:text-blue-400 text-gray-400 transition">Privacy Policy</a></li><li><a href="./terms-of-service.html" class="hover:text-blue-400 text-gray-400 transition">Terms of Service</a></li></ul></div>
+                </div>
+                <div class="mt-10 pt-6 text-center text-gray-500 text-sm"><p>&copy; 2025 YTVidHub Technologies. All Rights Reserved. Not affiliated with Google or YouTube.</p></div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full">
+        <div class="flex flex-col h-full">
+          <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"><a href="./index.html" class="flex items-center gap-3"><img src="./image/icon.webp" alt="YTVidHub Logo" class="h-10 w-auto"/></a><button id="mobile-menu-close-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>
+          <div class="flex flex-col p-6 space-y-4 flex-grow">
+            <a href="./index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Home</a>
+            <a href="./bulk-youtube-subtitle-downloader.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Bulk Downloader</a>
+            <a href="./how-to-use.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">How to Use</a>
+            <a href="./faq.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">FAQ</a>
+            <a href="./what-is-an-srt-file.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Srt File</a>
+            <a href="/pricing.html" class="text-blue-600 font-bold text-lg py-3 border-b border-gray-100">Pricing</a>
+            <div class="mt-auto pt-6">
+                <a href="#" id="mobile-login-button" class="block w-full text-center text-lg font-semibold bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200">Login</a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- START: LOGIN MODAL -->
+    <div id="login-modal-container" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop">
+        <div id="login-modal-content" class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content">
+            <!-- Close Button -->
+            <button id="modal-close-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+                <p class="text-gray-500 mb-6">Log in to access your Pro features.</p>
+            </div>
+
+            <!-- Google Login -->
+            <button id="google-login" class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-4">
+                <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"></path><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"></path><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"></path><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"></path></svg>
+                <span class="text-sm font-semibold text-gray-700">Continue with Google</span>
+            </button>
+            
+            <!-- Divider -->
+            <div class="flex items-center my-6">
+                <hr class="flex-grow border-t border-gray-200">
+                <span class="px-3 text-xs font-medium text-gray-400">OR</span>
+                <hr class="flex-grow border-t border-gray-200">
+            </div>
+
+            <!-- Email/Password Form -->
+            <form action="#" method="POST">
+                <div class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                        <input type="email" name="email" id="email" autocomplete="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-baseline">
+                           <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                           <a href="#" class="text-xs text-blue-600 hover:underline">Forgot password?</a>
+                        </div>
+                        <input type="password" name="password" id="password" autocomplete="current-password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Log In
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <p class="text-center text-sm text-gray-500 mt-8">
+                Don't have an account?
+                <a href="#" class="font-medium text-blue-600 hover:underline">Sign up</a>
+            </p>
+        </div>
+    </div>
+    <!-- END: LOGIN MODAL -->
+
+    <script src="./js/auth.js"></script>
+    <script>
+        const MOBILE_MENU_TRANSITION_DURATION = 300;
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenuCloseButton = document.getElementById("mobile-menu-close-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+  
+        if (mobileMenuButton) {
+          mobileMenuButton.addEventListener("click", () => {
+            if (mobileMenu) {
+              mobileMenu.classList.remove("hidden");
+              setTimeout(() => { mobileMenu.classList.remove("translate-x-full"); }, 10);
+              document.body.style.overflow = "hidden";
+            }
+          });
+        }
+        if (mobileMenuCloseButton) {
+          mobileMenuCloseButton.addEventListener("click", () => {
+            if (mobileMenu) {
+              mobileMenu.classList.add("translate-x-full");
+              document.body.style.overflow = "";
+              setTimeout(() => { mobileMenu.classList.add("hidden"); }, MOBILE_MENU_TRANSITION_DURATION);
+            }
+          });
+        }
+    </script>
+</body>
+</html>

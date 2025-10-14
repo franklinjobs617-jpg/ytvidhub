@@ -7,312 +7,202 @@
     <title>Terms of Service | YTVidHub - Usage Guidelines</title>
     <meta name="description" content="Review the Terms of Service for using YTVidHub. This document outlines your responsibilities, our liability, and the proper use of our free subtitle downloader.">
 
+    <!-- FONT & PERFORMANCE OPTIMIZATION -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" type="font/woff2" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .prose h2 { border-bottom: 2px solid #e0e7ff; padding-bottom: 0.5rem; margin-bottom: 1rem; }
-        .prose ul { list-style-type: disc; padding-left: 1.5rem; }
+      /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      h1, h2 {
+        letter-spacing: -0.025em; /* Tighter tracking for headlines */
+      }
+      
+      /* MODIFICATION: Enhanced Prose styles for better readability */
+      .prose {
+        color: #374151; /* text-gray-700 */
+        font-size: 1.125rem; /* text-lg, 18px */
+        line-height: 1.8;
+      }
+      .prose h2 {
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 0.75rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.875rem; /* text-2xl */
+        font-weight: 800;
+        color: #111827;
+      }
+      .prose ul {
+        list-style-type: disc;
+        padding-left: 1.75rem;
+      }
+      .prose a {
+        color: #2563eb;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+        border-bottom: 1px solid #93c5fd;
+      }
+      .prose a:hover {
+        background-color: #eff6ff;
+      }
+
+      /* --- AURORA BACKGROUND EFFECT --- */
+      .aurora-bg-container {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -10;
+      }
+      .aurora-ball {
+        position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15;
+      }
+      .aurora-ball-1 {
+        width: 35rem; height: 35rem; background: radial-gradient(circle, #a78bfa, #3b82f6); animation: aurora-float 25s infinite alternate ease-in-out;
+      }
+      .aurora-ball-2 {
+        width: 30rem; height: 30rem; background: radial-gradient(circle, #3b82f6, #67e8f9); animation: aurora-float 20s infinite alternate ease-in-out; animation-delay: -10s;
+      }
+      @keyframes aurora-float {
+        0% { transform: translate(-20%, -20%) rotate(0deg) scale(1); }
+        50% { transform: translate(20%, 10%) rotate(180deg) scale(1.2); }
+        100% { transform: translate(-20%, -20%) rotate(360deg) scale(1); }
+      }
+
+      /* --- HEADER LINK HOVER EFFECT --- */
+      .nav-link {
+        position: relative;
+        padding-bottom: 8px;
+      }
+      .nav-link::after {
+        content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: #3b82f6; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease-out;
+      }
+      .nav-link:hover::after,
+      .nav-link-active::after {
+        transform: scaleX(1);
+      }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-gray-50 text-gray-800 antialiased">
 
-    <header
-    class="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100"
-  >
-    <nav
-      class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
-    >
-      <!-- Optimized Logo: Image + Text -->
-      <a href="./index.html" class="flex items-center gap-3">
-        <!-- IMPORTANT: Replace './logo.png' with the path to your logo file -->
-        <img
-          src="./image/icon.webp"
-          alt="YTVidHub Logo"
-          class="h-10 w-auto"
-        />
-      </a>
-      <div class="hidden md:flex space-x-8 items-center text-sm">
-        <a
-          href="./index.html"
-          class="text-gray-700 font-medium transition duration-150"
-          >Home</a
-        ><a
-          href="./bulk-youtube-subtitle-downloader.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >Bulk Downloader</a
-        ><a
-          href="./how-to-use.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >How to Use</a
-        ><a
-          href="./faq.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >FAQ</a
-        >
-        <a
-          href="./what-is-an-srt-file.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >Srt File</a
-        >
-        <a
-          href="./terms-of-service.html"
-          class="text-blue-600 hover:text-blue-600 font-semibold transition duration-150"
-          >Terms</a
-        >
-        <a
-          href="./privacy-policy.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >Privacy</a
-        >
-
-        <a
-          href="./about.html"
-          class="text-gray-700 hover:text-blue-600 font-medium transition duration-150"
-          >About</a
-        >
-      </div>
-
-      <div class="md:hidden">
-        <button
-          id="mobile-menu-button"
-          class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-        >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16m-7 6h7"
-            ></path>
-          </svg>
-        </button>
-      </div>
-    </nav>
-
-    <!-- Optimized Mobile Menu -->
-    <div
-      id="mobile-menu"
-      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
-    >
-      <div class="flex flex-col h-full">
-        <div
-          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
-        >
-          <!-- Optimized Logo for Mobile Menu -->
-          <a href="./index.html" class="flex items-center gap-3">
-            <!-- IMPORTANT: Replace './logo.png' with the path to your logo file -->
-            <img
-              src="./image/icon.webp"
-              alt="YTVidHub Logo"
-              class="h-10 w-auto"
-            />
-          </a>
-          <button
-            id="mobile-menu-close-button"
-            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
+    <div class="relative isolate">
+        <div class="aurora-bg-container">
+            <div class="aurora-ball aurora-ball-1" style="top: -20%; left: -20%;"></div>
+            <div class="aurora-ball aurora-ball-2" style="bottom: -20%; right: -15%;"></div>
         </div>
 
-        <div class="flex flex-col p-6 space-y-4 flex-grow">
-          <a
-            href="./index.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Home</a
-          ><a
-            href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Bulk Downloader</a
-          ><a
-            href="./how-to-use.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >How to Use</a
-          ><a
-            href="./faq.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >FAQ</a
-          >
-          <a
-            href="./what-is-an-srt-file.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Srt File</a
-          >
-          <a
-            href="./terms-of-service.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Terms</a
-          >
-          <a
-            href="./privacy-policy.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Privacy</a
-          >
-          <a
-            href="./about.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >About</a
-          >
-        </div>
-      </div>
+        <header
+            class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
+        >
+            <nav class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
+                <a href="./index.html" class="flex items-center gap-3">
+                    <img src="./image/icon.webp" alt="YTVidHub Logo" class="h-10 w-auto"/>
+                </a>
+                <div class="hidden md:flex space-x-8 items-center text-sm font-medium">
+                    <a href="./index.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Home</a>
+                    <a href="./bulk-youtube-subtitle-downloader.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Bulk Downloader</a>
+                    <a href="./how-to-use.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">How to Use</a>
+                    <a href="./faq.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">FAQ</a>
+                    <a href="./what-is-an-srt-file.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Srt File</a>
+                    <a href="./terms-of-service.html" class="nav-link nav-link-active text-blue-600 font-semibold transition duration-150">Terms</a>
+                    <a href="./privacy-policy.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Privacy</a>
+                    <a href="./about.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">About</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container mx-auto px-6 py-16">
+            <!-- MODIFICATION: Constrained max-width for better reading -->
+            <article class="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-xl ring-1 ring-gray-900/5">
+                <header class="mb-10 text-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Terms of Service</h1>
+                    <p class="mt-4 text-xl text-gray-600">Please read these terms carefully before using our service.</p>
+                    <p class="mt-2 text-sm text-gray-500"><em>Last Updated: October 11, 2025</em></p>
+                </header>
+
+                <div class="prose max-w-none">
+                    <h2 id="acceptance">1. Acceptance of Terms</h2>
+                    <p>By accessing and using YTVidHub (the "Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this Service.</p>
+
+                    <h2 id="service-description">2. Description of Service</h2>
+                    <p>YTVidHub provides a tool that allows users to download publicly available subtitles from videos hosted on YouTube. The Service is provided for personal, non-commercial use. We are an independent service and are not affiliated with, sponsored, or endorsed by YouTube or Google LLC.</p>
+
+                    <h2 id="user-responsibilities">3. User Responsibilities and Conduct</h2>
+                    <p>You, the user, agree to the following:</p>
+                    <ul>
+                        <li><strong>Content Rights:</strong> You are solely responsible for ensuring you have the legal right to access the content from which you are downloading subtitles. The subtitles and transcripts available for download are the intellectual property of the respective YouTube content creators. Our Service is merely a technical tool to access this data.</li>
+                        <li><strong>Permitted Use:</strong> The Service is intended for personal, educational, or research purposes under the principles of fair use. You agree not to use the downloaded subtitles for any commercial purposes, redistribution, or in any way that infringes upon the copyright of the original content owner without their explicit permission.</li>
+                        <li><strong>Prohibited Actions:</strong> You agree not to misuse the Service. This includes, but is not limited to, attempting to disrupt our servers through automated means (e.g., denial-of-service attacks, excessive scraping), reverse-engineering our tool, or using the Service for any illegal activities.</li>
+                    </ul>
+
+                    <h2 id="disclaimer">4. Disclaimer of Warranties</h2>
+                    <p>The Service is provided on an "as-is" and "as-available" basis. YTVidHub makes no warranty that the Service will be uninterrupted, timely, secure, or error-free. We do not guarantee the accuracy, completeness, or availability of any subtitles. Subtitles may be auto-generated by YouTube and contain inaccuracies. We are not responsible for the content of any downloaded files.</p>
+                    
+                    <h2 id="liability">5. Limitation of Liability</h2>
+                    <p>In no event shall YTVidHub or its owners be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or the inability to use the Service or for the cost of procurement of substitute services. This includes liability for any copyright infringement claims that may arise from your use of the downloaded content.</p>
+
+                    <h2 id="intellectual-property">6. Intellectual Property</h2>
+                    <p>All content on this website, including the YTVidHub name, logo, design, and underlying code, is the property of YTVidHub. You may not use any of our intellectual property without our prior written consent. The YouTube name and logo are trademarks of Google LLC.</p>
+
+                    <h2 id="termination">7. Termination of Service</h2>
+                    <p>We reserve the right to modify, suspend, or terminate the Service at any time, for any reason, without notice. We will not be liable to you or any third party for any modification, suspension, or termination of the Service.</p>
+
+                    <h2 id="changes-to-terms">8. Changes to Terms</h2>
+                    <p>We may revise these Terms of Service from time to time. The most current version will always be posted on this page. By continuing to use the Service after changes become effective, you agree to be bound by the revised terms.</p>
+
+                    <h2 id="governing-law">9. Governing Law</h2>
+                    <p>This agreement shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law provisions.</p>
+                </div>
+            </article>
+        </main>
+
+        <footer class="bg-gray-800 text-white">
+            <div class="container mx-auto px-6 lg:px-8 py-12">
+              <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+                <div class="md:col-span-1"><h3 class="text-xl font-bold text-blue-400">YTVidHub</h3><p class="mt-3 text-gray-400 text-sm">The essential toolkit for video content data extraction, built for speed and reliability.</p></div>
+                <div><h3 class="text-lg font-semibold text-white mb-4">Navigation</h3><ul class="space-y-3 text-sm"><li><a href="./index.html" class="hover:text-blue-400 text-gray-400 transition">Home</a></li><li><a href="./bulk-youtube-subtitle-downloader.html" class="hover:text-blue-400 text-gray-400 transition">Bulk Downloader</a></li><li><a href="./how-to-use.html" class="hover:text-blue-400 text-gray-400 transition">How to Use</a></li><li><a href="./faq.html" class="hover:text-blue-400 text-gray-400 transition">FAQ</a></li><li><a href="./what-is-an-srt-file.html" class="hover:text-blue-400 text-gray-400 transition">Srt File</a></li></ul></div>
+                <div><h3 class="text-lg font-semibold text-white mb-4">Legal</h3><ul class="space-y-3 text-sm"><li><a href="./privacy-policy.html" class="hover:text-blue-400 text-gray-400 transition">Privacy Policy</a></li><li><a href="./terms-of-service.html" class="hover:text-blue-400 text-gray-400 transition">Terms of Service</a></li></ul></div>
+              </div>
+              <div class="mt-10 pt-6 text-center text-gray-500 text-sm"><p>&copy; 2025 YTVidHub Technologies. All Rights Reserved. Not affiliated with Google or YouTube.</p></div>
+            </div>
+        </footer>
     </div>
-  </header>
 
-    <main class="container mx-auto px-6 py-16">
-        <article class="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-lg shadow-lg">
-            <header class="mb-10 text-center">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Terms of Service</h1>
-                <p class="mt-4 text-lg text-gray-600">Please read these terms carefully before using our service.</p>
-                <p class="mt-2 text-sm text-gray-500"><em>Last Updated: October 11, 2025</em></p>
-            </header>
-
-            <div class="prose lg:prose-lg max-w-none text-gray-700">
-                <h2 id="acceptance">1. Acceptance of Terms</h2>
-                <p>By accessing and using YTVidHub (the "Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this Service.</p>
-
-                <h2 id="service-description">2. Description of Service</h2>
-                <p>YTVidHub provides a free, automated tool that allows users to download publicly available subtitles from videos hosted on YouTube. The Service is provided for personal, non-commercial use. We are an independent service and are not affiliated with, sponsored, or endorsed by YouTube or Google LLC.</p>
-
-                <h2 id="user-responsibilities">3. User Responsibilities and Conduct</h2>
-                <p>You, the user, agree to the following:</p>
-                <ul>
-                    <li><strong>Content Rights:</strong> You are solely responsible for ensuring you have the legal right to access the content from which you are downloading subtitles. The subtitles and transcripts available for download are the intellectual property of the respective YouTube content creators. Our Service is merely a technical tool to access this data.</li>
-                    <li><strong>Permitted Use:</strong> The Service is intended for personal, educational, or research purposes under the principles of fair use. You agree not to use the downloaded subtitles for any commercial purposes, redistribution, or in any way that infringes upon the copyright of the original content owner without their explicit permission.</li>
-                    <li><strong>Prohibited Actions:</strong> You agree not to misuse the Service. This includes, but is not limited to, attempting to disrupt our servers through automated means (e.g., denial-of-service attacks, excessive scraping), reverse-engineering our tool, or using the Service for any illegal activities.</li>
-                </ul>
-
-                <h2 id="disclaimer">4. Disclaimer of Warranties</h2>
-                <p>The Service is provided on an "as-is" and "as-available" basis. YTVidHub makes no warranty that the Service will be uninterrupted, timely, secure, or error-free. We do not guarantee the accuracy, completeness, or availability of any subtitles. Subtitles may be auto-generated by YouTube and contain inaccuracies. We are not responsible for the content of any downloaded files.</p>
-                <img src="https://placehold.co/800x400/ffedd5/9a3412?text=Service+Provided+'As-Is'" alt="A graphic showing a caution sign, representing the 'as-is' nature of the YTVidHub service." class="w-full rounded-lg shadow-md my-6">
-
-                <h2 id="liability">5. Limitation of Liability</h2>
-                <p>In no event shall YTVidHub or its owners be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or the inability to use the Service or for the cost of procurement of substitute services. This includes liability for any copyright infringement claims that may arise from your use of the downloaded content.</p>
-
-                <h2 id="intellectual-property">6. Intellectual Property</h2>
-                <p>All content on this website, including the YTVidHub name, logo, design, and underlying code, is the property of YTVidHub. You may not use any of our intellectual property without our prior written consent. The YouTube name and logo are trademarks of Google LLC.</p>
-
-                <h2 id="termination">7. Termination of Service</h2>
-                <p>We reserve the right to modify, suspend, or terminate the Service at any time, for any reason, without notice. We will not be liable to you or any third party for any modification, suspension, or termination of the Service.</p>
-
-                <h2 id="changes-to-terms">8. Changes to Terms</h2>
-                <p>We may revise these Terms of Service from time to time. The most current version will always be posted on this page. By continuing to use the Service after changes become effective, you agree to be bound by the revised terms.</p>
-
-                <h2 id="governing-law">9. Governing Law</h2>
-                <p>This agreement shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law provisions.</p>
-            </div>
-        </article>
-    </main>
-
-    <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 lg:px-8 py-12">
-          <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
-            <div class="md:col-span-1">
-              <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
-              <p class="mt-3 text-gray-400 text-sm">
-                The essential toolkit for video content data extraction, built for
-                speed and reliability.
-              </p>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
-              <ul class="space-y-3 text-sm">
-                <li>
-                  <a
-                    href="./index.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Home</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./bulk-youtube-subtitle-downloader.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Bulk Downloader</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./how-to-use.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >How to Use</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./faq.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >FAQ</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./what-is-an-srt-file.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Srt File</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
-              <ul class="space-y-3 text-sm">
-                <li>
-                  <a
-                    href="./privacy-policy.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Privacy Policy</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./terms-of-service.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Terms of Service</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
-            <p>
-              &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
-              affiliated with Google or YouTube.
-            </p>
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full">
+        <div class="flex flex-col h-full">
+          <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"><a href="./index.html" class="flex items-center gap-3"><img src="./image/icon.webp" alt="YTVidHub Logo" class="h-10 w-auto"/></a><button id="mobile-menu-close-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>
+          <div class="flex flex-col p-6 space-y-4 flex-grow">
+            <a href="./index.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Home</a>
+            <a href="./bulk-youtube-subtitle-downloader.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Bulk Downloader</a>
+            <a href="./how-to-use.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">How to Use</a>
+            <a href="./faq.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">FAQ</a>
+            <a href="./what-is-an-srt-file.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Srt File</a>
+            <a href="./terms-of-service.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Terms</a>
+            <a href="./privacy-policy.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">Privacy</a>
+            <a href="./about.html" class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100">About</a>
           </div>
         </div>
-      </footer>
+    </div>
 
     <script>
-        //移动端menu
+        const MOBILE_MENU_TRANSITION_DURATION = 300;
         const mobileMenuButton = document.getElementById("mobile-menu-button");
-        const mobileMenuCloseButton = document.getElementById(
-          "mobile-menu-close-button"
-        );
+        const mobileMenuCloseButton = document.getElementById("mobile-menu-close-button");
         const mobileMenu = document.getElementById("mobile-menu");
   
         if (mobileMenuButton) {
           mobileMenuButton.addEventListener("click", () => {
             if (mobileMenu) {
               mobileMenu.classList.remove("hidden");
-              setTimeout(() => {
-                mobileMenu.classList.remove("translate-x-full");
-              }, 10);
+              setTimeout(() => { mobileMenu.classList.remove("translate-x-full"); }, 10);
               document.body.style.overflow = "hidden";
             }
           });
@@ -322,12 +212,10 @@
             if (mobileMenu) {
               mobileMenu.classList.add("translate-x-full");
               document.body.style.overflow = "";
-              setTimeout(() => {
-                mobileMenu.classList.add("hidden");
-              }, MOBILE_MENU_TRANSITION_DURATION);
+              setTimeout(() => { mobileMenu.classList.add("hidden"); }, MOBILE_MENU_TRANSITION_DURATION);
             }
           });
         }
-      </script>
+    </script>
 </body>
 </html>
