@@ -938,6 +938,10 @@ video {
   height: 150vw;
 }
 
+.h-auto {
+  height: auto;
+}
+
 .max-h-\[70rem\] {
   max-height: 70rem;
 }
