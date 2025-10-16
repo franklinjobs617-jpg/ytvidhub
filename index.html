@@ -3,15 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      Ultimate Free YouTube Subtitle Downloader (Bulk & Single) | YTVidHub
-    </title>
+    <title>YouTube Subtitle Downloader (Single & Bulk) | YTVidHub</title>
     <meta
       name="description"
-      content="The most efficient way to download YouTube subtitles in bulk. Supports SRT, VTT, and TXT formats for multiple videos or entire playlists instantly. 100% Free."
+      content="Our tool supports single videos and a unique bulk download feature with a daily free credit limit. Perfect for creators and researchers."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon" />
     <link
       rel="preload"
       as="font"
@@ -36,6 +35,38 @@
           "target": "https://www.yourwebsite.com/?q={search_term_string}",
           "query-input": "required name=search_term_string"
         }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is this YouTube subtitle downloader completely free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "YTVidHub is free for single downloads and includes 5 daily credits for bulk operations. Professional plans are available for high-volume data needs."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What URL formats are supported?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We support standard YouTube video URLs, playlist URLs, and channel page URLs. For bulk processing via file upload, ensure each URL is on a new line in a simple .txt or .csv file. The system automatically filters out invalid or duplicate links."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What language are subtitles in?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "YTVidHub supports ALL languages available on YouTube. This includes manually uploaded captions by the creator (highest quality) and auto-generated subtitles for languages like Chinese (Mandarin), Spanish, German, and more."
+            }
+          }
+        ]
       }
     </script>
     <style>
@@ -227,10 +258,11 @@
       .animate-fade-in {
         animation: fade-in 0.6s ease-in-out;
       }
-      
+
       /* Enhanced pulse animation for loading dots */
       @keyframes pulse-enhanced {
-        0%, 100% {
+        0%,
+        100% {
           opacity: 1;
           transform: scale(1);
         }
@@ -239,29 +271,31 @@
           transform: scale(1.2);
         }
       }
-      
+
       .animate-pulse-enhanced {
         animation: pulse-enhanced 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
       }
-      
+
       /* Gradient animation for progress bar */
       @keyframes gradient-shift {
-        0%, 100% {
+        0%,
+        100% {
           background-position: 0% 50%;
         }
         50% {
           background-position: 100% 50%;
         }
       }
-      
+
       .animate-gradient-shift {
         background: linear-gradient(90deg, #3b82f6, #1d4ed8, #3b82f6);
         background-size: 200% 200%;
         animation: gradient-shift 3s ease infinite;
       }
-      
+
       @keyframes pulse-glow {
-        0%, 100% {
+        0%,
+        100% {
           opacity: 0.2;
           transform: scale(0.95);
         }
@@ -272,7 +306,7 @@
       }
 
       .pulse-glow-bg::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 50%;
         top: 50%;
@@ -311,9 +345,10 @@
       .animate-spin {
         animation: spin 1s linear infinite;
       }
-      
+
       @keyframes pulse-glow {
-        0%, 100% {
+        0%,
+        100% {
           opacity: 0.2;
           transform: scale(0.95);
         }
@@ -324,7 +359,7 @@
       }
 
       .pulse-glow-bg::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 50%;
         top: 50%;
@@ -408,6 +443,11 @@
                 >Srt File</a
               >
               <a
+                href="./blog/subtitle-accuracy-problem.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Blog</a
+              >
+              <a
                 href="./pricing.html"
                 class="nav-link text-gray-700 font-semibold transition duration-150"
                 >Pricing</a
@@ -421,7 +461,6 @@
                 class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
                 >Login</a
               >
-              <!-- Desktop User Profile Dropdown -->
               <div id="user-profile-desktop" class="hidden relative">
                 <button
                   id="user-menu-button"
@@ -443,16 +482,6 @@
                   id="user-dropdown-menu"
                   class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
                 >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Dashboard</a
-                  >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Settings</a
-                  >
                   <div class="border-t border-gray-100 my-1"></div>
                   <a
                     href="#"
@@ -465,9 +494,7 @@
             </div>
           </div>
 
-          <!-- ====== MOBILE CONTROLS (LOGIN/PROFILE + HAMBURGER) ====== -->
           <div class="md:hidden flex items-center gap-4">
-            <!-- Mobile Login Button -->
             <a
               href="#"
               id="login-button-mobile"
@@ -543,9 +570,8 @@
             <p
               class="mt-4 text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
             >
-              The professional, free utility for high-volume caption and
-              transcript management. Supports SRT, VTT, and TXT for single
-              videos, playlists, or large URL lists.
+              Manage captions and transcripts at scale — professional,
+              efficient, and format-ready (SRT, VTT, TXT).
             </p>
             <div class="mt-12 max-w-5xl mx-auto text-left">
               <div id="inputArea">
@@ -642,55 +668,133 @@
               </div>
 
               <div id="analyzingArea" class="hidden mt-8">
-                <div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center relative overflow-hidden pulse-glow-bg animate-fade-in">
+                <div
+                  class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center relative overflow-hidden pulse-glow-bg animate-fade-in"
+                >
                   <div class="relative z-10">
                     <div class="flex justify-center items-center mb-6">
-                        <!-- Enhanced Loading Animation -->
-                        <div class="relative">
-                            <!-- Outer ring -->
-                            <svg class="w-16 h-16 text-blue-500 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z" stroke="currentColor" stroke-width="2" stroke-opacity="0.2"></path>
-                                <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-                            </div>
-                            <!-- Orbiting dots -->
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="relative w-20 h-20">
-                                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1">
-                                         <div class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced" style="animation-delay: 0s"></div>
-                                     </div>
-                                     <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1">
-                                         <div class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced" style="animation-delay: 0.5s"></div>
-                                     </div>
-                                     <div class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
-                                         <div class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced" style="animation-delay: 1s"></div>
-                                     </div>
-                                     <div class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1">
-                                         <div class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced" style="animation-delay: 1.5s"></div>
-                                     </div>
-                                </div>
-                            </div>
+                      <!-- Enhanced Loading Animation -->
+                      <div class="relative">
+                        <!-- Outer ring -->
+                        <svg
+                          class="w-16 h-16 text-blue-500 animate-spin"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-opacity="0.2"
+                          ></path>
+                          <path
+                            d="M12 2a10 10 0 0 1 10 10"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          ></path>
+                        </svg>
+                        <div
+                          class="absolute inset-0 flex items-center justify-center"
+                        >
+                          <div
+                            class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"
+                          ></div>
                         </div>
+                        <!-- Orbiting dots -->
+                        <div
+                          class="absolute inset-0 flex items-center justify-center"
+                        >
+                          <div class="relative w-20 h-20">
+                            <div
+                              class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1"
+                            >
+                              <div
+                                class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced"
+                                style="animation-delay: 0s"
+                              ></div>
+                            </div>
+                            <div
+                              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1"
+                            >
+                              <div
+                                class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced"
+                                style="animation-delay: 0.5s"
+                              ></div>
+                            </div>
+                            <div
+                              class="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1"
+                            >
+                              <div
+                                class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced"
+                                style="animation-delay: 1s"
+                              ></div>
+                            </div>
+                            <div
+                              class="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1"
+                            >
+                              <div
+                                class="w-2 h-2 bg-blue-300 rounded-full animate-pulse-enhanced"
+                                style="animation-delay: 1.5s"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 tracking-tight animate-fade-in" style="animation-delay: 0.2s">
-                        Extracting Information
+                    <h3
+                      class="text-2xl font-bold text-gray-800 tracking-tight animate-fade-in"
+                      style="animation-delay: 0.2s"
+                    >
+                      Extracting Information
                     </h3>
-                    <p class="text-gray-500 mt-2 animate-fade-in" style="animation-delay: 0.4s">Please wait while we process your URLs...</p>
-                    <div class="mt-8 max-w-lg mx-auto animate-fade-in" style="animation-delay: 0.6s">
-                        <div class="flex justify-between mb-1 text-sm font-medium">
-                            <span class="text-gray-600">Analysis Progress</span>
-                            <span id="analysisPercentageText" class="text-gray-800 font-semibold">0%</span>
+                    <p
+                      class="text-gray-500 mt-2 animate-fade-in"
+                      style="animation-delay: 0.4s"
+                    >
+                      Please wait while we process your URLs...
+                    </p>
+                    <div
+                      class="mt-8 max-w-lg mx-auto animate-fade-in"
+                      style="animation-delay: 0.6s"
+                    >
+                      <div
+                        class="flex justify-between mb-1 text-sm font-medium"
+                      >
+                        <span class="text-gray-600">Analysis Progress</span>
+                        <span
+                          id="analysisPercentageText"
+                          class="text-gray-800 font-semibold"
+                          >0%</span
+                        >
+                      </div>
+                      <div
+                        class="w-full bg-gray-400 rounded-full h-3 overflow-hidden shadow-inner border border-gray-300"
+                      >
+                        <div
+                          id="analysisProgressBar"
+                          class="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 h-3 rounded-full transition-all duration-300 ease-out relative shadow-md"
+                          style="width: 0%"
+                        >
+                          <div
+                            class="absolute inset-0 bg-white bg-opacity-40 animate-pulse"
+                          ></div>
+                          <div
+                            class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-200 to-transparent bg-opacity-30 animate-pulse"
+                            style="animation-delay: 0.3s"
+                          ></div>
+                          <div
+                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-b from-white to-transparent opacity-50 rounded-t-full"
+                          ></div>
                         </div>
-                        <div class="w-full bg-gray-400 rounded-full h-3 overflow-hidden shadow-inner border border-gray-300">
-                            <div id="analysisProgressBar" class="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 h-3 rounded-full transition-all duration-300 ease-out relative shadow-md" style="width: 0%">
-                                <div class="absolute inset-0 bg-white bg-opacity-40 animate-pulse"></div>
-                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-200 to-transparent bg-opacity-30 animate-pulse" style="animation-delay: 0.3s"></div>
-                                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-b from-white to-transparent opacity-50 rounded-t-full"></div>
-                            </div>
-                        </div>
-                        <p id="analysisProgressText" class="text-center text-sm text-gray-500 mt-3 h-5">Initializing...</p>
+                      </div>
+                      <p
+                        id="analysisProgressText"
+                        class="text-center text-sm text-gray-500 mt-3 h-5"
+                      >
+                        Initializing...
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -702,8 +806,23 @@
                     id="resultsSummary"
                     class="text-center bg-blue-50 text-blue-800 p-4 rounded-lg border border-blue-200 text-sm font-medium flex-1 mr-4"
                   ></div>
-                  <button onclick="resetToInputArea()" class="bg-gray-600 hover:bg-gray-700 text-blue border font-semibold py-3 px-6 rounded-lg transition flex-shrink-0 ml-2">
-                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                  <button
+                    onclick="resetToInputArea()"
+                    class="bg-gray-600 hover:bg-gray-700 text-blue border font-semibold py-3 px-6 rounded-lg transition flex-shrink-0 ml-2"
+                  >
+                    <svg
+                      class="w-5 h-5 inline mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                      ></path>
+                    </svg>
                     New Download
                   </button>
                 </div>
@@ -762,29 +881,64 @@
                       <button
                         id="downloadSelectedBtn"
                         class="btn-primary text-white font-semibold py-2 px-5 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm relative overflow-hidden"
-                        style="min-width: 180px;"
+                        style="min-width: 180px"
                       >
-                        <span id="downloadSelectedText">Download Selected (0)</span>
-                        <svg id="downloadSelectedIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        <svg id="downloadSelectedSpinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <span id="downloadSelectedText"
+                          >Download Selected (0)</span
+                        >
+                        <svg
+                          id="downloadSelectedIcon"
+                          class="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                          ></path>
+                        </svg>
+                        <svg
+                          id="downloadSelectedSpinner"
+                          class="animate-spin h-5 w-5 text-white hidden"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                          ></circle>
+                          <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         <!-- Loading overlay -->
-                        <div class="absolute inset-0 bg-blue-600 bg-opacity-20 animate-pulse hidden" id="downloadBtnLoadingOverlay"></div>
+                        <div
+                          class="absolute inset-0 bg-blue-600 bg-opacity-20 animate-pulse hidden"
+                          id="downloadBtnLoadingOverlay"
+                        ></div>
                       </button>
                     </div>
                   </div>
                 </div>
                 <div id="videoList" class="space-y-4"></div>
-                
+
                 <div id="downloadStatusArea" class="mt-8 hidden">
-                  <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 text-center animate-fade-in">
-                    <div id="downloadStatusContent">
-                    </div>
+                  <div
+                    class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 text-center animate-fade-in"
+                  >
+                    <div id="downloadStatusContent"></div>
                   </div>
                 </div>
-
               </div>
             </div>
             <div
@@ -1135,6 +1289,22 @@
                 <summary
                   class="font-semibold text-lg text-gray-800 focus:outline-none"
                 >
+                  Is this YouTube subtitle downloader completely free?
+                </summary>
+                <div
+                  class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed"
+                >
+                  YTVidHub is free for single downloads and includes 5 daily
+                  credits for bulk operations. Professional plans are available
+                  for high-volume data needs.
+                </div>
+              </details>
+              <details
+                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+              >
+                <summary
+                  class="font-semibold text-lg text-gray-800 focus:outline-none"
+                >
                   What URL formats are supported?
                 </summary>
                 <div
@@ -1158,10 +1328,13 @@
                 <div
                   class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed"
                 >
-                  This tool is optimized to download
-                  <strong>English</strong> subtitles. If a video has manually
-                  uploaded English captions, they will be downloaded. Other
-                  languages are not supported at this time.
+                  YTVidHub supports ALL languages available on YouTube. This
+                  includes manually uploaded captions by the creator (highest
+                  quality) and auto-generated subtitles for languages like
+                  Chinese (Mandarin), Spanish, German, and more. IMPORTANT: The
+                  accuracy of non-English auto-generated captions can be low.
+                  For reliable data in all languages, we recommend our Pro AI
+                  Transcription service (available with credits).
                 </div>
               </details>
               <details
@@ -1250,6 +1423,13 @@
                     href="./what-is-an-srt-file.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >Srt File</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./blog/subtitle-accuracy-problem.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Blog</a
                   >
                 </li>
               </ul>
@@ -1343,6 +1523,11 @@
             >Srt File</a
           >
           <a
+            href="./blog/subtitle-accuracy-problem.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Blog</a
+          >
+          <a
             href="./terms-of-service.html"
             class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Terms</a
@@ -1393,8 +1578,6 @@
           <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
           <p class="text-gray-500 mb-6">Log in to access your Pro features.</p>
         </div>
-
-        <!-- Google Login -->
         <button
           id="google-login"
           class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-4"
@@ -1423,13 +1606,12 @@
         </button>
 
         <!-- Divider -->
-        <div class="flex items-center my-6">
+        <!-- <div class="flex items-center my-6">
           <hr class="flex-grow border-t border-gray-200" />
           <span class="px-3 text-xs font-medium text-gray-400">OR</span>
           <hr class="flex-grow border-t border-gray-200" />
         </div>
 
-        <!-- Email/Password Form -->
         <form action="#" method="POST">
           <div class="space-y-4">
             <div>
@@ -1483,11 +1665,9 @@
           <a href="#" class="font-medium text-blue-600 hover:underline"
             >Sign up</a
           >
-        </p>
+        </p> -->
       </div>
     </div>
-
-    <!-- Video Preview Modal HTML -->
     <div id="video-preview-modal" class="video-preview-modal-container">
       <div class="video-preview-modal-content">
         <button class="close-button" onclick="closeVideoPreview()">

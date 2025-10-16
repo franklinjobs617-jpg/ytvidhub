@@ -13,6 +13,7 @@
     <!-- FONT & PERFORMANCE OPTIMIZATION -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon">
     <link rel="preload" as="font" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" type="font/woff2" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -127,134 +128,86 @@
       </div>
 
       <header
-        class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
+      class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
+    >
+      <nav
+        class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
       >
-        <nav
-          class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
-        >
-          <a href="./index.html" class="flex items-center gap-3">
-            <img
-              src="./image/icon.webp"
-              alt="YTVidHub Logo"
-              class="h-10 w-auto"
-            />
-          </a>
-          <!-- ====== DESKTOP NAVIGATION ====== -->
-          <div class="hidden md:flex items-center">
-            <div class="flex space-x-8 items-center text-sm font-medium">
-              <a
-                href="./index.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >Home</a
-              >
-              <a
-                href="./bulk-youtube-subtitle-downloader.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >Bulk Downloader</a
-              >
-              <a
-                href="./how-to-use.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >How to Use</a
-              >
-              <a
-                href="./faq.html"
-                class="nav-link nav-link-active text-blue-600 hover:text-blue-600 transition duration-150"
-                >FAQ</a
-              >
-              <a
-                href="./what-is-an-srt-file.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >Srt File</a
-              >
-              <a
-                href="./pricing.html"
-                class="nav-link text-gray-700 font-semibold transition duration-150"
-                >Pricing</a
-              >
-            </div>
-            <div class="ml-8">
-              <!-- Desktop Login Button -->
-              <a
-                href="#"
-                id="login-button"
-                class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                >Login</a
-              >
-              <!-- Desktop User Profile Dropdown -->
-              <div id="user-profile-desktop" class="hidden relative">
-                <button
-                  id="user-menu-button"
-                  class="flex items-center gap-3 text-left focus:outline-none"
-                >
-                  <img
-                    id="user-avatar-desktop"
-                    src=""
-                    alt="User Avatar"
-                    class="h-9 w-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition"
-                    style="height: 36px; width: 36px"
-                  />
-                  <span
-                    id="user-name-desktop"
-                    class="text-sm font-semibold text-gray-800"
-                  ></span>
-                </button>
-                <div
-                  id="user-dropdown-menu"
-                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
-                >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Dashboard</a
-                  >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Settings</a
-                  >
-                  <div class="border-t border-gray-100 my-1"></div>
-                  <a
-                    href="#"
-                    id="logout-button-desktop"
-                    class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >Logout</a
-                  >
-                </div>
-              </div>
-            </div>
+        <a href="./index.html" class="flex items-center gap-3">
+          <img
+            src="./image/icon.webp"
+            alt="YTVidHub Logo"
+            class="h-10 w-auto"
+          />
+        </a>
+        <!-- ====== DESKTOP NAVIGATION ====== -->
+        <div class="hidden md:flex items-center">
+          <div class="flex space-x-8 items-center text-sm font-medium">
+            <a
+              href="./index.html"
+              class="nav-link  text-gray-700 hover:text-blue-600 transition duration-150"
+              >Home</a
+            >
+            <a
+              href="./bulk-youtube-subtitle-downloader.html"
+              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+              >Bulk Downloader</a
+            >
+            <a
+              href="./how-to-use.html"
+              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+              >How to Use</a
+            >
+            <a
+              href="./faq.html"
+              class="nav-link nav-link-active text-blue-600 hover:text-blue-600 transition duration-150"
+              >FAQ</a
+            >
+            <a
+              href="./what-is-an-srt-file.html"
+              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+              >Srt File</a
+            >
+            <a
+            href="./blog/subtitle-accuracy-problem.html"
+            class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+            >Blog</a
+          >
+            <a
+              href="./pricing.html"
+              class="nav-link text-gray-700 font-semibold transition duration-150"
+              >Pricing</a
+            >
           </div>
-
-          <!-- ====== MOBILE CONTROLS (LOGIN/PROFILE + HAMBURGER) ====== -->
-          <div class="md:hidden flex items-center gap-4">
-            <!-- Mobile Login Button -->
+          <div class="ml-8">
+            <!-- Desktop Login Button -->
             <a
               href="#"
-              id="login-button-mobile"
-              class="text-sm font-semibold text-gray-700 hover:text-blue-600"
+              id="login-button"
+              class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
               >Login</a
             >
-            <!-- Mobile User Profile Dropdown -->
-            <div id="user-profile-mobile" class="hidden relative">
-              <button id="user-menu-button-mobile" class="focus:outline-none">
+            <div id="user-profile-desktop" class="hidden relative">
+              <button
+                id="user-menu-button"
+                class="flex items-center gap-3 text-left focus:outline-none"
+              >
                 <img
-                  id="user-avatar-mobile"
+                  id="user-avatar-desktop"
                   src=""
                   alt="User Avatar"
-                  class="h-8 w-8 rounded-full object-cover"
-                  style="height: 32px; width: 32px"
+                  class="h-9 w-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition"
+                  style="height: 36px; width: 36px"
                 />
+                <span
+                  id="user-name-desktop"
+                  class="text-sm font-semibold text-gray-800"
+                ></span>
               </button>
               <div
-                id="user-dropdown-menu-mobile"
+                id="user-dropdown-menu"
                 class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
               >
-                <div class="px-4 py-2 border-b">
-                  <p
-                    id="user-name-mobile-dropdown"
-                    class="font-semibold text-sm text-gray-800 truncate"
-                  ></p>
-                </div>
                 <a
                   href="#"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -262,35 +215,84 @@
                 >
                 <a
                   href="#"
-                  id="logout-button-mobile"
-                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >Settings</a
+                >
+                <div class="border-t border-gray-100 my-1"></div>
+                <a
+                  href="#"
+                  id="logout-button-desktop"
+                  class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                   >Logout</a
                 >
               </div>
             </div>
-
-            <!-- Hamburger Menu Button -->
-            <button
-              id="mobile-menu-button"
-              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-            >
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                ></path>
-              </svg>
-            </button>
           </div>
-        </nav>
-      </header>
+        </div>
+
+        <div class="md:hidden flex items-center gap-4">
+          <a
+            href="#"
+            id="login-button-mobile"
+            class="text-sm font-semibold text-gray-700 hover:text-blue-600"
+            >Login</a
+          >
+          <!-- Mobile User Profile Dropdown -->
+          <div id="user-profile-mobile" class="hidden relative">
+            <button id="user-menu-button-mobile" class="focus:outline-none">
+              <img
+                id="user-avatar-mobile"
+                src=""
+                alt="User Avatar"
+                class="h-8 w-8 rounded-full object-cover"
+              />
+            </button>
+            <div
+              id="user-dropdown-menu-mobile"
+              class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
+            >
+              <div class="px-4 py-2 border-b">
+                <p
+                  id="user-name-mobile-dropdown"
+                  class="font-semibold text-sm text-gray-800 truncate"
+                ></p>
+              </div>
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >Dashboard</a
+              >
+              <a
+                href="#"
+                id="logout-button-mobile"
+                class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                >Logout</a
+              >
+            </div>
+          </div>
+
+          <!-- Hamburger Menu Button -->
+          <button
+            id="mobile-menu-button"
+            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </header>
 
       <main class="bg-transparent">
         <section class="py-16 md:py-20 border-b border-gray-100 bg-white/50 backdrop-blur-sm">
@@ -449,88 +451,175 @@
       </main>
 
       <footer class="bg-gray-800 text-white">
-        <!-- ... footer content ... -->
+        <div class="container mx-auto px-6 lg:px-8 py-12">
+          <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+            <div class="md:col-span-1">
+              <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
+              <p class="mt-3 text-gray-400 text-sm">
+                The essential toolkit for video content data extraction, built
+                for speed and reliability.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./index.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Home</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./bulk-youtube-subtitle-downloader.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Bulk Downloader</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./how-to-use.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >How to Use</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./faq.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >FAQ</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./what-is-an-srt-file.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Srt File</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./blog/subtitle-accuracy-problem.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Blog</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./privacy-policy.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Privacy Policy</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./terms-of-service.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Terms of Service</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
+            <p>
+              &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
+              affiliated with Google or YouTube.
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
     
     <!-- Mobile Menu -->
     <div
-      id="mobile-menu"
-      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
-    >
-      <div class="flex flex-col h-full">
-        <div
-          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+    id="mobile-menu"
+    class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+  >
+    <div class="flex flex-col h-full">
+      <div
+        class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+      >
+        <a href="./index.html" class="flex items-center gap-3"
+          ><img
+            src="./image/icon.webp"
+            alt="YTVidHub Logo"
+            class="h-8 md:h-10 w-auto"
+        /></a>
+        <button
+          id="mobile-menu-close-button"
+          class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
         >
-          <a href="./index.html" class="flex items-center gap-3"
-            ><img
-              src="./image/icon.webp"
-              alt="YTVidHub Logo"
-              class="h-8 md:h-10 w-auto"
-          /></a>
-          <button
-            id="mobile-menu-close-button"
-            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div class="flex flex-col p-6 space-y-4 flex-grow overflow-y-auto">
-          <a
-            href="./index.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Home</a
-          >
-          <a
-            href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Bulk Downloader</a
-          >
-          <a
-            href="./how-to-use.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >How to Use</a
-          >
-          <a
-            href="./faq.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >FAQ</a
-          >
-          <a
-            href="./what-is-an-srt-file.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Srt File</a
-          >
-          <a
-            href="./pricing.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Pricing</a
-          >
-          <a
-            href="./terms-of-service.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Terms</a
-          >
-          <a
-            href="./privacy-policy.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Privacy</a
-          >
-        </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <div class="flex flex-col p-6 space-y-4 flex-grow">
+        <a
+          href="./index.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Home</a
+        >
+        <a
+          href="./bulk-youtube-subtitle-downloader.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Bulk Downloader</a
+        >
+        <a
+          href="./how-to-use.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >How to Use</a
+        >
+        <a
+          href="./faq.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >FAQ</a
+        >
+        <a
+          href="./what-is-an-srt-file.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Srt File</a
+        >
+        <a
+        href="./blog/subtitle-accuracy-problem.html"
+        class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+        >Blog</a
+      >
+        <a
+          href="./terms-of-service.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Terms</a
+        >
+        <a
+          href="./privacy-policy.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Privacy</a
+        >
+        <a
+          href="./about.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >About</a
+        >
       </div>
     </div>
+  </div>
 
     <!-- Login Modal -->
     <div
@@ -594,14 +683,14 @@
           >
         </button>
 
-        <!-- Divider -->
+       
         <div class="flex items-center my-6">
           <hr class="flex-grow border-t border-gray-200" />
           <span class="px-3 text-xs font-medium text-gray-400">OR</span>
           <hr class="flex-grow border-t border-gray-200" />
         </div>
 
-        <!-- Email/Password Form -->
+        
         <form action="#" method="POST">
           <div class="space-y-4">
             <div>
@@ -658,6 +747,86 @@
         </p>
       </div>
     </div>
+    <footer class="bg-gray-800 text-white">
+      <div class="container mx-auto px-6 lg:px-8 py-12">
+        <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+          <div class="md:col-span-1">
+            <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
+            <p class="mt-3 text-gray-400 text-sm">
+              The essential toolkit for video content data extraction, built
+              for speed and reliability.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="./index.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./bulk-youtube-subtitle-downloader.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Bulk Downloader</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./how-to-use.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >How to Use</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./faq.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./what-is-an-srt-file.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Srt File</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+            <ul class="space-y-3 text-sm">
+              <li>
+                <a
+                  href="./privacy-policy.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a
+                  href="./terms-of-service.html"
+                  class="hover:text-blue-400 text-gray-400 transition"
+                  >Terms of Service</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
+          <p>
+            &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
+            affiliated with Google or YouTube.
+          </p>
+        </div>
+      </div>
+    </footer>
+    </body>
+    
     
  <script src="./js/auth.js"></script>
     <script>

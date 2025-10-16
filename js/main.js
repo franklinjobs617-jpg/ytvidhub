@@ -18,7 +18,12 @@ const youtubeRegex =
 // --- DOM ELEMENT CACHING ---
 let inputArea, analyzingArea, resultsArea, globalFormatSelect;
 let urlInput, analyzeBtn, clearBtn, fileInput, dragContainer;
-let selectAllCheckbox, downloadSelectedBtn, downloadSelectedText, downloadSelectedIcon, downloadSelectedSpinner, downloadBtnLoadingOverlay;
+let selectAllCheckbox,
+  downloadSelectedBtn,
+  downloadSelectedText,
+  downloadSelectedIcon,
+  downloadSelectedSpinner,
+  downloadBtnLoadingOverlay;
 let videoList, resultsSummary, downloadStatusArea, downloadStatusContent;
 
 function initApp() {
@@ -36,7 +41,9 @@ function initApp() {
   downloadSelectedText = document.getElementById("downloadSelectedText");
   downloadSelectedIcon = document.getElementById("downloadSelectedIcon");
   downloadSelectedSpinner = document.getElementById("downloadSelectedSpinner");
-  downloadBtnLoadingOverlay = document.getElementById("downloadBtnLoadingOverlay");
+  downloadBtnLoadingOverlay = document.getElementById(
+    "downloadBtnLoadingOverlay"
+  );
   videoList = document.getElementById("videoList");
   resultsSummary = document.getElementById("resultsSummary");
   downloadStatusArea = document.getElementById("downloadStatusArea");
@@ -97,9 +104,9 @@ function resetUI() {
   perceivedProgressInterval = null;
 
   downloadSelectedBtn.disabled = false;
-  downloadSelectedText.classList.remove('hidden');
-  downloadSelectedIcon.classList.remove('hidden');
-  downloadSelectedSpinner.classList.add('hidden');
+  downloadSelectedText.classList.remove("hidden");
+  downloadSelectedIcon.classList.remove("hidden");
+  downloadSelectedSpinner.classList.add("hidden");
 }
 window.resetToInputArea = resetUI;
 
@@ -319,130 +326,172 @@ function applyGlobalSettingHighlight() {
 // --- DOWNLOAD LOGIC ---
 
 async function handleSingleDownload(event, videoId) {
-    const video = videoData.find((v) => v.id === videoId);
-    if (!video) return;
+  const video = videoData.find((v) => v.id === videoId);
+  if (!video) return;
 
-    const button = event.currentTarget;
-    const originalContent = button.innerHTML;
-    const parentContainer = button.parentNode;
-    let progressInterval = null;
+  const button = event.currentTarget;
+  const originalContent = button.innerHTML;
+  const parentContainer = button.parentNode;
+  let progressInterval = null;
 
-    const progressContainer = document.createElement('div');
-    progressContainer.className = 'w-full col-span-full mt-3 opacity-0 transition-opacity duration-300';
+  const progressContainer = document.createElement("div");
+  progressContainer.className =
+    "w-full col-span-full mt-3 opacity-0 transition-opacity duration-300";
 
-    const progressHeader = document.createElement('div');
-    progressHeader.className = 'flex justify-between items-center mb-1 text-sm font-medium';
-    
-    const statusText = document.createElement('span');
-    statusText.className = 'text-gray-600';
-    statusText.textContent = 'Preparing...';
+  const progressHeader = document.createElement("div");
+  progressHeader.className =
+    "flex justify-between items-center mb-1 text-sm font-medium";
 
-    const percentageText = document.createElement('span');
-    percentageText.className = 'text-blue-600 font-bold';
-    percentageText.textContent = '0%';
+  const statusText = document.createElement("span");
+  statusText.className = "text-gray-600";
+  statusText.textContent = "Preparing...";
 
-    progressHeader.appendChild(statusText);
-    progressHeader.appendChild(percentageText);
+  const percentageText = document.createElement("span");
+  percentageText.className = "text-blue-600 font-bold";
+  percentageText.textContent = "0%";
 
-    const progressBarContainer = document.createElement('div');
-    progressBarContainer.className = 'w-full bg-gray-200 rounded-full h-2 overflow-hidden shadow-inner';
-    const progressBar = document.createElement('div');
-    // FIX: Use inline style for background to avoid Tailwind JIT issues
-    progressBar.className = 'h-2 rounded-full transition-all duration-300 ease-out';
-    progressBar.style.width = '0%';
-    progressBar.style.background = 'linear-gradient(to right, #60a5fa, #3b82f6)';
-    progressBarContainer.appendChild(progressBar);
+  progressHeader.appendChild(statusText);
+  progressHeader.appendChild(percentageText);
 
-    progressContainer.appendChild(progressHeader);
-    progressContainer.appendChild(progressBarContainer);
+  const progressBarContainer = document.createElement("div");
+  progressBarContainer.className =
+    "w-full bg-gray-200 rounded-full h-2 overflow-hidden shadow-inner";
+  const progressBar = document.createElement("div");
+  // FIX: Use inline style for background to avoid Tailwind JIT issues
+  progressBar.className =
+    "h-2 rounded-full transition-all duration-300 ease-out";
+  progressBar.style.width = "0%";
+  progressBar.style.background = "linear-gradient(to right, #60a5fa, #3b82f6)";
+  progressBarContainer.appendChild(progressBar);
 
-    const spinner = `<div class="w-5 h-5 border-2 border-gray-400 border-t-white rounded-full animate-spin"></div>`;
-    const successIcon = `<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
-    const errorIcon = `<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+  progressContainer.appendChild(progressHeader);
+  progressContainer.appendChild(progressBarContainer);
 
-    button.disabled = true;
-    button.innerHTML = spinner;
-    button.classList.remove('bg-gray-100', 'hover:bg-blue-500', 'text-gray-700');
-    button.classList.add('bg-blue-500', 'text-white', 'cursor-not-allowed');
+  const spinner = `<div class="w-5 h-5 border-2 border-gray-400 border-t-white rounded-full animate-spin"></div>`;
+  const successIcon = `<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+  const errorIcon = `<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
 
-    parentContainer.after(progressContainer);
-    setTimeout(() => {
-        progressContainer.classList.remove('opacity-0');
-    }, 10);
+  button.disabled = true;
+  button.innerHTML = spinner;
+  button.classList.remove("bg-gray-100", "hover:bg-blue-500", "text-gray-700");
+  button.classList.add("bg-blue-500", "text-white", "cursor-not-allowed");
 
-    let progress = 0;
-    progressInterval = setInterval(() => {
-        if (progress < 20) {
-            progress += Math.random() * 2;
-            statusText.textContent = 'Connecting...';
-        } else if (progress < 80) {
-            progress += Math.random() * 1.5;
-            statusText.textContent = 'Downloading file...';
-        } else if (progress < 95) {
-            progress += Math.random() * 0.5;
-            statusText.textContent = 'Finalizing...';
-        } else {
-            progress = 95;
-        }
-        
-        const roundedProgress = Math.round(progress);
-        progressBar.style.width = `${roundedProgress}%`;
-        percentageText.textContent = `${roundedProgress}%`;
+  parentContainer.after(progressContainer);
+  setTimeout(() => {
+    progressContainer.classList.remove("opacity-0");
+  }, 10);
 
-        if (progress >= 95) clearInterval(progressInterval);
-    }, 100);
-
-    try {
-        const selectedFormat = parentContainer.querySelector(".per-video-format").value;
-        await downloadFile(video.url, "en", selectedFormat, video.title);
-        
-        clearInterval(progressInterval);
-        progressBar.style.width = '100%';
-        percentageText.textContent = '100%';
-        // FIX: Use inline style for success color
-        progressBar.style.background = 'linear-gradient(to right, #4ade80, #16a34a)';
-        statusText.textContent = 'Complete!';
-        statusText.className = 'text-green-700 font-semibold';
-        percentageText.className = 'text-green-700 font-bold';
-
-        button.innerHTML = successIcon;
-        button.classList.remove('bg-blue-500');
-        button.classList.add('bg-green-500');
-
-        setTimeout(() => {
-            progressContainer.remove();
-            button.disabled = false;
-            button.innerHTML = originalContent;
-            button.classList.remove('bg-green-500', 'text-white', 'cursor-not-allowed');
-            button.classList.add('bg-gray-100', 'hover:bg-blue-500', 'text-gray-700');
-        }, 2000);
-
-    } catch (error) {
-        clearInterval(progressInterval);
-        showNotification(error.message, "error");
-        
-        progressBar.style.width = '100%';
-        // FIX: Use inline style for error color
-        progressBar.style.background = 'linear-gradient(to right, #f87171, #dc2626)';
-        statusText.textContent = 'Failed!';
-        statusText.className = 'text-red-700 font-semibold';
-        percentageText.textContent = `Error`;
-        percentageText.className = 'text-red-700 font-bold';
-        
-        button.innerHTML = errorIcon;
-        button.classList.remove('bg-blue-500');
-        button.classList.add('bg-red-500');
-        
-        setTimeout(() => {
-            progressContainer.remove();
-            button.disabled = false;
-            button.innerHTML = originalContent;
-            button.classList.remove('bg-red-500', 'text-white', 'cursor-not-allowed');
-            button.classList.add('bg-gray-100', 'hover:bg-blue-500', 'text-gray-700');
-        }, 3000);
+  let progress = 0;
+  progressInterval = setInterval(() => {
+    if (progress < 20) {
+      progress += Math.random() * 2;
+      statusText.textContent = "Connecting...";
+    } else if (progress < 80) {
+      progress += Math.random() * 1.5;
+      statusText.textContent = "Downloading file...";
+    } else if (progress < 95) {
+      progress += Math.random() * 0.5;
+      statusText.textContent = "Finalizing...";
+    } else {
+      progress = 95;
     }
+
+    const roundedProgress = Math.round(progress);
+    progressBar.style.width = `${roundedProgress}%`;
+    percentageText.textContent = `${roundedProgress}%`;
+
+    if (progress >= 95) clearInterval(progressInterval);
+  }, 100);
+
+  try {
+    const selectedFormat =
+      parentContainer.querySelector(".per-video-format").value;
+    await downloadFile(video.url, "en", selectedFormat, video.title);
+
+    const videoToSave = { 
+      id: video.id, 
+      url: video.url, 
+      title: video.title, 
+      uploader: video.uploader, 
+      thumbnail: video.thumbnail 
+  };
+  saveToHistory('single', [videoToSave]);
+    clearInterval(progressInterval);
+    progressBar.style.width = "100%";
+    percentageText.textContent = "100%";
+    // FIX: Use inline style for success color
+    progressBar.style.background =
+      "linear-gradient(to right, #4ade80, #16a34a)";
+    statusText.textContent = "Complete!";
+    statusText.className = "text-green-700 font-semibold";
+    percentageText.className = "text-green-700 font-bold";
+
+    button.innerHTML = successIcon;
+    button.classList.remove("bg-blue-500");
+    button.classList.add("bg-green-500");
+
+    setTimeout(() => {
+      progressContainer.remove();
+      button.disabled = false;
+      button.innerHTML = originalContent;
+      button.classList.remove(
+        "bg-green-500",
+        "text-white",
+        "cursor-not-allowed"
+      );
+      button.classList.add("bg-gray-100", "hover:bg-blue-500", "text-gray-700");
+    }, 2000);
+  } catch (error) {
+    clearInterval(progressInterval);
+    showNotification(error.message, "error");
+
+    progressBar.style.width = "100%";
+    // FIX: Use inline style for error color
+    progressBar.style.background =
+      "linear-gradient(to right, #f87171, #dc2626)";
+    statusText.textContent = "Failed!";
+    statusText.className = "text-red-700 font-semibold";
+    percentageText.textContent = `Error`;
+    percentageText.className = "text-red-700 font-bold";
+
+    button.innerHTML = errorIcon;
+    button.classList.remove("bg-blue-500");
+    button.classList.add("bg-red-500");
+
+    setTimeout(() => {
+      progressContainer.remove();
+      button.disabled = false;
+      button.innerHTML = originalContent;
+      button.classList.remove("bg-red-500", "text-white", "cursor-not-allowed");
+      button.classList.add("bg-gray-100", "hover:bg-blue-500", "text-gray-700");
+    }, 3000);
+  }
 }
 window.handleSingleDownload = handleSingleDownload;
+
+
+//保存内容到历史记录
+function saveToHistory(type, videos) {
+  try {
+    const history = JSON.parse(localStorage.getItem('downloadHistory')) || [];
+    const newEntry = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      type: type,
+      videos: videos
+    };
+    
+    history.unshift(newEntry);
+    
+    if (history.length > 50) { // Keep history to a reasonable size
+      history.pop();
+    }
+    
+    localStorage.setItem('downloadHistory', JSON.stringify(history));
+  } catch (error) {
+    console.error("Failed to save to history:", error);
+  }
+}
 
 async function handleBulkDownload() {
   const videosToDownload = videoData
@@ -451,32 +500,41 @@ async function handleBulkDownload() {
   if (videosToDownload.length === 0) return;
 
   downloadSelectedBtn.disabled = true;
-  downloadSelectedText.classList.add('hidden');
-  downloadSelectedIcon.classList.add('hidden');
-  downloadSelectedSpinner.classList.remove('hidden');
-  downloadBtnLoadingOverlay.classList.remove('hidden');
+  downloadSelectedText.classList.add("hidden");
+  downloadSelectedIcon.classList.add("hidden");
+  downloadSelectedSpinner.classList.remove("hidden");
+  downloadBtnLoadingOverlay.classList.remove("hidden");
 
   try {
     const format = globalFormatSelect.value;
     const task = await createBulkTask(videosToDownload, "en", format);
     currentTaskId = task.task_id;
-    
-    showDownloadStatus('processing', videosToDownload.length);
+    const videosForHistory = videoData
+    .filter(v => selectedVideos.has(v.id))
+    .map(v => ({
+        id: v.id,
+        url: v.url,
+        title: v.title,
+        uploader: v.uploader,
+        thumbnail: v.thumbnail
+    }));
+saveToHistory('bulk', videosForHistory);
+
+    showDownloadStatus("processing", videosToDownload.length);
     startPerceivedProgress(videosToDownload.length);
     startPolling();
-    
-    downloadSelectedText.classList.remove('hidden');
-    downloadSelectedIcon.classList.remove('hidden');
-    downloadSelectedSpinner.classList.add('hidden');
-    downloadBtnLoadingOverlay.classList.add('hidden');
 
+    downloadSelectedText.classList.remove("hidden");
+    downloadSelectedIcon.classList.remove("hidden");
+    downloadSelectedSpinner.classList.add("hidden");
+    downloadBtnLoadingOverlay.classList.add("hidden");
   } catch (error) {
     showNotification(error.message, "error");
     downloadSelectedBtn.disabled = false;
-    downloadSelectedText.classList.remove('hidden');
-    downloadSelectedIcon.classList.remove('hidden');
-    downloadSelectedSpinner.classList.add('hidden');
-    downloadBtnLoadingOverlay.classList.add('hidden');
+    downloadSelectedText.classList.remove("hidden");
+    downloadSelectedIcon.classList.remove("hidden");
+    downloadSelectedSpinner.classList.add("hidden");
+    downloadBtnLoadingOverlay.classList.add("hidden");
   }
 }
 
@@ -561,19 +619,19 @@ function startPolling() {
       if (status.progress_str) updateProgressWithRealData(status);
       if (status.status === "completed") {
         clearInterval(pollingInterval);
-        showDownloadStatus('complete');
+        showDownloadStatus("complete");
         await downloadBulkFile();
       } else if (status.status === "failed") {
         clearInterval(pollingInterval);
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
         showNotification("Bulk download task failed.", "error");
-        showDownloadStatus('error');
+        showDownloadStatus("error");
       }
     } catch (error) {
       clearInterval(pollingInterval);
       if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
       showNotification("Error checking status.", "error");
-      showDownloadStatus('error');
+      showDownloadStatus("error");
     }
   }, 3000);
 }
@@ -599,11 +657,11 @@ async function checkTaskStatus(taskId) {
 // ===     START OF REVAMPED DOWNLOAD STATUS UI (WITH FIXES)           ===
 // =======================================================================
 function showDownloadStatus(status, totalFiles = 0) {
-  let contentHTML = '';
+  let contentHTML = "";
   // Inject CSS for the animated stripes, ensuring it only happens once
-  if (!document.getElementById('progress-bar-styles')) {
-    const style = document.createElement('style');
-    style.id = 'progress-bar-styles';
+  if (!document.getElementById("progress-bar-styles")) {
+    const style = document.createElement("style");
+    style.id = "progress-bar-styles";
     style.innerHTML = `
       @keyframes progress-bar-stripes {
         from { background-position: 1rem 0; }
@@ -619,7 +677,7 @@ function showDownloadStatus(status, totalFiles = 0) {
   }
 
   switch (status) {
-    case 'processing':
+    case "processing":
       // Using inline style for the background gradient to ensure it always renders.
       contentHTML = `
         <div class="text-center">
@@ -641,7 +699,7 @@ function showDownloadStatus(status, totalFiles = 0) {
         </div>
       `;
       break;
-    case 'complete':
+    case "complete":
       contentHTML = `
         <div class="text-center">
             <div class="mx-auto bg-green-100 rounded-full h-20 w-20 flex items-center justify-center mb-4 relative">
@@ -654,7 +712,7 @@ function showDownloadStatus(status, totalFiles = 0) {
         </div>
       `;
       break;
-    case 'error':
+    case "error":
       contentHTML = `
         <div class="text-center">
             <div class="mx-auto bg-red-100 rounded-full h-20 w-20 flex items-center justify-center mb-4 relative">
@@ -669,12 +727,11 @@ function showDownloadStatus(status, totalFiles = 0) {
       break;
   }
   downloadStatusContent.innerHTML = contentHTML;
-  downloadStatusArea.classList.remove('hidden');
+  downloadStatusArea.classList.remove("hidden");
 }
 // =======================================================================
 // ===      END OF REVAMPED DOWNLOAD STATUS UI (WITH FIXES)            ===
 // =======================================================================
-
 
 function startPerceivedProgress(totalFiles) {
   if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
@@ -683,14 +740,17 @@ function startPerceivedProgress(totalFiles) {
     const progressBar = document.getElementById("progressBar");
     const percentageText = document.getElementById("percentageText");
     const progressText = document.getElementById("progressText");
-    
+
     currentPerceivedProgress += (90 - currentPerceivedProgress) * 0.05;
 
     if (progressBar) progressBar.style.width = `${currentPerceivedProgress}%`;
-    if (percentageText) percentageText.textContent = `${Math.floor(currentPerceivedProgress)}%`;
-    if (progressText) progressText.textContent = `Processing files... (This may take a moment)`;
-    
-    if (currentPerceivedProgress >= 89.5) clearInterval(perceivedProgressInterval);
+    if (percentageText)
+      percentageText.textContent = `${Math.floor(currentPerceivedProgress)}%`;
+    if (progressText)
+      progressText.textContent = `Processing files... (This may take a moment)`;
+
+    if (currentPerceivedProgress >= 89.5)
+      clearInterval(perceivedProgressInterval);
   }, 200);
 }
 
@@ -704,7 +764,8 @@ function updateProgressWithRealData(status) {
     const progressBar = document.getElementById("progressBar");
     const percentageText = document.getElementById("percentageText");
     if (progressBar) progressBar.style.width = `${status.progress}%`;
-    if (percentageText) percentageText.textContent = `${Math.round(status.progress)}%`;
+    if (percentageText)
+      percentageText.textContent = `${Math.round(status.progress)}%`;
   }
   const progressText = document.getElementById("progressText");
   if (progressText)

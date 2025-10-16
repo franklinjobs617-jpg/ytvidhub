@@ -5,6 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginModalContainer = document.getElementById("login-modal-container");
   const modalCloseButton = document.getElementById("modal-close-button");
   const googleLoginButton = document.getElementById("google-login");
+  const BaseUrl = "";
+  const GOOGLE_CLIENT_ID =
+    "943760400801-n0e8jdoqrm375sq6gk39pj8oampe6ci9.apps.googleusercontent.com";
+  const BACKEND_REDIRECT_URI = "https://api.ytvidhub.com/prod-api/g/callback";
 
   // --- Desktop Profile Elements ---
   const userProfileDesktop = document.getElementById("user-profile-desktop");
@@ -54,9 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
     userProfileMobile.classList.remove("hidden");
 
     // Populate user data
-    userAvatarDesktop.src = user.avatar;
+    userAvatarDesktop.src = user.picture;
     userNameDesktop.textContent = user.name;
-    userAvatarMobile.src = user.avatar;
+    userAvatarMobile.src = user.picture;
     userNameMobileDropdown.textContent = user.name;
   };
 
@@ -86,8 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Initial Check on Page Load ---
   const checkLoginStatus = () => {
-    const userString = localStorage.getItem("loggedInUser");
-    if (userString) {
+    const token = localStorage.getItem("authToken");
+    const userString = localStorage.getItem("user");
+    if (token&&userString) {
       try {
         const user = JSON.parse(userString);
         updateUIForLoggedInUser(user);
@@ -130,15 +135,53 @@ document.addEventListener("DOMContentLoaded", () => {
   // Simulated Google Login
   googleLoginButton.addEventListener("click", (event) => {
     event.preventDefault();
-    const mockUser = {
-      name: "Alex Doe",
-      avatar: `https://i.pravatar.cc/150?u=${Date.now()}`,
+    const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const dateString = new Date().toDateString()
+    const params = {
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: BACKEND_REDIRECT_URI,
+      response_type: "code",
+      scope: "openid email profile",
+      prompt: "select_account",
+      state: `${dateString}_youtube`,
     };
-    localStorage.setItem("loggedInUser", JSON.stringify(mockUser));
-    updateUIForLoggedInUser(mockUser);
-    closeModal();
+    const finalAuthUrl = `${googleAuthUrl}?${new URLSearchParams(params)}`;
+    const width = 600,
+      height = 600;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+    const popup = window.open(
+      finalAuthUrl,
+      "GoogleLogin",
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+    window.removeEventListener("message", handleAuthMessage);
+    window.addEventListener("message", handleAuthMessage);
+    const checkPopupClosed = setInterval(() => {
+      if (popup && popup.closed) {
+        clearInterval(checkPopupClosed);
+        window.removeEventListener("message", handleAuthMessage);
+      }
+    }, 500);
+
   });
 
+  function handleAuthMessage(event) {
+    if (event.origin !== BaseUrl || !event.data || !event.data.token) return;
+    loginModal.classList.add("hidden");
+    window.removeEventListener("message", handleAuthMessage);
+    try {
+      const { user, token: jwtToken } = JSON.parse(event.data.token);
+      if (!jwtToken || !user) return;
+      localStorage.setItem("auth_token", jwtToken);
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      updateUIForLoggedInUser(user);
+      closeModal();
+    } catch (error) {
+      console.error("Error parsing auth response:", error);
+      closeModal();
+    }
+  }
   // Desktop dropdown toggle
   userMenuButton.addEventListener("click", () => {
     userDropdownMenu.classList.toggle("hidden");

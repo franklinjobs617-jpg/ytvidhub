@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Download History | YTVidHub</title>
+    <meta name="description" content="Review and manage your past YouTube subtitle downloads with YTVidHub." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="./dist/output.css" rel="stylesheet" />
+    <style>
+      body { font-family: "Inter", sans-serif; }
+      .nav-link { position: relative; padding-bottom: 8px; }
+      .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: #3b82f6; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease-out; }
+      .nav-link:hover::after, .nav-link-active::after { transform: scaleX(1); }
+      .aurora-bg-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -10; }
+      .aurora-ball { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; }
+      .aurora-ball-1 { width: 35rem; height: 35rem; background: radial-gradient(circle, #a78bfa, #3b82f6); animation: aurora-float 25s infinite alternate ease-in-out; }
+      .aurora-ball-2 { width: 30rem; height: 30rem; background: radial-gradient(circle, #3b82f6, #67e8f9); animation: aurora-float 20s infinite alternate ease-in-out; animation-delay: -10s; }
+      @keyframes aurora-float { 0% { transform: translate(-20%, -20%) rotate(0deg) scale(1); } 50% { transform: translate(20%, 10%) rotate(180deg) scale(1.2); } 100% { transform: translate(-20%, -20%) rotate(360deg) scale(1); } }
+      .video-preview-modal-container { position: fixed; inset: 0; background-color: rgba(17, 24, 39, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease-out, visibility 0.3s ease-out; }
+      .video-preview-modal-container.show { opacity: 1; visibility: visible; }
+      .video-preview-modal-content { background-color: #000; border-radius: 0.75rem; position: relative; width: 90%; max-width: 960px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2); transform: scale(0.9); transition: transform 0.3s ease-out; }
+      .video-preview-modal-container.show .video-preview-modal-content { transform: scale(1); }
+      .video-preview-modal-content .close-button { position: absolute; top: -36px; right: 0px; background: none; border: none; cursor: pointer; color: #d1d5db; transition: color 0.2s; }
+      .video-preview-modal-content .close-button:hover { color: #fff; }
+      .video-preview-modal-content .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.75rem; }
+      .video-preview-modal-content .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+    <div class="relative isolate">
+        <div class="aurora-bg-container">
+            <div class="aurora-ball aurora-ball-1" style="top: -20%; left: -20%"></div>
+            <div class="aurora-ball aurora-ball-2" style="bottom: -20%; right: -15%"></div>
+        </div>
+        
+        <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200">
+             <nav class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
+                <a href="./index.html" class="flex items-center gap-3"><img src="./image/icon.webp" alt="YTVidHub Logo" class="h-10 w-auto" /></a>
+                <div class="hidden md:flex items-center">
+                    <div class="flex space-x-8 items-center text-sm font-medium">
+                        <a href="./index.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Home</a>
+                        <a href="./bulk-youtube-subtitle-downloader.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Bulk Downloader</a>
+                        <a href="./how-to-use.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">How to Use</a>
+                        <a href="./faq.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">FAQ</a>
+                        <a href="./what-is-an-srt-file.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Srt File</a>
+                        <a href="./history.html" class="nav-link nav-link-active text-blue-600 font-semibold transition duration-150">History</a>
+                        <a href="./pricing.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Pricing</a>
+                    </div>
+                     <div class="ml-8">
+                        <a href="#" id="login-button" class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">Login</a>
+                        <div id="user-profile-desktop" class="hidden relative">
+                            <!-- User profile dropdown content here -->
+                        </div>
+                     </div>
+                </div>
+                 <div class="md:hidden flex items-center gap-4">
+                     <a href="#" id="login-button-mobile" class="text-sm font-semibold text-gray-700 hover:text-blue-600">Login</a>
+                     <div id="user-profile-mobile" class="hidden relative">
+                         <!-- Mobile user profile here -->
+                     </div>
+                     <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1">
+                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                     </button>
+                </div>
+            </nav>
+        </header>
+        
+        <main class="container mx-auto px-6 lg:px-8 py-16 md:py-20 min-h-screen">
+            <div class="max-w-5xl mx-auto">
+                <!-- LOGIN PROMPT - SHOWN TO LOGGED OUT USERS -->
+                <div id="login-prompt" class="hidden">
+                    <div class="text-center py-16 px-6 bg-white rounded-2xl shadow-xl border border-gray-200">
+                        <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <h2 class="mt-4 text-3xl font-bold text-gray-800">Login Required</h2>
+                        <p class="mt-2 text-lg text-gray-500 max-w-lg mx-auto">Please log in to view your personal download history. Your privacy is important to us.</p>
+                        <button id="login-prompt-button" class="mt-8 inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 transition text-lg shadow-lg hover:shadow-xl">
+                            Login to View History
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- HISTORY CONTENT - SHOWN TO LOGGED IN USERS -->
+                <div id="history-content" class="hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
+                        <div>
+                            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">Download History</h1>
+                            <p class="mt-2 text-lg text-gray-600">Review, re-download, or clear your past subtitle extractions.</p>
+                        </div>
+                        <button id="clear-history-btn" class="mt-4 sm:mt-0 bg-red-50 hover:bg-red-100 text-red-600 font-semibold py-2 px-5 rounded-lg flex items-center justify-center gap-2 transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            Clear All History
+                        </button>
+                    </div>
+                    <div id="history-container" class="space-y-6">
+                        <!-- History cards will be injected here by history.js -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-gray-800 text-white">
+            <div class="container mx-auto px-6 py-12">
+                <p class="text-center text-gray-500 text-sm">&copy; 2025 YTVidHub Technologies. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <div id="video-preview-modal" class="video-preview-modal-container">
+      <div class="video-preview-modal-content">
+        <button class="close-button" onclick="closeVideoPreview()">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <div class="video-wrapper">
+          <iframe id="video-preview-iframe" width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div id="login-modal-container" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <!-- Login Modal Content (from your main html file) -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/auth.js" defer></script>
+    <script src="./js/history.js" defer></script>
+</body>
+</html>
