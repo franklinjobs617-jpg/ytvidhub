@@ -5,7 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginModalContainer = document.getElementById("login-modal-container");
   const modalCloseButton = document.getElementById("modal-close-button");
   const googleLoginButton = document.getElementById("google-login");
-  const BaseUrl = "https://ytvidhub.com";
+
+  // **CRITICAL FIX:** BaseUrl MUST match the 'origin' of the message from the backend.
+  // Your backend sends the message from "https://api.ytvidhub.com".
+  const BaseUrl = "https://api.ytvidhub.com";
+
   const GOOGLE_CLIENT_ID =
     "943760400801-n0e8jdoqrm375sq6gk39pj8oampe6ci9.apps.googleusercontent.com";
   const BACKEND_REDIRECT_URI = "https://api.ytvidhub.com/prod-api/g/callback";
@@ -49,15 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- UI Update Logic ---
   const updateUIForLoggedInUser = (user) => {
-    // Hide all login buttons
+    if (!user || !user.picture || !user.name) return; // Safety check
     loginButton.classList.add("hidden");
     mobileLoginButton.classList.add("hidden");
-
-    // Show all profile sections
     userProfileDesktop.classList.remove("hidden");
     userProfileMobile.classList.remove("hidden");
-
-    // Populate user data
     userAvatarDesktop.src = user.picture;
     userNameDesktop.textContent = user.name;
     userAvatarMobile.src = user.picture;
@@ -65,11 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const updateUIForLoggedOutUser = () => {
-    // Show all login buttons
     loginButton.classList.remove("hidden");
     mobileLoginButton.classList.remove("hidden");
-
-    // Hide all profile sections and their dropdowns
     userProfileDesktop.classList.add("hidden");
     userProfileMobile.classList.add("hidden");
     userDropdownMenu.classList.add("hidden");
@@ -84,21 +81,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const handleLogout = (event) => {
     event.preventDefault();
+    // **FIXED**: Remove BOTH user and token to log out completely.
     localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("auth_token");
     updateUIForLoggedOutUser();
   };
 
   // --- Initial Check on Page Load ---
   const checkLoginStatus = () => {
-    const token = localStorage.getItem("authToken");
-    const userString = localStorage.getItem("user");
-    if (token&&userString) {
+    // **FIXED**: Use the CORRECT keys to get items from localStorage.
+    const token = localStorage.getItem("auth_token");
+    const userString = localStorage.getItem("loggedInUser");
+
+    if (token && userString) {
       try {
         const user = JSON.parse(userString);
         updateUIForLoggedInUser(user);
       } catch (e) {
         console.error("Failed to parse user data from localStorage", e);
+        // Clean up corrupted data
         localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("auth_token");
         updateUIForLoggedOutUser();
       }
     } else {
@@ -106,25 +109,64 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // --- Attach Event Listeners ---
+  // --- Message Handler from Popup ---
+  function handleAuthMessage(event) {
+    // This security check will now PASS because BaseUrl is correct.
+    if (event.origin !== BaseUrl) {
+      console.warn(`Message from unexpected origin ignored: ${event.origin}`);
+      return;
+    }
 
-  // Login buttons
-  [loginButton, mobileLoginButton].forEach((btn) =>
-    btn.addEventListener("click", handleLoginClick)
-  );
+    if (!event.data || typeof event.data.token !== "string") {
+      console.error(
+        "Invalid or missing data in message from backend:",
+        event.data
+      );
+      closeModal();
+      return;
+    }
 
-  // Logout buttons
-  [logoutButtonDesktop, logoutButtonMobile].forEach((btn) =>
-    btn.addEventListener("click", handleLogout)
-  );
+    // Cleanup listener once a valid message is received
+    window.removeEventListener("message", handleAuthMessage);
 
-  // Modal close functionality
-  modalCloseButton.addEventListener("click", closeModal);
-  loginModalContainer.addEventListener("click", (event) => {
-    if (event.target === loginModalContainer) closeModal();
-  });
+    try {
+      const parsedData = JSON.parse(event.data.token);
+      const user = parsedData.user;
+      const jwtToken = parsedData.token;
+
+      if (!jwtToken || !user) {
+        console.error("Parsed data from backend is missing user or token.");
+        closeModal();
+        return;
+      }
+
+      // **FIXED**: Use the CORRECT keys to set items in localStorage.
+      localStorage.setItem("auth_token", jwtToken);
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+      updateUIForLoggedInUser(user);
+      closeModal(); // Use the proper function to close the modal.
+    } catch (error) {
+      console.error("Error parsing auth response from backend:", error);
+      closeModal();
+    }
+  }
+
+  if (loginButton) loginButton.addEventListener("click", handleLoginClick);
+  if (mobileLoginButton)
+    mobileLoginButton.addEventListener("click", handleLoginClick);
+  if (logoutButtonDesktop)
+    logoutButtonDesktop.addEventListener("click", handleLogout);
+  if (logoutButtonMobile)
+    logoutButtonMobile.addEventListener("click", handleLogout);
+  if (modalCloseButton) modalCloseButton.addEventListener("click", closeModal);
+  if (loginModalContainer)
+    loginModalContainer.addEventListener("click", (event) => {
+      if (event.target === loginModalContainer) closeModal();
+    });
   document.addEventListener("keydown", (event) => {
     if (
+      loginModalContainer &&
       !loginModalContainer.classList.contains("hidden") &&
       event.key === "Escape"
     ) {
@@ -132,75 +174,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Simulated Google Login
-  googleLoginButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-    const dateString = new Date().toDateString()
-    const params = {
-      client_id: GOOGLE_CLIENT_ID,
-      redirect_uri: BACKEND_REDIRECT_URI,
-      response_type: "code",
-      scope: "openid email profile",
-      prompt: "select_account",
-      state: `${dateString}_youtube`,
-    };
-    const finalAuthUrl = `${googleAuthUrl}?${new URLSearchParams(params)}`;
-    const width = 600,
-      height = 600;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-    const popup = window.open(
-      finalAuthUrl,
-      "GoogleLogin",
-      `width=${width},height=${height},left=${left},top=${top}`
+  if (googleLoginButton)
+    googleLoginButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+      const dateString = new Date().toDateString();
+      const params = {
+        client_id: GOOGLE_CLIENT_ID,
+        redirect_uri: BACKEND_REDIRECT_URI,
+        response_type: "code",
+        scope: "openid email profile",
+        prompt: "select_account",
+        state: `${dateString}_youtube`,
+      };
+      const finalAuthUrl = `${googleAuthUrl}?${new URLSearchParams(params)}`;
+      const width = 600,
+        height = 600;
+      const left = window.screen.width / 2 - width / 2;
+      const top = window.screen.height / 2 - height / 2;
+
+      window.open(
+        finalAuthUrl,
+        "GoogleLogin",
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+
+      // Add the listener for the message from the popup/backend
+      window.removeEventListener("message", handleAuthMessage); // Ensure no duplicates
+      window.addEventListener("message", handleAuthMessage, false);
+    });
+
+  // Dropdown toggles
+  if (userMenuButton)
+    userMenuButton.addEventListener("click", () =>
+      userDropdownMenu.classList.toggle("hidden")
     );
-    window.removeEventListener("message", handleAuthMessage);
-    window.addEventListener("message", handleAuthMessage);
-    const checkPopupClosed = setInterval(() => {
-      if (popup && popup.closed) {
-        clearInterval(checkPopupClosed);
-        window.removeEventListener("message", handleAuthMessage);
-      }
-    }, 500);
-
-  });
-
-  function handleAuthMessage(event) {
-    console.log(event)
-    if (event.origin !== BaseUrl || !event.data || !event.data.token) return;
-    loginModal.classList.add("hidden");
-    window.removeEventListener("message", handleAuthMessage);
-    try {
-      const { user, token: jwtToken } = JSON.parse(event.data.token);
-      if (!jwtToken || !user) return;
-      localStorage.setItem("auth_token", jwtToken);
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
-      updateUIForLoggedInUser(user);
-      closeModal();
-    } catch (error) {
-      console.error("Error parsing auth response:", error);
-      closeModal();
-    }
-  }
-  // Desktop dropdown toggle
-  userMenuButton.addEventListener("click", () => {
-    userDropdownMenu.classList.toggle("hidden");
-  });
-
-  // Mobile dropdown toggle
-  userMenuButtonMobile.addEventListener("click", () => {
-    userDropdownMenuMobile.classList.toggle("hidden");
-  });
+  if (userMenuButtonMobile)
+    userMenuButtonMobile.addEventListener("click", () =>
+      userDropdownMenuMobile.classList.toggle("hidden")
+    );
 
   // Close dropdowns when clicking outside
   document.addEventListener("click", (event) => {
-    // Desktop
-    if (!userProfileDesktop.contains(event.target)) {
+    if (userProfileDesktop && !userProfileDesktop.contains(event.target)) {
       userDropdownMenu.classList.add("hidden");
     }
-    // Mobile
-    if (!userProfileMobile.contains(event.target)) {
+    if (userProfileMobile && !userProfileMobile.contains(event.target)) {
       userDropdownMenuMobile.classList.add("hidden");
     }
   });
