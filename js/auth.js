@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginModalContainer = document.getElementById("login-modal-container");
   const modalCloseButton = document.getElementById("modal-close-button");
   const googleLoginButton = document.getElementById("google-login");
-  const BaseUrl = "";
+  const BaseUrl = "https://ytvidhub.com";
   const GOOGLE_CLIENT_ID =
     "943760400801-n0e8jdoqrm375sq6gk39pj8oampe6ci9.apps.googleusercontent.com";
   const BACKEND_REDIRECT_URI = "https://api.ytvidhub.com/prod-api/g/callback";
@@ -167,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function handleAuthMessage(event) {
+    console.log(event)
     if (event.origin !== BaseUrl || !event.data || !event.data.token) return;
     loginModal.classList.add("hidden");
     window.removeEventListener("message", handleAuthMessage);
