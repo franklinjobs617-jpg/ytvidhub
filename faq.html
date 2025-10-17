@@ -20,6 +20,28 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+
+.diamond {
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+    background: #60a5fa; /* blue-400 */
+    display:inline-block;
+    border-radius:1px;
+  }
+  /* caret (top notch) */
+  .menu-caret {
+    width: 12px;
+    height: 12px;
+    transform: rotate(45deg);
+    background: white;
+    position: absolute;
+    right: 18px; /* 调整 caret 水平位置对齐触发器 */
+    top: -6px;
+    border-left: 1px solid rgba(0,0,0,0.04);
+    border-top: 1px solid rgba(0,0,0,0.04);
+    box-shadow: -3px -3px 8px rgba(96,165,250,0.02);
+  }
       /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
       body {
         font-family: 'Inter', sans-serif;
@@ -174,6 +196,11 @@
             class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
             >Blog</a
           >
+          <a
+          href="./blog/engineering-decisions-ytvidhub.html"
+          class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+          >Engineering Decisions</a
+        >
             <a
               href="./pricing.html"
               class="nav-link text-gray-700 font-semibold transition duration-150"
@@ -206,27 +233,44 @@
                 ></span>
               </button>
               <div
-                id="user-dropdown-menu"
-                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
-              >
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >Dashboard</a
-                >
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >Settings</a
-                >
-                <div class="border-t border-gray-100 my-1"></div>
+              id="user-dropdown-menu"
+              class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
+              role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
+            >
+              <!-- caret -->
+              <div class="menu-caret"></div>
+            
+              <!-- Credits header -->
+              <div class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl">
+                <div class="flex-shrink-0">
+                  <!-- diamond icon (pure CSS block) -->
+                  <span class="diamond" aria-hidden="true"></span>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs uppercase tracking-widest text-gray-400 font-medium">Credits</div>
+                  <div id="credits" class="text-2xl font-extrabold text-gray-900 leading-tight">2</div>
+                </div>
+              </div>
+            
+              <div class="border-t border-gray-100"></div>
+            
+              <!-- actions -->
+              <div class="py-2">
                 <a
                   href="#"
                   id="logout-button-desktop"
-                  class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                  >Logout</a
+                  class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
+                  role="menuitem"
                 >
+                  <!-- small pill icon using CSS-like box (no svg) -->
+                  <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100">⟲</span>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-800">Sign Out</div>
+                    <div class="text-xs text-gray-400">Log out of your account</div>
+                  </div>
+                </a>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -250,25 +294,26 @@
             </button>
             <div
               id="user-dropdown-menu-mobile"
-              class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
+              class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
             >
-              <div class="px-4 py-2 border-b">
-                <p
-                  id="user-name-mobile-dropdown"
-                  class="font-semibold text-sm text-gray-800 truncate"
-                ></p>
+              <!-- User Info and Credits -->
+              <div class="px-4 py-3 border-b border-gray-100">
+                <p class="text-xs text-gray-500 mt-1">
+                  Credits:
+                  <span id="credits-mobile" class="font-bold text-gray-700"
+                    >0</span
+                  >
+                </p>
               </div>
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >Dashboard</a
-              >
-              <a
-                href="#"
-                id="logout-button-mobile"
-                class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                >Logout</a
-              >
+              <!-- Logout -->
+              <div class="py-1">
+                <a
+                  href="#"
+                  id="logout-button-mobile"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  >Logout</a
+                >
+              </div>
             </div>
           </div>
 
@@ -441,7 +486,7 @@
                       <svg class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
                     </summary>
                     <div class="text-lg text-gray-600">
-                      No. We have a strict privacy policy. We do not store the URLs you enter, the files you download, or your IP address. The entire process is automated and anonymous. You can read our full <a href="/privacy-policy.html" class="text-blue-600 hover:underline">Privacy Policy here</a>.
+                      No. We have a strict privacy policy. We do not store the URLs you enter, the files you download, or your IP address. The entire process is automated and anonymous. You can read our full <a href="./privacy-policy.html" class="text-blue-600 hover:underline">Privacy Policy here</a>.
                     </div>
                   </details>
                 </div>
@@ -525,6 +570,13 @@
                     >Terms of Service</a
                   >
                 </li>
+                <li>
+                  <a
+                    href="./about.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >About Us</a
+                  >
+                </li>
               </ul>
             </div>
           </div>
@@ -599,9 +651,15 @@
           >Srt File</a
         >
         <a
-        href="./blog/subtitle-accuracy-problem.html"
+          href="./blog/subtitle-accuracy-problem.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Blog</a
+        >
+
+        <a
+        href="./blog/engineering-decisions-ytvidhub.html"
         class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-        >Blog</a
+        >Engineering-Decisions</a
       >
         <a
           href="./terms-of-service.html"
@@ -651,15 +709,21 @@
           </svg>
         </button>
 
+        <!-- Step 1: Main Call to Action -->
         <div class="text-center">
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p class="text-gray-500 mb-6">Log in to access your Pro features.</p>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            Access Your Account
+          </h2>
+          <p class="text-gray-500 mb-6">
+            Log in to manage your plan, or sign up to claim your free daily
+            credits.
+          </p>
         </div>
 
-        <!-- Google Login -->
+        <!-- Google Login Button -->
         <button
           id="google-login"
-          class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-4"
+          class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
         >
           <svg class="w-5 h-5" viewBox="0 0 48 48">
             <path
@@ -684,68 +748,42 @@
           >
         </button>
 
-       
-        <div class="flex items-center my-6">
+        <!-- Divider -->
+        <div class="flex items-center my-8">
           <hr class="flex-grow border-t border-gray-200" />
-          <span class="px-3 text-xs font-medium text-gray-400">OR</span>
+          <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
+            >NEW TO YTVidHub?</span
+          >
           <hr class="flex-grow border-t border-gray-200" />
         </div>
 
-        
-        <form action="#" method="POST">
-          <div class="space-y-4">
-            <div>
-              <label
-                for="email"
-                class="block text-sm font-medium text-gray-700 mb-1"
-                >Email address</label
+        <!-- Step 2: Value Proposition Box -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <!-- Icon -->
+            <div class="flex-shrink-0">
+              <svg
+                class="w-8 h-8 text-blue-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
               >
-              <input
-                type="email"
-                name="email"
-                id="email"
-                autocomplete="email"
-                required
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-              />
+                <path
+                  d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.614Dab83 7.84006L12.0006 0.5L15.3871 7.84006L23.4143 8.7918L17.4797 14.2799L19.055 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.259 13.603L18.8142 10.2918L14.0433 9.78653L12.0006 5.4313L9.95786 9.78653L5.18695 10.2918L8.74219 13.603L7.75485 18.3451L12.0006 15.968Z"
+                ></path>
+              </svg>
             </div>
+            <!-- Text Content -->
             <div>
-              <div class="flex justify-between items-baseline">
-                <label
-                  for="password"
-                  class="block text-sm font-medium text-gray-700 mb-1"
-                  >Password</label
-                >
-                <a href="#" class="text-xs text-blue-600 hover:underline"
-                  >Forgot password?</a
-                >
-              </div>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                autocomplete="current-password"
-                required
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <button
-                type="submit"
-                class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Log In
-              </button>
+              <h3 class="font-semibold text-gray-800">Get Started for Free</h3>
+              <p class="text-sm text-gray-600">
+                Every account receives <strong>5 free credits daily</strong>.
+                Perfect for downloading subtitles from
+                <strong>up to 5 videos</strong> in bulk, every single day!
+              </p>
             </div>
           </div>
-        </form>
-
-        <p class="text-center text-sm text-gray-500 mt-8">
-          Don't have an account?
-          <a href="#" class="font-medium text-blue-600 hover:underline"
-            >Sign up</a
-          >
-        </p>
+        </div>
       </div>
     </div>
     <footer class="bg-gray-800 text-white">
@@ -828,7 +866,14 @@
     </footer>
     </body>
     
-    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX" async></script>
+<script defer>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KZZ05YN8TX');
+</script>
  <script src="./js/auth.js"></script>
     <script>
       const MOBILE_MENU_TRANSITION_DURATION = 300; 

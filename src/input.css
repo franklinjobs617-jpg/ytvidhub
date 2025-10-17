@@ -105,3 +105,341 @@
     border-color: var(--color-primary-500);
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
   }
+   .diamond {
+        width: 8px;
+        height: 8px;
+        transform: rotate(45deg);
+        background: #60a5fa; /* blue-400 */
+        display: inline-block;
+        border-radius: 1px;
+      }
+      /* caret (top notch) */
+      .menu-caret {
+        width: 12px;
+        height: 12px;
+        transform: rotate(45deg);
+        background: white;
+        position: absolute;
+        right: 18px; /* 调整 caret 水平位置对齐触发器 */
+        top: -6px;
+        border-left: 1px solid rgba(0, 0, 0, 0.04);
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        box-shadow: -3px -3px 8px rgba(96, 165, 250, 0.02);
+      }
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .tooltip-trigger {
+        position: relative;
+        cursor: help;
+      }
+      .tooltip-content {
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #1f2937;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        width: 220px;
+        text-align: left;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s, visibility 0.2s;
+        pointer-events: none;
+        z-index: 10;
+      }
+      .tooltip-trigger:hover .tooltip-content {
+        opacity: 1;
+        visibility: visible;
+      }
+      .highlight-change {
+        animation: flash-blue 0.8s ease-out;
+      }
+      @keyframes flash-blue {
+        0% {
+          background-color: #dbeafe;
+          box-shadow: 0 0 0 2px #93c5fd;
+        }
+        100% {
+          background-color: transparent;
+          box-shadow: 0 0 0 0px transparent;
+        }
+      }
+      .sticky-actions {
+        position: sticky;
+        top: 80px;
+        z-index: 30;
+      }
+      @media (max-width: 768px) {
+        .sticky-actions {
+          top: 68px;
+        }
+      }
+
+      .aurora-bg-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -10;
+      }
+      .aurora-ball {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.15;
+      }
+      .aurora-ball-1 {
+        width: 35rem;
+        height: 35rem;
+        background: radial-gradient(circle, #a78bfa, #3b82f6);
+        animation: aurora-float 25s infinite alternate ease-in-out;
+      }
+      .aurora-ball-2 {
+        width: 30rem;
+        height: 30rem;
+        background: radial-gradient(circle, #3b82f6, #67e8f9);
+        animation: aurora-float 20s infinite alternate ease-in-out;
+        animation-delay: -10s;
+      }
+      @keyframes aurora-float {
+        0% {
+          transform: translate(-20%, -20%) rotate(0deg) scale(1);
+        }
+        50% {
+          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
+        }
+        100% {
+          transform: translate(-20%, -20%) rotate(360deg) scale(1);
+        }
+      }
+      .nav-link {
+        position: relative;
+        padding-bottom: 8px;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #3b82f6;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease-out;
+      }
+      .nav-link:hover::after,
+      .nav-link-active::after {
+        transform: scaleX(1);
+      }
+      /* Video Preview Modal Styles */
+      .video-preview-modal-container {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(17, 24, 39, 0.8);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+      }
+      .video-preview-modal-container.show {
+        opacity: 1;
+        visibility: visible;
+      }
+      .video-preview-modal-content {
+        background-color: #000;
+        border-radius: 0.75rem; /* rounded-xl */
+        position: relative;
+        width: 90%;
+        max-width: 960px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3),
+          0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        transform: scale(0.9);
+        transition: transform 0.3s ease-out;
+      }
+      .video-preview-modal-container.show .video-preview-modal-content {
+        transform: scale(1);
+      }
+      .video-preview-modal-content .close-button {
+        position: absolute;
+        top: -36px;
+        right: 0px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #d1d5db;
+        transition: color 0.2s;
+      }
+      .video-preview-modal-content .close-button:hover {
+        color: #fff;
+      }
+      .video-preview-modal-content .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 0.75rem;
+      }
+      .video-preview-modal-content .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fade-in 0.6s ease-in-out;
+      }
+
+      /* Enhanced pulse animation for loading dots */
+      @keyframes pulse-enhanced {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(1.2);
+        }
+      }
+
+      .animate-pulse-enhanced {
+        animation: pulse-enhanced 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      /* Gradient animation for progress bar */
+      @keyframes gradient-shift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .animate-gradient-shift {
+        background: linear-gradient(90deg, #3b82f6, #1d4ed8, #3b82f6);
+        background-size: 200% 200%;
+        animation: gradient-shift 3s ease infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          opacity: 0.2;
+          transform: scale(0.95);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(1.05);
+        }
+      }
+
+      .pulse-glow-bg::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 300px;
+        height: 300px;
+        background-color: #3b82f6;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0.95);
+        filter: blur(90px);
+        z-index: -1;
+        animation: pulse-glow 3s infinite ease-in-out;
+      }
+
+      /* === DEFINITIVE, BULLETPROOF CSS SPINNER FOR BUTTONS === */
+      @keyframes btn-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .btn-spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(107, 114, 128, 0.3); /* gray-400 opacity 30% */
+        border-radius: 50%;
+        border-top-color: #4b5563; /* gray-600 */
+        animation: btn-spin 1s linear infinite;
+        margin: 0 auto;
+      }
+
+      /* === ENHANCED LOADING ANIMATIONS === */
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .animate-spin {
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          opacity: 0.2;
+          transform: scale(0.95);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(1.05);
+        }
+      }
+
+      .pulse-glow-bg::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 300px;
+        height: 300px;
+        background-color: #3b82f6;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0.95);
+        filter: blur(90px);
+        z-index: -1;
+        animation: pulse-glow 3s infinite ease-in-out;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fade-in 0.6s ease-in-out;
+      }

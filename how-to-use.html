@@ -7,7 +7,7 @@
     <title>How to Use Our YouTube Subtitle Downloader | YTVidHub</title>
     <meta
       name="description"
-      content="A step-by-step guide on how to download YouTube subtitles. Learn to use our tool for single videos, bulk downloads, and choosing the right format like SRT."
+      content="A step-by-step guide on how to download YouTube subtitles. Learn to use our tool for single videos, bulk downloads with unlimited URLs for Pro users, and choosing the right format."
     />
 
     <!-- FONT & PERFORMANCE OPTIMIZATION -->
@@ -30,6 +30,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
+      .diamond {
+        width: 8px;
+        height: 8px;
+        transform: rotate(45deg);
+        background: #60a5fa; /* blue-400 */
+        display: inline-block;
+        border-radius: 1px;
+      }
+      /* caret (top notch) */
+      .menu-caret {
+        width: 12px;
+        height: 12px;
+        transform: rotate(45deg);
+        background: white;
+        position: absolute;
+        right: 18px; /* 调整 caret 水平位置对齐触发器 */
+        top: -6px;
+        border-left: 1px solid rgba(0, 0, 0, 0.04);
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        box-shadow: -3px -3px 8px rgba(96, 165, 250, 0.02);
+      }
       /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
       body {
         font-family: "Inter", sans-serif;
@@ -227,6 +248,11 @@
                 >Blog</a
               >
               <a
+                href="./blog/engineering-decisions-ytvidhub.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Engineering Decisions</a
+              >
+              <a
                 href="./pricing.html"
                 class="nav-link text-gray-700 font-semibold transition duration-150"
                 >Pricing</a
@@ -259,25 +285,62 @@
                 </button>
                 <div
                   id="user-dropdown-menu"
-                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
+                  class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
                 >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Dashboard</a
+                  <!-- caret -->
+                  <div class="menu-caret"></div>
+
+                  <!-- Credits header -->
+                  <div
+                    class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl"
                   >
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >Settings</a
-                  >
-                  <div class="border-t border-gray-100 my-1"></div>
-                  <a
-                    href="#"
-                    id="logout-button-desktop"
-                    class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >Logout</a
-                  >
+                    <div class="flex-shrink-0">
+                      <!-- diamond icon (pure CSS block) -->
+                      <span class="diamond" aria-hidden="true"></span>
+                    </div>
+                    <div class="min-w-0">
+                      <div
+                        class="text-xs uppercase tracking-widest text-gray-400 font-medium"
+                      >
+                        Credits
+                      </div>
+                      <div
+                        id="credits"
+                        class="text-2xl font-extrabold text-gray-900 leading-tight"
+                      >
+                        2
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="border-t border-gray-100"></div>
+
+                  <!-- actions -->
+                  <div class="py-2">
+                    <a
+                      href="#"
+                      id="logout-button-desktop"
+                      class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
+                      role="menuitem"
+                    >
+                      <!-- small pill icon using CSS-like box (no svg) -->
+                      <span
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100"
+                        >⟲</span
+                      >
+                      <div class="text-left">
+                        <div class="text-sm font-medium text-gray-800">
+                          Sign Out
+                        </div>
+                        <div class="text-xs text-gray-400">
+                          Log out of your account
+                        </div>
+                      </div>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -302,25 +365,26 @@
               </button>
               <div
                 id="user-dropdown-menu-mobile"
-                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
+                class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
               >
-                <div class="px-4 py-2 border-b">
-                  <p
-                    id="user-name-mobile-dropdown"
-                    class="font-semibold text-sm text-gray-800 truncate"
-                  ></p>
+                <!-- User Info and Credits -->
+                <div class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-xs text-gray-500 mt-1">
+                    Credits:
+                    <span id="credits-mobile" class="font-bold text-gray-700"
+                      >0</span
+                    >
+                  </p>
                 </div>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >Dashboard</a
-                >
-                <a
-                  href="#"
-                  id="logout-button-mobile"
-                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                  >Logout</a
-                >
+                <!-- Logout -->
+                <div class="py-1">
+                  <a
+                    href="#"
+                    id="logout-button-mobile"
+                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >Logout</a
+                  >
+                </div>
               </div>
             </div>
 
@@ -387,71 +451,132 @@
                     class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold flex-shrink-0"
                     >1</span
                   >
-                  Paste Your Single YouTube URL
+                  Copy & Paste a YouTube URL
                 </h3>
                 <p class="mt-3 text-gray-600 pl-11">
-                  Simply copy the URL of the YouTube video you need, paste it
-                  into the input box on our homepage, and click the download
-                  button to begin.
+                  Simply find the YouTube video you need, copy its URL from your
+                  browser, and paste it directly into the input box on our
+                  homepage.
                 </p>
                 <img
                   src="./image/5ed5628e-810f-48c8-a171-35c94fbb7e57.gif"
-                  alt="Screenshot showing a single YouTube URL in the input box with an arrow pointing to the download button."
+                  alt="Animation showing a single YouTube URL being pasted into the input box and subtitles being downloaded."
                   class="mt-6 rounded-lg shadow-md border border-gray-200"
                 />
               </div>
             </div>
           </section>
 
+          <!-- === START: REWRITTEN BULK DOWNLOAD SECTION === -->
           <section class="mb-20" id="bulk-download">
             <h2
               class="text-3xl font-extrabold text-gray-900 border-b-4 border-blue-400 pb-3 mb-10"
             >
-              The Bulk Master: Downloading Multiple Subtitles at Once
+              Section 2: Mastering Bulk Downloads
             </h2>
             <div
               class="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-gray-100 content-card"
             >
               <p class="text-lg mb-8 text-gray-700">
                 This is where YTVidHub truly shines. Save hours of manual work
-                by downloading subtitles from entire playlists or URL lists in a
-                single action.
+                by processing entire lists of videos at once. We offer two
+                powerful ways to do this.
               </p>
+
+              <!-- Sub-section for Free Users -->
               <div>
                 <h3
-                  class="step-1-bulk text-xl font-bold text-gray-900 flex items-center gap-3"
+                  class="text-xl font-bold text-gray-900 flex items-center gap-3"
+                >
+                  <span
+                    class="bg-gray-600 text-white w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold flex-shrink-0"
+                    >A</span
+                  >
+                  For Free Users: Your Daily Batches
+                </h3>
+                <p class="mt-3 text-gray-600 pl-11">
+                  Every user gets free daily credits, allowing you to process
+                  small batches of videos. Simply paste your list of URLs (one
+                  per line) into the input box. This is perfect for daily tasks
+                  and trying out our core feature.
+                </p>
+                <img
+                  src="./image/fa96f3b2-faf1-433f-9210-e095bb8cb5a7.gif"
+                  alt="Animation showing a list of YouTube URLs being pasted for bulk download."
+                  class="mt-8 rounded-lg shadow-md border border-gray-200"
+                />
+              </div>
+
+              <hr class="my-12 border-gray-200" />
+
+              <!-- Sub-section for Pro Members -->
+              <div>
+                <h3
+                  class="text-xl font-bold text-gray-900 flex items-center gap-3"
                 >
                   <span
                     class="bg-blue-600 text-white w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold flex-shrink-0"
-                    >1</span
+                    >B</span
                   >
-                  Paste Up to 50 URLs (One per line)
+                  For Pro Members: UNLIMITED Bulk Power
                 </h3>
                 <p class="mt-3 text-gray-600 pl-11">
-                  Go to our
-                  <a
-                    href="./bulk-youtube-subtitle-downloader.html"
-                    class="text-blue-600 hover:underline font-semibold"
-                    >Bulk Downloader</a
-                  >, paste your entire list of YouTube URLs, and let our tool
-                  process them all.
+                  This is where YTVidHub transforms from a handy tool into a
+                  data-gathering powerhouse. As a Pro member, the batch limit is
+                  **completely removed**. You can paste hundreds—or even
+                  thousands—of URLs at once. There are no restrictions.
                 </p>
                 <blockquote class="mt-6 pl-11">
                   <div
                     class="p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-800 font-semibold rounded-r-lg"
                   >
-                    "This one step replaces dozens of repetitive clicks required
-                    by other tools."
+                    "Pro members can process entire YouTube channels or massive
+                    research datasets in a single click. No more splitting up
+                    your lists."
                   </div>
                 </blockquote>
-                <img
-                  src="./image/fa96f3b2-faf1-433f-9210-e095bb8cb5a7.gif"
-                  alt="Screenshot showing multiple YouTube URLs pasted into the input box, with the 'Download ZIP' button visible after processing."
-                  class="mt-8 rounded-lg shadow-md border border-gray-200"
-                />
+              </div>
+
+              <!-- Call to Action to Upgrade -->
+              <div
+                class="mt-10 bg-gray-50 rounded-lg p-6 border border-gray-200 flex flex-col md:flex-row items-center gap-6"
+              >
+                <div class="flex-shrink-0">
+                  <svg
+                    class="w-12 h-12 text-blue-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.82m5.84-2.56a16.95 16.95 0 00-2.63-7.23m-2.63 7.23a16.95 16.95 0 01-2.63-7.23m0 0a16.95 16.95 0 00-2.63 7.23m2.63-7.23a6 6 0 015.84-7.38V5.82m-5.84 7.38a6 6 0 01-5.84-7.38V5.82m5.84 7.38v4.82m-5.84-4.82a16.95 16.95 0 002.63 7.23m2.63-7.23m2.63 7.23a16.95 16.95 0 012.63 7.23m0 0a16.95 16.95 0 002.63-7.23m-2.63 7.23a6 6 0 01-5.84 7.38z"
+                    />
+                  </svg>
+                </div>
+                <div class="flex-grow text-center md:text-left">
+                  <h4 class="text-lg font-bold text-gray-900">
+                    Ready to Remove All Limits?
+                  </h4>
+                  <p class="text-gray-600 text-sm mt-1">
+                    Upgrade to a Pro plan to unlock unlimited bulk downloads and
+                    supercharge your workflow.
+                  </p>
+                </div>
+                <div class="flex-shrink-0 w-full md:w-auto">
+                  <a
+                    href="./pricing.html"
+                    class="btn-primary inline-block w-full text-center text-white font-semibold py-2 px-6 rounded-lg"
+                    >View Pro Plans</a
+                  >
+                </div>
               </div>
             </div>
           </section>
+          <!-- === END: REWRITTEN BULK DOWNLOAD SECTION === -->
 
           <section class="mb-16">
             <h2
@@ -538,13 +663,14 @@
                 <summary
                   class="font-semibold text-lg text-gray-800 focus:outline-none"
                 >
-                  The bulk download isn't working. What should I do?
+                  My bulk download failed. What should I do?
                 </summary>
                 <div class="mt-4 pt-4 border-t border-gray-100 text-gray-600">
-                  First, check your internet connection. Second, try disabling
-                  any ad-blockers or script-blocking extensions, as they can
-                  interfere. Finally, ensure the videos you selected had a
-                  **"Subtitles Available"** status after analysis.
+                  Ensure each URL is on a separate line. If the issue persists,
+                  try a smaller batch first to identify if a specific URL is
+                  causing a problem. Pro members with very large lists (1000+
+                  URLs) should ensure they have a stable internet connection for
+                  the initial submission.
                 </div>
               </details>
             </div>
@@ -626,6 +752,13 @@
                     >Terms of Service</a
                   >
                 </li>
+                <li>
+                  <a
+                    href="./about.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >About Us</a
+                  >
+                </li>
               </ul>
             </div>
           </div>
@@ -704,6 +837,12 @@
             class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Blog</a
           >
+
+          <a
+            href="./blog/engineering-decisions-ytvidhub.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Engineering-Decisions</a
+          >
           <a
             href="./terms-of-service.html"
             class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
@@ -732,7 +871,6 @@
         id="login-modal-content"
         class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content"
       >
-        <!-- Close Button -->
         <button
           id="modal-close-button"
           class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
@@ -751,16 +889,18 @@
             ></path>
           </svg>
         </button>
-
         <div class="text-center">
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p class="text-gray-500 mb-6">Log in to access your Pro features.</p>
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            Access Your Account
+          </h2>
+          <p class="text-gray-500 mb-6">
+            Log in to manage your plan, or sign up to claim your free daily
+            credits.
+          </p>
         </div>
-
-        <!-- Google Login -->
         <button
           id="google-login"
-          class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-4"
+          class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
         >
           <svg class="w-5 h-5" viewBox="0 0 48 48">
             <path
@@ -784,69 +924,53 @@
             >Continue with Google</span
           >
         </button>
-
-        <!-- <div class="flex items-center my-6">
+        <div class="flex items-center my-8">
           <hr class="flex-grow border-t border-gray-200" />
-          <span class="px-3 text-xs font-medium text-gray-400">OR</span>
+          <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
+            >NEW TO YTVidHub?</span
+          >
           <hr class="flex-grow border-t border-gray-200" />
         </div>
-
-        <form action="#" method="POST">
-          <div class="space-y-4">
-            <div>
-              <label
-                for="email"
-                class="block text-sm font-medium text-gray-700 mb-1"
-                >Email address</label
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+              <svg
+                class="w-8 h-8 text-blue-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
               >
-              <input
-                type="email"
-                name="email"
-                id="email"
-                autocomplete="email"
-                required
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-              />
+                <path
+                  d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.614Dab83 7.84006L12.0006 0.5L15.3871 7.84006L23.4143 8.7918L17.4797 14.2799L19.055 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.259 13.603L18.8142 10.2918L14.0433 9.78653L12.0006 5.4313L9.95786 9.78653L5.18695 10.2918L8.74219 13.603L7.75485 18.3451L12.0006 15.968Z"
+                ></path>
+              </svg>
             </div>
             <div>
-              <div class="flex justify-between items-baseline">
-                <label
-                  for="password"
-                  class="block text-sm font-medium text-gray-700 mb-1"
-                  >Password</label
-                >
-                <a href="#" class="text-xs text-blue-600 hover:underline"
-                  >Forgot password?</a
-                >
-              </div>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                autocomplete="current-password"
-                required
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <button
-                type="submit"
-                class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Log In
-              </button>
+              <h3 class="font-semibold text-gray-800">Get Started for Free</h3>
+              <p class="text-sm text-gray-600">
+                Every account receives <strong>5 free credits daily</strong>.
+                Perfect for downloading subtitles from
+                <strong>up to 5 videos</strong> in bulk, every single day!
+              </p>
             </div>
           </div>
-        </form>
-
-        <p class="text-center text-sm text-gray-500 mt-8">
-          Don't have an account?
-          <a href="#" class="font-medium text-blue-600 hover:underline"
-            >Sign up</a
-          >
-        </p> -->
+        </div>
       </div>
     </div>
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
+    ></script>
+    <script defer>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-KZZ05YN8TX");
+    </script>
     <script src="./js/auth.js"></script>
     <script>
       const MOBILE_MENU_TRANSITION_DURATION = 300;

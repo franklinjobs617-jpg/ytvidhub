@@ -29,6 +29,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
+
+      .diamond {
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+    background: #60a5fa; /* blue-400 */
+    display:inline-block;
+    border-radius:1px;
+  }
+  /* caret (top notch) */
+  .menu-caret {
+    width: 12px;
+    height: 12px;
+    transform: rotate(45deg);
+    background: white;
+    position: absolute;
+    right: 18px; /* 调整 caret 水平位置对齐触发器 */
+    top: -6px;
+    border-left: 1px solid rgba(0,0,0,0.04);
+    border-top: 1px solid rgba(0,0,0,0.04);
+    box-shadow: -3px -3px 8px rgba(96,165,250,0.02);
+  }
       body {
         font-family: "Inter", sans-serif;
       }
@@ -221,6 +243,11 @@
             class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
             >Blog</a
           >
+          <a
+          href="./blog/engineering-decisions-ytvidhub.html"
+          class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+          >Engineering Decisions</a
+        >
             <a
               href="./pricing.html"
               class="nav-link nav-link-active text-blue-600 font-semibold transition duration-150"
@@ -253,27 +280,44 @@
                 ></span>
               </button>
               <div
-                id="user-dropdown-menu"
-                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
-              >
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >Dashboard</a
-                >
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >Settings</a
-                >
-                <div class="border-t border-gray-100 my-1"></div>
+              id="user-dropdown-menu"
+              class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
+              role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
+            >
+              <!-- caret -->
+              <div class="menu-caret"></div>
+            
+              <!-- Credits header -->
+              <div class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl">
+                <div class="flex-shrink-0">
+                  <!-- diamond icon (pure CSS block) -->
+                  <span class="diamond" aria-hidden="true"></span>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs uppercase tracking-widest text-gray-400 font-medium">Credits</div>
+                  <div id="credits" class="text-2xl font-extrabold text-gray-900 leading-tight">2</div>
+                </div>
+              </div>
+            
+              <div class="border-t border-gray-100"></div>
+            
+              <!-- actions -->
+              <div class="py-2">
                 <a
                   href="#"
                   id="logout-button-desktop"
-                  class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                  >Logout</a
+                  class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
+                  role="menuitem"
                 >
+                  <!-- small pill icon using CSS-like box (no svg) -->
+                  <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100">⟲</span>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-800">Sign Out</div>
+                    <div class="text-xs text-gray-400">Log out of your account</div>
+                  </div>
+                </a>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -297,25 +341,26 @@
             </button>
             <div
               id="user-dropdown-menu-mobile"
-              class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
+              class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
             >
-              <div class="px-4 py-2 border-b">
-                <p
-                  id="user-name-mobile-dropdown"
-                  class="font-semibold text-sm text-gray-800 truncate"
-                ></p>
+              <!-- User Info and Credits -->
+              <div class="px-4 py-3 border-b border-gray-100">
+                <p class="text-xs text-gray-500 mt-1">
+                  Credits:
+                  <span id="credits-mobile" class="font-bold text-gray-700"
+                    >0</span
+                  >
+                </p>
               </div>
-              <a
-                href="#"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >Dashboard</a
-              >
-              <a
-                href="#"
-                id="logout-button-mobile"
-                class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                >Logout</a
-              >
+              <!-- Logout -->
+              <div class="py-1">
+                <a
+                  href="#"
+                  id="logout-button-mobile"
+                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  >Logout</a
+                >
+              </div>
             </div>
           </div>
 
@@ -425,8 +470,9 @@
               </li>
             </ul>
             <a
-              href="/checkout?plan=pro-monthly"
-              class="w-full block text-center mt-auto py-3 rounded-lg btn-primary text-white font-semibold"
+              href="#"
+              class="w-full block text-center mt-auto py-3 rounded-lg btn-primary text-white font-semibold purchase-button"
+              data-product-id="a"
               >Upgrade to Pro</a
             >
           </div>
@@ -461,8 +507,9 @@
               </li>
             </ul>
             <a
-              href="/checkout?plan=premium-monthly"
-              class="w-full block text-center mt-auto py-3 rounded-lg btn-primary text-white font-semibold"
+              href="#"
+              class="w-full block text-center mt-auto py-3 rounded-lg btn-primary text-white font-semibold purchase-button"
+              data-product-id="b"
               >Unleash Premium</a
             >
           </div>
@@ -470,6 +517,7 @@
           <!-- Researcher (Annual) Plan -->
           <div
             class="pricing-card bg-white/70 backdrop-blur-sm p-8 rounded-2xl ring-1 ring-gray-900/5 shadow-lg flex flex-col h-full"
+
           >
             <div class="relative">
               <h3 class="text-2xl font-bold mb-2 text-purple-600">Researcher</h3>
@@ -500,8 +548,9 @@
               </li>
             </ul>
             <a
-              href="/checkout?plan=annual-researcher"
-              class="w-full block text-center mt-auto py-3 rounded-lg btn-primary text-white font-semibold"
+              href="#"
+              class="w-full block text-center mt-auto py-3 rounded-lg btn-primary text-white font-semibold purchase-button"
+              data-product-id="c"
               >Commit & Save Annually</a
             >
           </div>
@@ -563,7 +612,6 @@
       </main>
 
       <footer class="bg-gray-800 text-white">
-        <!-- ... Your footer code remains unchanged ... -->
         <div class="container mx-auto px-6 lg:px-8 py-12">
           <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
             <div class="md:col-span-1">
@@ -637,6 +685,13 @@
                     >Terms of Service</a
                   >
                 </li>
+                <li>
+                  <a
+                    href="./about.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >About Us</a
+                  >
+                </li>
               </ul>
             </div>
           </div>
@@ -652,103 +707,22 @@
 
     <!-- Mobile Menu -->
     <div
-      id="mobile-menu"
-      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
-    >
-      <!-- ... Your mobile menu remains unchanged ... -->
-      <div class="flex flex-col h-full">
-        <div
-          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
-        >
-          <a href="./index.html" class="flex items-center gap-3"
-            ><img
-              src="./image/icon.webp"
-              alt="YTVidHub Logo"
-              class="h-8 md:h-10 w-auto"
-          /></a>
-          <button
-            id="mobile-menu-close-button"
-            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <div class="flex flex-col p-6 space-y-4 flex-grow">
-          <a
-            href="./index.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Home</a
-          >
-          <a
-            href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Bulk Downloader</a
-          >
-          <a
-            href="./how-to-use.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >How to Use</a
-          >
-          <a
-            href="./faq.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >FAQ</a
-          >
-          <a
-            href="./what-is-an-srt-file.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Srt File</a
-          >
-          <a
-          href="./blog/subtitle-accuracy-problem.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Blog</a
-        >
-          <a
-            href="./terms-of-service.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Terms</a
-          >
-          <a
-            href="./privacy-policy.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Privacy</a
-          >
-          <a
-            href="./about.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >About</a
-          >
-        </div>
-      </div>
-    </div>
-
-    <!-- START: LOGIN MODAL -->
-    <div
-      id="login-modal-container"
-      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
-    >
-      <!-- ... Your login modal remains unchanged ... -->
+    id="mobile-menu"
+    class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+  >
+    <div class="flex flex-col h-full">
       <div
-        id="login-modal-content"
-        class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content"
+        class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
       >
-        <!-- Close Button -->
+        <a href="./index.html" class="flex items-center gap-3"
+          ><img
+            src="./image/icon.webp"
+            alt="YTVidHub Logo"
+            class="h-8 md:h-10 w-auto"
+        /></a>
         <button
-          id="modal-close-button"
-          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          id="mobile-menu-close-button"
+          class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
         >
           <svg
             class="w-6 h-6"
@@ -764,41 +738,178 @@
             ></path>
           </svg>
         </button>
-
-        <div class="text-center">
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p class="text-gray-500 mb-6">Log in to access your Pro features.</p>
-        </div>
-
-        <!-- Google Login -->
-        <button
-          id="google-login"
-          class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-4"
+      </div>
+      <div class="flex flex-col p-6 space-y-4 flex-grow">
+        <a
+          href="./index.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Home</a
         >
-          <svg class="w-5 h-5" viewBox="0 0 48 48">
-            <path
-              fill="#FFC107"
-              d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
-            ></path>
-            <path
-              fill="#FF3D00"
-              d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"
-            ></path>
-            <path
-              fill="#4CAF50"
-              d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"
-            </path>
-            <path
-              fill="#1976D2"
-              d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"
-            ></path>
-          </svg>
-          <span class="text-sm font-semibold text-gray-700"
-            >Continue with Google</span
-          >
-        </button>
+        <a
+          href="./bulk-youtube-subtitle-downloader.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Bulk Downloader</a
+        >
+        <a
+          href="./how-to-use.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >How to Use</a
+        >
+        <a
+          href="./faq.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >FAQ</a
+        >
+        <a
+          href="./what-is-an-srt-file.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Srt File</a
+        >
+        <a
+          href="./blog/subtitle-accuracy-problem.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Blog</a
+        >
+
+        <a
+        href="./blog/engineering-decisions-ytvidhub.html"
+        class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+        >Engineering-Decisions</a
+      >
+        <a
+          href="./terms-of-service.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Terms</a
+        >
+        <a
+          href="./privacy-policy.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >Privacy</a
+        >
+        <a
+          href="./about.html"
+          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+          >About</a
+        >
       </div>
     </div>
+  </div>
+
+    <!-- START: LOGIN MODAL -->
+    <div
+    id="login-modal-container"
+    class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
+  >
+    <div
+      id="login-modal-content"
+      class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content"
+    >
+      <!-- Close Button -->
+      <button
+        id="modal-close-button"
+        class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Step 1: Main Call to Action -->
+      <div class="text-center">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">
+          Access Your Account
+        </h2>
+        <p class="text-gray-500 mb-6">
+          Log in to manage your plan, or sign up to claim your free daily
+          credits.
+        </p>
+      </div>
+
+      <!-- Google Login Button -->
+      <button
+        id="google-login"
+        class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 48 48">
+          <path
+            fill="#FFC107"
+            d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
+          ></path>
+          <path
+            fill="#FF3D00"
+            d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"
+          ></path>
+          <path
+            fill="#4CAF50"
+            d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"
+          ></path>
+          <path
+            fill="#1976D2"
+            d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"
+          ></path>
+        </svg>
+        <span class="text-sm font-semibold text-gray-700"
+          >Continue with Google</span
+        >
+      </button>
+
+      <!-- Divider -->
+      <div class="flex items-center my-8">
+        <hr class="flex-grow border-t border-gray-200" />
+        <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
+          >NEW TO YTVidHub?</span
+        >
+        <hr class="flex-grow border-t border-gray-200" />
+      </div>
+
+      <!-- Step 2: Value Proposition Box -->
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="flex items-start gap-4">
+          <!-- Icon -->
+          <div class="flex-shrink-0">
+            <svg
+              class="w-8 h-8 text-blue-500"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.614Dab83 7.84006L12.0006 0.5L15.3871 7.84006L23.4143 8.7918L17.4797 14.2799L19.055 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.259 13.603L18.8142 10.2918L14.0433 9.78653L12.0006 5.4313L9.95786 9.78653L5.18695 10.2918L8.74219 13.603L7.75485 18.3451L12.0006 15.968Z"
+              ></path>
+            </svg>
+          </div>
+          <!-- Text Content -->
+          <div>
+            <h3 class="font-semibold text-gray-800">Get Started for Free</h3>
+            <p class="text-sm text-gray-600">
+              Every account receives <strong>5 free credits daily</strong>.
+              Perfect for downloading subtitles from
+              <strong>up to 5 videos</strong> in bulk, every single day!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"></script>
+<script defer>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-KZZ05YN8TX');
+</script>
     <script src="./js/auth.js"></script>
     <script>
       const MOBILE_MENU_TRANSITION_DURATION = 300;

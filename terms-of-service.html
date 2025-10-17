@@ -1,30 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Terms of Service | YTVidHub - Usage Guidelines</title>
-    <meta name="description" content="Review the Terms of Service for using YTVidHub. This document outlines your responsibilities, our liability, and the proper use of our free subtitle downloader.">
+    <meta
+      name="description"
+      content="Review the Terms of Service for using YTVidHub. This document outlines your responsibilities, our liability, and the proper use of our free subtitle downloader."
+    />
 
     <!-- FONT & PERFORMANCE OPTIMIZATION -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon" />
     <link rel="canonical" href="https://ytvidhub.com/terms-of-service.html" />
-    <link rel="preload" as="font" href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2" type="font/woff2" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+      rel="preload"
+      as="font"
+      href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+      .diamond {
+        width: 8px;
+        height: 8px;
+        transform: rotate(45deg);
+        background: #60a5fa; /* blue-400 */
+        display: inline-block;
+        border-radius: 1px;
+      }
+      /* caret (top notch) */
+      .menu-caret {
+        width: 12px;
+        height: 12px;
+        transform: rotate(45deg);
+        background: white;
+        position: absolute;
+        right: 18px; /* 调整 caret 水平位置对齐触发器 */
+        top: -6px;
+        border-left: 1px solid rgba(0, 0, 0, 0.04);
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        box-shadow: -3px -3px 8px rgba(96, 165, 250, 0.02);
+      }
       /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
       }
-      h1, h2 {
+      h1,
+      h2 {
         letter-spacing: -0.025em; /* Tighter tracking for headlines */
       }
-      
+
       /* MODIFICATION: Enhanced Prose styles for better readability */
       .prose {
         color: #374151; /* text-gray-700 */
@@ -57,21 +91,43 @@
 
       /* --- AURORA BACKGROUND EFFECT --- */
       .aurora-bg-container {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -10;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -10;
       }
       .aurora-ball {
-        position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15;
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.15;
       }
       .aurora-ball-1 {
-        width: 35rem; height: 35rem; background: radial-gradient(circle, #a78bfa, #3b82f6); animation: aurora-float 25s infinite alternate ease-in-out;
+        width: 35rem;
+        height: 35rem;
+        background: radial-gradient(circle, #a78bfa, #3b82f6);
+        animation: aurora-float 25s infinite alternate ease-in-out;
       }
       .aurora-ball-2 {
-        width: 30rem; height: 30rem; background: radial-gradient(circle, #3b82f6, #67e8f9); animation: aurora-float 20s infinite alternate ease-in-out; animation-delay: -10s;
+        width: 30rem;
+        height: 30rem;
+        background: radial-gradient(circle, #3b82f6, #67e8f9);
+        animation: aurora-float 20s infinite alternate ease-in-out;
+        animation-delay: -10s;
       }
       @keyframes aurora-float {
-        0% { transform: translate(-20%, -20%) rotate(0deg) scale(1); }
-        50% { transform: translate(20%, 10%) rotate(180deg) scale(1.2); }
-        100% { transform: translate(-20%, -20%) rotate(360deg) scale(1); }
+        0% {
+          transform: translate(-20%, -20%) rotate(0deg) scale(1);
+        }
+        50% {
+          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
+        }
+        100% {
+          transform: translate(-20%, -20%) rotate(360deg) scale(1);
+        }
       }
 
       /* --- HEADER LINK HOVER EFFECT --- */
@@ -80,23 +136,37 @@
         padding-bottom: 8px;
       }
       .nav-link::after {
-        content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: #3b82f6; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease-out;
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #3b82f6;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease-out;
       }
       .nav-link:hover::after,
       .nav-link-active::after {
         transform: scaleX(1);
       }
     </style>
-</head>
-<body class="bg-gray-50 text-gray-800 antialiased">
-
+  </head>
+  <body class="bg-gray-50 text-gray-800 antialiased">
     <div class="relative isolate">
-        <div class="aurora-bg-container">
-            <div class="aurora-ball aurora-ball-1" style="top: -20%; left: -20%;"></div>
-            <div class="aurora-ball aurora-ball-2" style="bottom: -20%; right: -15%;"></div>
-        </div>
+      <div class="aurora-bg-container">
+        <div
+          class="aurora-ball aurora-ball-1"
+          style="top: -20%; left: -20%"
+        ></div>
+        <div
+          class="aurora-ball aurora-ball-2"
+          style="bottom: -20%; right: -15%"
+        ></div>
+      </div>
 
-        <header
+      <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
         <nav
@@ -138,10 +208,15 @@
                 >Srt File</a
               >
               <a
-              href="./blog/subtitle-accuracy-problem.html"
-              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-              >Blog</a
-            >
+                href="./blog/subtitle-accuracy-problem.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Blog</a
+              >
+              <a
+                href="./blog/engineering-decisions-ytvidhub.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Engineering Decisions</a
+              >
               <a
                 href="./pricing.html"
                 class="nav-link text-gray-700 font-semibold transition duration-150"
@@ -175,16 +250,62 @@
                 </button>
                 <div
                   id="user-dropdown-menu"
-                  class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
+                  class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
                 >
-          
-                  <div class="border-t border-gray-100 my-1"></div>
-                  <a
-                    href="#"
-                    id="logout-button-desktop"
-                    class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >Logout</a
+                  <!-- caret -->
+                  <div class="menu-caret"></div>
+
+                  <!-- Credits header -->
+                  <div
+                    class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl"
                   >
+                    <div class="flex-shrink-0">
+                      <!-- diamond icon (pure CSS block) -->
+                      <span class="diamond" aria-hidden="true"></span>
+                    </div>
+                    <div class="min-w-0">
+                      <div
+                        class="text-xs uppercase tracking-widest text-gray-400 font-medium"
+                      >
+                        Credits
+                      </div>
+                      <div
+                        id="credits"
+                        class="text-2xl font-extrabold text-gray-900 leading-tight"
+                      >
+                        2
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="border-t border-gray-100"></div>
+
+                  <!-- actions -->
+                  <div class="py-2">
+                    <a
+                      href="#"
+                      id="logout-button-desktop"
+                      class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
+                      role="menuitem"
+                    >
+                      <!-- small pill icon using CSS-like box (no svg) -->
+                      <span
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100"
+                        >⟲</span
+                      >
+                      <div class="text-left">
+                        <div class="text-sm font-medium text-gray-800">
+                          Sign Out
+                        </div>
+                        <div class="text-xs text-gray-400">
+                          Log out of your account
+                        </div>
+                      </div>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -209,25 +330,26 @@
               </button>
               <div
                 id="user-dropdown-menu-mobile"
-                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 border border-gray-200 z-50"
+                class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
               >
-                <div class="px-4 py-2 border-b">
-                  <p
-                    id="user-name-mobile-dropdown"
-                    class="font-semibold text-sm text-gray-800 truncate"
-                  ></p>
+                <!-- User Info and Credits -->
+                <div class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-xs text-gray-500 mt-1">
+                    Credits:
+                    <span id="credits-mobile" class="font-bold text-gray-700"
+                      >0</span
+                    >
+                  </p>
                 </div>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >Dashboard</a
-                >
-                <a
-                  href="#"
-                  id="logout-button-mobile"
-                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                  >Logout</a
-                >
+                <!-- Logout -->
+                <div class="py-1">
+                  <a
+                    href="#"
+                    id="logout-button-mobile"
+                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >Logout</a
+                  >
+                </div>
               </div>
             </div>
 
@@ -254,137 +376,219 @@
         </nav>
       </header>
 
-        <main class="container mx-auto px-6 py-16">
-            <article class="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-xl ring-1 ring-gray-900/5">
-                <header class="mb-10 text-center">
-                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">Terms of Service</h1>
-                    <p class="mt-4 text-xl text-gray-600">Please read these terms carefully before using our service.</p>
-                    <p class="mt-2 text-sm text-gray-500"><em>Last Updated: October 11, 2025</em></p>
-                </header>
+      <main class="container mx-auto px-6 py-16">
+        <article
+          class="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-xl ring-1 ring-gray-900/5"
+        >
+          <header class="mb-10 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900">
+              Terms of Service
+            </h1>
+            <p class="mt-4 text-xl text-gray-600">
+              Please read these terms carefully before using our service.
+            </p>
+            <p class="mt-2 text-sm text-gray-500">
+              <em>Last Updated: October 11, 2025</em>
+            </p>
+          </header>
 
-                <div class="prose max-w-none">
-                    <h2 id="acceptance">1. Acceptance of Terms</h2>
-                    <p>By accessing and using YTVidHub (the "Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this Service.</p>
+          <div class="prose max-w-none">
+            <h2 id="acceptance">1. Acceptance of Terms</h2>
+            <p>
+              By accessing and using YTVidHub (the "Service"), you accept and
+              agree to be bound by the terms and provision of this agreement. If
+              you do not agree to abide by these terms, please do not use this
+              Service.
+            </p>
 
-                    <h2 id="service-description">2. Description of Service</h2>
-                    <p>YTVidHub provides a tool that allows users to download publicly available subtitles from videos hosted on YouTube. The Service is provided for personal, non-commercial use. We are an independent service and are not affiliated with, sponsored, or endorsed by YouTube or Google LLC.</p>
+            <h2 id="service-description">2. Description of Service</h2>
+            <p>
+              YTVidHub provides a tool that allows users to download publicly
+              available subtitles from videos hosted on YouTube. The Service is
+              provided for personal, non-commercial use. We are an independent
+              service and are not affiliated with, sponsored, or endorsed by
+              YouTube or Google LLC.
+            </p>
 
-                    <h2 id="user-responsibilities">3. User Responsibilities and Conduct</h2>
-                    <p>You, the user, agree to the following:</p>
-                    <ul>
-                        <li><strong>Content Rights:</strong> You are solely responsible for ensuring you have the legal right to access the content from which you are downloading subtitles. The subtitles and transcripts available for download are the intellectual property of the respective YouTube content creators. Our Service is merely a technical tool to access this data.</li>
-                        <li><strong>Permitted Use:</strong> The Service is intended for personal, educational, or research purposes under the principles of fair use. You agree not to use the downloaded subtitles for any commercial purposes, redistribution, or in any way that infringes upon the copyright of the original content owner without their explicit permission.</li>
-                        <li><strong>Prohibited Actions:</strong> You agree not to misuse the Service. This includes, but is not limited to, attempting to disrupt our servers through automated means (e.g., denial-of-service attacks, excessive scraping), reverse-engineering our tool, or using the Service for any illegal activities.</li>
-                    </ul>
+            <h2 id="user-responsibilities">
+              3. User Responsibilities and Conduct
+            </h2>
+            <p>You, the user, agree to the following:</p>
+            <ul>
+              <li>
+                <strong>Content Rights:</strong> You are solely responsible for
+                ensuring you have the legal right to access the content from
+                which you are downloading subtitles. The subtitles and
+                transcripts available for download are the intellectual property
+                of the respective YouTube content creators. Our Service is
+                merely a technical tool to access this data.
+              </li>
+              <li>
+                <strong>Permitted Use:</strong> The Service is intended for
+                personal, educational, or research purposes under the principles
+                of fair use. You agree not to use the downloaded subtitles for
+                any commercial purposes, redistribution, or in any way that
+                infringes upon the copyright of the original content owner
+                without their explicit permission.
+              </li>
+              <li>
+                <strong>Prohibited Actions:</strong> You agree not to misuse the
+                Service. This includes, but is not limited to, attempting to
+                disrupt our servers through automated means (e.g.,
+                denial-of-service attacks, excessive scraping),
+                reverse-engineering our tool, or using the Service for any
+                illegal activities.
+              </li>
+            </ul>
 
-                    <h2 id="disclaimer">4. Disclaimer of Warranties</h2>
-                    <p>The Service is provided on an "as-is" and "as-available" basis. YTVidHub makes no warranty that the Service will be uninterrupted, timely, secure, or error-free. We do not guarantee the accuracy, completeness, or availability of any subtitles. Subtitles may be auto-generated by YouTube and contain inaccuracies. We are not responsible for the content of any downloaded files.</p>
-                    
-                    <h2 id="liability">5. Limitation of Liability</h2>
-                    <p>In no event shall YTVidHub or its owners be liable for any direct, indirect, incidental, special, or consequential damages resulting from the use or the inability to use the Service or for the cost of procurement of substitute services. This includes liability for any copyright infringement claims that may arise from your use of the downloaded content.</p>
+            <h2 id="disclaimer">4. Disclaimer of Warranties</h2>
+            <p>
+              The Service is provided on an "as-is" and "as-available" basis.
+              YTVidHub makes no warranty that the Service will be uninterrupted,
+              timely, secure, or error-free. We do not guarantee the accuracy,
+              completeness, or availability of any subtitles. Subtitles may be
+              auto-generated by YouTube and contain inaccuracies. We are not
+              responsible for the content of any downloaded files.
+            </p>
 
-                    <h2 id="intellectual-property">6. Intellectual Property</h2>
-                    <p>All content on this website, including the YTVidHub name, logo, design, and underlying code, is the property of YTVidHub. You may not use any of our intellectual property without our prior written consent. The YouTube name and logo are trademarks of Google LLC.</p>
+            <h2 id="liability">5. Limitation of Liability</h2>
+            <p>
+              In no event shall YTVidHub or its owners be liable for any direct,
+              indirect, incidental, special, or consequential damages resulting
+              from the use or the inability to use the Service or for the cost
+              of procurement of substitute services. This includes liability for
+              any copyright infringement claims that may arise from your use of
+              the downloaded content.
+            </p>
 
-                    <h2 id="termination">7. Termination of Service</h2>
-                    <p>We reserve the right to modify, suspend, or terminate the Service at any time, for any reason, without notice. We will not be liable to you or any third party for any modification, suspension, or termination of the Service.</p>
+            <h2 id="intellectual-property">6. Intellectual Property</h2>
+            <p>
+              All content on this website, including the YTVidHub name, logo,
+              design, and underlying code, is the property of YTVidHub. You may
+              not use any of our intellectual property without our prior written
+              consent. The YouTube name and logo are trademarks of Google LLC.
+            </p>
 
-                    <h2 id="changes-to-terms">8. Changes to Terms</h2>
-                    <p>We may revise these Terms of Service from time to time. The most current version will always be posted on this page. By continuing to use the Service after changes become effective, you agree to be bound by the revised terms.</p>
+            <h2 id="termination">7. Termination of Service</h2>
+            <p>
+              We reserve the right to modify, suspend, or terminate the Service
+              at any time, for any reason, without notice. We will not be liable
+              to you or any third party for any modification, suspension, or
+              termination of the Service.
+            </p>
 
-                    <h2 id="governing-law">9. Governing Law</h2>
-                    <p>This agreement shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict of law provisions.</p>
-                </div>
-            </article>
-        </main>
+            <h2 id="changes-to-terms">8. Changes to Terms</h2>
+            <p>
+              We may revise these Terms of Service from time to time. The most
+              current version will always be posted on this page. By continuing
+              to use the Service after changes become effective, you agree to be
+              bound by the revised terms.
+            </p>
 
-        <footer class="bg-gray-800 text-white">
-          <div class="container mx-auto px-6 lg:px-8 py-12">
-            <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
-              <div class="md:col-span-1">
-                <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
-                <p class="mt-3 text-gray-400 text-sm">
-                  The essential toolkit for video content data extraction, built
-                  for speed and reliability.
-                </p>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
-                <ul class="space-y-3 text-sm">
-                  <li>
-                    <a
-                      href="./index.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >Home</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="./bulk-youtube-subtitle-downloader.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >Bulk Downloader</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="./how-to-use.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >How to Use</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="./faq.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >FAQ</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="./what-is-an-srt-file.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >Srt File</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="./blog/subtitle-accuracy-problem.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >Blog</a
-                    >
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
-                <ul class="space-y-3 text-sm">
-                  <li>
-                    <a
-                      href="./privacy-policy.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >Privacy Policy</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="./terms-of-service.html"
-                      class="hover:text-blue-400 text-gray-400 transition"
-                      >Terms of Service</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
-              <p>
-                &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
-                affiliated with Google or YouTube.
+            <h2 id="governing-law">9. Governing Law</h2>
+            <p>
+              This agreement shall be governed by and construed in accordance
+              with the laws of the State of Delaware, United States, without
+              regard to its conflict of law provisions.
+            </p>
+          </div>
+        </article>
+      </main>
+
+      <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 lg:px-8 py-12">
+          <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+            <div class="md:col-span-1">
+              <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
+              <p class="mt-3 text-gray-400 text-sm">
+                The essential toolkit for video content data extraction, built
+                for speed and reliability.
               </p>
             </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./index.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Home</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./bulk-youtube-subtitle-downloader.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Bulk Downloader</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./how-to-use.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >How to Use</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./faq.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >FAQ</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./what-is-an-srt-file.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Srt File</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./blog/subtitle-accuracy-problem.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Blog</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./privacy-policy.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Privacy Policy</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./terms-of-service.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Terms of Service</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./about.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >About Us</a
+                  >
+                </li>
+              </ul>
+            </div>
           </div>
-        </footer>
+          <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
+            <p>
+              &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
+              affiliated with Google or YouTube.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
-    
+
     <!-- Mobile Menu -->
     <div
       id="mobile-menu"
@@ -446,10 +650,16 @@
             >Srt File</a
           >
           <a
-          href="./blog/subtitle-accuracy-problem.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Blog</a
-        >
+            href="./blog/subtitle-accuracy-problem.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Blog</a
+          >
+
+          <a
+            href="./blog/engineering-decisions-ytvidhub.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Engineering-Decisions</a
+          >
           <a
             href="./terms-of-service.html"
             class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
@@ -470,84 +680,158 @@
     </div>
 
     <!-- START: LOGIN MODAL -->
-    <div id="login-modal-container" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop">
-        <div id="login-modal-content" class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content">
-            <!-- Close Button -->
-            <button id="modal-close-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+    <div
+      id="login-modal-container"
+      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
+    >
+      <div
+        id="login-modal-content"
+        class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content"
+      >
+        <!-- Close Button -->
+        <button
+          id="modal-close-button"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
 
-            <div class="text-center">
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-                <p class="text-gray-500 mb-6">Log in to access your Pro features.</p>
-            </div>
-
-            <!-- Google Login -->
-            <button id="google-login" class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors mb-4">
-                <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"></path><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"></path><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"></path><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"></path></svg>
-                <span class="text-sm font-semibold text-gray-700">Continue with Google</span>
-            </button>
-            
-            <!-- <div class="flex items-center my-6">
-                <hr class="flex-grow border-t border-gray-200">
-                <span class="px-3 text-xs font-medium text-gray-400">OR</span>
-                <hr class="flex-grow border-t border-gray-200">
-            </div>
-
-            <form action="#" method="POST">
-                <div class="space-y-4">
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-                        <input type="email" name="email" id="email" autocomplete="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <div>
-                        <div class="flex justify-between items-baseline">
-                           <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                           <a href="#" class="text-xs text-blue-600 hover:underline">Forgot password?</a>
-                        </div>
-                        <input type="password" name="password" id="password" autocomplete="current-password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <div>
-                        <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Log In
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <p class="text-center text-sm text-gray-500 mt-8">
-                Don't have an account?
-                <a href="#" class="font-medium text-blue-600 hover:underline">Sign up</a>
-            </p> -->
+        <!-- Step 1: Main Call to Action -->
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            Access Your Account
+          </h2>
+          <p class="text-gray-500 mb-6">
+            Log in to manage your plan, or sign up to claim your free daily
+            credits.
+          </p>
         </div>
+
+        <!-- Google Login Button -->
+        <button
+          id="google-login"
+          class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 48 48">
+            <path
+              fill="#FFC107"
+              d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
+            ></path>
+            <path
+              fill="#FF3D00"
+              d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"
+            ></path>
+            <path
+              fill="#4CAF50"
+              d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"
+            ></path>
+            <path
+              fill="#1976D2"
+              d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"
+            ></path>
+          </svg>
+          <span class="text-sm font-semibold text-gray-700"
+            >Continue with Google</span
+          >
+        </button>
+
+        <!-- Divider -->
+        <div class="flex items-center my-8">
+          <hr class="flex-grow border-t border-gray-200" />
+          <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
+            >NEW TO YTVidHub?</span
+          >
+          <hr class="flex-grow border-t border-gray-200" />
+        </div>
+
+        <!-- Step 2: Value Proposition Box -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <!-- Icon -->
+            <div class="flex-shrink-0">
+              <svg
+                class="w-8 h-8 text-blue-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.614Dab83 7.84006L12.0006 0.5L15.3871 7.84006L23.4143 8.7918L17.4797 14.2799L19.055 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.259 13.603L18.8142 10.2918L14.0433 9.78653L12.0006 5.4313L9.95786 9.78653L5.18695 10.2918L8.74219 13.603L7.75485 18.3451L12.0006 15.968Z"
+                ></path>
+              </svg>
+            </div>
+            <!-- Text Content -->
+            <div>
+              <h3 class="font-semibold text-gray-800">Get Started for Free</h3>
+              <p class="text-sm text-gray-600">
+                Every account receives <strong>5 free credits daily</strong>.
+                Perfect for downloading subtitles from
+                <strong>up to 5 videos</strong> in bulk, every single day!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- END: LOGIN MODAL -->
 
-  <script src="./js/auth.js"></script>
-    <script>
-        const MOBILE_MENU_TRANSITION_DURATION = 300;
-        const mobileMenuButton = document.getElementById("mobile-menu-button");
-        const mobileMenuCloseButton = document.getElementById("mobile-menu-close-button");
-        const mobileMenu = document.getElementById("mobile-menu");
-  
-        if (mobileMenuButton) {
-          mobileMenuButton.addEventListener("click", () => {
-            if (mobileMenu) {
-              mobileMenu.classList.remove("hidden");
-              setTimeout(() => { mobileMenu.classList.remove("translate-x-full"); }, 10);
-              document.body.style.overflow = "hidden";
-            }
-          });
-        }
-        if (mobileMenuCloseButton) {
-          mobileMenuCloseButton.addEventListener("click", () => {
-            if (mobileMenu) {
-              mobileMenu.classList.add("translate-x-full");
-              document.body.style.overflow = "";
-              setTimeout(() => { mobileMenu.classList.add("hidden"); }, MOBILE_MENU_TRANSITION_DURATION);
-            }
-          });
-        }
+    <script src="./js/auth.js"></script>
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
+    ></script>
+    <script defer>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-KZZ05YN8TX");
     </script>
-</body>
+    <script>
+      const MOBILE_MENU_TRANSITION_DURATION = 300;
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenuCloseButton = document.getElementById(
+        "mobile-menu-close-button"
+      );
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      if (mobileMenuButton) {
+        mobileMenuButton.addEventListener("click", () => {
+          if (mobileMenu) {
+            mobileMenu.classList.remove("hidden");
+            setTimeout(() => {
+              mobileMenu.classList.remove("translate-x-full");
+            }, 10);
+            document.body.style.overflow = "hidden";
+          }
+        });
+      }
+      if (mobileMenuCloseButton) {
+        mobileMenuCloseButton.addEventListener("click", () => {
+          if (mobileMenu) {
+            mobileMenu.classList.add("translate-x-full");
+            document.body.style.overflow = "";
+            setTimeout(() => {
+              mobileMenu.classList.add("hidden");
+            }, MOBILE_MENU_TRANSITION_DURATION);
+          }
+        });
+      }
+    </script>
+  </body>
 </html>

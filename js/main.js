@@ -23,11 +23,18 @@ let selectAllCheckbox,
   downloadSelectedText,
   downloadSelectedIcon,
   downloadSelectedSpinner,
-  downloadBtnLoadingOverlay;
-let videoList, resultsSummary, downloadStatusArea, downloadStatusContent;
+  downloadBtnLoadingOverlay,
+  createNumber,
+  credits_mobile;
+let videoList,
+  resultsSummary,
+  downloadStatusArea,
+  downloadStatusContent,
+  loginModalContainer;
 
 function initApp() {
   inputArea = document.getElementById("inputArea");
+  loginModalContainer = document.getElementById("login-modal-container");
   analyzingArea = document.getElementById("analyzingArea");
   resultsArea = document.getElementById("resultsArea");
   globalFormatSelect = document.getElementById("globalFormat");
@@ -41,6 +48,8 @@ function initApp() {
   downloadSelectedText = document.getElementById("downloadSelectedText");
   downloadSelectedIcon = document.getElementById("downloadSelectedIcon");
   downloadSelectedSpinner = document.getElementById("downloadSelectedSpinner");
+  createNumber = document.querySelector("#credits");
+  credits_mobile = document.querySelector("#credits_mobile");
   downloadBtnLoadingOverlay = document.getElementById(
     "downloadBtnLoadingOverlay"
   );
@@ -83,6 +92,52 @@ function initApp() {
       if (event.target === videoModal) closeVideoPreview();
     });
   }
+}
+
+const openModal = () => {
+  if (loginModalContainer) {
+    loginModalContainer.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+};
+
+const closeModal = () => {
+  if (loginModalContainer) {
+    loginModalContainer.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+};
+
+// --- API HELPER ---
+
+/**
+ * @summary A wrapper for the native fetch API that automatically adds the Authorization header.
+ * @description Retrieves the auth token from localStorage and adds it as a 'Bearer' token
+ * to the request headers. All API calls to the backend should use this function.
+ * @param {string} url - The URL to fetch.
+ * @param {object} options - The options for the fetch call (e.g., method, body).
+ * @returns {Promise<Response>} A Promise that resolves to the Response object.
+ */
+async function authenticatedFetch(url, options = {}) {
+  const token = localStorage.getItem("auth_token");
+
+  const headers = new Headers(options.headers || {});
+
+  if (token) {
+    headers.append("Authorization", `Bearer ${token}`);
+  }
+
+  // Ensure Content-Type is set for POST requests with a body
+  if (options.body && !headers.has("Content-Type")) {
+    headers.append("Content-Type", "application/json");
+  }
+
+  const fetchOptions = {
+    ...options,
+    headers,
+  };
+
+  return fetch(url, fetchOptions);
 }
 
 // --- UI AND STATE TRANSITION FUNCTIONS ---
@@ -141,10 +196,17 @@ async function processFile(file) {
     );
   }
   urlInput.value = await file.text();
-  handleAnalyzeClick();
+  await handleAnalyzeClick();
 }
 
 async function handleAnalyzeClick() {
+  const isLoggedIn = !!localStorage.getItem("auth_token");
+
+  if (!isLoggedIn) {
+    openModal();
+    return;
+  }
+
   const urlRegex = /https?:\/\/[^\s/$.?#].[^\s]*/g;
   const urls = [...new Set(urlInput.value.match(urlRegex) || [])];
   initialUrlCount = (urlInput.value.match(urlRegex) || []).length;
@@ -175,12 +237,23 @@ async function handleAnalyzeClick() {
 }
 
 async function fetchVideoDetails(urls) {
-  const response = await fetch("https://ytdlp.vistaflyer.com/api/batch_check", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ urls: urls }),
-  });
+  const response = await authenticatedFetch(
+    "https://ytdlp.vistaflyer.com/api/batch_check",
+    {
+      method: "POST",
+      body: JSON.stringify({ urls: urls }),
+    }
+  );
+
+  if (response.status === 402) {
+    // Handle "Payment Required" specifically
+    const errorData = await response.json();
+    throw new Error(
+      errorData.detail || "Insufficient credits to perform this action."
+    );
+  }
   if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+
   const data = await response.json();
   if (data.status !== "completed")
     throw new Error("Server could not process URLs.");
@@ -357,7 +430,6 @@ async function handleSingleDownload(event, videoId) {
   progressBarContainer.className =
     "w-full bg-gray-200 rounded-full h-2 overflow-hidden shadow-inner";
   const progressBar = document.createElement("div");
-  // FIX: Use inline style for background to avoid Tailwind JIT issues
   progressBar.className =
     "h-2 rounded-full transition-all duration-300 ease-out";
   progressBar.style.width = "0%";
@@ -407,19 +479,18 @@ async function handleSingleDownload(event, videoId) {
     const selectedFormat =
       parentContainer.querySelector(".per-video-format").value;
     await downloadFile(video.url, "en", selectedFormat, video.title);
-
-    const videoToSave = { 
-      id: video.id, 
-      url: video.url, 
-      title: video.title, 
-      uploader: video.uploader, 
-      thumbnail: video.thumbnail 
-  };
-  saveToHistory('single', [videoToSave]);
+    await updateUser();
+    const videoToSave = {
+      id: video.id,
+      url: video.url,
+      title: video.title,
+      uploader: video.uploader,
+      thumbnail: video.thumbnail,
+    };
+    saveToHistory("single", [videoToSave]);
     clearInterval(progressInterval);
     progressBar.style.width = "100%";
     percentageText.textContent = "100%";
-    // FIX: Use inline style for success color
     progressBar.style.background =
       "linear-gradient(to right, #4ade80, #16a34a)";
     statusText.textContent = "Complete!";
@@ -446,7 +517,6 @@ async function handleSingleDownload(event, videoId) {
     showNotification(error.message, "error");
 
     progressBar.style.width = "100%";
-    // FIX: Use inline style for error color
     progressBar.style.background =
       "linear-gradient(to right, #f87171, #dc2626)";
     statusText.textContent = "Failed!";
@@ -469,25 +539,25 @@ async function handleSingleDownload(event, videoId) {
 }
 window.handleSingleDownload = handleSingleDownload;
 
-
 //保存内容到历史记录
 function saveToHistory(type, videos) {
   try {
-    const history = JSON.parse(localStorage.getItem('downloadHistory')) || [];
+    const history = JSON.parse(localStorage.getItem("downloadHistory")) || [];
     const newEntry = {
       id: Date.now(),
       date: new Date().toISOString(),
       type: type,
-      videos: videos
+      videos: videos,
     };
-    
+
     history.unshift(newEntry);
-    
-    if (history.length > 50) { // Keep history to a reasonable size
+
+    if (history.length > 50) {
+      // Keep history to a reasonable size
       history.pop();
     }
-    
-    localStorage.setItem('downloadHistory', JSON.stringify(history));
+
+    localStorage.setItem("downloadHistory", JSON.stringify(history));
   } catch (error) {
     console.error("Failed to save to history:", error);
   }
@@ -510,15 +580,15 @@ async function handleBulkDownload() {
     const task = await createBulkTask(videosToDownload, "en", format);
     currentTaskId = task.task_id;
     const videosForHistory = videoData
-    .filter(v => selectedVideos.has(v.id))
-    .map(v => ({
+      .filter((v) => selectedVideos.has(v.id))
+      .map((v) => ({
         id: v.id,
         url: v.url,
         title: v.title,
         uploader: v.uploader,
-        thumbnail: v.thumbnail
-    }));
-saveToHistory('bulk', videosForHistory);
+        thumbnail: v.thumbnail,
+      }));
+    saveToHistory("bulk", videosForHistory);
 
     showDownloadStatus("processing", videosToDownload.length);
     startPerceivedProgress(videosToDownload.length);
@@ -546,12 +616,26 @@ function sanitizeFilename(name) {
 }
 
 async function downloadFile(url, lang, format, title) {
-  const response = await fetch("https://ytdlp.vistaflyer.com/api/download", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url, lang, format, title }),
-  });
-  if (!response.ok) throw new Error("Download failed from server.");
+  const response = await authenticatedFetch(
+    "https://ytdlp.vistaflyer.com/api/download",
+    {
+      method: "POST",
+      body: JSON.stringify({ url, lang, format, title }),
+    }
+  );
+
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    const errorData = await response.json();
+    if (errorData.status === "1" || errorData.status === 1) {
+      throw new Error(errorData.message || "Not enough Credits");
+    }
+    throw new Error(errorData.message || "An unknown API error occurred.");
+  }
+
+  if (!response.ok)
+    throw new Error(`File download failed: ${response.statusText}`);
+
   const blob = await response.blob();
   const objectUrl = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -595,15 +679,21 @@ function startAnalysisProgress() {
 }
 
 async function createBulkTask(videos, lang, format) {
-  const response = await fetch(
+  const response = await authenticatedFetch(
     "https://ytdlp.vistaflyer.com/api/batch_submit",
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ videos, lang, format }),
     }
   );
+  if (response.status === 402) {
+    const errorData = await response.json();
+    throw new Error(
+      errorData.detail || "Insufficient credits to start this bulk task."
+    );
+  }
   if (!response.ok) throw new Error("Failed to create bulk task.");
+
   const data = await response.json();
   if (data.status !== "pending")
     throw new Error(data.message || "Task submission failed.");
@@ -617,10 +707,30 @@ function startPolling() {
     try {
       const status = await checkTaskStatus(currentTaskId);
       if (status.progress_str) updateProgressWithRealData(status);
+
       if (status.status === "completed") {
         clearInterval(pollingInterval);
-        showDownloadStatus("complete");
-        await downloadBulkFile();
+        if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
+
+        try {
+          // Attempt to download the file first. This can throw an error.
+          await downloadBulkFile();
+
+          // If download succeeds, show the success screen and update user credits.
+          showDownloadStatus("complete");
+          await updateUser();
+        } catch (error) {
+          // If download fails (e.g., for credit reasons), show an appropriate error screen.
+          if (
+            error.message &&
+            error.message.toLowerCase().includes("credits")
+          ) {
+            showDownloadStatus("credits_error");
+          } else {
+            showDownloadStatus("error");
+          }
+          showNotification(error.message, "error");
+        }
       } else if (status.status === "failed") {
         clearInterval(pollingInterval);
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
@@ -637,7 +747,7 @@ function startPolling() {
 }
 
 async function checkTaskStatus(taskId) {
-  const response = await fetch(
+  const response = await authenticatedFetch(
     `https://ytdlp.vistaflyer.com/api/task_status?task_id=${taskId}`
   );
   if (!response.ok) throw new Error("Status check failed.");
@@ -678,7 +788,6 @@ function showDownloadStatus(status, totalFiles = 0) {
 
   switch (status) {
     case "processing":
-      // Using inline style for the background gradient to ensure it always renders.
       contentHTML = `
         <div class="text-center">
             <h3 class="text-xl font-bold text-blue-700 mb-2">Processing Bulk Download</h3>
@@ -690,8 +799,8 @@ function showDownloadStatus(status, totalFiles = 0) {
             <span id="percentageText" class="text-sm font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-md">0%</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
-            <div id="progressBar" 
-                 class="h-4 rounded-full transition-all duration-500 ease-out progress-bar-animated" 
+            <div id="progressBar"
+                 class="h-4 rounded-full transition-all duration-500 ease-out progress-bar-animated"
                  style="width: 0%; background: linear-gradient(to right, #3b82f6, #1e40af);">
             </div>
           </div>
@@ -702,9 +811,8 @@ function showDownloadStatus(status, totalFiles = 0) {
     case "complete":
       contentHTML = `
         <div class="text-center">
-            <div class="mx-auto bg-green-100 rounded-full h-20 w-20 flex items-center justify-center mb-4 relative">
+            <div class="mx-auto bg-green-100 rounded-full h-20 w-20 flex items-center justify-center mb-4">
                 <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                <div class="absolute inset-0 rounded-full bg-green-400 opacity-20 animate-ping"></div>
             </div>
             <h3 class="text-2xl font-bold text-gray-800">Download Complete!</h3>
             <p class="text-gray-500 mt-2 mb-6">Your ZIP file is ready and should be downloading automatically.</p>
@@ -715,13 +823,27 @@ function showDownloadStatus(status, totalFiles = 0) {
     case "error":
       contentHTML = `
         <div class="text-center">
-            <div class="mx-auto bg-red-100 rounded-full h-20 w-20 flex items-center justify-center mb-4 relative">
+            <div class="mx-auto bg-red-100 rounded-full h-20 w-20 flex items-center justify-center mb-4">
                 <svg class="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <div class="absolute inset-0 rounded-full bg-red-400 opacity-20 animate-ping"></div>
             </div>
             <h3 class="text-2xl font-bold text-gray-800">Download Failed</h3>
             <p class="text-gray-500 mt-2 mb-6">An error occurred while processing your request. Please try again.</p>
             <button onclick="resetToInputArea()" class="w-full sm:w-auto bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-700 transition">Start Over</button>
+        </div>
+      `;
+      break;
+    case "credits_error":
+      contentHTML = `
+        <div class="text-center">
+            <div class="mx-auto bg-yellow-100 rounded-full h-20 w-20 flex items-center justify-center mb-4">
+                <svg class="w-12 h-12 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 14v3m-4.5-6.5H6a2.25 2.25 0 00-2.25 2.25v3.5A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14v-3.5A2.25 2.25 0 0018 8.25h-1.5m-6 0v-1.5"></path></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">Download Failed</h3>
+            <p class="text-gray-500 mt-2 mb-6">Insufficient credits to complete this download. Please purchase more credits to continue.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button onclick="resetToInputArea()" class="w-full sm:w-auto bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-700 transition">Start a New Download</button>
+                <a href="/pricing" class="w-full sm:w-auto bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition shadow-lg hover:shadow-xl inline-block">Purchase Credits</a>
+            </div>
         </div>
       `;
       break;
@@ -773,42 +895,58 @@ function updateProgressWithRealData(status) {
 }
 
 async function downloadBulkFile() {
-  try {
-    const response = await fetch(
-      "https://ytdlp.vistaflyer.com/api/download_zip",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ task_id: currentTaskId }),
-      }
-    );
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    const now = new Date();
-    const timestamp = `${now.getFullYear()}${String(
-      now.getMonth() + 1
-    ).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}_${String(
-      now.getHours()
-    ).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}${String(
-      now.getSeconds()
-    ).padStart(2, "0")}`;
-    let filename = `youtube_subtitles_bulk_${timestamp}.zip`;
-    const disposition = response.headers.get("content-disposition");
-    if (disposition) {
-      const match = disposition.match(/filename="(.+)"/);
-      if (match) filename = match[1];
+  const response = await authenticatedFetch(
+    "https://ytdlp.vistaflyer.com/api/download_zip",
+    {
+      method: "POST",
+      body: JSON.stringify({ task_id: currentTaskId }),
     }
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  } catch (error) {
-    showNotification(`Failed to download ZIP file: ${error.message}`, "error");
+  );
+
+  // Check if the response is JSON, which indicates an error.
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    const errorData = await response.json();
+    if (errorData.status === "1" || errorData.status === 1) {
+      throw new Error(errorData.message || "Not enough Credits");
+    }
+    throw new Error(
+      errorData.message ||
+        "An unknown error occurred while downloading the ZIP file."
+    );
   }
+
+  // If the response is not ok and not JSON, it's a generic HTTP error.
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  // If we reach here, the response should be the ZIP file blob.
+  const now = new Date();
+  const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}${String(now.getDate()).padStart(2, "0")}_${String(now.getHours()).padStart(
+    2,
+    "0"
+  )}${String(now.getMinutes()).padStart(2, "0")}${String(
+    now.getSeconds()
+  ).padStart(2, "0")}`;
+  let filename = `youtube_subtitles_bulk_${timestamp}.zip`;
+  const disposition = response.headers.get("content-disposition");
+  if (disposition) {
+    const match = disposition.match(/filename="(.+)"/);
+    if (match) filename = match[1];
+  }
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 // --- UTILITY FUNCTIONS ---
@@ -820,9 +958,14 @@ function showNotification(message, type = "info") {
   if (existing) existing.remove();
   const notification = document.createElement("div");
   notification.className = `notification ${type}`;
-  const style = document.createElement("style");
-  style.textContent = `.notification { position: fixed; top: 20px; right: 20px; padding: 16px; border-radius: 8px; color: white; font-weight: 500; z-index: 1000; min-width: 320px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); transform: translateX(calc(100% + 20px)); opacity: 0; transition: all 0.4s cubic-bezier(0.21, 1.02, 0.73, 1); display: flex; align-items: center; gap: 12px; } .notification.show { transform: translateX(0); opacity: 1; } .notification.success { background-color: #10b981; } .notification.error { background-color: #ef4444; } .notification.info { background-color: #3b82f6; }`;
-  document.head.appendChild(style);
+
+  if (!document.getElementById("notification-styles")) {
+    const style = document.createElement("style");
+    style.id = "notification-styles";
+    style.textContent = `.notification { position: fixed; top: 20px; right: 20px; padding: 16px; border-radius: 8px; color: white; font-weight: 500; z-index: 1000; min-width: 320px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); transform: translateX(calc(100% + 20px)); opacity: 0; transition: all 0.4s cubic-bezier(0.21, 1.02, 0.73, 1); display: flex; align-items: center; gap: 12px; } .notification.show { transform: translateX(0); opacity: 1; } .notification.success { background-color: #10b981; } .notification.error { background-color: #ef4444; } .notification.info { background-color: #3b82f6; }`;
+    document.head.appendChild(style);
+  }
+
   const icons = { success: "✓", error: "✗", info: "ℹ" };
   notification.innerHTML = `<span class="font-bold text-lg">${icons[type]}</span><span>${message}</span>`;
   document.body.appendChild(notification);
@@ -854,6 +997,35 @@ function closeVideoPreview() {
   }
 }
 window.closeVideoPreview = closeVideoPreview;
+
+// --- USER INFO UPDATE ---
+async function updateUser() {
+  const token = localStorage.getItem("auth_token");
+  if (!token) return; // Don't try to update if user is not logged in.
+
+  try {
+    const response = await fetch(
+      "https://api.ytvidhub.com/prod-api/g/getUser",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    if (!response.ok) return;
+    const data = await response.json();
+    if (data.data) {
+      localStorage.setItem("loggedInUser", JSON.stringify(data.data)); // Sync local storage
+
+      createNumber.innerHTML = data.data.credits;
+      credits_mobile.innerHTML = data.data.credits;
+    }
+  } catch (error) {
+    console.error("Failed to update user:", error);
+  }
+}
 
 // --- INITIALIZE THE APP ---
 document.addEventListener("DOMContentLoaded", initApp);

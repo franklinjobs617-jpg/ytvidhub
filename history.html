@@ -60,7 +60,37 @@
                  <div class="md:hidden flex items-center gap-4">
                      <a href="#" id="login-button-mobile" class="text-sm font-semibold text-gray-700 hover:text-blue-600">Login</a>
                      <div id="user-profile-mobile" class="hidden relative">
-                         <!-- Mobile user profile here -->
+                         <button id="user-menu-button-mobile" class="focus:outline-none">
+                             <img
+                                 id="user-avatar-mobile"
+                                 src=""
+                                 alt="User Avatar"
+                                 class="h-8 w-8 rounded-full object-cover"
+                             />
+                         </button>
+                         <div
+                             id="user-dropdown-menu-mobile"
+                             class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+                         >
+                             <!-- User Info and Credits -->
+                             <div class="px-4 py-3 border-b border-gray-100">
+                                 <p class="text-xs text-gray-500 mt-1">
+                                     Credits:
+                                     <span id="credits-mobile" class="font-bold text-gray-700"
+                                         >0</span
+                                     >
+                                 </p>
+                             </div>
+                             <!-- Logout -->
+                             <div class="py-1">
+                                 <a
+                                     href="#"
+                                     id="logout-button-mobile"
+                                     class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                     >Logout</a
+                                 >
+                             </div>
+                         </div>
                      </div>
                      <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1">
                          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>

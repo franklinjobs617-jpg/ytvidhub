@@ -3,39 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>
-      The Hidden Problem in Your Data Pipeline: Why Multilingual Subtitles are
-      Rarely 'Ready-to-Use'
+      From Pain Point to Production: The Engineering Decisions Behind YTVidHub
     </title>
     <meta
       name="description"
-      content="YTVidHub supports all languages, but we analyze why auto-generated multilingual subtitles have low accuracy. A must-read for researchers and data analysts before data prep."
+      content="A deep dive into the architectural challenges—from ASR accuracy to clean TXT output—that shaped the development of YTVidHub, the bulk YouTube subtitle downloader."
     />
 
+    <!-- FONT & PERFORMANCE OPTIMIZATION (Copied from your site) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="shortcut icon" href="../image/yyt.png" type="image/x-icon" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="preload"
+      as="font"
+      href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="shortcut icon" href="../image/yyt.png" type="image/x-icon" />
+    <!-- Adjusted path -->
 
-    <link href="../dist/output.css" rel="stylesheet" />
-
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "The Hidden Problem in Your Data Pipeline: Why Multilingual Subtitles are Rarely 'Ready-to-Use'",
-        "image": "https://ytvidhub.vercel.app/images/blog-multilingual-accuracy.webp",
-        "author": {
-          "@type": "Organization",
-          "name": "YTVidHub Team"
-        },
-        "datePublished": "2025-10-16"
-      }
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
 
 .diamond {
@@ -59,9 +52,76 @@
     border-top: 1px solid rgba(0,0,0,0.04);
     box-shadow: -3px -3px 8px rgba(96,165,250,0.02);
   }
+      /* --- GLOBAL STYLES (Copied from your site) --- */
       body {
         font-family: "Inter", sans-serif;
       }
+      :root {
+        --color-primary-600: #2563eb;
+        --color-primary-700: #1d4ed8;
+      }
+      h1,
+      h2,
+      h3 {
+        letter-spacing: -0.025em;
+      }
+
+      /* --- BUTTONS & INTERACTION (Copied from your site) --- */
+      .btn-primary {
+        background-color: var(--color-primary-600);
+        transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2),
+          0 1px 3px rgba(37, 99, 235, 0.1);
+      }
+      .btn-primary:hover {
+        background-color: var(--color-primary-700);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 15px rgba(37, 99, 235, 0.25),
+          0 4px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      /* --- AURORA BACKGROUND EFFECT (Copied from your site) --- */
+      .aurora-bg-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -10;
+      }
+      .aurora-ball {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.1;
+      }
+      .aurora-ball-1 {
+        width: 40rem;
+        height: 40rem;
+        background: radial-gradient(circle, #a78bfa, #3b82f6);
+        animation: aurora-float 25s infinite alternate ease-in-out;
+      }
+      .aurora-ball-2 {
+        width: 35rem;
+        height: 35rem;
+        background: radial-gradient(circle, #3b82f6, #67e8f9);
+        animation: aurora-float 20s infinite alternate ease-in-out;
+        animation-delay: -10s;
+      }
+      @keyframes aurora-float {
+        0% {
+          transform: translate(-20%, -20%) rotate(0deg) scale(1);
+        }
+        50% {
+          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
+        }
+        100% {
+          transform: translate(-20%, -20%) rotate(360deg) scale(1);
+        }
+      }
+
+      /* --- HEADER LINK HOVER EFFECT (Copied from your site) --- */
       .nav-link {
         position: relative;
         padding-bottom: 8px;
@@ -82,59 +142,96 @@
       .nav-link-active::after {
         transform: scaleX(1);
       }
-      .aurora-bg-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: -10;
+
+      /* --- NEW BLOG ARTICLE STYLES --- */
+      .prose-custom {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
       }
-      .aurora-ball {
+      .prose-custom h2 {
+        font-size: 2.25rem; /* 36px */
+        font-weight: 800;
+        margin-top: 4rem;
+        margin-bottom: 2rem;
+        color: #111827;
+      }
+      .prose-custom h3 {
+        font-size: 1.5rem; /* 24px */
+        font-weight: 700;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        color: #1d4ed8;
+      }
+      .prose-custom p,
+      .prose-custom li {
+        font-size: 1.125rem; /* 18px */
+        line-height: 1.8;
+        color: #374151;
+      }
+      .prose-custom a {
+        color: var(--color-primary-600);
+        text-decoration: none;
+        font-weight: 500;
+        box-shadow: 0 1px 0 0 currentColor;
+        transition: color 0.2s ease, box-shadow 0.2s ease;
+      }
+      .prose-custom a:hover {
+        color: var(--color-primary-700);
+        box-shadow: 0 2px 0 0 currentColor;
+      }
+      .prose-custom img.inline-image {
+        border-radius: 0.75rem;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        border: 1px solid #e5e7eb;
+      }
+      .prose-custom blockquote {
+        margin: 2.5rem 0;
+        padding: 0;
+        border: none;
+        background: none;
+      }
+      .prose-custom blockquote img {
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        border: 1px solid #e5e7eb;
+      }
+      .prose-custom ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin: 2rem 0;
+      }
+      .prose-custom li {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: 1rem;
+      }
+      .prose-custom li::before {
+        content: "✓";
         position: absolute;
-        border-radius: 50%;
-        filter: blur(120px);
-        opacity: 0.15;
+        left: 0;
+        top: 2px;
+        color: var(--color-primary-600);
+        font-weight: 700;
+        font-size: 1.25rem;
       }
-      .aurora-ball-1 {
-        width: 35rem;
-        height: 35rem;
-        background: radial-gradient(circle, #a78bfa, #3b82f6);
-        animation: aurora-float 25s infinite alternate ease-in-out;
-      }
-      .aurora-ball-2 {
-        width: 30rem;
-        height: 30rem;
-        background: radial-gradient(circle, #3b82f6, #67e8f9);
-        animation: aurora-float 20s infinite alternate ease-in-out;
-        animation-delay: -10s;
-      }
-      @keyframes aurora-float {
-        0% {
-          transform: translate(-20%, -20%) rotate(0deg) scale(1);
-        }
-        50% {
-          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
-        }
-        100% {
-          transform: translate(-20%, -20%) rotate(360deg) scale(1);
-        }
+      .prose-custom code {
+        background-color: #e5e7eb;
+        color: #1f2937;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        font-size: 0.9em;
+        font-family: monospace;
       }
     </style>
   </head>
-  <body class="bg-gray-50 text-gray-800 antialiased">
+  <body class="bg-gray-100 text-gray-800 antialiased">
     <div class="relative isolate">
-      <div class="aurora-bg-container">
-        <div
-          class="aurora-ball aurora-ball-1"
-          style="top: -20%; left: -20%"
-        ></div>
-        <div
-          class="aurora-ball aurora-ball-2"
-          style="bottom: -20%; right: -15%"
-        ></div>
-      </div>
+      <div class="aurora-bg-container"></div>
       <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
@@ -148,7 +245,6 @@
               class="h-10 w-auto"
             />
           </a>
-          <!-- ====== DESKTOP NAVIGATION ====== -->
           <div class="hidden md:flex items-center">
             <div class="flex space-x-8 items-center text-sm font-medium">
               <a
@@ -178,12 +274,12 @@
               >
               <a
                 href="../blog/subtitle-accuracy-problem.html"
-                class="nav-link nav-link-active text-blue-600 hover:text-blue-600 transition duration-150"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
                 >Blog</a
               >
               <a
                 href="../blog/engineering-decisions-ytvidhub.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                class="nav-link nav-link-active text-blue-600 hover:text-blue-600 transition duration-150"
                 >Engineering Decisions</a
               >
               <a
@@ -218,19 +314,56 @@
                   ></span>
                 </button>
                 <div
-                id="user-dropdown-menu"
-                class="hidden absolute right-0 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50 focus:outline-none"
-              >
-                <div class="divide-y divide-gray-100">
-                  <!-- Credits Information Section -->
-                  <div class="px-4 py-4">
-                    <div class="flex items-center gap-4">
-                      <!-- Icon -->
-                      <div
-                        class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-blue-100"
+                  id="user-dropdown-menu"
+                  class="hidden absolute right-0 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50 focus:outline-none"
+                >
+                  <div class="divide-y divide-gray-100">
+                    <!-- Credits Information Section -->
+                    <div class="px-4 py-4">
+                      <div class="flex items-center gap-4">
+                        <!-- Icon -->
+                        <div
+                          class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-blue-100"
+                        >
+                          <svg
+                            class="h-6 w-6 text-blue-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 3a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m15-3V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3m15 0a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25h-4.5A2.25 2.25 0 0012 6v3m-3 0a2.25 2.25 0 00-2.25-2.25V6a2.25 2.25 0 00-2.25 2.25v3"
+                            />
+                          </svg>
+                        </div>
+                        <!-- Text -->
+                        <div class="min-w-0">
+                          <p class="text-sm font-medium text-gray-500">
+                             Credits
+                          </p>
+                          <p
+                            id="credits"
+                            class="text-2xl font-bold text-gray-900"
+                          >
+                            0
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Actions Section -->
+                    <div class="p-1">
+                      <a
+                        href="#"
+                        id="logout-button-desktop"
+                        class="group flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600"
                       >
                         <svg
-                          class="h-6 w-6 text-blue-600"
+                          class="mr-3 h-5 w-5 text-gray-400 transition-colors group-hover:text-red-500"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -240,51 +373,14 @@
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 3a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m15-3V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3m15 0a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25h-4.5A2.25 2.25 0 0012 6v3m-3 0a2.25 2.25 0 00-2.25-2.25V6a2.25 2.25 0 00-2.25 2.25v3"
+                            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
                           />
                         </svg>
-                      </div>
-                      <!-- Text -->
-                      <div class="min-w-0">
-                        <p class="text-sm font-medium text-gray-500">
-                           Credits
-                        </p>
-                        <p
-                          id="credits"
-                          class="text-2xl font-bold text-gray-900"
-                        >
-                          0
-                        </p>
-                      </div>
+                        Sign Out
+                      </a>
                     </div>
                   </div>
-
-                  <!-- Actions Section -->
-                  <div class="p-1">
-                    <a
-                      href="#"
-                      id="logout-button-desktop"
-                      class="group flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600"
-                    >
-                      <svg
-                        class="mr-3 h-5 w-5 text-gray-400 transition-colors group-hover:text-red-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-                        />
-                      </svg>
-                      Sign Out
-                    </a>
-                  </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
@@ -354,214 +450,189 @@
         </nav>
       </header>
 
-      <main class="py-16 md:py-24 bg-transparent">
-        <article class="container mx-auto px-6 lg:px-8 max-w-4xl">
-          <header class="text-center">
-            <h1
-              class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight tracking-tight"
-            >
-              The Hidden Problem in Your Data Pipeline: Why Multilingual
-              Subtitles are Rarely 'Ready-to-Use'
-            </h1>
-            <p class="text-lg text-gray-600 mb-12">
-              YTVidHub can download any language, but we must talk about the
-              quality of the data you get.
-            </p>
-          </header>
+      <!-- === START: NEW BLOG HERO === -->
+      <div class="relative bg-gray-800 py-24 sm:py-32">
+        <img
+          src="../image/blog/tech-bg.jpg"
+          alt="Abstract technology background"
+          class="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-20"
+        />
+        <div class="relative container mx-auto px-6 lg:px-8 text-center">
+          <p
+            class="text-base font-semibold uppercase text-blue-400 tracking-wider"
+          >
+            Engineering Deep Dive
+          </p>
+          <h1
+            class="mt-4 text-4xl font-black tracking-tight text-white sm:text-6xl"
+          >
+            From Pain Point to Production
+          </h1>
+          <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-300">
+            The core architectural decisions that transformed a simple idea into
+            the YTVidHub you use today.
+          </p>
+          <div class="mt-8 flex items-center justify-center gap-x-4">
+            <div>
+              <p class="font-semibold text-white">The YTVidHub Team</p>
+              <p class="text-gray-400">Published on Oct 26, 2025</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- === END: NEW BLOG HERO === -->
 
+      <div class="bg-white py-16 sm:py-24">
+        <article class="prose-custom px-6 lg:px-8">
+          <p class="text-lg leading-8">
+            When we introduced the concept of a dedicated
+            <strong>Bulk YouTube Subtitle Downloader</strong>, the response was
+            immediate. Researchers, data analysts, and AI builders confirmed a
+            universal pain point: gathering transcripts for large projects is a
+            "massive time sink." This is the story of how community feedback and
+            tough engineering choices shaped YTVidHub.
+          </p>
+
+          <!-- Section Separator -->
+          <div class="relative my-16">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-200"></div>
+            </div>
+            <div class="relative flex justify-center">
+              <span class="bg-white px-4"
+                ><svg
+                  class="h-6 w-6 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8.25 3v1.5M4.5 8.25H3M19.5 8.25h1.5M12 21v-1.5m6.25-6.25l1.06-1.06M4.75 4.75L3.69 3.69m16.62 16.62l-1.06-1.06M21 12h-1.5M4.5 15.75l-1.06 1.06M12 4.5V3m6.25 6.25l1.06 1.06"
+                  /></svg
+              ></span>
+            </div>
+          </div>
+
+          <h2>1. The Bulk Challenge: Scalability Meets Stability</h2>
+          <p>
+            The primary hurdle for a true bulk downloader isn't just downloading
+            one file; it's reliably processing hundreds or thousands
+            simultaneously without failure. We needed an architecture that was
+            both robust and scalable.
+          </p>
+          <p>
+            Our solution involves a decoupled, asynchronous job queue. When you
+            submit a list, our front-end doesn't do the heavy lifting. Instead,
+            it sends the list of video IDs to a message broker. A fleet of
+            backend workers then picks up these jobs independently and processes
+            them in parallel. This ensures that even if one video fails, it
+            doesn't crash the entire batch.
+          </p>
+
+          <!-- Placeholder for Image 1 -->
           <img
-            src="../image/Conceptual diagram illustrating.png"
-            alt="Conceptual diagram illustrating low accuracy in auto-generated subtitles for complex languages like Chinese, compared to clean, manually prepared data."
-            class="mb-12 w-full h-auto rounded-xl shadow-xl border border-gray-200"
+            src="../image/ytvidhub-bulk-downloader-architecture-flow.png"
+            alt="Conceptual diagram of YTVidHub's architecture for parallel batch processing of YouTube video IDs."
+            class="inline-image"
           />
 
-          <div class="text-lg text-gray-700 leading-relaxed space-y-6">
-            <p>
-              As the developer of YTVidHub, we are frequently asked:
-              <strong class="text-gray-900"
-                >"Do you support languages other than English?"</strong
-              >
-            </p>
-            <p>
-              The answer is a definitive
-              <strong class="text-gray-900">Yes.</strong> Our tool accesses all
-              available subtitle files provided by YouTube. This includes
-              Spanish, German, Japanese, and crucial languages like
-              <strong class="text-gray-900">Mandarin Chinese</strong>.
-            </p>
-            <p>
-              However, this answer comes with a major warning:
-              <strong class="text-gray-900"
-                >The ability to download is not the same as the ability to
-                use.</strong
-              >
-              For researchers, language learners, and data analysts, the quality
-              of the <em>data inside the file</em> creates the single biggest
-              bottleneck in their entire workflow.
-            </p>
-          </div>
-
-          <h2
-            class="text-3xl font-bold text-gray-900 mt-16 mb-8 pb-3 border-b-2 border-blue-200"
-          >
-            Understanding the Three Data Quality Tiers
-          </h2>
-          <div class="text-lg text-gray-700 leading-relaxed space-y-6">
-            <p>
-              Your data analysis or language immersion success depends entirely
-              on knowing which of these three files you are actually
-              downloading:
-            </p>
-
-            <h3 class="text-2xl font-semibold text-gray-800 pt-4">
-              1. The Reliable Source: Manually Uploaded Captions
-            </h3>
-            <p>
-              These are the subtitles prepared and verified by the video
-              creator. They are the "Gold Standard" for accuracy, regardless of
-              language.
-              <strong class="text-gray-900"
-                >When available, our free downloader provides you with this
-                excellent data source.</strong
-              >
-            </p>
-
-            <h3 class="text-2xl font-semibold text-gray-800 pt-4">
-              2. The Unreliable Source: YouTube ASR (Automatic Speech
-              Recognition)
-            </h3>
-            <p>
-              This is the bulk of the downloadable data and the root of the
-              problem. YouTube's ASR system is good for popular English content,
-              but it fails dramatically in niche or non-Western languages:
-            </p>
-            <ul class="list-disc space-y-3 pl-6">
-              <li>
-                <strong class="text-gray-800">Complex Languages:</strong> For
-                tonal languages like Chinese, or languages with complex
-                agglutination, ASR often misinterprets context, leading to high
-                error rates.
-              </li>
-              <li>
-                <strong class="text-gray-800">Accents and Speed:</strong> Heavy
-                accents, fast speech, or technical jargon cause the accuracy to
-                drop below 85%—unusable for LLM fine-tuning or serious research.
-              </li>
-              <li>
-                <strong class="text-gray-800">The Cost of Inaccuracy:</strong>
-                If you download 1,000 files, and 20% of the words are wrong, you
-                have just downloaded thousands of hours of
-                <em>manual data cleaning</em> for yourself.
-              </li>
-            </ul>
-
-            <h3 class="text-2xl font-semibold text-gray-800 pt-4">
-              3. The Error Multiplier: Auto-Translated Captions
-            </h3>
-            <p>
-              If you translate an already error-prone ASR file (Tier 2) using
-              YouTube’s auto-translate feature, you are merely multiplying the
-              mistakes. This data source should be avoided for all serious
-              applications.
-            </p>
-          </div>
-
-          <h2
-            class="text-3xl font-bold text-gray-900 mt-16 mb-8 pb-3 border-b-2 border-blue-200"
-          >
-            The Real Cost of 'Free' Subtitles: Data Cleaning
-          </h2>
-          <div class="text-lg text-gray-700 leading-relaxed space-y-6">
-            <p>
-              The time you save by bulk downloading is often lost 10x over in
-              the necessary cleaning and preparation process. We have identified
-              three major pain points that turn a simple download into a data
-              pipeline nightmare:
-            </p>
-
-            <h3 class="text-2xl font-semibold text-gray-800 pt-4">
-              1. The SRT Formatting Mess
-            </h3>
-            <p>
-              SRT files are designed for video players, not data scientists.
-              They contain timestamps, line numbers, and fragmented text. Before
-              you can feed this into a tool like an LLM, you must write a script
-              to perform complex cleaning tasks:
-            </p>
-            <ul class="list-disc space-y-3 pl-6">
-              <li>
-                Removing all time codes (e.g.,
-                <code>00:00:03,000 --> 00:00:06,000</code>).
-              </li>
-              <li>
-                Merging text fragments that were split due to timing breaks.
-              </li>
-              <li>
-                Removing filler tags like <code>[Music]</code> or
-                <code>(Laughter)</code>.
-              </li>
-            </ul>
-
-            <h3 class="text-2xl font-semibold text-gray-800 pt-4">
-              2. Low Accuracy Equals Garbage In, Garbage Out
-            </h3>
-            <p>
-              For academic research or competitive analysis, inaccurate data
-              leads to flawed conclusions. If your Chinese transcript contains
-              misidentified characters due to ASR errors, your sentiment
-              analysis will fail, or your model will train on noise.
-            </p>
-          </div>
-
-          <div
-            class="mt-16 p-8 bg-blue-50 border-2 border-blue-200 rounded-2xl text-center"
-          >
-            <h2 class="text-3xl font-bold text-gray-900">
-              The Next Step: Building a Solution for Usable Data
-            </h2>
-            <p class="mt-4 text-lg text-gray-800 font-semibold">
-              YTVidHub is proud to offer the fastest free bulk download of ALL
-              available language subtitles. We solve the problem of
-              <strong class="text-blue-600">access</strong>.
-            </p>
-            <p class="mt-2 text-lg text-gray-700">
-              But we hear the demand for
-              <strong class="text-blue-600">accuracy</strong> and
-              <strong class="text-blue-600">ready-to-use formats</strong> (like
-              clean JSON/CSV) loud and clear. That is the next logical step in
-              our development.
-            </p>
-            <p class="mt-6 text-base text-gray-600 max-w-2xl mx-auto">
-              We are currently working on a
-              <strong>Pro service</strong> designed to solve the accuracy and
-              formatting problem, providing near human-level transcription for
-              your high-value projects.
-            </p>
-            <a
-              href="mailto:franklinjobs617@gmail.com"
-              class="inline-block mt-6 px-8 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Join Our Mailing List for Pro Updates
-            </a>
-          </div>
-
-          <p class="mt-12 text-base text-gray-600 text-center">
-            Download your subtitles for free today using our powerful
-            <a
-              href="../bulk-youtube-subtitle-downloader.html"
-              class="text-blue-600 font-medium hover:underline"
-              >Bulk Downloader</a
-            >, and check our
-            <a
-              href="../faq.html"
-              class="text-blue-600 font-medium hover:underline"
-              >FAQ</a
-            >
-            for more details.
+          <h2>2. The Data Problem: More Than Just SRT</h2>
+          <p>
+            For most analysts, raw SRT files—with timestamps and sequence
+            numbers—are actually "dirty data." They require an extra, tedious
+            pre-processing step before they can be used in analysis tools or
+            Retrieval-Augmented Generation (RAG) systems.
           </p>
-        </article>
-      </main>
 
+          <!-- Placeholder for Screenshot 2 -->
+          <blockquote>
+            <img
+              src="../image/hacker-news-data-cleanliness-txt-output-feedback.png"
+              alt="A screenshot of a community discussion about the irrelevance of timestamps in SRT files for text analysis, advocating for a clean TXT output."
+            />
+          </blockquote>
+
+          <p>
+            This direct feedback was a turning point. We made a crucial
+            decision: to treat the **TXT output as a first-class citizen**. Our
+            system doesn't just convert SRT to TXT; it runs a dedicated cleaning
+            pipeline to strip all timestamps, metadata, empty lines, and
+            formatting tags. The result is a pristine, analysis-ready block of
+            text, saving our users a critical step in their workflow.
+          </p>
+
+          <h2>3. The Accuracy Dilemma: A Two-Pronged Strategy</h2>
+          <p>
+            The most insightful feedback centered on data quality. While
+            YouTube's auto-generated (ASR) captions are a fantastic baseline,
+            they often fall short of the accuracy provided by high-end AI
+            models. This presents a classic "Accuracy vs. Cost" dilemma.
+          </p>
+
+          <h3>Phase 1: The Best Free Baseline (Live Now)</h3>
+          <p>
+            Our core service provides unlimited bulk downloading of all official
+            YouTube-provided subtitles (both manual and ASR) for Pro members.
+            This establishes the **best possible baseline data**, accessible at
+            an unmatched scale and speed.
+          </p>
+
+          <h3>Phase 2: The Pro Transcription Engine (In Development)</h3>
+          <p>
+            For projects where accuracy is non-negotiable, a more powerful
+            solution is needed. Our upcoming **Pro Transcription** tier is being
+            built to solve this:
+          </p>
+          <ul>
+            <li>
+              <strong>State-of-the-Art Models:</strong> We're integrating models
+              like OpenAI's Whisper and Google's Gemini for transcription that
+              rivals human accuracy.
+            </li>
+            <li>
+              <strong>Contextual Awareness:</strong> You'll be able to provide a
+              list of keywords, acronyms, and proper nouns (e.g., "GANs",
+              "BERT", "PyTorch"). Our system will feed this context to the
+              model, dramatically improving accuracy for specialized or
+              technical content.
+            </li>
+            <li>
+              <strong>Intelligent Pre-processing:</strong> Using tools like
+              <code>ffmpeg</code>, we'll automatically detect and remove silent
+              segments from the audio before transcription. This reduces
+              processing time, lowers costs, and can even improve the model's
+              focus on relevant speech.
+            </li>
+          </ul>
+
+          <!-- === START: NEW CALL TO ACTION === -->
+          <div class="mt-20 p-8 sm:p-10 bg-blue-600 rounded-2xl shadow-xl">
+            <div class="text-center">
+              <h2 class="text-3xl font-extrabold text-white">
+                Ready to Automate Your Research?
+              </h2>
+              <p class="mt-4 text-lg text-blue-100 max-w-xl mx-auto">
+                The unlimited bulk downloader and clean TXT output are live now.
+                Stop the manual work and start saving hours today.
+              </p>
+              <div class="mt-8">
+                <a
+                  href="../index.html"
+                  class="inline-block bg-white text-blue-600 text-lg font-semibold rounded-lg px-8 py-4 shadow-lg transition-transform hover:scale-105"
+                >
+                  Try the Bulk Downloader for Free
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- === END: NEW CALL TO ACTION === -->
+        </article>
+      </div>
+
+      <!-- === YOUR SITE'S FOOTER === -->
       <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 lg:px-8 py-12">
           <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
@@ -577,42 +648,42 @@
               <ul class="space-y-3 text-sm">
                 <li>
                   <a
-                    href="./index.html"
+                    href="../index.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >Home</a
                   >
                 </li>
                 <li>
                   <a
-                    href="./bulk-youtube-subtitle-downloader.html"
+                    href="../bulk-youtube-subtitle-downloader.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >Bulk Downloader</a
                   >
                 </li>
                 <li>
                   <a
-                    href="./how-to-use.html"
+                    href="../how-to-use.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >How to Use</a
                   >
                 </li>
                 <li>
                   <a
-                    href="./faq.html"
+                    href="../faq.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >FAQ</a
                   >
                 </li>
                 <li>
                   <a
-                    href="./what-is-an-srt-file.html"
+                    href="../what-is-an-srt-file.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >Srt File</a
                   >
                 </li>
                 <li>
                   <a
-                    href="./blog/subtitle-accuracy-problem.html"
+                    href="./engineering-decisions-ytvidhub.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >Blog</a
                   >
@@ -624,23 +695,16 @@
               <ul class="space-y-3 text-sm">
                 <li>
                   <a
-                    href="./privacy-policy.html"
+                    href="../privacy-policy.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >Privacy Policy</a
                   >
                 </li>
                 <li>
                   <a
-                    href="./terms-of-service.html"
+                    href="../terms-of-service.html"
                     class="hover:text-blue-400 text-gray-400 transition"
                     >Terms of Service</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./about.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >About Us</a
                   >
                 </li>
               </ul>
@@ -655,7 +719,6 @@
         </div>
       </footer>
     </div>
-
     <div
       id="mobile-menu"
       class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
@@ -720,6 +783,7 @@
             class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Blog</a
           >
+
           <a
             href="../blog/engineering-decisions-ytvidhub.html"
             class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
@@ -770,8 +834,6 @@
             ></path>
           </svg>
         </button>
-
-        <!-- Step 1: Main Call to Action -->
         <div class="text-center">
           <h2 class="text-2xl font-bold text-gray-900 mb-2">
             Access Your Account
@@ -781,8 +843,6 @@
             credits.
           </p>
         </div>
-
-        <!-- Google Login Button -->
         <button
           id="google-login"
           class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
@@ -809,8 +869,6 @@
             >Continue with Google</span
           >
         </button>
-
-        <!-- Divider -->
         <div class="flex items-center my-8">
           <hr class="flex-grow border-t border-gray-200" />
           <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
@@ -848,25 +906,27 @@
         </div>
       </div>
     </div>
+
+    <!-- Mobile Menu, Login Modal and Scripts can be added here from your main layout -->
+
     <script src="../js/auth.js"></script>
-
     <script>
-      // Simple script for mobile menu toggle
-      const mobileMenuButton = document.getElementById("mobile-menu-button");
-      const mobileMenuCloseButton = document.getElementById(
-        "mobile-menu-close-button"
-      );
-      const mobileMenu = document.getElementById("mobile-menu");
-
-      mobileMenuButton.addEventListener("click", () => {
-        mobileMenu.classList.remove("hidden");
-        setTimeout(() => mobileMenu.classList.remove("translate-x-full"), 10);
-      });
-
-      mobileMenuCloseButton.addEventListener("click", () => {
-        mobileMenu.classList.add("translate-x-full");
-        setTimeout(() => mobileMenu.classList.add("hidden"), 300);
-      });
+        // Simple script for mobile menu toggle
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenuCloseButton = document.getElementById(
+          "mobile-menu-close-button"
+        );
+        const mobileMenu = document.getElementById("mobile-menu");
+  
+        mobileMenuButton.addEventListener("click", () => {
+          mobileMenu.classList.remove("hidden");
+          setTimeout(() => mobileMenu.classList.remove("translate-x-full"), 10);
+        });
+  
+        mobileMenuCloseButton.addEventListener("click", () => {
+          mobileMenu.classList.add("translate-x-full");
+          setTimeout(() => mobileMenu.classList.add("hidden"), 300);
+        });
     </script>
   </body>
 </html>
