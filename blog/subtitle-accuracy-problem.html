@@ -37,28 +37,27 @@
       }
     </script>
     <style>
-
-.diamond {
-    width: 8px;
-    height: 8px;
-    transform: rotate(45deg);
-    background: #60a5fa; /* blue-400 */
-    display:inline-block;
-    border-radius:1px;
-  }
-  /* caret (top notch) */
-  .menu-caret {
-    width: 12px;
-    height: 12px;
-    transform: rotate(45deg);
-    background: white;
-    position: absolute;
-    right: 18px; /* 调整 caret 水平位置对齐触发器 */
-    top: -6px;
-    border-left: 1px solid rgba(0,0,0,0.04);
-    border-top: 1px solid rgba(0,0,0,0.04);
-    box-shadow: -3px -3px 8px rgba(96,165,250,0.02);
-  }
+      .diamond {
+        width: 8px;
+        height: 8px;
+        transform: rotate(45deg);
+        background: #60a5fa; /* blue-400 */
+        display: inline-block;
+        border-radius: 1px;
+      }
+      /* caret (top notch) */
+      .menu-caret {
+        width: 12px;
+        height: 12px;
+        transform: rotate(45deg);
+        background: white;
+        position: absolute;
+        right: 18px; /* 调整 caret 水平位置对齐触发器 */
+        top: -6px;
+        border-left: 1px solid rgba(0, 0, 0, 0.04);
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        box-shadow: -3px -3px 8px rgba(96, 165, 250, 0.02);
+      }
       body {
         font-family: "Inter", sans-serif;
       }
@@ -218,19 +217,56 @@
                   ></span>
                 </button>
                 <div
-                id="user-dropdown-menu"
-                class="hidden absolute right-0 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50 focus:outline-none"
-              >
-                <div class="divide-y divide-gray-100">
-                  <!-- Credits Information Section -->
-                  <div class="px-4 py-4">
-                    <div class="flex items-center gap-4">
-                      <!-- Icon -->
-                      <div
-                        class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-blue-100"
+                  id="user-dropdown-menu"
+                  class="hidden absolute right-0 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50 focus:outline-none"
+                >
+                  <div class="divide-y divide-gray-100">
+                    <!-- Credits Information Section -->
+                    <div class="px-4 py-4">
+                      <div class="flex items-center gap-4">
+                        <!-- Icon -->
+                        <div
+                          class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-blue-100"
+                        >
+                          <svg
+                            class="h-6 w-6 text-blue-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 3a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m15-3V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3m15 0a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25h-4.5A2.25 2.25 0 0012 6v3m-3 0a2.25 2.25 0 00-2.25-2.25V6a2.25 2.25 0 00-2.25 2.25v3"
+                            />
+                          </svg>
+                        </div>
+                        <!-- Text -->
+                        <div class="min-w-0">
+                          <p class="text-sm font-medium text-gray-500">
+                            Credits
+                          </p>
+                          <p
+                            id="credits"
+                            class="text-2xl font-bold text-gray-900"
+                          >
+                            0
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Actions Section -->
+                    <div class="p-1">
+                      <a
+                        href="#"
+                        id="logout-button-desktop"
+                        class="group flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600"
                       >
                         <svg
-                          class="h-6 w-6 text-blue-600"
+                          class="mr-3 h-5 w-5 text-gray-400 transition-colors group-hover:text-red-500"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -240,51 +276,14 @@
                           <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 3a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m15-3V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3m15 0a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25h-4.5A2.25 2.25 0 0012 6v3m-3 0a2.25 2.25 0 00-2.25-2.25V6a2.25 2.25 0 00-2.25 2.25v3"
+                            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
                           />
                         </svg>
-                      </div>
-                      <!-- Text -->
-                      <div class="min-w-0">
-                        <p class="text-sm font-medium text-gray-500">
-                           Credits
-                        </p>
-                        <p
-                          id="credits"
-                          class="text-2xl font-bold text-gray-900"
-                        >
-                          0
-                        </p>
-                      </div>
+                        Sign Out
+                      </a>
                     </div>
                   </div>
-
-                  <!-- Actions Section -->
-                  <div class="p-1">
-                    <a
-                      href="#"
-                      id="logout-button-desktop"
-                      class="group flex w-full items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600"
-                    >
-                      <svg
-                        class="mr-3 h-5 w-5 text-gray-400 transition-colors group-hover:text-red-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-                        />
-                      </svg>
-                      Sign Out
-                    </a>
-                  </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
@@ -711,11 +710,11 @@
             >FAQ</a
           >
           <a
-          href="../pricing.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Pricing</a
-        >
-          
+            href="../pricing.html"
+            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Pricing</a
+          >
+
           <a
             href="./what-is-an-srt-file.html"
             class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"

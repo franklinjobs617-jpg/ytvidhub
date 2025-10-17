@@ -3,164 +3,145 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment Status | YTVidHub</title>
-    <meta name="robots" content="noindex, nofollow" />
-    <!-- Important for non-public pages -->
+    <title>Confirming PayPal Payment - NanoBananas</title>
 
-    <!-- FONT & PERFORMANCE OPTIMIZATION -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./dist/output.css" />
+
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon" />
     <link
-      rel="preload"
-      as="font"
-      href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Canvas Confetti for Success Animation -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
-      /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
       body {
         font-family: "Inter", sans-serif;
       }
-      h1,
-      h2,
-      h3 {
-        letter-spacing: -0.025em;
-      }
 
-      .btn-primary {
-        background-color: #2563eb;
-        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2),
-          0 1px 3px rgba(37, 99, 235, 0.1);
-      }
-      .btn-primary:hover {
-        background-color: #1d4ed8;
-        transform: translateY(-2px);
-        box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25),
-          0 3px 6px rgba(0, 0, 0, 0.08);
-      }
-
-      /* --- AURORA BACKGROUND EFFECT (Consistent with your site) --- */
+      /* Aurora background styles from homepage */
       .aurora-bg-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        position: absolute;
+        inset: 0;
+        z-index: -1;
         overflow: hidden;
-        z-index: -10;
       }
+
       .aurora-ball {
         position: absolute;
+        width: 40vw;
+        height: 40vw;
         border-radius: 50%;
-        filter: blur(120px);
-        opacity: 0.15;
+        filter: blur(100px);
+        opacity: 0.4;
+        animation: aurora-float 20s ease-in-out infinite;
       }
+
       .aurora-ball-1 {
-        width: 35rem;
-        height: 35rem;
-        background: radial-gradient(circle, #a78bfa, #3b82f6);
-        animation: aurora-float 25s infinite alternate ease-in-out;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        animation-delay: 0s;
       }
+
       .aurora-ball-2 {
-        width: 30rem;
-        height: 30rem;
-        background: radial-gradient(circle, #3b82f6, #67e8f9);
-        animation: aurora-float 20s infinite alternate ease-in-out;
-        animation-delay: -10s;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        animation-delay: 10s;
       }
+
       @keyframes aurora-float {
-        0% {
-          transform: translate(-20%, -20%) rotate(0deg) scale(1);
+        0%,
+        100% {
+          transform: translateY(0px) scale(1);
         }
         50% {
-          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
-        }
-        100% {
-          transform: translate(-20%, -20%) rotate(360deg) scale(1);
+          transform: translateY(-20px) scale(1.1);
         }
       }
 
-      /* --- HEADER LINK HOVER EFFECT (Consistent with your site) --- */
-      .nav-link {
-        position: relative;
-        padding-bottom: 8px;
-      }
-      .nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #3b82f6;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.25s ease-out;
-      }
-      .nav-link:hover::after,
-      .nav-link-active::after {
-        transform: scaleX(1);
-      }
-
-      /* --- "PERFECT" LOADING SPINNER --- */
-      .loader {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: inline-block;
-        position: relative;
-        border: 3px solid;
-        border-color: #d1d5db #d1d5db transparent transparent; /* light gray spinner */
-        animation: rotate 1.2s linear infinite;
-      }
-      .loader::after,
-      .loader::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        border: 3px solid;
-        border-color: transparent transparent #2563eb #2563eb; /* blue accent */
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        animation: rotate-back 0.6s linear infinite;
-        transform-origin: center center;
-      }
+      /* Keyframes for the background element animations (Copied from your original) */
       @keyframes rotate {
-        0% {
-          transform: rotate(0deg);
+        from {
+          transform: rotate(0deg) scale(1);
         }
-        100% {
-          transform: rotate(360deg);
+
+        to {
+          transform: rotate(360deg) scale(1.05);
         }
       }
-      @keyframes rotate-back {
+
+      @keyframes float {
         0% {
-          transform: rotate(0deg);
+          transform: translateY(0px);
+          opacity: 0;
         }
+
+        25% {
+          opacity: 0.7;
+        }
+
+        50% {
+          transform: translateY(-150px);
+        }
+
+        75% {
+          opacity: 0.7;
+        }
+
         100% {
-          transform: rotate(-360deg);
+          transform: translateY(-300px);
+          opacity: 0;
         }
+      }
+
+      .animated-blob-1 {
+        animation: rotate 45s alternate-reverse infinite linear;
+      }
+
+      .animated-blob-2 {
+        animation: rotate 60s alternate infinite linear;
+      }
+
+      .particle {
+        animation: float 20s infinite linear;
       }
     </style>
   </head>
-  <body class="bg-gray-50 text-gray-800 antialiased">
-    <div class="relative isolate flex flex-col min-h-screen">
-      <div class="aurora-bg-container"></div>
 
+  <body class="bg-gray-50 text-gray-800 antialiased">
+    <div class="relative isolate">
+      <!-- Aurora background from homepage -->
+      <div class="aurora-bg-container">
+        <div
+          class="aurora-ball aurora-ball-1"
+          style="top: -20%; left: -20%"
+        ></div>
+        <div
+          class="aurora-ball aurora-ball-2"
+          style="bottom: -20%; right: -15%"
+        ></div>
+      </div>
+
+      <!-- Header (Updated to match homepage) -->
       <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
@@ -174,148 +155,281 @@
               class="h-10 w-auto"
             />
           </a>
-          <div class="hidden md:flex items-center">
-            <a
-              href="./index.html"
-              class="text-sm font-semibold text-gray-600 hover:text-blue-600"
-            >
-              ← Back to Home
-            </a>
-          </div>
         </nav>
       </header>
 
-      <main class="flex-grow flex items-center justify-center p-6">
+      <!-- Main Content Area -->
+      <main
+        class="min-h-[calc(100vh-80px)] w-full flex items-center justify-center p-4 z-10"
+      >
         <div
-          class="w-full max-w-lg bg-white/70 backdrop-blur-sm p-8 md:p-12 rounded-2xl ring-1 ring-gray-900/5 shadow-2xl text-center"
+          class="w-full max-w-lg bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60 p-8 sm:p-10 transition-all duration-500"
         >
-          <!-- STATE 1: LOADING / PROCESSING -->
-          <div id="payment-loading">
-            <div class="mb-6">
-              <span class="loader"></span>
+          <!-- NEW: PayPal & Brand Header -->
+          <div
+            class="flex justify-between items-center pb-6 border-b border-slate-200 mb-6"
+          >
+            <div>
+              <h2 class="font-bold text-xl text-slate-800">
+                Payment Confirmation
+              </h2>
+              <p class="text-sm text-slate-500">via PayPal</p>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-              Verifying Your Payment
-            </h1>
-            <p class="text-gray-600">
-              Please wait a moment while we confirm your transaction with
-              PayPal. Do not close this window.
-            </p>
+            <img
+              src="./image/transparent-hd-paypal-logo-701751694777788ilpzr3lary.png"
+              alt="PayPal Logo"
+              class="h-20"
+            />
           </div>
 
-          <!-- STATE 2: SUCCESS -->
-          <div id="payment-success" class="hidden">
-            <div class="mb-6">
-              <svg
-                class="w-20 h-20 text-green-500 mx-auto"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-            </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-              Payment Successful!
-            </h1>
-            <p class="text-gray-600 mb-8">
-              Thank you! Your account has been upgraded. You now have unlimited
-              access.
-            </p>
-
+          <!-- State 1: Loading / Confirmation Pending -->
+          <div id="loading-state" class="text-center">
             <div
-              class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-left space-y-3 mb-8"
+              class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6"
             >
-              <div class="flex justify-between items-center">
-                <span class="text-sm text-gray-500">Plan:</span>
-                <span
-                  id="success-plan-name"
-                  class="font-semibold text-gray-800"
-                ></span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-sm text-gray-500">Amount Paid:</span>
-                <span
-                  id="success-amount"
-                  class="font-semibold text-gray-800"
-                ></span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-sm text-gray-500">Order ID:</span>
-                <span
-                  id="success-order-id"
-                  class="font-mono text-xs text-gray-600 bg-gray-200 px-2 py-1 rounded"
-                ></span>
-              </div>
-              <div class="flex justify-between items-center pt-3 border-t">
-                <span class="text-sm text-gray-500">Paid with:</span>
-                <img
-                  src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_SbyPP_mc_vs_dc_ae.jpg"
-                  alt="Paid with PayPal"
-                  class="h-6"
-                />
-              </div>
+              <i class="fas fa-spinner fa-spin text-blue-600 text-3xl"></i>
             </div>
-
-            <a
-              href="/dashboard.html"
-              class="w-full block text-center py-3 rounded-lg btn-primary text-white font-semibold text-lg"
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+              Waiting for Confirmation...
+            </h1>
+            <p class="text-slate-500 mb-8">
+              We are confirming your PayPal payment. This may take a moment.
+            </p>
+            <button
+              id="manual-check-btn"
+              class="w-full bg-white text-slate-700 font-semibold py-3 px-6 rounded-lg border border-slate-300 transition-all duration-300 hover:bg-slate-50 hover:border-slate-400 disabled:opacity-70 disabled:cursor-wait"
             >
-              Go to My Dashboard
+              <i class="fas fa-redo mr-2"></i> Check Status Manually
+            </button>
+          </div>
+
+          <!-- State 2: Payment Success -->
+          <div id="success-state" class="hidden text-center">
+            <div
+              class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-check text-green-500 text-3xl"></i>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+              Payment Complete!
+            </h1>
+            <p class="text-slate-500 mb-8">
+              Your purchase was successful. Welcome aboard!
+            </p>
+            <a
+              href="/"
+              class="w-full inline-block bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+            >
+              Go to My Account <i class="fas fa-arrow-right ml-2"></i>
             </a>
           </div>
 
-          <!-- STATE 3: FAILURE -->
-          <div id="payment-failure" class="hidden">
-            <div class="mb-6">
-              <svg
-                class="w-20 h-20 text-red-500 mx-auto"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
+          <!-- State 3: Payment Failed -->
+          <div id="failure-state" class="hidden text-center">
+            <div
+              class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6"
+            >
+              <i class="fas fa-times text-red-500 text-3xl"></i>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-              Payment Failed
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+              Payment Failed or Canceled
             </h1>
-            <p id="failure-message" class="text-gray-600 mb-8">
-              Unfortunately, we were unable to process your payment. Please try
-              again or contact our support team if the problem persists.
+            <p class="text-slate-500 mb-8">
+              It seems there was an issue with the transaction. Please try
+              again.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a
-                href="./pricing.html"
-                class="w-full block text-center py-3 rounded-lg btn-primary text-white font-semibold"
-              >
-                Try Again
-              </a>
-              <a
-                href="/contact-support.html"
-                class="w-full block text-center py-3 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition-colors"
-              >
-                Contact Support
-              </a>
-            </div>
+            <a
+              href="/pricing.html"
+              class="w-full inline-block bg-white text-slate-700 font-semibold py-3 px-6 rounded-lg border border-slate-300 transition-all duration-300 hover:bg-slate-50 hover:border-slate-400"
+            >
+              <i class="fab fa-paypal mr-2"></i> Try Payment Again
+            </a>
           </div>
         </div>
       </main>
 
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const loadingState = document.getElementById("loading-state");
+          const successState = document.getElementById("success-state");
+          const failureState = document.getElementById("failure-state");
+          const manualCheckBtn = document.getElementById("manual-check-btn");
+
+          let pollingInterval;
+          let checkAttempts = 0;
+          const MAX_ATTEMPTS = 20; // Increased attempts for PayPal
+
+          const showState = (state) => {
+            loadingState.classList.add("hidden");
+            successState.classList.add("hidden");
+            failureState.classList.add("hidden");
+
+            if (state === "success") {
+              successState.classList.remove("hidden");
+              // 烟花效果已从此移除
+            } else if (state === "failure") {
+              failureState.classList.remove("hidden");
+            } else {
+              loadingState.classList.remove("hidden");
+            }
+          };
+
+          const checkPaymentStatus = async () => {
+            let params = "";
+            if (window.location.search.includes("PayerID")) {
+              params = window.location.search;
+            }
+
+            if (
+              !window.location.search.includes("PayerID") ||
+              !window.location.search.includes("PayerID")
+            ) {
+              return "FAILURE";
+            }
+
+            try {
+              const response = await fetch(
+                `https://api.ytvidhub.com/prod-api/paypal/retUrl${params}`
+              );
+              const data = await response.json();
+              if (data.code == 0) {
+                return "SUCCESS";
+              } else {
+                return "ERROR";
+              }
+            } catch (error) {
+              console.error("Failed to check PayPal payment status:", error);
+              return "PENDING"; // Assume pending on network/server error to allow retries
+            }
+          };
+
+          const pollForStatus = async () => {
+            checkAttempts++;
+            if (checkAttempts >= MAX_ATTEMPTS) {
+              clearInterval(pollingInterval);
+              showState("failure");
+              return;
+            }
+
+            const status = await checkPaymentStatus();
+            if (status === "SUCCESS") {
+              clearInterval(pollingInterval);
+              showState("success");
+              // Optional: Redirect after a few seconds
+              setTimeout(() => {
+                window.location.href = "/";
+              }, 2000); // Redirect to homepage after 5 seconds
+            } else if (status === "FAILURE") {
+              clearInterval(pollingInterval);
+              showState("failure");
+            }
+          };
+
+          manualCheckBtn.addEventListener("click", async () => {
+            manualCheckBtn.disabled = true;
+            manualCheckBtn.innerHTML =
+              '<i class="fas fa-spinner fa-spin mr-2"></i> Checking...';
+
+            await pollForStatus();
+
+            if (!loadingState.classList.contains("hidden")) {
+              manualCheckBtn.disabled = false;
+              manualCheckBtn.innerHTML =
+                '<i class="fas fa-redo mr-2"></i> Check Status Manually';
+            }
+          });
+
+          showState("loading");
+          pollingInterval = setInterval(pollForStatus, 3000);
+          pollForStatus();
+        });
+      </script>
+
+      <!-- Footer (Added to match homepage) -->
       <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 lg:px-8 py-12">
+          <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
+            <div class="md:col-span-1">
+              <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
+              <p class="mt-3 text-gray-400 text-sm">
+                The essential toolkit for video content data extraction, built
+                for speed and reliability.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./index.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Home</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./bulk-youtube-subtitle-downloader.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Bulk Downloader</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./how-to-use.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >How to Use</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./faq.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >FAQ</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./what-is-an-srt-file.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Srt File</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./blog/subtitle-accuracy-problem.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Blog</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a
+                    href="./privacy-policy.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Privacy Policy</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./terms-of-service.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Terms of Service</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="./about.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >About Us</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
           <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
             <p>
               &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
@@ -325,82 +439,5 @@
         </div>
       </footer>
     </div>
-
-    <!-- The Auth and Mobile Menu scripts are kept for consistency, though not strictly needed on this page -->
-    <script src="./js/auth.js"></script>
-    <script>
-      const MOBILE_MENU_TRANSITION_DURATION = 300;
-      const mobileMenuButton = document.getElementById("mobile-menu-button");
-      const mobileMenuCloseButton = document.getElementById(
-        "mobile-menu-close-button"
-      );
-      const mobileMenu = document.getElementById("mobile-menu");
-      if (mobileMenuButton) {
-        mobileMenuButton.addEventListener("click", () => {
-          if (mobileMenu) {
-            mobileMenu.classList.remove("hidden");
-            setTimeout(() => {
-              mobileMenu.classList.remove("translate-x-full");
-            }, 10);
-            document.body.style.overflow = "hidden";
-          }
-        });
-      }
-      if (mobileMenuCloseButton) {
-        mobileMenuCloseButton.addEventListener("click", () => {
-          if (mobileMenu) {
-            mobileMenu.classList.add("translate-x-full");
-            document.body.style.overflow = "";
-            setTimeout(() => {
-              mobileMenu.classList.add("hidden");
-            }, MOBILE_MENU_TRANSITION_DURATION);
-          }
-        });
-      }
-
-      /**
-       * This script simulates verifying the payment with a backend.
-       * In a real application, you would make an API call here.
-       *
-       * USAGE:
-       * Redirect to this page with URL parameters.
-       * For success: /payment-result.html?status=success&plan=Pro&amount=19.99&orderId=XYZ123ABC
-       * For failure: /payment-result.html?status=failure
-       */
-      document.addEventListener("DOMContentLoaded", () => {
-        const loadingDiv = document.getElementById("payment-loading");
-        const successDiv = document.getElementById("payment-success");
-        const failureDiv = document.getElementById("payment-failure");
-        setTimeout(() => {
-          const urlParams = new URLSearchParams(window.location.search);
-          const status = urlParams.get("status");
-
-          loadingDiv.classList.add("hidden");
-
-          if (status === "success") {
-            // Populate success data from URL
-            const planName = urlParams.get("plan") || "Pro Plan";
-            const amount = urlParams.get("amount") || "19.99";
-            const orderId = urlParams.get("orderId") || "N/A";
-
-            document.getElementById("success-plan-name").textContent = planName;
-            document.getElementById(
-              "success-amount"
-            ).textContent = `$${amount}`;
-            document.getElementById("success-order-id").textContent = orderId;
-
-            successDiv.classList.remove("hidden");
-          } else {
-            // Populate failure data (optional)
-            const errorMessage = urlParams.get("error_message");
-            if (errorMessage) {
-              document.getElementById("failure-message").textContent =
-                decodeURIComponent(errorMessage);
-            }
-            failureDiv.classList.remove("hidden");
-          }
-        }, 2500); // 2.5 second delay to simulate verification
-      });
-    </script>
   </body>
 </html>
