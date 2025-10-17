@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Confirming PayPal Payment - NanoBananas</title>
+    <title>Confirming PayPal Payment - YTVidHub</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,12 +26,6 @@
       rel="stylesheet"
     />
 
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
-      crossorigin="anonymous"
-    ></script>
-
     <!-- Canvas Confetti for Success Animation -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -39,15 +33,12 @@
       body {
         font-family: "Inter", sans-serif;
       }
-
-      /* Aurora background styles from homepage */
       .aurora-bg-container {
         position: absolute;
         inset: 0;
         z-index: -1;
         overflow: hidden;
       }
-
       .aurora-ball {
         position: absolute;
         width: 40vw;
@@ -57,17 +48,13 @@
         opacity: 0.4;
         animation: aurora-float 20s ease-in-out infinite;
       }
-
       .aurora-ball-1 {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        animation-delay: 0s;
       }
-
       .aurora-ball-2 {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         animation-delay: 10s;
       }
-
       @keyframes aurora-float {
         0%,
         100% {
@@ -77,59 +64,12 @@
           transform: translateY(-20px) scale(1.1);
         }
       }
-
-      /* Keyframes for the background element animations (Copied from your original) */
-      @keyframes rotate {
-        from {
-          transform: rotate(0deg) scale(1);
-        }
-
-        to {
-          transform: rotate(360deg) scale(1.05);
-        }
-      }
-
-      @keyframes float {
-        0% {
-          transform: translateY(0px);
-          opacity: 0;
-        }
-
-        25% {
-          opacity: 0.7;
-        }
-
-        50% {
-          transform: translateY(-150px);
-        }
-
-        75% {
-          opacity: 0.7;
-        }
-
-        100% {
-          transform: translateY(-300px);
-          opacity: 0;
-        }
-      }
-
-      .animated-blob-1 {
-        animation: rotate 45s alternate-reverse infinite linear;
-      }
-
-      .animated-blob-2 {
-        animation: rotate 60s alternate infinite linear;
-      }
-
-      .particle {
-        animation: float 20s infinite linear;
-      }
     </style>
   </head>
 
   <body class="bg-gray-50 text-gray-800 antialiased">
     <div class="relative isolate">
-      <!-- Aurora background from homepage -->
+      <!-- Aurora background -->
       <div class="aurora-bg-container">
         <div
           class="aurora-ball aurora-ball-1"
@@ -141,7 +81,7 @@
         ></div>
       </div>
 
-      <!-- Header (Updated to match homepage) -->
+      <!-- Header -->
       <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
@@ -165,7 +105,7 @@
         <div
           class="w-full max-w-lg bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-white/60 p-8 sm:p-10 transition-all duration-500"
         >
-          <!-- NEW: PayPal & Brand Header -->
+          <!-- PayPal & Brand Header -->
           <div
             class="flex justify-between items-center pb-6 border-b border-slate-200 mb-6"
           >
@@ -176,31 +116,25 @@
               <p class="text-sm text-slate-500">via PayPal</p>
             </div>
             <img
-              src="./image/transparent-hd-paypal-logo-701751694777788ilpzr3lary.png"
+              src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
               alt="PayPal Logo"
-              class="h-20"
+              class="h-8"
             />
           </div>
 
           <!-- State 1: Loading / Confirmation Pending -->
-          <div id="loading-state" class="text-center">
+          <div id="loading-state" class="hidden text-center">
             <div
               class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6"
             >
               <i class="fas fa-spinner fa-spin text-blue-600 text-3xl"></i>
             </div>
             <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
-              Waiting for Confirmation...
+              Confirming Your Payment...
             </h1>
-            <p class="text-slate-500 mb-8">
-              We are confirming your PayPal payment. This may take a moment.
+            <p class="text-slate-500">
+              Please wait a moment. Do not close this window.
             </p>
-            <button
-              id="manual-check-btn"
-              class="w-full bg-white text-slate-700 font-semibold py-3 px-6 rounded-lg border border-slate-300 transition-all duration-300 hover:bg-slate-50 hover:border-slate-400 disabled:opacity-70 disabled:cursor-wait"
-            >
-              <i class="fas fa-redo mr-2"></i> Check Status Manually
-            </button>
           </div>
 
           <!-- State 2: Payment Success -->
@@ -218,134 +152,41 @@
             </p>
             <a
               href="/"
-              class="w-full inline-block bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+              class="w-full inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-700"
             >
               Go to My Account <i class="fas fa-arrow-right ml-2"></i>
             </a>
           </div>
 
-          <!-- State 3: Payment Failed -->
+          <!-- State 3: Payment Failed / Canceled -->
           <div id="failure-state" class="hidden text-center">
             <div
               class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-6"
             >
               <i class="fas fa-times text-red-500 text-3xl"></i>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
-              Payment Failed or Canceled
+            <h1
+              class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2"
+              id="failure-title"
+            >
+              Payment Failed
             </h1>
-            <p class="text-slate-500 mb-8">
-              It seems there was an issue with the transaction. Please try
-              again.
+            <p class="text-slate-500 mb-8" id="failure-message">
+              It seems there was an issue with the transaction.
             </p>
             <a
-              href="/pricing.html"
+              href="./pricing.html"
               class="w-full inline-block bg-white text-slate-700 font-semibold py-3 px-6 rounded-lg border border-slate-300 transition-all duration-300 hover:bg-slate-50 hover:border-slate-400"
             >
-              <i class="fab fa-paypal mr-2"></i> Try Payment Again
+              <i class="fab fa-paypal mr-2"></i> View Pricing Plans
             </a>
           </div>
         </div>
       </main>
 
-      <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          const loadingState = document.getElementById("loading-state");
-          const successState = document.getElementById("success-state");
-          const failureState = document.getElementById("failure-state");
-          const manualCheckBtn = document.getElementById("manual-check-btn");
+    
 
-          let pollingInterval;
-          let checkAttempts = 0;
-          const MAX_ATTEMPTS = 20; // Increased attempts for PayPal
-
-          const showState = (state) => {
-            loadingState.classList.add("hidden");
-            successState.classList.add("hidden");
-            failureState.classList.add("hidden");
-
-            if (state === "success") {
-              successState.classList.remove("hidden");
-              // 烟花效果已从此移除
-            } else if (state === "failure") {
-              failureState.classList.remove("hidden");
-            } else {
-              loadingState.classList.remove("hidden");
-            }
-          };
-
-          const checkPaymentStatus = async () => {
-            let params = "";
-            if (window.location.search.includes("PayerID")) {
-              params = window.location.search;
-            }
-
-            if (
-              !window.location.search.includes("PayerID") ||
-              !window.location.search.includes("PayerID")
-            ) {
-              return "FAILURE";
-            }
-
-            try {
-              const response = await fetch(
-                `https://api.ytvidhub.com/prod-api/paypal/retUrl${params}`
-              );
-              const data = await response.json();
-              if (data.code == 0) {
-                return "SUCCESS";
-              } else {
-                return "ERROR";
-              }
-            } catch (error) {
-              console.error("Failed to check PayPal payment status:", error);
-              return "PENDING"; // Assume pending on network/server error to allow retries
-            }
-          };
-
-          const pollForStatus = async () => {
-            checkAttempts++;
-            if (checkAttempts >= MAX_ATTEMPTS) {
-              clearInterval(pollingInterval);
-              showState("failure");
-              return;
-            }
-
-            const status = await checkPaymentStatus();
-            if (status === "SUCCESS") {
-              clearInterval(pollingInterval);
-              showState("success");
-              // Optional: Redirect after a few seconds
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 2000); // Redirect to homepage after 5 seconds
-            } else if (status === "FAILURE") {
-              clearInterval(pollingInterval);
-              showState("failure");
-            }
-          };
-
-          manualCheckBtn.addEventListener("click", async () => {
-            manualCheckBtn.disabled = true;
-            manualCheckBtn.innerHTML =
-              '<i class="fas fa-spinner fa-spin mr-2"></i> Checking...';
-
-            await pollForStatus();
-
-            if (!loadingState.classList.contains("hidden")) {
-              manualCheckBtn.disabled = false;
-              manualCheckBtn.innerHTML =
-                '<i class="fas fa-redo mr-2"></i> Check Status Manually';
-            }
-          });
-
-          showState("loading");
-          pollingInterval = setInterval(pollForStatus, 3000);
-          pollForStatus();
-        });
-      </script>
-
-      <!-- Footer (Added to match homepage) -->
+      <!-- Footer -->
       <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 lg:px-8 py-12">
           <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
@@ -439,5 +280,122 @@
         </div>
       </footer>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const loadingState = document.getElementById("loading-state");
+          const successState = document.getElementById("success-state");
+          const failureState = document.getElementById("failure-state");
+          const failureTitle = document.getElementById("failure-title");
+          const failureMessage = document.getElementById("failure-message");
+
+          const showState = (state, details = {}) => {
+            loadingState.classList.add("hidden");
+            successState.classList.add("hidden");
+            failureState.classList.add("hidden");
+
+            if (state === "success") {
+              successState.classList.remove("hidden");
+              // Trigger confetti celebration!
+              confetti({
+                particleCount: 150,
+                spread: 90,
+                origin: { y: 0.6 },
+              });
+            } else if (state === "failure") {
+              failureTitle.textContent = details.title || "Payment Failed";
+              failureMessage.textContent =
+                details.message || "An unexpected error occurred.";
+              failureState.classList.remove("hidden");
+            } else {
+              // loading
+              loadingState.classList.remove("hidden");
+            }
+          };
+
+          const checkPaymentStatus = async () => {
+            try {
+              // The full query string is automatically passed from the PayPal redirect
+              const response = await fetch(
+                `https://api.ytvidhub.com/prod-api/paypal/retUrl${window.location.search}`
+              );
+
+              if (!response.ok) {
+                // Handle HTTP errors like 500, 404 etc.
+                console.error(
+                  "API request failed with status:",
+                  response.status
+                );
+                return "PENDING"; // Assume it's a temporary server issue and retry
+              }
+
+              const data = await response.json();
+              if (data.code === 0) {
+                return "SUCCESS";
+              } else {
+                console.error(
+                  "API returned an error:",
+                  data.msg || "Unknown error"
+                );
+                return "FAILURE";
+              }
+            } catch (error) {
+              console.error("Failed to fetch payment status:", error);
+              return "PENDING"; // On network error, keep polling
+            }
+          };
+
+          const startPaymentVerification = () => {
+            showState("loading");
+            let checkAttempts = 0;
+            const MAX_ATTEMPTS = 20; // Poll for up to 1 minute (20 * 3s)
+
+            const pollingInterval = setInterval(async () => {
+              checkAttempts++;
+              const status = await checkPaymentStatus();
+
+              if (status === "SUCCESS") {
+                clearInterval(pollingInterval);
+                showState("success");
+                setTimeout(() => {
+                  window.location.href = "/";
+                }, 3000);
+              } else if (status === "FAILURE") {
+                clearInterval(pollingInterval);
+                showState("failure", {
+                  title: "Verification Failed",
+                  message:
+                    "We couldn't confirm your payment with the provider. Please contact support if you were charged.",
+                });
+              } else if (checkAttempts >= MAX_ATTEMPTS) {
+                clearInterval(pollingInterval);
+                showState("failure", {
+                  title: "Verification Timed Out",
+                  message:
+                    "We could not confirm your payment in time. Please check your PayPal account and contact us if needed.",
+                });
+              }
+            }, 3000);
+          };
+
+          // --- MAIN LOGIC ---
+          const urlParams = new URLSearchParams(window.location.search);
+          const payerId = urlParams.get("PayerID");
+          const paymentId =
+            urlParams.get("paymentId") || urlParams.get("token");
+
+          // If essential params are missing, user likely canceled on PayPal's site.
+          if (!payerId || !paymentId) {
+            showState("failure", {
+              title: "Payment Canceled",
+              message:
+                "It looks like you canceled the payment process. You have not been charged.",
+            });
+          } else {
+            // If params are present, start the verification process.
+            startPaymentVerification();
+          }
+        });
+      </script>
   </body>
 </html>
