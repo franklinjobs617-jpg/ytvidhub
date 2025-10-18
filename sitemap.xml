@@ -31,8 +31,6 @@
         <changefreq>yearly</changefreq>
         <priority>0.7</priority>
     </url>
-
-    <!-- 辅助及静态信息页面 -->
     <url>
         <loc>https://ytvidhub.com/faq.html</loc>
         <lastmod>2025-10-11</lastmod>
