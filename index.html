@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YouTube Subtitle Downloader (Single & Bulk) | YTVidHub</title>
+    <title>Bulk YouTube Subtitle Downloader for LLM & Research Data Prep</title>
     <meta
       name="description"
-      content="Our tool supports single videos and a unique bulk download feature with a daily free credit limit. Perfect for creators and researchers."
+      content="Stop 100 clicks for data preparation. YTVidHub offers unique bulk download for playlists/channels and converts to optimized, clean TXT for LLM training. 5 free daily credits."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -293,11 +293,12 @@
         <section class="pt-16 pb-12 md:pt-24 md:pb-20 bg-transparent">
           <div class="container mx-auto px-6 lg:px-8 text-center">
             <h1
-              class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter"
-            >
-              <span class="text-blue-600">Extract & Manage</span> YouTube
-              Subtitles At Scale
-            </h1>
+            class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter"
+          >
+            The <span class="text-blue-600"> Bulk YouTube Subtitle Downloader</span> 
+            for <span class="text-blue-600">Clean LLM & Research Data</span>
+          </h1>
+          
             <p
               class="mt-4 text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
             >
@@ -340,6 +341,13 @@
                     class="w-full h-32 p-4 bg-gray-50 rounded-xl resize-y focus-blue-ring border border-gray-300 text-base transition duration-200 font-mono"
                     placeholder="Paste links here (one per line), or drop a .txt file onto this area..."
                   ></textarea>
+                  
+                  <!-- === NEW: User Guidance Section === -->
+                  <div class="mt-3 flex justify-between items-center text-sm">
+                    <p class="text-gray-500">Free plan: Process up to 5 URLs at once.</p>
+                  </div>
+                  <!-- === END NEW === -->
+
                   <div
                     class="mt-6 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4"
                   >
@@ -360,21 +368,17 @@
                           accept=".txt,.csv"
                         />
                       </div>
-                      <!-- === NEW AND IMPROVED BUTTON START === -->
+                      
+                      <!-- === OPTIMIZED "UPGRADE" BUTTON (SECONDARY STYLE) === -->
                       <a
                         href="./pricing.html"
-                        class="group relative flex items-center gap-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600/90 to-indigo-700/90 border border-blue-500/40 rounded-xl px-5 py-2.5 shadow-lg shadow-blue-900/20 backdrop-blur-sm transition-all duration-300 hover:from-blue-500 hover:to-indigo-600 hover:shadow-blue-700/40 hover:scale-[1.02]"
+                        class="group flex items-center gap-2 text-sm font-semibold text-blue-600 border border-blue-200 rounded-xl px-4 py-2 transition-all duration-300 hover:bg-blue-50 hover:border-blue-300"
                       >
-                        <!-- 发光边框动画 -->
-                        <span
-                          class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-30 blur-md transition duration-300"
-                        ></span>
-
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"
-                          class="w-5 h-5 text-blue-200 relative z-10"
+                          class="w-5 h-5 text-blue-400 group-hover:text-blue-500 transition-colors"
                         >
                           <path
                             fill-rule="evenodd"
@@ -382,13 +386,10 @@
                             clip-rule="evenodd"
                           />
                         </svg>
-
-                        <span class="relative z-10 tracking-wide"
-                          >Upgrade to Pro</span
-                        >
+                        <span class="tracking-wide">Upgrade to Pro</span>
                       </a>
+                      <!-- === END OPTIMIZED BUTTON === -->
 
-                      <!-- === NEW AND IMPROVED BUTTON END === -->
                     </div>
                     <div
                       class="flex flex-col-reverse sm:flex-row gap-3 w-full md:w-auto"
@@ -827,7 +828,64 @@
           </div>
         </section>
 
-        <section class="py-24 bg-transparent">
+        <!-- === NEW: Testimonials Section === -->
+        <section class="py-20 bg-transparent">
+            <div class="container mx-auto px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+                        Trusted by Creators and Researchers
+                    </h2>
+                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                        See why professionals choose YTVidHub to streamline their workflow.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                        <blockquote class="text-gray-600 italic">
+                            "This tool is an absolute game-changer. I used to spend hours manually downloading subtitles for my video analysis projects. Now, I can process an entire playlist in minutes. Incredible!"
+                        </blockquote>
+                        <footer class="mt-6 flex items-center gap-4">
+                            <img class="h-12 w-12 rounded-full object-cover" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Alex Chen avatar">
+                            <div>
+                                <p class="font-semibold text-gray-900">Alex Chen</p>
+                                <p class="text-sm text-gray-500">Content Strategist</p>
+                            </div>
+                        </footer>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                        <blockquote class="text-gray-600 italic">
+                            "The best bulk subtitle downloader I've ever used. The interface is clean, the process is lightning-fast, and the ZIP file output is perfectly organized. It just works."
+                        </blockquote>
+                        <footer class="mt-6 flex items-center gap-4">
+                            <img class="h-12 w-12 rounded-full object-cover" src="https://i.pravatar.cc/150?u=a04258114e29026702d" alt="Maria Garcia avatar">
+                            <div>
+                                <p class="font-semibold text-gray-900">Maria Garcia</p>
+                                <p class="text-sm text-gray-500">YouTube Creator</p>
+                            </div>
+                        </footer>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                        <blockquote class="text-gray-600 italic">
+                            "As a linguistic researcher, access to accurate transcripts is crucial. YTVidHub not only provides them in bulk but also in multiple formats. It has significantly accelerated my data collection process."
+                        </blockquote>
+                        <footer class="mt-6 flex items-center gap-4">
+                            <img class="h-12 w-12 rounded-full object-cover" src="https://i.pravatar.cc/150?u=a042581f4e29026707d" alt="Dr. Samuel Jones avatar">
+                            <div>
+                                <p class="font-semibold text-gray-900">Dr. Samuel Jones</p>
+                                <p class="text-sm text-gray-500">Linguistics Researcher</p>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- === END NEW === -->
+
+
+        <section class="py-24 bg-gray-50/70">
           <div class="container mx-auto px-6 lg:px-8">
             <div class="text-center mb-20">
               <span
@@ -857,6 +915,7 @@
                     muted
                     playsinline
                     class="w-full h-auto rounded-xl"
+                    alt="Bulk download multiple YouTube transcripts into one clean zip file"
                   >
                     <source
                       src="./image/5ed5628e-810f-48c8-a171-35c94fbb7e57-ezgif.com-gif-to-webm-converter.webm"
@@ -1372,7 +1431,7 @@
             <path
               fill="#4CAF50"
               d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"
-            ></path>
+á             ></path>
             <path
               fill="#1976D2"
               d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"

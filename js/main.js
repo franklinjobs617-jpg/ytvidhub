@@ -32,6 +32,7 @@ let videoList,
   downloadStatusContent,
   loginModalContainer;
 
+  
 function initApp() {
   inputArea = document.getElementById("inputArea");
   loginModalContainer = document.getElementById("login-modal-container");
