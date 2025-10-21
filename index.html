@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon" />
     <link rel="canonical" href="https://ytvidhub.com/" />
+
     <link
       rel="preload"
       as="font"
@@ -70,19 +71,58 @@
         ]
       }
     </script>
+    <style>
+           #back-to-top-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 50;
+
+        background-color: #2563eb;
+        color: white;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 9999px;
+        border: none;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(1rem);
+        transition: all 0.3s ease-in-out;
+      }
+
+      #back-to-top-btn:hover {
+        background-color: #1d4ed8;
+      }
+
+      #back-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .btn-primary {
+        background-color: #2563eb;
+        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2),
+          0 1px 3px rgba(37, 99, 235, 0.1);
+      }
+      .btn-primary:hover:not(:disabled) {
+        background-color: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25),
+          0 3px 6px rgba(0, 0, 0, 0.08);
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 text-gray-800 antialiased">
+  <body class="bg-white text-gray-800 antialiased">
     <div class="relative isolate">
-      <div class="aurora-bg-container">
-        <div
-          class="aurora-ball aurora-ball-1"
-          style="top: -20%; left: -20%"
-        ></div>
-        <div
-          class="aurora-ball aurora-ball-2"
-          style="bottom: -20%; right: -15%"
-        ></div>
-      </div>
       <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
@@ -110,33 +150,67 @@
                 >Bulk Downloader</a
               >
               <a
-                href="./how-to-use.html"
+                href="./data-prep-guide.html"
                 class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >How to Use</a
+                >Data Prep Guide</a
               >
-              <a
-                href="./faq.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >FAQ</a
-              >
-              <a
-                href="./what-is-an-srt-file.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >Srt File</a
-              >
-              <a
-                href="./blog/subtitle-accuracy-problem.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >Blog</a
-              >
-              <a
-                href="./blog/engineering-decisions-ytvidhub.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >Engineering Decisions</a
-              >
+
+              <!-- Blog Dropdown with HOVER FIX -->
+              <div class="relative group py-4 -my-4">
+                <button
+                  class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600"
+                >
+                  <span>Blog</span>
+                  <svg
+                    class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                >
+                  <div class="py-2">
+                    <a
+                      href="./blog/subtitle-accuracy-problem.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Blog Home</a
+                    >
+                    <a
+                      href="./blog/engineering-decisions-ytvidhub.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Engineering Decisions</a
+                    >
+                    <div class="my-1 border-t border-gray-100"></div>
+                    <a
+                      href="./how-to-use.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >How to Use</a
+                    >
+                    <a
+                      href="./faq.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >FAQ</a
+                    >
+                    <a
+                      href="./what-is-an-srt-file.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >What is an SRT file?</a
+                    >
+                  </div>
+                </div>
+              </div>
+
               <a
                 href="./pricing.html"
-                class="nav-link text-gray-700 font-semibold transition duration-150"
+                class="nav-link text-gray-700 font-semibold transition duration-150 hover:text-blue-600"
                 >Pricing</a
               >
             </div>
@@ -195,9 +269,7 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="border-t border-gray-100"></div>
-
                   <!-- actions -->
                   <div class="py-2">
                     <a
@@ -293,12 +365,15 @@
         <section class="pt-16 pb-12 md:pt-24 md:pb-20 bg-transparent">
           <div class="container mx-auto px-6 lg:px-8 text-center">
             <h1
-            class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter"
-          >
-            The <span class="text-blue-600"> Bulk YouTube Subtitle Downloader</span> 
-            for <span class="text-blue-600">Clean LLM & Research Data</span>
-          </h1>
-          
+              class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter"
+            >
+              The
+              <span class="text-blue-600">
+                Bulk YouTube Subtitle Downloader</span
+              >
+              for <span class="text-blue-600">Clean LLM & Research Data</span>
+            </h1>
+
             <p
               class="mt-4 text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed"
             >
@@ -338,15 +413,15 @@
                   </label>
                   <textarea
                     id="urlInput"
-                    class="w-full h-32 p-4 bg-gray-50 rounded-xl resize-y focus-blue-ring border border-gray-300 text-base transition duration-200 font-mono"
+                    class="w-full h-32 p-4 bg-gray-100 rounded-xl resize-y focus:ring-2 focus:ring-blue-500 border border-gray-300 text-base transition duration-200 font-mono"
                     placeholder="Paste links here (one per line), or drop a .txt file onto this area..."
                   ></textarea>
-                  
-                  <!-- === NEW: User Guidance Section === -->
+
                   <div class="mt-3 flex justify-between items-center text-sm">
-                    <p class="text-gray-500">Free plan: Process up to 5 URLs at once.</p>
+                    <p class="text-gray-500">
+                      Free plan: Process up to 5 URLs at once.
+                    </p>
                   </div>
-                  <!-- === END NEW === -->
 
                   <div
                     class="mt-6 flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4"
@@ -368,8 +443,7 @@
                           accept=".txt,.csv"
                         />
                       </div>
-                      
-                      <!-- === OPTIMIZED "UPGRADE" BUTTON (SECONDARY STYLE) === -->
+
                       <a
                         href="./pricing.html"
                         class="group flex items-center gap-2 text-sm font-semibold text-blue-600 border border-blue-200 rounded-xl px-4 py-2 transition-all duration-300 hover:bg-blue-50 hover:border-blue-300"
@@ -388,8 +462,6 @@
                         </svg>
                         <span class="tracking-wide">Upgrade to Pro</span>
                       </a>
-                      <!-- === END OPTIMIZED BUTTON === -->
-
                     </div>
                     <div
                       class="flex flex-col-reverse sm:flex-row gap-3 w-full md:w-auto"
@@ -429,9 +501,7 @@
                 >
                   <div class="relative z-10">
                     <div class="flex justify-center items-center mb-6">
-                      <!-- Enhanced Loading Animation -->
                       <div class="relative">
-                        <!-- Outer ring -->
                         <svg
                           class="w-16 h-16 text-blue-500 animate-spin"
                           viewBox="0 0 24 24"
@@ -458,7 +528,6 @@
                             class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"
                           ></div>
                         </div>
-                        <!-- Orbiting dots -->
                         <div
                           class="absolute inset-0 flex items-center justify-center"
                         >
@@ -526,7 +595,7 @@
                         >
                       </div>
                       <div
-                        class="w-full bg-gray-400 rounded-full h-3 overflow-hidden shadow-inner border border-gray-300"
+                        class="w-full bg-gray-200 rounded-full h-3 overflow-hidden shadow-inner border border-gray-300"
                       >
                         <div
                           id="analysisProgressBar"
@@ -564,7 +633,7 @@
                   ></div>
                   <button
                     onclick="resetToInputArea()"
-                    class="bg-white-600 text-blue border font-semibold py-3 px-6 rounded-lg transition flex-shrink-0 ml-2"
+                    class="bg-gray-100 text-gray-700 border font-semibold py-3 px-6 rounded-lg transition hover:bg-gray-200 flex-shrink-0 ml-2"
                   >
                     <svg
                       class="w-5 h-5 inline mr-2"
@@ -695,38 +764,141 @@
                 </div>
               </div>
             </div>
-            <div
-              class="mt-12 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm text-gray-500 font-medium"
-            >
-              <div class="flex items-center gap-2">
-                <svg
-                  class="w-4 h-4 text-green-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+          </div>
+        </section>
+
+        <section class="py-20 md:py-24 bg-white">
+          <div class="container mx-auto px-6 lg:px-8 max-w-7xl">
+            <div class="text-center max-w-3xl mx-auto animate-fade-in">
+              <h2
+                class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight"
+              >
+                Stop 100 Clicks. Get 1 Clean ZIP File.
+              </h2>
+              <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                Save hours of tedious work. Our bulk downloader transforms a
+                mountain of manual tasks into a single, organized file, ready
+                for your research.
+              </p>
+              <div
+                class="mt-12 bg-white rounded-xl shadow-lg border border-gray-200 p-2 max-w-2xl mx-auto"
+              >
+                <div
+                  class="px-2 pb-2 border-b border-gray-100 flex items-center gap-2"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  ></path></svg
-                >Bulk Processing Supported
+                  <span class="h-3 w-3 bg-red-400 rounded-full"></span>
+                  <span class="h-3 w-3 bg-yellow-400 rounded-full"></span>
+                  <span class="h-3 w-3 bg-green-400 rounded-full"></span>
+                </div>
+                <img
+                  src="./image/ytvidhub-bulk-vs-single-download.webp"
+                  alt="Comparison showing the tedious 'Before' process of many clicks versus the simple 'After' process of one bulk download with YTVidHub"
+                  class="w-full h-auto rounded-b-lg mt-2"
+                />
               </div>
-              <div class="flex items-center gap-2">
-                <svg
-                  class="w-4 h-4 text-green-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            </div>
+
+            <div
+              class="mt-24 text-center max-w-3xl mx-auto animate-fade-in"
+              style="animation-delay: 0.2s"
+            >
+              <h2
+                class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight"
+              >
+                Optimized for Research & LLM Data Preparation
+              </h2>
+              <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+                We're not just a downloader; we're a data-prep powerhouse. Get
+                pristine, model-ready text without the hassle.
+              </p>
+            </div>
+
+            <div
+              class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in"
+              style="animation-delay: 0.4s"
+            >
+              <!-- Card 1: Clean TXT Output -->
+              <div
+                class="flex flex-col bg-white p-4 rounded-2xl shadow-md border border-gray-200 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
+              >
+                <img
+                  src="./image/ytvidhub-clean-txt-research-data.webp"
+                  alt="Before (messy SRT) vs After (Clean Research-Ready TXT) subtitle cleaning comparison"
+                  class="w-full h-auto rounded-xl mb-5 border border-gray-100"
+                />
+                <h3 class="text-xl font-bold text-gray-900">
+                  Clean TXT Output
+                </h3>
+                <p class="mt-2 text-gray-600 leading-relaxed">
+                  Receive data stripped of timestamps and formatting noise,
+                  instantly ready for model ingestion.
+                </p>
+              </div>
+
+              <!-- Card 2: Fuel Your LLM -->
+              <div
+                class="flex flex-col bg-white p-4 rounded-2xl shadow-md border border-gray-200 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
+              >
+                <img
+                  src="./image/ytvidhub-llm-data-prep-application.webp"
+                  alt="Researcher using YTVidHub interface to fuel an LLM with clean data"
+                  class="w-full h-auto rounded-xl mb-5 border border-gray-100"
+                />
+                <h3 class="text-xl font-bold text-gray-900">Fuel Your LLM</h3>
+                <p class="mt-2 text-gray-600 leading-relaxed">
+                  Specifically designed for researchers who need high-volume,
+                  consistent training corpora.
+                </p>
+              </div>
+
+              <!-- Card 3: Daily Free Credits -->
+              <div
+                class="flex flex-col bg-white p-4 rounded-2xl shadow-md border border-gray-200 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
+              >
+                <img
+                  src="./image/ytvidhub-5-daily-credits-freemium-show.webp"
+                  alt="Bulk Download with 5 FREE Daily Credits promotional graphic"
+                  class="w-full h-auto rounded-xl mb-5 border border-gray-100"
+                />
+                <h3 class="text-xl font-bold text-gray-900">
+                  Daily Free Credits
+                </h3>
+                <p class="mt-2 text-gray-600 leading-relaxed">
+                  Test our bulk pipeline daily with 5 free credits. See the
+                  quality before you subscribe.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mt-24 text-center animate-fade-in"
+              style="animation-delay: 0.6s"
+            >
+              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Want to dive deep into the data science behind transcript
+                cleaning?
+              </p>
+              <div class="mt-8">
+                <a
+                  href="#"
+                  class="btn-primary inline-flex items-center justify-center gap-2 text-white font-bold py-3 px-8 rounded-xl text-lg"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                  Read The Full Data Prep Guide
+                  <svg
+                    class="w-5 h-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  ></path></svg
-                >No Installation Required
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                    />
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
@@ -828,65 +1000,89 @@
           </div>
         </section>
 
-        <!-- === NEW: Testimonials Section === -->
-        <section class="py-20 bg-transparent">
-            <div class="container mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
-                        Trusted by Creators and Researchers
-                    </h2>
-                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        See why professionals choose YTVidHub to streamline their workflow.
-                    </p>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Testimonial 1 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-                        <blockquote class="text-gray-600 italic">
-                            "This tool is an absolute game-changer. I used to spend hours manually downloading subtitles for my video analysis projects. Now, I can process an entire playlist in minutes. Incredible!"
-                        </blockquote>
-                        <footer class="mt-6 flex items-center gap-4">
-                            <img class="h-12 w-12 rounded-full object-cover" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Alex Chen avatar">
-                            <div>
-                                <p class="font-semibold text-gray-900">Alex Chen</p>
-                                <p class="text-sm text-gray-500">Content Strategist</p>
-                            </div>
-                        </footer>
-                    </div>
-                    <!-- Testimonial 2 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-                        <blockquote class="text-gray-600 italic">
-                            "The best bulk subtitle downloader I've ever used. The interface is clean, the process is lightning-fast, and the ZIP file output is perfectly organized. It just works."
-                        </blockquote>
-                        <footer class="mt-6 flex items-center gap-4">
-                            <img class="h-12 w-12 rounded-full object-cover" src="https://i.pravatar.cc/150?u=a04258114e29026702d" alt="Maria Garcia avatar">
-                            <div>
-                                <p class="font-semibold text-gray-900">Maria Garcia</p>
-                                <p class="text-sm text-gray-500">YouTube Creator</p>
-                            </div>
-                        </footer>
-                    </div>
-                    <!-- Testimonial 3 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-                        <blockquote class="text-gray-600 italic">
-                            "As a linguistic researcher, access to accurate transcripts is crucial. YTVidHub not only provides them in bulk but also in multiple formats. It has significantly accelerated my data collection process."
-                        </blockquote>
-                        <footer class="mt-6 flex items-center gap-4">
-                            <img class="h-12 w-12 rounded-full object-cover" src="https://i.pravatar.cc/150?u=a042581f4e29026707d" alt="Dr. Samuel Jones avatar">
-                            <div>
-                                <p class="font-semibold text-gray-900">Dr. Samuel Jones</p>
-                                <p class="text-sm text-gray-500">Linguistics Researcher</p>
-                            </div>
-                        </footer>
-                    </div>
-                </div>
+        <section class="py-20 bg-white">
+          <div class="container mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16">
+              <h2
+                class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight"
+              >
+                Trusted by Creators and Researchers
+              </h2>
+              <p
+                class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed"
+              >
+                See why professionals choose YTVidHub to streamline their
+                workflow.
+              </p>
             </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div
+                class="bg-gray-50/70 p-8 rounded-2xl shadow-md border border-gray-200"
+              >
+                <blockquote class="text-gray-600 italic">
+                  "This tool is an absolute game-changer. I used to spend hours
+                  manually downloading subtitles for my video analysis projects.
+                  Now, I can process an entire playlist in minutes. Incredible!"
+                </blockquote>
+                <footer class="mt-6 flex items-center gap-4">
+                  <img
+                    class="h-12 w-12 rounded-full object-cover"
+                    src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                    alt="Alex Chen avatar"
+                  />
+                  <div>
+                    <p class="font-semibold text-gray-900">Alex Chen</p>
+                    <p class="text-sm text-gray-500">Content Strategist</p>
+                  </div>
+                </footer>
+              </div>
+              <div
+                class="bg-gray-50/70 p-8 rounded-2xl shadow-md border border-gray-200"
+              >
+                <blockquote class="text-gray-600 italic">
+                  "The best bulk subtitle downloader I've ever used. The
+                  interface is clean, the process is lightning-fast, and the ZIP
+                  file output is perfectly organized. It just works."
+                </blockquote>
+                <footer class="mt-6 flex items-center gap-4">
+                  <img
+                    class="h-12 w-12 rounded-full object-cover"
+                    src="https://i.pravatar.cc/150?u=a04258114e29026702d"
+                    alt="Maria Garcia avatar"
+                  />
+                  <div>
+                    <p class="font-semibold text-gray-900">Maria Garcia</p>
+                    <p class="text-sm text-gray-500">YouTube Creator</p>
+                  </div>
+                </footer>
+              </div>
+              <div
+                class="bg-gray-50/70 p-8 rounded-2xl shadow-md border border-gray-200"
+              >
+                <blockquote class="text-gray-600 italic">
+                  "As a linguistic researcher, access to accurate transcripts is
+                  crucial. YTVidHub not only provides them in bulk but also in
+                  multiple formats. It has significantly accelerated my data
+                  collection process."
+                </blockquote>
+                <footer class="mt-6 flex items-center gap-4">
+                  <img
+                    class="h-12 w-12 rounded-full object-cover"
+                    src="https://i.pravatar.cc/150?u=a042581f4e29026707d"
+                    alt="Dr. Samuel Jones avatar"
+                  />
+                  <div>
+                    <p class="font-semibold text-gray-900">Dr. Samuel Jones</p>
+                    <p class="text-sm text-gray-500">Linguistics Researcher</p>
+                  </div>
+                </footer>
+              </div>
+            </div>
+          </div>
         </section>
-        <!-- === END NEW === -->
-
 
         <section class="py-24 bg-gray-50/70">
-          <div class="container mx-auto px-6 lg:px-8">
+          <div class="container mx-auto px-6 lg:px-8 max-w-7xl">
             <div class="text-center mb-20">
               <span
                 class="text-sm font-semibold uppercase text-blue-600 tracking-wider"
@@ -905,16 +1101,16 @@
               </p>
             </div>
             <div class="space-y-24">
-              <div class="grid md:grid-cols-2 items-center gap-12">
+              <div class="grid lg:grid-cols-2 items-center gap-12">
                 <div
-                  class="p-2 bg-white rounded-xl shadow-2xl border border-gray-200"
+                  class="p-2 bg-white rounded-xl shadow-lg border border-gray-200"
                 >
                   <video
                     autoplay
                     loop
                     muted
                     playsinline
-                    class="w-full h-auto rounded-xl"
+                    class="w-full h-auto rounded-lg"
                     alt="Bulk download multiple YouTube transcripts into one clean zip file"
                   >
                     <source
@@ -923,7 +1119,7 @@
                     />
                   </video>
                 </div>
-                <div>
+                <div class="text-left">
                   <span class="text-blue-600 font-semibold"
                     >SEE IT IN ACTION</span
                   >
@@ -940,8 +1136,8 @@
                   </p>
                 </div>
               </div>
-              <div class="grid md:grid-cols-2 items-center gap-12">
-                <div class="md:order-last px-6">
+              <div class="grid lg:grid-cols-2 items-center gap-12">
+                <div class="lg:order-last px-6">
                   <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
                     <circle
                       cx="60"
@@ -1032,7 +1228,7 @@
                     </text>
                   </svg>
                 </div>
-                <div>
+                <div class="text-left">
                   <span class="text-blue-600 font-semibold"
                     >ADAPTIVE OUTPUT</span
                   >
@@ -1049,45 +1245,11 @@
                   </p>
                 </div>
               </div>
-              <div class="grid md:grid-cols-2 items-center gap-12">
-                <div class="px-6">
-                  <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M 100 20 L 140 40 L 140 80 C 140 110, 100 130, 100 130 C 100 130, 60 110, 60 80 L 60 40 Z"
-                      fill="#EFF6FF"
-                      stroke="#60A5FA"
-                      stroke-width="3"
-                    />
-                    <path
-                      d="M 90 70 L 100 80 L 115 65"
-                      fill="none"
-                      stroke="#1E40AF"
-                      stroke-width="4"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <span class="text-blue-600 font-semibold">PRIVACY FIRST</span>
-                  <h3
-                    class="mt-2 text-3xl font-bold text-gray-900 tracking-tight"
-                  >
-                    Your Data is Yours. Period.
-                  </h3>
-                  <p class="mt-4 text-lg text-gray-600 leading-relaxed">
-                    We believe privacy is a fundamental right. YTVidHub
-                    processes everything in-browser or on our server
-                    momentarily. We never store, log, or analyze your URLs. No
-                    accounts, no tracking, just a pure and simple tool.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </section>
 
-        <section class="py-20 bg-gray-50/70" id="faq">
+        <section class="py-20 bg-white" id="faq">
           <div class="container mx-auto px-6 lg:px-8 max-w-4xl">
             <h2
               class="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-12 tracking-tight"
@@ -1096,7 +1258,7 @@
             </h2>
             <div class="space-y-4">
               <details
-                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+                class="p-6 bg-gray-50/70 rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
               >
                 <summary
                   class="font-semibold text-lg text-gray-800 focus:outline-none"
@@ -1112,7 +1274,7 @@
                 </div>
               </details>
               <details
-                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+                class="p-6 bg-gray-50/70 rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
               >
                 <summary
                   class="font-semibold text-lg text-gray-800 focus:outline-none"
@@ -1130,7 +1292,7 @@
                 </div>
               </details>
               <details
-                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+                class="p-6 bg-gray-50/70 rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
               >
                 <summary
                   class="font-semibold text-lg text-gray-800 focus:outline-none"
@@ -1150,7 +1312,7 @@
                 </div>
               </details>
               <details
-                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
+                class="p-6 bg-gray-50/70 rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
               >
                 <summary
                   class="font-semibold text-lg text-gray-800 focus:outline-none"
@@ -1165,24 +1327,6 @@
                   <strong>auto-generated</strong> captions are filtered out to
                   ensure the highest quality and accuracy of the downloaded
                   text.
-                </div>
-              </details>
-              <details
-                class="p-6 bg-white rounded-xl shadow-sm cursor-pointer border border-gray-200 hover:border-blue-400 transition duration-200"
-              >
-                <summary
-                  class="font-semibold text-lg text-gray-800 focus:outline-none"
-                >
-                  Is my usage data stored?
-                </summary>
-                <div
-                  class="mt-4 pt-4 border-t border-gray-100 text-gray-600 leading-relaxed"
-                >
-                  <strong>No.</strong> We operate with a core commitment to user
-                  privacy. The system processes your request in memory to
-                  generate the output file, but all URL inputs and file contents
-                  are immediately discarded upon job completion. We do not
-                  maintain any logs of your activity.
                 </div>
               </details>
             </div>
@@ -1270,6 +1414,9 @@
                     >About Us</a
                   >
                 </li>
+                <li>
+                  <a href="./feedback.html" class="hover:text-blue-400 text-gray-400 transition">Feedback</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -1282,6 +1429,8 @@
         </div>
       </footer>
     </div>
+
+    <!-- === UPDATED MOBILE MENU START === -->
     <div
       id="mobile-menu"
       class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
@@ -1315,66 +1464,99 @@
             </svg>
           </button>
         </div>
-        <div class="flex flex-col p-6 space-y-4 flex-grow">
+        <div class="flex flex-col p-6 space-y-1 flex-grow">
           <a
             href="./index.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Home</a
           >
           <a
             href="./bulk-youtube-subtitle-downloader.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Bulk Downloader</a
           >
           <a
-            href="./how-to-use.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >How to Use</a
+            href="#"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Data Prep Guide</a
           >
-          <a
-            href="./faq.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >FAQ</a
-          >
-          <a
-            href="./pricing.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Pricing</a
-          >
-          <a
-            href="./what-is-an-srt-file.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Srt File</a
-          >
-          <a
-            href="./blog/subtitle-accuracy-problem.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Blog</a
-          >
+          <!-- Mobile Blog Accordion -->
+          <details class="group py-3 border-b border-gray-100">
+            <summary
+              class="flex justify-between items-center cursor-pointer text-gray-800 hover:text-blue-600 font-semibold text-lg list-none"
+            >
+              Blog
+              <svg
+                class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-transform duration-300 group-open:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </summary>
+            <div class="mt-2 pl-4 space-y-1">
+              <a
+                href="./blog/subtitle-accuracy-problem.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Blog Home</a
+              >
+              <a
+                href="./blog/engineering-decisions-ytvidhub.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Engineering Decisions</a
+              >
+              <a
+                href="./how-to-use.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >How to Use</a
+              >
+              <a
+                href="./faq.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >FAQ</a
+              >
+              <a
+                href="./what-is-an-srt-file.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >What is an SRT file?</a
+              >
+            </div>
+          </details>
 
           <a
-            href="./blog/engineering-decisions-ytvidhub.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Engineering-Decisions</a
+            href="./pricing.html"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Pricing</a
           >
-          <a
-            href="./terms-of-service.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Terms</a
-          >
-          <a
-            href="./privacy-policy.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Privacy</a
-          >
-          <a
-            href="./about.html"
-            class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >About</a
-          >
+
+          <!-- Separator for other links if needed -->
+          <div class="pt-4 mt-auto border-t border-gray-100 space-y-1">
+            <a
+              href="./terms-of-service.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >Terms</a
+            >
+            <a
+              href="./privacy-policy.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >Privacy</a
+            >
+            <a
+              href="./about.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >About</a
+            >
+          </div>
         </div>
       </div>
     </div>
+    <!-- === UPDATED MOBILE MENU END === -->
+
     <div
       id="login-modal-container"
       class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
@@ -1431,7 +1613,8 @@
             <path
               fill="#4CAF50"
               d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"
-á             ></path>
+              á
+            ></path>
             <path
               fill="#1976D2"
               d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"
@@ -1512,6 +1695,23 @@
         </div>
       </div>
     </div>
+    <!-- Back to Top Button -->
+    <button id="back-to-top-btn" title="Go to top">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M4.5 15.75l7.5-7.5 7.5 7.5"
+        />
+      </svg>
+    </button>
 
     <script src="./js/auth.js" defer></script>
     <script src="./js/main.js" defer></script>

@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalCloseButton = document.getElementById("modal-close-button");
   const googleLoginButton = document.getElementById("google-login");
   const purchaseButtons = document.querySelectorAll(".purchase-button");
-  const creditsNumber = document.querySelector('#credits')
-  const credits_mobile = document.querySelector('#credits-mobile')
+  const creditsNumber = document.querySelector("#credits");
+  const credits_mobile = document.querySelector("#credits-mobile");
   const BaseUrl = "https://api.ytvidhub.com";
   const GOOGLE_CLIENT_ID =
     "943760400801-n0e8jdoqrm375sq6gk39pj8oampe6ci9.apps.googleusercontent.com";
@@ -71,9 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (userAvatarDesktop) userAvatarDesktop.src = user.picture;
     if (userNameDesktop) userNameDesktop.textContent = user.name;
     if (userAvatarMobile) userAvatarMobile.src = user.picture;
-    
-    if(creditsNumber) creditsNumber.innerHTML = user.credits
-    if(credits_mobile) credits_mobile.innerHTML = user.credits
+
+    if (creditsNumber) creditsNumber.innerHTML = user.credits;
+    if (credits_mobile) credits_mobile.innerHTML = user.credits;
     if (userNameMobileDropdown) userNameMobileDropdown.textContent = user.name;
   };
 
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (token && userString) {
       try {
         const user = JSON.parse(userString);
-        console.log(user)
+        console.log(user);
         updateUIForLoggedInUser(user);
       } catch (e) {
         console.error("Failed to parse user data from localStorage", e);
@@ -312,9 +312,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
   async function updateUser() {
-    let token  = localStorage.getItem('auth_token')
+    let token = localStorage.getItem("auth_token");
     try {
       const response = await fetch(
         "https://api.ytvidhub.com/prod-api/g/getUser",
@@ -328,7 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       if (!response.ok) return;
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       if (data.data) {
         localStorage.setItem("loggedInUser", JSON.stringify(data.data)); // Sync local storage
         updateUIForLoggedInUser(data.data);
@@ -338,8 +337,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  updateUser()
+  updateUser();
 
   // --- Run on Load ---
   checkLoginStatus();
+
+  // Get the button
+  const backToTopButton = document.getElementById("back-to-top-btn");
+
+  // When the user scrolls down 300px from the top of the document, show the button
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      backToTopButton.classList.add("show");
+    } else {
+      backToTopButton.classList.remove("show");
+    }
+  });
+
+  // When the user clicks on the button, scroll to the top of the document smoothly
+  backToTopButton.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 });

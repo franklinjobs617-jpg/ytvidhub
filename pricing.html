@@ -12,7 +12,7 @@
     <!-- FONT & PERFORMANCE OPTIMIZATION -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./image/yyt.png" type="image/x-icon" />
     <link rel="canonical" href="https://ytvidhub.com/pricing.html" />
     <link
       rel="preload"
@@ -26,38 +26,42 @@
       rel="stylesheet"
     />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./dist/output.css" />
     <style>
-      /* --- GLOBAL STYLE & TYPOGRAPHY SYSTEM --- */
+      #back-to-top-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 50;
 
-      .diamond {
-    width: 8px;
-    height: 8px;
-    transform: rotate(45deg);
-    background: #60a5fa; /* blue-400 */
-    display:inline-block;
-    border-radius:1px;
-  }
-  /* caret (top notch) */
-  .menu-caret {
-    width: 12px;
-    height: 12px;
-    transform: rotate(45deg);
-    background: white;
-    position: absolute;
-    right: 18px; /* 调整 caret 水平位置对齐触发器 */
-    top: -6px;
-    border-left: 1px solid rgba(0,0,0,0.04);
-    border-top: 1px solid rgba(0,0,0,0.04);
-    box-shadow: -3px -3px 8px rgba(96,165,250,0.02);
-  }
-      body {
-        font-family: "Inter", sans-serif;
+        background-color: #2563eb;
+        color: white;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 9999px;
+        border: none;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(1rem);
+        transition: all 0.3s ease-in-out;
       }
-      h1,
-      h2,
-      h3 {
-        letter-spacing: -0.025em; /* Tighter tracking for headlines */
+
+      #back-to-top-btn:hover {
+        background-color: #1d4ed8;
+      }
+
+      #back-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
       }
 
       .pricing-card {
@@ -93,70 +97,6 @@
           0 3px 6px rgba(0, 0, 0, 0.08);
       }
 
-      /* --- AURORA BACKGROUND EFFECT --- */
-      .aurora-bg-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: -10;
-      }
-      .aurora-ball {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(120px);
-        opacity: 0.15;
-      }
-      .aurora-ball-1 {
-        width: 35rem;
-        height: 35rem;
-        background: radial-gradient(circle, #a78bfa, #3b82f6);
-        animation: aurora-float 25s infinite alternate ease-in-out;
-      }
-      .aurora-ball-2 {
-        width: 30rem;
-        height: 30rem;
-        background: radial-gradient(circle, #3b82f6, #67e8f9);
-        animation: aurora-float 20s infinite alternate ease-in-out;
-        animation-delay: -10s;
-      }
-      @keyframes aurora-float {
-        0% {
-          transform: translate(-20%, -20%) rotate(0deg) scale(1);
-        }
-        50% {
-          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
-        }
-        100% {
-          transform: translate(-20%, -20%) rotate(360deg) scale(1);
-        }
-      }
-
-      /* --- HEADER LINK HOVER EFFECT --- */
-      .nav-link {
-        position: relative;
-        padding-bottom: 8px;
-      }
-      .nav-link::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: #3b82f6;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.25s ease-out;
-      }
-      .nav-link:hover::after,
-      .nav-link-active::after {
-        transform: scaleX(1);
-      }
-
-      /* --- START: LOGIN MODAL STYLES --- */
       .modal-content {
         animation: scaleIn 0.3s ease-out;
       }
@@ -181,7 +121,6 @@
           opacity: 1;
         }
       }
-      /* --- END: LOGIN MODAL STYLES --- */
     </style>
   </head>
   <body class="bg-gray-50 text-gray-800 antialiased">
@@ -198,194 +137,232 @@
       </div>
 
       <header
-      class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
-    >
-      <nav
-        class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+        class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
-        <a href="./index.html" class="flex items-center gap-3">
-          <img
-            src="./image/icon.webp"
-            alt="YTVidHub Logo"
-            class="h-10 w-auto"
-          />
-        </a>
-        <!-- ====== DESKTOP NAVIGATION ====== -->
-        <div class="hidden md:flex items-center">
-          <div class="flex space-x-8 items-center text-sm font-medium">
-            <a
-              href="./index.html"
-              class="nav-link  text-gray-700 hover:text-blue-600 transition duration-150"
-              >Home</a
-            >
-            <a
-              href="./bulk-youtube-subtitle-downloader.html"
-              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-              >Bulk Downloader</a
-            >
-            <a
-              href="./how-to-use.html"
-              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-              >How to Use</a
-            >
-            <a
-              href="./faq.html"
-              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-              >FAQ</a
-            >
-            <a
-              href="./what-is-an-srt-file.html"
-              class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-              >Srt File</a
-            >
-            <a
-            href="./blog/subtitle-accuracy-problem.html"
-            class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-            >Blog</a
-          >
-          <a
-          href="./blog/engineering-decisions-ytvidhub.html"
-          class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-          >Engineering Decisions</a
+        <nav
+          class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
         >
-            <a
-              href="./pricing.html"
-              class="nav-link nav-link-active text-blue-600 font-semibold transition duration-150"
-              >Pricing</a
-            >
+          <a href="./index.html" class="flex items-center gap-3">
+            <img
+              src="./image/icon.webp"
+              alt="YTVidHub Logo"
+              class="h-10 w-auto"
+            />
+          </a>
+          <!-- ====== DESKTOP NAVIGATION ====== -->
+          <div class="hidden md:flex items-center">
+            <div class="flex space-x-8 items-center text-sm font-medium">
+              <a
+                href="./index.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Home</a
+              >
+              <a
+                href="./bulk-youtube-subtitle-downloader.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Bulk Downloader</a
+              >
+              <a
+                href="./data-prep-guide.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Data Prep Guide</a
+              >
+
+              <!-- Blog Dropdown with HOVER FIX -->
+              <div class="relative group py-4 -my-4">
+                <button
+                  class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600"
+                >
+                  <span>Blog</span>
+                  <svg
+                    class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                >
+                  <div class="py-2">
+                    <a
+                      href="./blog/subtitle-accuracy-problem.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Blog Home</a
+                    >
+                    <a
+                      href="./blog/engineering-decisions-ytvidhub.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Engineering Decisions</a
+                    >
+                    <div class="my-1 border-t border-gray-100"></div>
+                    <a
+                      href="./how-to-use.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >How to Use</a
+                    >
+                    <a
+                      href="./faq.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >FAQ</a
+                    >
+                    <a
+                      href="./what-is-an-srt-file.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >What is an SRT file?</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <a
+                href="./pricing.html"
+                class="nav-link nav-link-active text-blue-600 font-semibold transition duration-150"
+                >Pricing</a
+              >
+            </div>
+            <div class="ml-8">
+              <a
+                href="#"
+                id="login-button"
+                class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                >Login</a
+              >
+              <div id="user-profile-desktop" class="hidden relative">
+                <button
+                  id="user-menu-button"
+                  class="flex items-center gap-3 text-left focus:outline-none"
+                >
+                  <img
+                    id="user-avatar-desktop"
+                    src=""
+                    alt="User Avatar"
+                    class="h-9 w-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition"
+                    style="height: 36px; width: 36px"
+                  /><span
+                    id="user-name-desktop"
+                    class="text-sm font-semibold text-gray-800"
+                  ></span>
+                </button>
+                <div
+                  id="user-dropdown-menu"
+                  class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="user-menu-button"
+                >
+                  <div class="menu-caret"></div>
+                  <div
+                    class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl"
+                  >
+                    <div class="flex-shrink-0">
+                      <span class="diamond" aria-hidden="true"></span>
+                    </div>
+                    <div class="min-w-0">
+                      <div
+                        class="text-xs uppercase tracking-widest text-gray-400 font-medium"
+                      >
+                        Credits
+                      </div>
+                      <div
+                        id="credits"
+                        class="text-2xl font-extrabold text-gray-900 leading-tight"
+                      >
+                        2
+                      </div>
+                    </div>
+                  </div>
+                  <div class="border-t border-gray-100"></div>
+                  <div class="py-2">
+                    <a
+                      href="#"
+                      id="logout-button-desktop"
+                      class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
+                      role="menuitem"
+                    >
+                      <span
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100"
+                        >⟲</span
+                      >
+                      <div class="text-left">
+                        <div class="text-sm font-medium text-gray-800">
+                          Sign Out
+                        </div>
+                        <div class="text-xs text-gray-400">
+                          Log out of your account
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="ml-8">
-            <!-- Desktop Login Button -->
+          <div class="md:hidden flex items-center gap-4">
             <a
               href="#"
-              id="login-button"
-              class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              id="login-button-mobile"
+              class="text-sm font-semibold text-gray-700 hover:text-blue-600"
               >Login</a
             >
-            <div id="user-profile-desktop" class="hidden relative">
-              <button
-                id="user-menu-button"
-                class="flex items-center gap-3 text-left focus:outline-none"
-              >
+            <div id="user-profile-mobile" class="hidden relative">
+              <button id="user-menu-button-mobile" class="focus:outline-none">
                 <img
-                  id="user-avatar-desktop"
+                  id="user-avatar-mobile"
                   src=""
                   alt="User Avatar"
-                  class="h-9 w-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition"
-                  style="height: 36px; width: 36px"
+                  class="h-8 w-8 rounded-full object-cover"
                 />
-                <span
-                  id="user-name-desktop"
-                  class="text-sm font-semibold text-gray-800"
-                ></span>
               </button>
               <div
-              id="user-dropdown-menu"
-              class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
-              role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
-            >
-              <!-- caret -->
-              <div class="menu-caret"></div>
-            
-              <!-- Credits header -->
-              <div class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl">
-                <div class="flex-shrink-0">
-                  <!-- diamond icon (pure CSS block) -->
-                  <span class="diamond" aria-hidden="true"></span>
+                id="user-dropdown-menu-mobile"
+                class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+              >
+                <div class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-xs text-gray-500 mt-1">
+                    Credits:
+                    <span id="credits-mobile" class="font-bold text-gray-700"
+                      >0</span
+                    >
+                  </p>
                 </div>
-                <div class="min-w-0">
-                  <div class="text-xs uppercase tracking-widest text-gray-400 font-medium">Credits</div>
-                  <div id="credits" class="text-2xl font-extrabold text-gray-900 leading-tight">2</div>
-                </div>
-              </div>
-            
-              <div class="border-t border-gray-100"></div>
-            
-              <!-- actions -->
-              <div class="py-2">
-                <a
-                  href="#"
-                  id="logout-button-desktop"
-                  class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
-                  role="menuitem"
-                >
-                  <!-- small pill icon using CSS-like box (no svg) -->
-                  <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100">⟲</span>
-                  <div class="text-left">
-                    <div class="text-sm font-medium text-gray-800">Sign Out</div>
-                    <div class="text-xs text-gray-400">Log out of your account</div>
-                  </div>
-                </a>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="md:hidden flex items-center gap-4">
-          <a
-            href="#"
-            id="login-button-mobile"
-            class="text-sm font-semibold text-gray-700 hover:text-blue-600"
-            >Login</a
-          >
-          <!-- Mobile User Profile Dropdown -->
-          <div id="user-profile-mobile" class="hidden relative">
-            <button id="user-menu-button-mobile" class="focus:outline-none">
-              <img
-                id="user-avatar-mobile"
-                src=""
-                alt="User Avatar"
-                class="h-8 w-8 rounded-full object-cover"
-              />
-            </button>
-            <div
-              id="user-dropdown-menu-mobile"
-              class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
-            >
-              <!-- User Info and Credits -->
-              <div class="px-4 py-3 border-b border-gray-100">
-                <p class="text-xs text-gray-500 mt-1">
-                  Credits:
-                  <span id="credits-mobile" class="font-bold text-gray-700"
-                    >0</span
+                <div class="py-1">
+                  <a
+                    href="#"
+                    id="logout-button-mobile"
+                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >Logout</a
                   >
-                </p>
-              </div>
-              <!-- Logout -->
-              <div class="py-1">
-                <a
-                  href="#"
-                  id="logout-button-mobile"
-                  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                  >Logout</a
-                >
+                </div>
               </div>
             </div>
-          </div>
-
-          <!-- Hamburger Menu Button -->
-          <button
-            id="mobile-menu-button"
-            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
-          >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <button
+              id="mobile-menu-button"
+              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              ></path>
-            </svg>
-          </button>
-        </div>
-      </nav>
-    </header>
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
 
       <main class="container mx-auto px-6 py-20 md:py-28">
         <div class="text-center mb-20">
@@ -413,19 +390,59 @@
             </p>
             <ul class="space-y-3 text-gray-700 mb-8">
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span><strong>5 Credits per day</strong></span>
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>Bulk Download up to 5 URLs</span>
               </li>
               <li class="flex items-start">
-                 <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>Basic SRT/TXT Output</span>
               </li>
               <li class="flex items-start text-gray-400">
-                <svg class="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>API Access Not Included</span>
               </li>
             </ul>
@@ -453,19 +470,63 @@
             </p>
             <ul class="space-y-3 text-gray-700 mb-8">
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                <span><strong>500 Credits/month</strong> (Process 500 URLs)</span>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span
+                  ><strong>500 Credits/month</strong> (Process 500 URLs)</span
+                >
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>Download up to <strong>50 URLs</strong> at once</span>
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                <span><strong>Priority Queue</strong> - your jobs run first</span>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span
+                  ><strong>Priority Queue</strong> - your jobs run first</span
+                >
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>Access to all output formats (JSON)</span>
               </li>
             </ul>
@@ -489,20 +550,63 @@
               volume.
             </p>
             <ul class="space-y-3 text-gray-700 mb-8">
-               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                <span><strong>1,000 Credits/month</strong> (Process 1,000 URLs)</span>
+              <li class="flex items-start">
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span
+                  ><strong>1,000 Credits/month</strong> (Process 1,000
+                  URLs)</span
+                >
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>Download up to <strong>100 URLs</strong> at once</span>
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span><strong>Highest Priority</strong> & Email Support</span>
               </li>
-               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              <li class="flex items-start">
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span><strong>Early access</strong> to new features</span>
               </li>
             </ul>
@@ -517,33 +621,81 @@
           <!-- Researcher (Annual) Plan -->
           <div
             class="pricing-card bg-white/70 backdrop-blur-sm p-8 rounded-2xl ring-1 ring-gray-900/5 shadow-lg flex flex-col h-full"
-
           >
             <div class="relative">
-              <h3 class="text-2xl font-bold mb-2 text-purple-600">Researcher</h3>
-              <span class="absolute -top-2 -right-2 bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">SAVE 16%</span>
+              <h3 class="text-2xl font-bold mb-2 text-purple-600">
+                Researcher
+              </h3>
+              <span
+                class="absolute -top-2 -right-2 bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"
+                >SAVE 16%</span
+              >
             </div>
             <p class="text-4xl font-extrabold mb-1 text-gray-900">$199</p>
-            <p class="text-gray-500 mb-6">/ year <span class="line-through text-gray-400">$239</span></p>
+            <p class="text-gray-500 mb-6">
+              / year <span class="line-through text-gray-400">$239</span>
+            </p>
             <p class="text-gray-600 mb-6 flex-grow">
               The ultimate toolkit. Unlock massive scale, automation, and get
               <strong>2 months free</strong>.
             </p>
             <ul class="space-y-3 text-gray-700 mb-8">
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span><strong>3,000 Credits/month</strong> (36,000/year)</span>
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-                <span><strong>Full API Access</strong> to automate everything</span>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span
+                  ><strong>Full API Access</strong> to automate everything</span
+                >
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span><strong>All Premium Features</strong> Included</span>
               </li>
               <li class="flex items-start">
-                <svg class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                <svg
+                  class="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>Discounted top-up credits</span>
               </li>
             </ul>
@@ -555,12 +707,16 @@
             >
           </div>
         </div>
-        
-        <!-- NEW SECTION: How Credits Work -->
-        <div class="mt-20 p-8 bg-white/70 backdrop-blur-sm rounded-2xl ring-1 ring-gray-900/5 shadow-lg">
-          <h2 class="text-3xl font-bold mb-4 text-gray-900">How Credits Work</h2>
+
+        <div
+          class="mt-20 p-8 bg-white/70 backdrop-blur-sm rounded-2xl ring-1 ring-gray-900/5 shadow-lg"
+        >
+          <h2 class="text-3xl font-bold mb-4 text-gray-900">
+            How Credits Work
+          </h2>
           <p class="text-gray-600 mb-6 max-w-3xl">
-            We use a simple credit system so you only pay for what you use. It's transparent and fair.
+            We use a simple credit system so you only pay for what you use. It's
+            transparent and fair.
           </p>
           <div class="grid md:grid-cols-2 gap-6">
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -569,45 +725,101 @@
             </div>
             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
               <p class="font-bold text-gray-800">5-10 Credits (Coming Soon)</p>
-              <p class="text-gray-600">AI-powered transcription for 1 YouTube URL.</p>
+              <p class="text-gray-600">
+                AI-powered transcription for 1 YouTube URL.
+              </p>
             </div>
           </div>
         </div>
 
-        <!-- NEW SECTION: FAQ -->
         <section class="mt-20 max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
-              Frequently Asked Questions
-            </h2>
-            <div class="space-y-4">
-              <details class="p-6 bg-white rounded-xl shadow-md group cursor-pointer">
-                <summary class="font-semibold text-lg flex justify-between items-center list-none text-gray-900">
-                  Can I cancel my subscription anytime?
-                  <svg class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </summary>
-                <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
-                  Absolutely. You can cancel your monthly or annual plan at any time from your account dashboard. You will retain access to your plan's features until the end of your current billing period.
-                </p>
-              </details>
-              <details class="p-6 bg-white rounded-xl shadow-md group cursor-pointer">
-                <summary class="font-semibold text-lg flex justify-between items-center list-none text-gray-900">
-                  What happens if I use all my credits?
-                  <svg class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </summary>
-                <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
-                  If you run out of credits before your plan renews, you can easily purchase a top-up credit pack to continue your work without interruption. Annual plan members get a special discount on top-up packs.
-                </p>
-              </details>
-              <details class="p-6 bg-white rounded-xl shadow-md group cursor-pointer">
-                <summary class="font-semibold text-lg flex justify-between items-center list-none text-gray-900">
-                  Do unused credits roll over?
-                  <svg class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </summary>
-                <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
-                  Monthly credits do not roll over and will reset at the start of each billing cycle. This allows us to maintain our server capacity and offer competitive pricing.
-                </p>
-              </details>
-            </div>
+          <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+            Frequently Asked Questions
+          </h2>
+          <div class="space-y-4">
+            <details
+              class="p-6 bg-white rounded-xl shadow-md group cursor-pointer"
+            >
+              <summary
+                class="font-semibold text-lg flex justify-between items-center list-none text-gray-900"
+              >
+                Can I cancel my subscription anytime?
+                <svg
+                  class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </summary>
+              <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
+                Absolutely. You can cancel your monthly or annual plan at any
+                time from your account dashboard. You will retain access to your
+                plan's features until the end of your current billing period.
+              </p>
+            </details>
+            <details
+              class="p-6 bg-white rounded-xl shadow-md group cursor-pointer"
+            >
+              <summary
+                class="font-semibold text-lg flex justify-between items-center list-none text-gray-900"
+              >
+                What happens if I use all my credits?
+                <svg
+                  class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </summary>
+              <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
+                If you run out of credits before your plan renews, you can
+                easily purchase a top-up credit pack to continue your work
+                without interruption. Annual plan members get a special discount
+                on top-up packs.
+              </p>
+            </details>
+            <details
+              class="p-6 bg-white rounded-xl shadow-md group cursor-pointer"
+            >
+              <summary
+                class="font-semibold text-lg flex justify-between items-center list-none text-gray-900"
+              >
+                Do unused credits roll over?
+                <svg
+                  class="w-5 h-5 text-gray-500 transition-transform duration-300 group-open:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </summary>
+              <p class="mt-4 text-gray-600 border-t pt-4 border-gray-100">
+                Monthly credits do not roll over and will reset at the start of
+                each billing cycle. This allows us to maintain our server
+                capacity and offer competitive pricing.
+              </p>
+            </details>
+          </div>
         </section>
       </main>
 
@@ -692,6 +904,9 @@
                     >About Us</a
                   >
                 </li>
+                <li>
+                  <a href="./feedback.html" class="hover:text-blue-400 text-gray-400 transition">Feedback</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -705,102 +920,131 @@
       </footer>
     </div>
 
-    <!-- Mobile Menu -->
+    <!-- Mobile Menu, Login Modal and Scripts -->
     <div
-    id="mobile-menu"
-    class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
-  >
-    <div class="flex flex-col h-full">
-      <div
-        class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
-      >
-        <a href="./index.html" class="flex items-center gap-3"
-          ><img
-            src="./image/icon.webp"
-            alt="YTVidHub Logo"
-            class="h-8 md:h-10 w-auto"
-        /></a>
-        <button
-          id="mobile-menu-close-button"
-          class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+      id="mobile-menu"
+      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+    >
+      <div class="flex flex-col h-full">
+        <div
+          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
         >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <a href="./index.html" class="flex items-center gap-3"
+            ><img
+              src="./image/icon.webp"
+              alt="YTVidHub Logo"
+              class="h-8 md:h-10 w-auto"
+          /></a>
+          <button
+            id="mobile-menu-close-button"
+            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
-        </button>
-      </div>
-      <div class="flex flex-col p-6 space-y-4 flex-grow">
-        <a
-          href="./index.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Home</a
-        >
-        <a
-          href="./bulk-youtube-subtitle-downloader.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Bulk Downloader</a
-        >
-        <a
-          href="./how-to-use.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >How to Use</a
-        >
-        <a
-          href="./faq.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >FAQ</a
-        >
-        <a
-          href="./pricing.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Pricing</a
-        >
-        <a
-          href="./what-is-an-srt-file.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Srt File</a
-        >
-        <a
-          href="./blog/subtitle-accuracy-problem.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Blog</a
-        >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div class="flex flex-col p-6 space-y-1 flex-grow">
+          <a
+            href="./index.html"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Home</a
+          >
+          <a
+            href="./bulk-youtube-subtitle-downloader.html"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Bulk Downloader</a
+          >
+          <a
+            href="./data-prep-guide.html"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Data Prep Guide</a
+          >
+          <!-- Mobile Blog Accordion -->
+          <details class="group py-3 border-b border-gray-100">
+            <summary
+              class="flex justify-between items-center cursor-pointer text-gray-800 hover:text-blue-600 font-semibold text-lg list-none"
+            >
+              Blog
+              <svg
+                class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-transform duration-300 group-open:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </summary>
+            <div class="mt-2 pl-4 space-y-1">
+              <a
+                href="./blog/subtitle-accuracy-problem.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Blog Home</a
+              >
+              <a
+                href="./blog/engineering-decisions-ytvidhub.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Engineering Decisions</a
+              >
+              <a
+                href="./how-to-use.html"
+                class="block text-blue-600 font-semibold text-base py-2"
+                >How to Use</a
+              >
+              <a
+                href="./faq.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >FAQ</a
+              >
+              <a
+                href="./what-is-an-srt-file.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >What is an SRT file?</a
+              >
+            </div>
+          </details>
 
-        <a
-          href="./blog/engineering-decisions-ytvidhub.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Engineering-Decisions</a
-        >
-        <a
-          href="./terms-of-service.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Terms</a
-        >
-        <a
-          href="./privacy-policy.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >Privacy</a
-        >
-        <a
-          href="./about.html"
-          class="text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-          >About</a
-        >
+          <a
+            href="./pricing.html"
+            class="block text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Pricing</a
+          >
+
+          <div class="pt-4 mt-auto border-t border-gray-100 space-y-1">
+            <a
+              href="./terms-of-service.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >Terms</a
+            >
+            <a
+              href="./privacy-policy.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >Privacy</a
+            >
+            <a
+              href="./about.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >About</a
+            >
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-    <!-- START: LOGIN MODAL -->
     <div
     id="login-modal-container"
     class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
@@ -907,23 +1151,49 @@
     </div>
   </div>
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"></script>
-<script defer>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Back to Top Button -->
+    <button id="back-to-top-btn" title="Go to top">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M4.5 15.75l7.5-7.5 7.5 7.5"
+        />
+      </svg>
+    </button>
 
-  gtag('config', 'G-KZZ05YN8TX');
-</script>
     <script src="./js/auth.js"></script>
     <script>
+      const backToTopButton = document.getElementById("back-to-top-btn");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add("show");
+        } else {
+          backToTopButton.classList.remove("show");
+        }
+      });
+
+      backToTopButton.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
       const MOBILE_MENU_TRANSITION_DURATION = 300;
       const mobileMenuButton = document.getElementById("mobile-menu-button");
       const mobileMenuCloseButton = document.getElementById(
         "mobile-menu-close-button"
       );
       const mobileMenu = document.getElementById("mobile-menu");
-
       if (mobileMenuButton) {
         mobileMenuButton.addEventListener("click", () => {
           if (mobileMenu) {
