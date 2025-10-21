@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -72,12 +72,12 @@
       }
     </script>
     <style>
-           #back-to-top-btn {
+      /* --- General & Back to Top Button (No changes) --- */
+      #back-to-top-btn {
         position: fixed;
         bottom: 2rem;
         right: 2rem;
         z-index: 50;
-
         background-color: #2563eb;
         color: white;
         width: 3.5rem;
@@ -87,26 +87,24 @@
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
           0 4px 6px -4px rgb(0 0 0 / 0.1);
         cursor: pointer;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         opacity: 0;
         visibility: hidden;
         transform: translateY(1rem);
         transition: all 0.3s ease-in-out;
       }
-
       #back-to-top-btn:hover {
         background-color: #1d4ed8;
       }
-
       #back-to-top-btn.show {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
       }
+
+      /* --- Enhanced Button Style (No changes) --- */
       .btn-primary {
         background-color: #2563eb;
         transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -119,13 +117,130 @@
         box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25),
           0 3px 6px rgba(0, 0, 0, 0.08);
       }
+
+      /* === NEW: INTERACTIVE "BEFORE & AFTER" SLIDER STYLES === */
+      .interactive-showcase {
+        position: relative;
+        width: 100%;
+        max-width: 900px; /* Control max size */
+        margin: 3rem auto 0;
+        aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        border: 4px solid #fff;
+        background: #f1f5f9;
+        cursor: ew-resize;
+      }
+      .showcase-panel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .showcase-panel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        pointer-events: none;
+        user-select: none;
+      }
+      .showcase-panel.after {
+        clip-path: inset(0 0 0 50%); /* Start with 50% visible */
+      }
+      .showcase-slider {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 4px;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        transform: translateX(-50%);
+        pointer-events: none;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      .showcase-slider::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: white;
+        border: 3px solid #2563eb;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="%232563eb"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 60%;
+      }
+      .showcase-label {
+        position: absolute;
+        bottom: 1.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border-radius: 0.5rem;
+        backdrop-filter: blur(4px);
+        user-select: none;
+        pointer-events: none;
+      }
+      .showcase-label.before-label {
+        left: 1.5rem;
+      }
+      .showcase-label.after-label {
+        right: 1.5rem;
+      }
+
+      /* === NEW: ENHANCED "3 STEPS" SECTION === */
+      .steps-grid {
+        position: relative;
+      }
+      .step-card {
+        position: relative;
+        z-index: 10;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .step-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+          0 8px 10px -6px rgb(0 0 0 / 0.1);
+      }
+      /* Dashed line connector */
+      @media (min-width: 768px) {
+        .steps-grid::after {
+          content: "";
+          position: absolute;
+          top: 4.5rem; /* Vertically align with the icons */
+          left: calc(16.66% + 2rem); /* Start after the first card's center */
+          right: calc(16.66% + 2rem); /* End before the last card's center */
+          height: 2px;
+          background-image: linear-gradient(
+            to right,
+            #93c5fd 50%,
+            transparent 50%
+          );
+          background-size: 16px 2px;
+          background-repeat: repeat-x;
+          z-index: 1;
+        }
+      }
     </style>
   </head>
-  <body class="bg-white text-gray-800 antialiased">
+  <!-- NEW: Changed body background for better contrast -->
+  <body class="bg-slate-50 text-gray-800 antialiased">
     <div class="relative isolate">
       <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
+        <!-- Header content remains the same, it's already very good -->
         <nav
           class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
         >
@@ -362,7 +477,36 @@
       </header>
 
       <main>
-        <section class="pt-16 pb-12 md:pt-24 md:pb-20 bg-transparent">
+        <section class="relative pt-16 pb-12 md:pt-24 md:pb-20 bg-transparent">
+          <!-- NEW: Decorative background shapes -->
+          <div
+            class="absolute inset-x-0 top-0 -z-10 transform-gpu overflow-hidden blur-3xl"
+            aria-hidden="true"
+          >
+            <div
+              class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#80caff] to-[#4f46e5] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+              style="
+                clip-path: polygon(
+                  74.1% 44.1%,
+                  100% 61.6%,
+                  97.5% 26.9%,
+                  85.5% 0.1%,
+                  80.7% 2%,
+                  72.5% 32.5%,
+                  60.2% 62.4%,
+                  52.4% 68.1%,
+                  47.5% 58.3%,
+                  45.2% 34.5%,
+                  27.5% 76.7%,
+                  0.1% 64.9%,
+                  17.9% 100%,
+                  27.6% 76.8%,
+                  76.1% 97.7%,
+                  74.1% 44.1%
+                );
+              "
+            ></div>
+          </div>
           <div class="container mx-auto px-6 lg:px-8 text-center">
             <h1
               class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter"
@@ -382,8 +526,9 @@
             </p>
             <div class="mt-12 max-w-5xl mx-auto text-left">
               <div id="inputArea">
+                <!-- MODIFIED: Added a subtle glow effect to the main card -->
                 <div
-                  class="relative bg-white p-6 md:p-10 rounded-2xl shadow-xl main-card border border-gray-200"
+                  class="relative bg-white p-6 md:p-10 rounded-2xl shadow-2xl main-card border border-gray-200 transition-all duration-300 hover:shadow-blue-500/20"
                 >
                   <div class="drag-overlay">
                     <div class="text-center font-bold text-blue-600">
@@ -413,7 +558,7 @@
                   </label>
                   <textarea
                     id="urlInput"
-                    class="w-full h-32 p-4 bg-gray-100 rounded-xl resize-y focus:ring-2 focus:ring-blue-500 border border-gray-300  text-base transition duration-200 font-mono"
+                    class="w-full h-32 p-4 bg-gray-100 rounded-xl resize-y focus:ring-2 focus:ring-blue-500 border border-gray-300 text-base transition duration-200 font-mono"
                     placeholder="Paste links here (one per line), or drop a .txt file onto this area..."
                   ></textarea>
 
@@ -495,6 +640,7 @@
                 </div>
               </div>
 
+              <!-- Areas: analyzing, results, videoList etc. all remain the same. -->
               <div id="analyzingArea" class="hidden mt-8">
                 <div
                   class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border border-gray-100 text-center relative overflow-hidden pulse-glow-bg animate-fade-in"
@@ -767,39 +913,55 @@
           </div>
         </section>
 
-        <section class="py-20 md:py-24 bg-white">
-          <div class="container mx-auto px-6 lg:px-8 max-w-7xl">
-            <div class="text-center max-w-3xl mx-auto animate-fade-in">
+        <!-- === NEW/REVAMPED SECTION with interactive slider === -->
+        <section class="py-20 md:py-24 bg-white relative">
+          <div
+            class="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-slate-50 to-white"
+          ></div>
+          <div class="container mx-auto px-6 lg:px-8 max-w-7xl relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
               <h2
                 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight"
               >
                 Stop 100 Clicks. Get 1 Clean ZIP File.
               </h2>
               <p class="mt-4 text-lg text-gray-600 leading-relaxed">
-                Save hours of tedious work. Our bulk downloader transforms a
-                mountain of manual tasks into a single, organized file, ready
-                for your research.
+                Drag the slider to see the difference. Transform hours of
+                tedious work into a single, organized file, ready for your
+                research.
               </p>
-              <div
-                class="mt-12 bg-white rounded-xl shadow-lg border border-gray-200 p-2 max-w-2xl mx-auto"
-              >
-                <div
-                  class="px-2 pb-2 border-b border-gray-100 flex items-center gap-2"
-                >
-                  <span class="h-3 w-3 bg-red-400 rounded-full"></span>
-                  <span class="h-3 w-3 bg-yellow-400 rounded-full"></span>
-                  <span class="h-3 w-3 bg-green-400 rounded-full"></span>
-                </div>
-                <img
-                  src="./image/ytvidhub-bulk-vs-single-download.webp"
-                  alt="Comparison showing the tedious 'Before' process of many clicks versus the simple 'After' process of one bulk download with YTVidHub"
-                  class="w-full h-auto rounded-b-lg mt-2"
-                />
-              </div>
             </div>
 
+            <!-- Interactive "Before & After" Slider Component -->
+            <div class="interactive-showcase" id="showcase-container">
+              <div class="showcase-panel before">
+                <img
+                  src="./image/ytvidhub-manual-download-process-before.webp"
+                  alt="Illustration showing the tedious 'Before' process: a researcher overwhelmed by manually downloading subtitles from many separate YouTube windows."
+                />
+                <div class="showcase-label before-label">
+                  Before: The Manual Grind
+                </div>
+              </div>
+              <div class="showcase-panel after" id="after-panel">
+                <img
+                  src="./image/ytvidhub-one-click-bulk-subtitle-download-after.webp"
+                  alt="Illustration showing the simple 'After' process with YTVidHub: the researcher calmly performs a one-click bulk download, converting many subtitles into a single, organized ZIP file.
+                  "
+                />
+                <div class="showcase-label after-label">
+                  After: One Click, One ZIP
+                </div>
+              </div>
+              <div class="showcase-slider" id="slider-handle"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-20 md:py-24 bg-white">
+          <div class="container mx-auto px-6 lg:px-8 max-w-7xl">
             <div
-              class="mt-24 text-center max-w-3xl mx-auto animate-fade-in"
+              class="text-center max-w-3xl mx-auto animate-fade-in"
               style="animation-delay: 0.2s"
             >
               <h2
@@ -819,7 +981,7 @@
             >
               <!-- Card 1: Clean TXT Output -->
               <div
-                class="flex flex-col bg-white p-4 rounded-2xl shadow-md border border-gray-200 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
+                class="flex flex-col bg-white p-4 rounded-2xl shadow-lg border border-gray-100 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
               >
                 <img
                   src="./image/ytvidhub-clean-txt-research-data.webp"
@@ -837,7 +999,7 @@
 
               <!-- Card 2: Fuel Your LLM -->
               <div
-                class="flex flex-col bg-white p-4 rounded-2xl shadow-md border border-gray-200 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
+                class="flex flex-col bg-white p-4 rounded-2xl shadow-lg border border-gray-100 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
               >
                 <img
                   src="./image/ytvidhub-llm-data-prep-application.webp"
@@ -853,7 +1015,7 @@
 
               <!-- Card 3: Daily Free Credits -->
               <div
-                class="flex flex-col bg-white p-4 rounded-2xl shadow-md border border-gray-200 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
+                class="flex flex-col bg-white p-4 rounded-2xl shadow-lg border border-gray-100 text-left transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5"
               >
                 <img
                   src="./image/ytvidhub-5-daily-credits-freemium-show.webp"
@@ -904,7 +1066,23 @@
           </div>
         </section>
 
-        <section class="py-20 bg-gray-50/70">
+        <!-- === NEW: SVG Shape Divider === -->
+        <div class="relative">
+          <div class="absolute inset-x-0 bottom-0 text-slate-50">
+            <svg
+              viewBox="0 0 1440 120"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1440 120H0V26.4895C120.333 39.1627 288.333 51.836 480 49.836C671.667 47.836 887 -5.16396 1088.5 1.83604C1290 8.83604 1440 26.4895 1440 26.4895V120Z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- === ENHANCED "3 STEPS" SECTION === -->
+        <section class="py-20 md:py-24 bg-slate-50">
           <div class="container mx-auto px-6 lg:px-8">
             <div class="text-center mb-16">
               <h2
@@ -919,22 +1097,28 @@
                 subtitles in seconds.
               </p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-              <div class="p-8">
+            <!-- Added .steps-grid for the connector line -->
+            <div class="grid md:grid-cols-3 gap-8 text-center steps-grid">
+              <!-- Added .step-card for hover effects -->
+              <div
+                class="p-8 bg-white rounded-2xl shadow-lg border border-gray-100 step-card"
+              >
+                <!-- Enhanced icon appearance -->
                 <div
-                  class="flex items-center justify-center h-20 w-20 mx-auto bg-blue-100 text-blue-600 rounded-full"
+                  class="flex items-center justify-center h-24 w-24 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-full shadow-md"
                 >
                   <svg
-                    class="w-10 h-10"
+                    class="w-12 h-12"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     ></path>
                   </svg>
                 </div>
@@ -946,21 +1130,24 @@
                   for even larger jobs.
                 </p>
               </div>
-              <div class="p-8">
+              <div
+                class="p-8 bg-white rounded-2xl shadow-lg border border-gray-100 step-card"
+              >
                 <div
-                  class="flex items-center justify-center h-20 w-20 mx-auto bg-blue-100 text-blue-600 rounded-full"
+                  class="flex items-center justify-center h-24 w-24 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-full shadow-md"
                 >
                   <svg
-                    class="w-10 h-10"
+                    class="w-12 h-12"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
                     ></path>
                   </svg>
                 </div>
@@ -970,21 +1157,24 @@
                   high-quality English subtitles.
                 </p>
               </div>
-              <div class="p-8">
+              <div
+                class="p-8 bg-white rounded-2xl shadow-lg border border-gray-100 step-card"
+              >
                 <div
-                  class="flex items-center justify-center h-20 w-20 mx-auto bg-blue-100 text-blue-600 rounded-full"
+                  class="flex items-center justify-center h-24 w-24 mx-auto bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-full shadow-md"
                 >
                   <svg
-                    class="w-10 h-10"
+                    class="w-12 h-12"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                     ></path>
                   </svg>
                 </div>
@@ -1000,6 +1190,8 @@
           </div>
         </section>
 
+        <!-- Other sections like Testimonials, Features, FAQ etc. remain the same. -->
+        <!-- They are already well-structured. -->
         <section class="py-20 bg-white">
           <div class="container mx-auto px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -1415,7 +1607,11 @@
                   >
                 </li>
                 <li>
-                  <a href="./feedback.html" class="hover:text-blue-400 text-gray-400 transition">Feedback</a>
+                  <a
+                    href="./feedback.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Feedback</a
+                  >
                 </li>
               </ul>
             </div>
@@ -1430,6 +1626,7 @@
       </footer>
     </div>
 
+    <!-- Modals, Mobile Menu etc. all remain the same -->
     <!-- === UPDATED MOBILE MENU START === -->
     <div
       id="mobile-menu"
@@ -1613,7 +1810,6 @@
             <path
               fill="#4CAF50"
               d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"
-              á
             ></path>
             <path
               fill="#1976D2"
@@ -1758,6 +1954,73 @@
           }
         });
       }
+
+      // === NEW: JAVASCRIPT FOR INTERACTIVE SLIDER ===
+      document.addEventListener("DOMContentLoaded", () => {
+        const container = document.getElementById("showcase-container");
+        const afterPanel = document.getElementById("after-panel");
+        const handle = document.getElementById("slider-handle");
+
+        if (!container || !afterPanel || !handle) return;
+
+        let isDragging = false;
+
+        const startDrag = (e) => {
+          isDragging = true;
+          // Add a class to body to prevent text selection while dragging
+          document.body.classList.add("no-select");
+        };
+
+        const stopDrag = () => {
+          isDragging = false;
+          // Remove the class when dragging stops
+          document.body.classList.remove("no-select");
+        };
+
+        const onDrag = (e) => {
+          if (!isDragging) return;
+
+          // Prevent default behavior (like image dragging)
+          e.preventDefault();
+
+          // Get the position of the mouse or touch
+          const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+          if (clientX === undefined) return;
+
+          const rect = container.getBoundingClientRect();
+          let position = (clientX - rect.left) / rect.width;
+
+          // Clamp the position between 0 and 1
+          position = Math.max(0, Math.min(1, position));
+
+          const percent = position * 100;
+
+          // Update the clip-path and handle position
+          handle.style.left = `${percent}%`;
+          afterPanel.style.clipPath = `inset(0 0 0 ${percent}%)`;
+        };
+
+        // Mouse events
+        container.addEventListener("mousedown", startDrag);
+        document.addEventListener("mouseup", stopDrag);
+        document.addEventListener("mousemove", onDrag);
+
+        // Touch events
+        container.addEventListener("touchstart", startDrag);
+        document.addEventListener("touchend", stopDrag);
+        document.addEventListener("touchmove", onDrag);
+      });
+
+      // Add this little bit of CSS to the head for the no-select class
+      const style = document.createElement("style");
+      style.innerHTML = `
+        .no-select {
+          -webkit-user-select: none; /* Safari */
+          -ms-user-select: none; /* IE 10+ */
+          user-select: none; /* Standard syntax */
+        }
+      `;
+      document.head.appendChild(style);
     </script>
   </body>
 </html>
