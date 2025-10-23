@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Subtitles API Alternatives: Free Export to JSON/TXT</title>
+    <meta
+      name="description"
+      content="Discover free alternatives to the YouTube Subtitles API. Export clean subtitles directly to JSON or TXT format for development or research."
+    />
+    <meta name="robots" content="index, follow" />
+
+    <!-- FONT & PERFORMANCE OPTIMIZATION -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="shortcut icon" href="../image/yyt.png" type="image/x-icon" />
+    <link
+      rel="canonical"
+      href="https://ytvidhub.com/guide/youtube-subtitles-api-free"
+    />
+    <link
+      rel="preload"
+      as="font"
+      href="https://fonts.gstatic.com/s/inter/v13/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Using local CSS file as per the style guide -->
+    <link rel="stylesheet" href="../dist/output.css" />
+    <style>
+      #back-to-top-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 50;
+        background-color: #2563eb;
+        color: white;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 9999px;
+        border: none;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(1rem);
+        transition: all 0.3s ease-in-out;
+      }
+      #back-to-top-btn:hover {
+        background-color: #1d4ed8;
+      }
+      #back-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800 antialiased">
+    <div class="relative isolate">
+      <div class="aurora-bg-container">
+        <div
+          class="aurora-ball aurora-ball-1"
+          style="top: -20%; left: -20%"
+        ></div>
+        <div
+          class="aurora-ball aurora-ball-2"
+          style="bottom: -20%; right: -15%"
+        ></div>
+      </div>
+
+      <header
+        class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
+      >
+        <!-- FULLY UPDATED HEADER WITH CORRECT HIGHLIGHTING -->
+        <nav
+          class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
+        >
+          <a href="../index.html" class="flex items-center gap-3"
+            ><img
+              src="../image/icon.webp"
+              alt="YTVidHub Logo"
+              class="h-10 w-auto"
+          /></a>
+          <div class="hidden md:flex items-center">
+            <div class="flex space-x-8 items-center text-sm font-medium">
+              <a
+                href="../index.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Home</a
+              >
+              <a
+                href="../bulk-youtube-subtitle-downloader.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Bulk Downloader</a
+              >
+
+              <div class="relative group py-4 -my-4">
+                <button
+                  class="flex items-center gap-1 nav-link text-blue-600 font-semibold transition duration-150"
+                >
+                  <span>Guide</span
+                  ><svg
+                    class="w-4 h-4 text-blue-400 transition-transform duration-200 group-hover:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                >
+                  <div class="py-2">
+                    <a
+                      href="../data-prep-guide.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Data Preparation Guide</a
+                    >
+                    <a
+                      href="../guide/clean-transcript-no-timestamp.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Clean Transcript Guide</a
+                    >
+                    <a
+                      href="../guide/playlist-subtitles-bulk.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 text-blue-700 transition-colors"
+                      >Bulk Playlist Download</a
+                    >
+                    <!-- Highlighted link for the current page -->
+                    <a
+                      href="../guide/youtube-subtitles-api-free.html"
+                      class="block px-4 py-2 text-sm font-semibold bg-blue-50 text-blue-700 transition-colors"
+                      >YouTube API Alternative</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative group py-4 -my-4">
+                <button
+                  class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600"
+                >
+                  <span>Blog</span
+                  ><svg
+                    class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                >
+                  <div class="py-2">
+                    <a
+                      href="../blog/subtitle-accuracy-problem.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Blog Home</a
+                    >
+                    <a
+                      href="../blog/engineering-decisions-ytvidhub.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Engineering Decisions</a
+                    >
+                    <a
+                      href="../blog/spanish-yt-channels-subtitles.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Spanish Learning Guide</a
+                    >
+                    <div class="my-1 border-t border-gray-100"></div>
+                    <a
+                      href="../how-to-use.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >How to Use</a
+                    >
+                    <a
+                      href="../faq.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >FAQ</a
+                    >
+                    <a
+                      href="../what-is-an-srt-file.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >What is an SRT file?</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <a
+                href="../pricing.html"
+                class="nav-link text-gray-700 font-semibold transition duration-150 hover:text-blue-600"
+                >Pricing</a
+              >
+            </div>
+            <div class="ml-8">
+              <a
+                href="#"
+                id="login-button"
+                class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                >Login</a
+              >
+            </div>
+          </div>
+          <div class="md:hidden flex items-center gap-4">
+            <a
+              href="#"
+              id="login-button-mobile"
+              class="text-sm font-semibold text-gray-700 hover:text-blue-600"
+              >Login</a
+            ><button
+              id="mobile-menu-button"
+              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <!-- Section 1: Hero Header -->
+        <section class="text-center py-20 lg:py-32 px-6">
+          <h1
+            class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight max-w-4xl mx-auto"
+          >
+            Ditch the API. Get YouTube Subtitles Directly.
+          </h1>
+          <p class="mt-6 text-xl text-gray-600 max-w-3xl mx-auto">
+            API quotas and complexity are major hurdles for developers. Discover
+            a professional, no-API alternative to get structured JSON or clean
+            TXT subtitle data instantly.
+          </p>
+        </section>
+
+        <!-- Section 2: The API Bottleneck -->
+        <section class="py-20 lg:py-24 bg-white">
+          <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+              <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+                The Official API is a Bottleneck
+              </h2>
+              <p class="mt-4 text-lg text-gray-600">
+                For projects requiring large-scale subtitle data, the YouTube
+                Data API quickly becomes a technical and financial burden.
+              </p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-center mt-16">
+              <div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">
+                  Common Developer Pain Points:
+                </h3>
+                <ul class="space-y-5 text-lg">
+                  <li class="flex items-start gap-4">
+                    <div
+                      class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-100 rounded-full mt-1"
+                    >
+                      <svg
+                        class="w-5 h-5 text-red-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01"
+                        ></path>
+                      </svg>
+                    </div>
+                    <span
+                      ><strong class="font-semibold text-gray-900"
+                        >High Quota Costs:</strong
+                      >
+                      Each API call consumes valuable quota, making large-scale
+                      data extraction expensive.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-4">
+                    <div
+                      class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-100 rounded-full mt-1"
+                    >
+                      <svg
+                        class="w-5 h-5 text-red-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                        ></path>
+                      </svg>
+                    </div>
+                    <span
+                      ><strong class="font-semibold text-gray-900"
+                        >Complex Setup:</strong
+                      >
+                      Requires OAuth authentication, project setup, and library
+                      management just to get started.</span
+                    >
+                  </li>
+                  <li class="flex items-start gap-4">
+                    <div
+                      class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-red-100 rounded-full mt-1"
+                    >
+                      <svg
+                        class="w-5 h-5 text-red-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <span
+                      ><strong class="font-semibold text-gray-900"
+                        >Rate Limiting:</strong
+                      >
+                      Aggressive requests can easily lead to temporary blocks,
+                      halting your data collection.</span
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div
+                class="bg-gray-100 p-4 rounded-3xl shadow-2xl ring-1 ring-gray-900/5"
+              >
+                <img
+                  src="../image/youtube-api-quota-vs-export-cost.webp"
+                  alt="YouTube Data API quota cost comparison chart: High cost of API vs. free/low-cost export using YTVidHub."
+                  title="YouTube API Quota vs. YTVidHub Export Cost"
+                  class="rounded-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: The YTVidHub Direct Export Solution -->
+        <section class="py-20 lg:py-24">
+          <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+              <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+                The Quota-Free, No-API Alternative
+              </h2>
+              <p class="mt-4 text-lg text-gray-600">
+                YTVidHub uses a robust backend parser to deliver API-level
+                functionality without the API-level headaches, giving you direct
+                access to the data you need.
+              </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 mt-16 max-w-6xl mx-auto">
+              <div class="bg-white p-8 rounded-2xl border border-gray-200">
+                <div
+                  class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg"
+                >
+                  <svg
+                    class="w-8 h-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mt-4">
+                  Structured JSON Output
+                </h3>
+                <p class="mt-2 text-gray-600">
+                  Get subtitles directly as a clean, easily parsable JSON
+                  object, perfect for integrating into any application or
+                  database.
+                </p>
+              </div>
+              <div class="bg-white p-8 rounded-2xl border border-gray-200">
+                <div
+                  class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg"
+                >
+                  <svg
+                    class="w-8 h-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mt-4">
+                  Built for Bulk Processing
+                </h3>
+                <p class="mt-2 text-gray-600">
+                  Our engine is designed to handle entire playlists, making it
+                  ideal for large-scale dataset creation for LLM training.
+                </p>
+              </div>
+              <div class="bg-white p-8 rounded-2xl border border-gray-200">
+                <div
+                  class="inline-block bg-blue-100 text-blue-600 p-3 rounded-lg"
+                >
+                  <svg
+                    class="w-8 h-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mt-4">
+                  Guaranteed Clean Data
+                </h3>
+                <p class="mt-2 text-gray-600">
+                  All exported data, whether JSON or TXT, is pre-cleaned of
+                  timecodes and ASR noise, saving you hours of prep work.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: JSON Structure Preview -->
+        <section class="py-20 lg:py-24 bg-white">
+          <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+              <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+                Predictable, Clean JSON
+              </h2>
+              <p class="mt-4 text-lg text-gray-600">
+                We provide a simple, speaker-segmented JSON structure that is
+                immediately ready for database import or model ingestion.
+              </p>
+            </div>
+            <div
+              class="max-w-4xl mx-auto mt-12 bg-gray-800 rounded-2xl shadow-2xl p-4 border border-gray-700"
+            >
+              <div class="h-8 bg-gray-700 rounded-t-lg flex items-center px-4">
+                <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <img
+                src="../image/clean-json-data-structure-for-llm.webp"
+                alt="Example of clean JSON data structure for LLM training, showing clearly organized subtitle segments."
+                title="Clean JSON Data Structure for LLM Training"
+                class="rounded-b-lg"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Developer FAQ -->
+        <section class="py-20 lg:py-24" id="faq">
+          <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+              <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+                Developer FAQ
+              </h2>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4 mt-12">
+              <details
+                class="group bg-white p-6 rounded-xl border border-gray-200 cursor-pointer transition-all duration-300 hover:border-blue-300"
+              >
+                <summary class="flex justify-between items-center list-none">
+                  <h3 class="text-lg font-semibold text-gray-800">
+                    What are the rate limits for the YTVidHub tool?
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-400 group-open:rotate-180 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </summary>
+                <div class="mt-4 text-gray-600 leading-relaxed">
+                  <p>
+                    Our free plan offers generous daily limits for casual use.
+                    For large-scale or programmatic needs, our paid plans
+                    provide significantly higher limits and are designed for
+                    production-level data collection without the fear of being
+                    blocked.
+                  </p>
+                </div>
+              </details>
+              <details
+                class="group bg-white p-6 rounded-xl border border-gray-200 cursor-pointer transition-all duration-300 hover:border-blue-300"
+              >
+                <summary class="flex justify-between items-center list-none">
+                  <h3 class="text-lg font-semibold text-gray-800">
+                    How do you handle multiple available languages?
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-400 group-open:rotate-180 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </summary>
+                <div class="mt-4 text-gray-600 leading-relaxed">
+                  <p>
+                    Our tool automatically detects all available subtitle tracks
+                    for a given video (both human-translated and
+                    auto-generated). You are presented with a simple dropdown
+                    menu to select the exact language you need before
+                    downloading.
+                  </p>
+                </div>
+              </details>
+              <details
+                class="group bg-white p-6 rounded-xl border border-gray-200 cursor-pointer transition-all duration-300 hover:border-blue-300"
+              >
+                <summary class="flex justify-between items-center list-none">
+                  <h3 class="text-lg font-semibold text-gray-800">
+                    Is this compliant with YouTube's Terms of Service?
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-400 group-open:rotate-180 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </summary>
+                <div class="mt-4 text-gray-600 leading-relaxed">
+                  <p>
+                    Our service operates as a tool to access publicly available
+                    data, similar to how a web browser accesses and displays
+                    information. We encourage users to respect copyright and use
+                    the downloaded data in accordance with YouTube's policies
+                    and applicable laws, particularly for fair use in research
+                    and analysis.
+                  </p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 lg:px-8 py-16">
+    
+            <!-- All content is in a single column flow -->
+            <div>
+                <!-- Brand Section -->
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-400">YTVidHub</h3>
+                    <p class="mt-2 text-gray-400">
+                        The essential toolkit for video content data extraction, built for speed and reliability.
+                    </p>
+                </div>
+    
+                <!-- Links Sections, stacked vertically -->
+                <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+                    
+                    <!-- Product -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Product</h3>
+                        <ul class="space-y-3">
+                            <li><a href="../index.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Home</a></li>
+                            <li><a href="../bulk-youtube-subtitle-downloader.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Bulk Downloader</a></li>
+                            <li><a href="../pricing.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Pricing</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Guides -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Guides</h3>
+                        <ul class="space-y-3">
+                            <li><a href="../data-prep-guide.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Data Preparation</a></li>
+                            <li><a href="../guide/clean-transcript-no-timestamp.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Clean Transcript</a></li>
+                            <li><a href="../guide/playlist-subtitles-bulk.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Bulk Playlist</a></li>
+                            <li><a href="../guide/youtube-subtitles-api-free.html" class="text-sm text-gray-400 hover:text-blue-400 transition">API Alternative</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Blog -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Blog</h3>
+                        <ul class="space-y-3">
+                            <li><a href="../blog/subtitle-accuracy-problem.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Blog Home</a></li>
+                            <li><a href="../blog/engineering-decisions-ytvidhub.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Engineering Decisions</a></li>
+                            <li><a href="../blog/spanish-yt-channels-subtitles.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Spanish Learning</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Support -->
+                     <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Support</h3>
+                        <ul class="space-y-3">
+                            <li><a href="../how-to-use.html" class="text-sm text-gray-400 hover:text-blue-400 transition">How to Use</a></li>
+                            <li><a href="../faq.html" class="text-sm text-gray-400 hover:text-blue-400 transition">FAQ</a></li>
+                            <li><a href="../what-is-an-srt-file.html" class="text-sm text-gray-400 hover:text-blue-400 transition">What is an SRT file?</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Company -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Company</h3>
+                        <ul class="space-y-3">
+                            <li><a href="../about.html" class="text-sm text-gray-400 hover:text-blue-400 transition">About Us</a></li>
+                            <li><a href="../privacy-policy.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Privacy Policy</a></li>
+                            <li><a href="../terms-of-service.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Terms of Service</a></li>
+                        </ul>
+                    </div>
+    
+                </div>
+            </div>
+    
+            <!-- Copyright Section -->
+            <div class="mt-16 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 YTVidHub Technologies. All Rights Reserved. Not affiliated with Google or YouTube.</p>
+            </div>
+        </div>
+    </footer>
+    </div>
+    <div
+      id="mobile-menu"
+      class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
+    >
+      <div class="flex flex-col h-full">
+        <!-- Menu Header -->
+        <div
+          class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
+        >
+          <a href="../index.html" class="flex items-center gap-3">
+            <img
+              src="../image/icon.webp"
+              alt="YTVidHub Logo"
+              class="h-8 w-auto"
+            />
+          </a>
+          <button
+            id="mobile-menu-close-button"
+            class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Menu Links (Scrollable on small screens) -->
+        <div class="flex flex-col p-6 space-y-1 flex-grow overflow-y-auto">
+          <a
+            href="../index.html"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Home</a
+          >
+          <a
+            href="../bulk-youtube-subtitle-downloader.html"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Bulk Downloader</a
+          >
+
+          <!-- Guide Accordion -->
+          <details class="group py-3 border-b border-gray-100">
+            <summary
+              class="flex justify-between items-center cursor-pointer text-gray-800 hover:text-blue-600 font-semibold text-lg list-none"
+            >
+              Guide
+              <svg
+                class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-transform duration-300 group-open:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </summary>
+            <div class="mt-2 pl-4 space-y-1">
+              <a
+                href="../data-prep-guide.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Data Preparation Guide</a
+              >
+              <a
+                href="../guide/clean-transcript-no-timestamp.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Clean Transcript Guide</a
+              >
+              <a
+                href="../guide/youtube-subtitles-api-free.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >YouTube API Alternative</a
+              >
+              <a
+                href="../guide/playlist-subtitles-bulk.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Bulk Playlist Download</a
+              >
+            </div>
+          </details>
+
+          <!-- Blog Accordion -->
+          <details class="group py-3 border-b border-gray-100">
+            <summary
+              class="flex justify-between items-center cursor-pointer text-gray-800 hover:text-blue-600 font-semibold text-lg list-none"
+            >
+              Blog
+              <svg
+                class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-transform duration-300 group-open:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </summary>
+            <div class="mt-2 pl-4 space-y-1">
+              <a
+                href="../blog/subtitle-accuracy-problem.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Blog Home</a
+              >
+              <a
+                href="../blog/engineering-decisions-ytvidhub.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Engineering Decisions</a
+              >
+              <a
+                href="../blog/spanish-yt-channels-subtitles.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Spanish Learning Guide</a
+              >
+              <a
+                href="../how-to-use.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >How to Use</a
+              >
+              <a
+                href="../faq.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >FAQ</a
+              >
+              <a
+                href="../what-is-an-srt-file.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >What is an SRT file?</a
+              >
+            </div>
+          </details>
+
+          <a
+            href="../pricing.html"
+            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
+            >Pricing</a
+          >
+
+          <!-- Footer Links -->
+          <div class="pt-4 mt-auto border-t border-gray-100 space-y-1">
+            <a
+              href="../terms-of-service.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >Terms</a
+            >
+            <a
+              href="../privacy-policy.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >Privacy</a
+            >
+            <a
+              href="../about.html"
+              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              >About</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="login-modal-container"
+      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
+    >
+      <div
+        id="login-modal-content"
+        class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content"
+      >
+        <button
+          id="modal-close-button"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            Access Your Account
+          </h2>
+          <p class="text-gray-500 mb-6">
+            Log in to manage your plan, or sign up to claim your free daily
+            credits.
+          </p>
+        </div>
+        <button
+          id="google-login"
+          class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 48 48">
+            <path
+              fill="#FFC107"
+              d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
+            ></path>
+            <path
+              fill="#FF3D00"
+              d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"
+            ></path>
+            <path
+              fill="#4CAF50"
+              d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.655-3.409-11.386-7.938l-6.722 5.223C8.807 40.092 15.894 44 24 44z"
+            ></path>
+            <path
+              fill="#1976D2"
+              d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"
+            ></path></svg
+          ><span class="text-sm font-semibold text-gray-700"
+            >Continue with Google</span
+          >
+        </button>
+        <div class="flex items-center my-8">
+          <hr class="flex-grow border-t border-gray-200" />
+          <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
+            >NEW TO YTVidHub?</span
+          >
+          <hr class="flex-grow border-t border-gray-200" />
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+              <svg
+                class="w-8 h-8 text-blue-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.614Dab83 7.84006L12.0006 0.5L15.3871 7.84006L23.4143 8.7918L17.4797 14.2799L19.055 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.259 13.603L18.8142 10.2918L14.0433 9.78653L12.0006 5.4313L9.95786 9.78653L5.18695 10.2918L8.74219 13.603L7.75485 18.3451L12.0006 15.968Z"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800">Get Started for Free</h3>
+              <p class="text-sm text-gray-600">
+                Every account receives <strong>5 free credits daily</strong>.
+                Perfect for downloading subtitles from
+                <strong>up to 5 videos</strong> in bulk, every single day!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="back-to-top-btn" title="Go to top">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M4.5 15.75l7.5-7.5 7.5 7.5"
+        />
+      </svg>
+    </button>
+
+    <!-- Scripts -->
+    <script src="../js/auth.js"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
+    ></script>
+    <script defer>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-KZZ05YN8TX");
+    </script>
+    <script>
+      const backToTopBtn = document.getElementById("back-to-top-btn");
+      if (backToTopBtn) {
+        window.onscroll = function () {
+          if (
+            document.body.scrollTop > 300 ||
+            document.documentElement.scrollTop > 300
+          ) {
+            backToTopBtn.classList.add("show");
+          } else {
+            backToTopBtn.classList.remove("show");
+          }
+        };
+        backToTopBtn.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+      const MOBILE_MENU_TRANSITION_DURATION = 300;
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenuCloseButton = document.getElementById(
+        "mobile-menu-close-button"
+      );
+      const mobileMenu = document.getElementById("mobile-menu");
+      if (mobileMenuButton) {
+        mobileMenuButton.addEventListener("click", () => {
+          if (mobileMenu) {
+            mobileMenu.classList.remove("hidden");
+            setTimeout(() => {
+              mobileMenu.classList.remove("translate-x-full");
+            }, 10);
+            document.body.style.overflow = "hidden";
+          }
+        });
+      }
+      if (mobileMenuCloseButton) {
+        mobileMenuCloseButton.addEventListener("click", () => {
+          if (mobileMenu) {
+            mobileMenu.classList.add("translate-x-full");
+            document.body.style.overflow = "";
+            setTimeout(() => {
+              mobileMenu.classList.add("hidden");
+            }, MOBILE_MENU_TRANSITION_DURATION);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

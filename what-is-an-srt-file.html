@@ -28,45 +28,30 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="./dist/output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-      #back-to-top-btn {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        z-index: 50;
-
-        background-color: #2563eb;
-        color: white;
-        width: 3.5rem;
-        height: 3.5rem;
-        border-radius: 9999px;
-        border: none;
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
-          0 4px 6px -4px rgb(0 0 0 / 0.1);
-        cursor: pointer;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(1rem);
-        transition: all 0.3s ease-in-out;
+      .diamond {
+        width: 8px;
+        height: 8px;
+        transform: rotate(45deg);
+        background: #60a5fa; /* blue-400 */
+        display: inline-block;
+        border-radius: 1px;
       }
-
-      #back-to-top-btn:hover {
-        background-color: #1d4ed8;
+      /* caret (top notch) */
+      .menu-caret {
+        width: 12px;
+        height: 12px;
+        transform: rotate(45deg);
+        background: white;
+        position: absolute;
+        right: 18px; /* 调整 caret 水平位置对齐触发器 */
+        top: -6px;
+        border-left: 1px solid rgba(0, 0, 0, 0.04);
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        box-shadow: -3px -3px 8px rgba(96, 165, 250, 0.02);
       }
-
-      #back-to-top-btn.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-
       :root {
         --font-sans: "Inter", sans-serif;
         --color-primary: #2563eb;
@@ -75,6 +60,9 @@
       }
       html {
         scroll-padding-top: 8rem;
+      }
+      body {
+        font-family: var(--font-sans);
       }
       .prose {
         line-height: 1.8;
@@ -133,6 +121,69 @@
         font-weight: 600;
         border-left-color: var(--color-primary);
       }
+
+      /* --- AURORA BACKGROUND EFFECT --- */
+      .aurora-bg-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -10;
+      }
+      .aurora-ball {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.15;
+      }
+      .aurora-ball-1 {
+        width: 35rem;
+        height: 35rem;
+        background: radial-gradient(circle, #a78bfa, #3b82f6);
+        animation: aurora-float 25s infinite alternate ease-in-out;
+      }
+      .aurora-ball-2 {
+        width: 30rem;
+        height: 30rem;
+        background: radial-gradient(circle, #3b82f6, #67e8f9);
+        animation: aurora-float 20s infinite alternate ease-in-out;
+        animation-delay: -10s;
+      }
+      @keyframes aurora-float {
+        0% {
+          transform: translate(-20%, -20%) rotate(0deg) scale(1);
+        }
+        50% {
+          transform: translate(20%, 10%) rotate(180deg) scale(1.2);
+        }
+        100% {
+          transform: translate(-20%, -20%) rotate(360deg) scale(1);
+        }
+      }
+
+      /* --- HEADER LINK HOVER EFFECT --- */
+      .nav-link {
+        position: relative;
+        padding-bottom: 8px;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #3b82f6;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease-out;
+      }
+      .nav-link:hover::after,
+      .nav-link-active::after {
+        transform: scaleX(1);
+      }
     </style>
   </head>
   <body class="bg-gray-50 text-gray-800 antialiased">
@@ -151,17 +202,16 @@
       <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
+        <!-- FULLY UPDATED HEADER WITH CORRECT HIGHLIGHTING -->
         <nav
           class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
         >
-          <a href="./index.html" class="flex items-center gap-3">
-            <img
+          <a href="./index.html" class="flex items-center gap-3"
+            ><img
               src="./image/icon.webp"
               alt="YTVidHub Logo"
               class="h-10 w-auto"
-            />
-          </a>
-          <!-- ====== DESKTOP NAVIGATION ====== -->
+          /></a>
           <div class="hidden md:flex items-center">
             <div class="flex space-x-8 items-center text-sm font-medium">
               <a
@@ -174,19 +224,13 @@
                 class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
                 >Bulk Downloader</a
               >
-              <a
-                href="./data-prep-guide.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
-                >Data Prep Guide</a
-              >
 
-              <!-- Blog Dropdown with HOVER FIX -->
               <div class="relative group py-4 -my-4">
                 <button
                   class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600"
                 >
-                  <span>Blog</span>
-                  <svg
+                  <span>Guide</span
+                  ><svg
                     class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -200,7 +244,53 @@
                   </svg>
                 </button>
                 <div
-                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                >
+                  <div class="py-2">
+                    <a
+                      href="./data-prep-guide.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Data Preparation Guide</a
+                    >
+                    <a
+                      href="./guide/clean-transcript-no-timestamp.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Clean Transcript Guide</a
+                    >
+                    <a
+                      href="../guide/playlist-subtitles-bulk.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 text-blue-700 transition-colors"
+                      >Bulk Playlist Download</a
+                    >
+                    <a
+                      href="./guide/youtube-subtitles-api-free.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >YouTube API Alternative</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative group py-4 -my-4">
+                <button
+                  class="flex items-center gap-1 nav-link text-blue-600 font-semibold transition duration-150"
+                >
+                  <span>Blog</span
+                  ><svg
+                    class="w-4 h-4 text-blue-400 transition-transform duration-200 group-hover:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
                 >
                   <div class="py-2">
                     <a
@@ -213,6 +303,11 @@
                       class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
                       >Engineering Decisions</a
                     >
+                    <a
+                      href="./blog/spanish-yt-channels-subtitles.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Spanish Learning Guide</a
+                    >
                     <div class="my-1 border-t border-gray-100"></div>
                     <a
                       href="./how-to-use.html"
@@ -224,15 +319,15 @@
                       class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
                       >FAQ</a
                     >
+                    <!-- Highlighted link for the current page -->
                     <a
                       href="./what-is-an-srt-file.html"
-                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      class="block px-4 py-2 text-sm font-semibold bg-blue-50 text-blue-700 transition-colors"
                       >What is an SRT file?</a
                     >
                   </div>
                 </div>
               </div>
-
               <a
                 href="./pricing.html"
                 class="nav-link text-gray-700 font-semibold transition duration-150 hover:text-blue-600"
@@ -533,7 +628,7 @@ Today, we will break down the format.
                     </svg>
                   </div>
                   <div class="flex-grow text-center sm:text-left">
-                    <h3 class="text-xl font-bold text-gray-900 not-prose">
+                    <h3 class="text-xl font-bold text-gray-900">
                       Need to Get an SRT File from a Video?
                     </h3>
                     <p class="mt-1 text-gray-600">
@@ -615,7 +710,7 @@ Today, we will break down the format.
               </p>
 
               <div
-                class="mt-16 p-8 text-center bg-blue-50 rounded-xl border border-blue-200 not-prose"
+                class="mt-16 p-8 text-center bg-blue-50 rounded-xl border border-blue-200"
               >
                 <h3 class="text-2xl font-bold text-gray-900">
                   Ready to Put Your Knowledge into Action?
@@ -637,100 +732,81 @@ Today, we will break down the format.
       </main>
 
       <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 lg:px-8 py-12">
-          <div class="grid md:grid-cols-3 gap-8 border-b border-gray-700 pb-10">
-            <div class="md:col-span-1">
-              <h3 class="text-xl font-bold text-blue-400">YTVidHub</h3>
-              <p class="mt-3 text-gray-400 text-sm">
-                The essential toolkit for video content data extraction, built
-                for speed and reliability.
-              </p>
-            </div>
+        <div class="container mx-auto px-6 lg:px-8 py-16">
+    
+            <!-- All content is in a single column flow -->
             <div>
-              <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
-              <ul class="space-y-3 text-sm">
-                <li>
-                  <a
-                    href="./index.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Home</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./bulk-youtube-subtitle-downloader.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Bulk Downloader</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./how-to-use.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >How to Use</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./faq.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >FAQ</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./what-is-an-srt-file.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Srt File</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./blog/subtitle-accuracy-problem.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Blog</a
-                  >
-                </li>
-              </ul>
+                <!-- Brand Section -->
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-400">YTVidHub</h3>
+                    <p class="mt-2 text-gray-400">
+                        The essential toolkit for video content data extraction, built for speed and reliability.
+                    </p>
+                </div>
+    
+                <!-- Links Sections, stacked vertically -->
+                <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+                    
+                    <!-- Product -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Product</h3>
+                        <ul class="space-y-3">
+                            <li><a href="./index.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Home</a></li>
+                            <li><a href="./bulk-youtube-subtitle-downloader.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Bulk Downloader</a></li>
+                            <li><a href="./pricing.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Pricing</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Guides -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Guides</h3>
+                        <ul class="space-y-3">
+                            <li><a href="./data-prep-guide.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Data Preparation</a></li>
+                            <li><a href="./guide/clean-transcript-no-timestamp.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Clean Transcript</a></li>
+                            <li><a href="./guide/playlist-subtitles-bulk.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Bulk Playlist</a></li>
+                            <li><a href="./guide/youtube-subtitles-api-free.html" class="text-sm text-gray-400 hover:text-blue-400 transition">API Alternative</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Blog -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Blog</h3>
+                        <ul class="space-y-3">
+                            <li><a href="./blog/subtitle-accuracy-problem.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Blog Home</a></li>
+                            <li><a href="./blog/engineering-decisions-ytvidhub.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Engineering Decisions</a></li>
+                            <li><a href="./blog/spanish-yt-channels-subtitles.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Spanish Learning</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Support -->
+                     <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Support</h3>
+                        <ul class="space-y-3">
+                            <li><a href="./how-to-use.html" class="text-sm text-gray-400 hover:text-blue-400 transition">How to Use</a></li>
+                            <li><a href="./faq.html" class="text-sm text-gray-400 hover:text-blue-400 transition">FAQ</a></li>
+                            <li><a href="./what-is-an-srt-file.html" class="text-sm text-gray-400 hover:text-blue-400 transition">What is an SRT file?</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Company -->
+                    <div>
+                        <h3 class="text-base font-semibold text-white mb-4">Company</h3>
+                        <ul class="space-y-3">
+                            <li><a href="./about.html" class="text-sm text-gray-400 hover:text-blue-400 transition">About Us</a></li>
+                            <li><a href="./privacy-policy.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Privacy Policy</a></li>
+                            <li><a href="./terms-of-service.html" class="text-sm text-gray-400 hover:text-blue-400 transition">Terms of Service</a></li>
+                        </ul>
+                    </div>
+    
+                </div>
             </div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
-              <ul class="space-y-3 text-sm">
-                <li>
-                  <a
-                    href="./privacy-policy.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Privacy Policy</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./terms-of-service.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >Terms of Service</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="./about.html"
-                    class="hover:text-blue-400 text-gray-400 transition"
-                    >About Us</a
-                  >
-                </li>
-                <li>
-                  <a href="./feedback.html" class="hover:text-blue-400 text-gray-400 transition">Feedback</a>
-                </li>
-              </ul>
+    
+            <!-- Copyright Section -->
+            <div class="mt-16 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 YTVidHub Technologies. All Rights Reserved. Not affiliated with Google or YouTube.</p>
             </div>
-          </div>
-          <div class="mt-10 pt-6 text-center text-gray-500 text-sm">
-            <p>
-              &copy; 2025 YTVidHub Technologies. All Rights Reserved. Not
-              affiliated with Google or YouTube.
-            </p>
-          </div>
         </div>
-      </footer>
+    </footer>
     </div>
 
     <!-- Mobile Menu -->
@@ -739,15 +815,17 @@ Today, we will break down the format.
       class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
     >
       <div class="flex flex-col h-full">
+        <!-- Menu Header -->
         <div
           class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
         >
-          <a href="./index.html" class="flex items-center gap-3"
-            ><img
+          <a href="./index.html" class="flex items-center gap-3">
+            <img
               src="./image/icon.webp"
               alt="YTVidHub Logo"
-              class="h-8 md:h-10 w-auto"
-          /></a>
+              class="h-8 w-auto"
+            />
+          </a>
           <button
             id="mobile-menu-close-button"
             class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
@@ -767,7 +845,9 @@ Today, we will break down the format.
             </svg>
           </button>
         </div>
-        <div class="flex flex-col p-6 space-y-1 flex-grow">
+
+        <!-- Menu Links (Scrollable on small screens) -->
+        <div class="flex flex-col p-6 space-y-1 flex-grow overflow-y-auto">
           <a
             href="./index.html"
             class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
@@ -778,12 +858,51 @@ Today, we will break down the format.
             class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Bulk Downloader</a
           >
-          <a
-            href="./data-prep-guide.html"
-            class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
-            >Data Prep Guide</a
-          >
-          <!-- Mobile Blog Accordion -->
+
+          <!-- Guide Accordion -->
+          <details class="group py-3 border-b border-gray-100">
+            <summary
+              class="flex justify-between items-center cursor-pointer text-gray-800 hover:text-blue-600 font-semibold text-lg list-none"
+            >
+              Guide
+              <svg
+                class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-transform duration-300 group-open:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </summary>
+            <div class="mt-2 pl-4 space-y-1">
+              <a
+                href="./data-prep-guide.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Data Preparation Guide</a
+              >
+              <a
+                href="./guide/clean-transcript-no-timestamp.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Clean Transcript Guide</a
+              >
+              <a
+                href="./guide/youtube-subtitles-api-free.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >YouTube API Alternative</a
+              >
+              <a
+                href="./guide/playlist-subtitles-bulk.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Bulk Playlist Download</a
+              >
+            </div>
+          </details>
+
+          <!-- Blog Accordion -->
           <details class="group py-3 border-b border-gray-100">
             <summary
               class="flex justify-between items-center cursor-pointer text-gray-800 hover:text-blue-600 font-semibold text-lg list-none"
@@ -814,6 +933,11 @@ Today, we will break down the format.
                 >Engineering Decisions</a
               >
               <a
+                href="./blog/spanish-yt-channels-subtitles.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+                >Spanish Learning Guide</a
+              >
+              <a
                 href="./how-to-use.html"
                 class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
                 >How to Use</a
@@ -825,7 +949,7 @@ Today, we will break down the format.
               >
               <a
                 href="./what-is-an-srt-file.html"
-                class="block text-blue-600 font-semibold text-base py-2"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
                 >What is an SRT file?</a
               >
             </div>
@@ -837,6 +961,7 @@ Today, we will break down the format.
             >Pricing</a
           >
 
+          <!-- Footer Links -->
           <div class="pt-4 mt-auto border-t border-gray-100 space-y-1">
             <a
               href="./terms-of-service.html"
@@ -857,8 +982,6 @@ Today, we will break down the format.
         </div>
       </div>
     </div>
-
-    <!-- Login Modal -->
     <div
       id="login-modal-container"
       class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
@@ -867,6 +990,7 @@ Today, we will break down the format.
         id="login-modal-content"
         class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative modal-content"
       >
+        <!-- Close Button -->
         <button
           id="modal-close-button"
           class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
@@ -885,6 +1009,8 @@ Today, we will break down the format.
             ></path>
           </svg>
         </button>
+
+        <!-- Step 1: Main Call to Action -->
         <div class="text-center">
           <h2 class="text-2xl font-bold text-gray-900 mb-2">
             Access Your Account
@@ -894,6 +1020,8 @@ Today, we will break down the format.
             credits.
           </p>
         </div>
+
+        <!-- Google Login Button -->
         <button
           id="google-login"
           class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
@@ -914,11 +1042,14 @@ Today, we will break down the format.
             <path
               fill="#1976D2"
               d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l6.19 5.238C42.012 35.37 44 30.013 44 24c0-1.341-.138-2.65-.389-3.917z"
-            ></path></svg
-          ><span class="text-sm font-semibold text-gray-700"
+            ></path>
+          </svg>
+          <span class="text-sm font-semibold text-gray-700"
             >Continue with Google</span
           >
         </button>
+
+        <!-- Divider -->
         <div class="flex items-center my-8">
           <hr class="flex-grow border-t border-gray-200" />
           <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
@@ -926,8 +1057,11 @@ Today, we will break down the format.
           >
           <hr class="flex-grow border-t border-gray-200" />
         </div>
+
+        <!-- Step 2: Value Proposition Box -->
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div class="flex items-start gap-4">
+            <!-- Icon -->
             <div class="flex-shrink-0">
               <svg
                 class="w-8 h-8 text-blue-500"
@@ -940,6 +1074,7 @@ Today, we will break down the format.
                 ></path>
               </svg>
             </div>
+            <!-- Text Content -->
             <div>
               <h3 class="font-semibold text-gray-800">Get Started for Free</h3>
               <p class="text-sm text-gray-600">
@@ -952,45 +1087,21 @@ Today, we will break down the format.
         </div>
       </div>
     </div>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
+    ></script>
+    <script defer>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-
-    <!-- Back to Top Button -->
-    <button id="back-to-top-btn" title="Go to top">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M4.5 15.75l7.5-7.5 7.5 7.5"
-        />
-      </svg>
-    </button>
-
+      gtag("config", "G-KZZ05YN8TX");
+    </script>
     <script src="./js/auth.js"></script>
     <script>
-      const backToTopButton = document.getElementById("back-to-top-btn");
-
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) {
-          backToTopButton.classList.add("show");
-        } else {
-          backToTopButton.classList.remove("show");
-        }
-      });
-
-      backToTopButton.addEventListener("click", () => {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
-      });
-
       const MOBILE_MENU_TRANSITION_DURATION = 300;
       const mobileMenuButton = document.getElementById("mobile-menu-button");
       const mobileMenuCloseButton = document.getElementById(

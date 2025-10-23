@@ -43,10 +43,44 @@
                 <div class="hidden md:flex items-center">
                     <div class="flex space-x-8 items-center text-sm font-medium">
                         <a href="./index.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Home</a>
-                        <a href="./bulk-youtube-subtitle-downloader.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Bulk Downloader</a>
-                        <a href="./how-to-use.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">How to Use</a>
-                        <a href="./faq.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">FAQ</a>
-                        <a href="./what-is-an-srt-file.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Srt File</a>
+                        <!-- Guide Dropdown -->
+                        <div class="relative group py-4 -my-4">
+                            <button class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600">
+                                <span>Guide</span>
+                                <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300">
+                                <div class="py-2">
+                                    <a href="./data-prep-guide.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Data Preparation Guide</a>
+                                    <a href="./bulk-youtube-subtitle-downloader.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Bulk Playlist Download</a>
+                                    <div class="my-1 border-t border-gray-100"></div>
+                                    <a href="./clean-transcript-guide.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Clean Transcript Guide</a>
+                                    <a href="./youtube-subtitles-api-free.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">YouTube API Alternative</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Blog Dropdown -->
+                        <div class="relative group py-4 -my-4">
+                            <button class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600">
+                                <span>Blog</span>
+                                <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300">
+                                <div class="py-2">
+                                    <a href="./blog.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Blog Home</a>
+                                    <a href="./blog/engineering-decisions-ytvidhub.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Engineering Decisions</a>
+                                    <a href="./blog/spanish-yt-channels-subtitles.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Spanish Learning Guide</a>
+                                    <div class="my-1 border-t border-gray-100"></div>
+                                    <a href="./how-to-use.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">How to Use</a>
+                                    <a href="./faq.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">FAQ</a>
+                                    <a href="./what-is-an-srt-file.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">What is an SRT file?</a>
+                                </div>
+                            </div>
+                        </div>
                         <a href="./history.html" class="nav-link nav-link-active text-blue-600 font-semibold transition duration-150">History</a>
                         <a href="./pricing.html" class="nav-link text-gray-700 hover:text-blue-600 transition duration-150">Pricing</a>
                     </div>
@@ -60,37 +94,7 @@
                  <div class="md:hidden flex items-center gap-4">
                      <a href="#" id="login-button-mobile" class="text-sm font-semibold text-gray-700 hover:text-blue-600">Login</a>
                      <div id="user-profile-mobile" class="hidden relative">
-                         <button id="user-menu-button-mobile" class="focus:outline-none">
-                             <img
-                                 id="user-avatar-mobile"
-                                 src=""
-                                 alt="User Avatar"
-                                 class="h-8 w-8 rounded-full object-cover"
-                             />
-                         </button>
-                         <div
-                             id="user-dropdown-menu-mobile"
-                             class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
-                         >
-                             <!-- User Info and Credits -->
-                             <div class="px-4 py-3 border-b border-gray-100">
-                                 <p class="text-xs text-gray-500 mt-1">
-                                     Credits:
-                                     <span id="credits-mobile" class="font-bold text-gray-700"
-                                         >0</span
-                                     >
-                                 </p>
-                             </div>
-                             <!-- Logout -->
-                             <div class="py-1">
-                                 <a
-                                     href="#"
-                                     id="logout-button-mobile"
-                                     class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                                     >Logout</a
-                                 >
-                             </div>
-                         </div>
+                         <!-- Mobile user profile here -->
                      </div>
                      <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1">
                          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
