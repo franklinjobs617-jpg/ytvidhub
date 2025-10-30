@@ -33,7 +33,7 @@
       /* --- Original Styles (Unchanged) --- */
       #back-to-top-btn {
         position: fixed;
-        bottom: 2rem;
+        bottom: 3rem;
         right: 2rem;
         z-index: 50;
         background-color: #2563eb;
@@ -61,6 +61,50 @@
         visibility: visible;
         transform: translateY(0);
       }
+
+      /* 通用按钮样式 */
+      #contact-btn {
+        position: fixed;
+        right: 2rem;
+        z-index: 50;
+        background-color: #2563eb;
+        color: white;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 9999px;
+        border: none;
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(1rem);
+        transition: all 0.3s ease-in-out;
+      }
+
+      #contact-btn:hover {
+        background-color: #1d4ed8;
+      }
+
+      #contact-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      /* Back to top 固定在右下 */
+      #back-to-top-btn {
+        bottom: 2rem;
+      }
+
+      /* Contact 按钮稍微偏上 */
+      #contact-btn {
+        bottom: 7rem; /* 比back-to-top高一点 */
+      }
+
       .prose {
         color: #374151;
         font-size: 1.125rem;
@@ -145,10 +189,10 @@
   <body class="bg-gray-50 text-gray-800 antialiased">
     <div class="relative isolate">
       <div class="aurora-bg-container">
-        <div
+        <divh5_photo
           class="aurora-ball aurora-ball-1"
           style="top: -20%; left: -20%"
-        ></div>
+        ></divh5_photo>
         <div
           class="aurora-ball aurora-ball-2"
           style="bottom: -20%; right: -15%"
@@ -159,7 +203,7 @@
       <header
         class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-gray-200"
       >
-        <!-- The entire <nav> block is copied here exactly as you provided it -->
+        <!-- Header content remains the same, it's already very good -->
         <nav
           class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
         >
@@ -174,32 +218,21 @@
             <div class="flex space-x-8 items-center text-sm font-medium">
               <a
                 href="./index.html"
-                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                class="nav-link text-blue-600 font-semibold transition duration-150"
                 >Home</a
               >
-              <!-- Guide Dropdown -->
+              <a
+                href="./bulk-youtube-subtitle-downloader.html"
+                class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
+                >Bulk Downloader</a
+              >
+
               <div class="relative group py-4 -my-4">
-                <button class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600">
-                  <span>Guide</span>
-                  <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                  </svg>
-                </button>
-                <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300">
-                  <div class="py-2">
-                    <a href="./data-prep-guide.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Data Preparation Guide</a>
-                    <a href="./bulk-youtube-subtitle-downloader.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Bulk Playlist Download</a>
-                    <div class="my-1 border-t border-gray-100"></div>
-                    <a href="./clean-transcript-guide.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">Clean Transcript Guide</a>
-                    <a href="./youtube-subtitles-api-free.html" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors">YouTube API Alternative</a>
-                  </div>
-                </div>
-              </div>
                 <button
                   class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600"
                 >
-                  <span>Blog</span>
-                  <svg
+                  <span>Guide</span
+                  ><svg
                     class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -213,11 +246,58 @@
                   </svg>
                 </button>
                 <div
-                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
                 >
                   <div class="py-2">
                     <a
-                      href="./blog.html"
+                      href="./data-prep-guide.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Data Preparation Guide</a
+                    >
+
+                    <a
+                      href="./guide/clean-transcript-no-timestamp.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >Clean Transcript Guide</a
+                    >
+                    <a
+                      href="../guide/playlist-subtitles-bulk.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 text-blue-700 transition-colors"
+                      >Bulk Playlist Download</a
+                    >
+                    <a
+                      href="./guide/youtube-subtitles-api-free.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                      >YouTube API Alternative</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative group py-4 -my-4">
+                <button
+                  class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600"
+                >
+                  <span>Blog</span
+                  ><svg
+                    class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 origin-top rounded-xl bg-white border border-gray-200 shadow-xl z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transform group-hover:translate-y-0 translate-y-2 transition-all duration-300"
+                >
+                  <div class="py-2">
+                    <a
+                      href="./blog/subtitle-accuracy-problem.html"
                       class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
                       >Blog Home</a
                     >
@@ -286,11 +366,15 @@
                   aria-orientation="vertical"
                   aria-labelledby="user-menu-button"
                 >
+                  <!-- caret -->
                   <div class="menu-caret"></div>
+
+                  <!-- Credits header -->
                   <div
                     class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl"
                   >
                     <div class="flex-shrink-0">
+                      <!-- diamond icon (pure CSS block) -->
                       <span class="diamond" aria-hidden="true"></span>
                     </div>
                     <div class="min-w-0">
@@ -308,6 +392,7 @@
                     </div>
                   </div>
                   <div class="border-t border-gray-100"></div>
+                  <!-- actions -->
                   <div class="py-2">
                     <a
                       href="#"
@@ -315,6 +400,7 @@
                       class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
                       role="menuitem"
                     >
+                      <!-- small pill icon using CSS-like box (no svg) -->
                       <span
                         class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100"
                         >⟲</span
@@ -349,10 +435,12 @@
                   class="h-8 w-8 rounded-full object-cover"
                 />
               </button>
+              <!-- CORRECTED MOBILE DROPDOWN -->
               <div
                 id="user-dropdown-menu-mobile"
                 class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
               >
+                <!-- User Info and Credits -->
                 <div class="px-4 py-3 border-b border-gray-100">
                   <p class="text-xs text-gray-500 mt-1">
                     Credits:
@@ -361,6 +449,7 @@
                     >
                   </p>
                 </div>
+                <!-- Logout -->
                 <div class="py-1">
                   <a
                     href="#"
@@ -370,6 +459,7 @@
                   >
                 </div>
               </div>
+              <!-- END CORRECTION -->
             </div>
             <button
               id="mobile-menu-button"
@@ -503,7 +593,11 @@
                   >
                 </li>
                 <li>
-                  <a href="./feedback.html" class="hover:text-blue-400 text-gray-400 transition">Feedback</a>
+                  <a
+                    href="./feedback.html"
+                    class="hover:text-blue-400 text-gray-400 transition"
+                    >Feedback</a
+                  >
                 </li>
               </ul>
             </div>
@@ -750,6 +844,23 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           d="M4.5 15.75l7.5-7.5 7.5 7.5"
+        />
+      </svg>
+    </button>
+
+    <button id="contact-btn" title="Contact us">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M21 8.25a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 8.25m18 0v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 17.25v-9m18 0L12 13.125 3 8.25"
         />
       </svg>
     </button>

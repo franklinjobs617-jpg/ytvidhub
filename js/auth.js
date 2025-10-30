@@ -362,3 +362,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+const backToTopBtn = document.getElementById("back-to-top-btn");
+const contactBtn = document.getElementById("contact-btn");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 200) {
+    backToTopBtn.classList.add("show");
+    contactBtn.classList.add("show"); // 你也可以一直显示
+  } else {
+    backToTopBtn.classList.remove("show");
+    contactBtn.classList.remove("show");
+  }
+});
+
+backToTopBtn.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+contactBtn.addEventListener("click", () => {
+  window.location.href = "https://ytvidhub.com/feedback.html";
+});
