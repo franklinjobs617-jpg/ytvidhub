@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // --- Clarity Analytics ---
   (function (c, l, a, r, i, t, y) {
     c[a] =
       c[a] ||
@@ -11,28 +12,32 @@ document.addEventListener("DOMContentLoaded", () => {
     y = l.getElementsByTagName(r)[0];
     y.parentNode.insertBefore(t, y);
   })(window, document, "clarity", "script", "treknw6bn0");
-  // --- Authentication Elements ---
+
+  // --- Global Variables & Constants ---
+  const BaseUrl = "https://api.ytvidhub.com";
+  const GOOGLE_CLIENT_ID =
+    "943760400801-n0e8jdoqrm375sq6gk39pj8oampe6ci9.apps.googleusercontent.com";
+  const BACKEND_REDIRECT_URI = "https://api.ytvidhub.com/prod-api/g/callback";
+  let selectedProductId = null; // Stores the ID of the plan the user wants to buy
+
+  // --- Element Selectors ---
+  // Authentication
   const loginButton = document.getElementById("login-button");
   const mobileLoginButton = document.getElementById("login-button-mobile");
   const loginModalContainer = document.getElementById("login-modal-container");
   const modalCloseButton = document.getElementById("modal-close-button");
   const googleLoginButton = document.getElementById("google-login");
   const purchaseButtons = document.querySelectorAll(".purchase-button");
+
+  // User Profile & Credits
   const creditsNumber = document.querySelector("#credits");
   const credits_mobile = document.querySelector("#credits-mobile");
-  const BaseUrl = "https://api.ytvidhub.com";
-  const GOOGLE_CLIENT_ID =
-    "943760400801-n0e8jdoqrm375sq6gk39pj8oampe6ci9.apps.googleusercontent.com";
-  const BACKEND_REDIRECT_URI = "https://api.ytvidhub.com/prod-api/g/callback";
-  // --- Desktop Profile Elements ---
   const userProfileDesktop = document.getElementById("user-profile-desktop");
   const userAvatarDesktop = document.getElementById("user-avatar-desktop");
   const userNameDesktop = document.getElementById("user-name-desktop");
   const userMenuButton = document.getElementById("user-menu-button");
   const userDropdownMenu = document.getElementById("user-dropdown-menu");
   const logoutButtonDesktop = document.getElementById("logout-button-desktop");
-
-  // --- Mobile Profile Elements ---
   const userProfileMobile = document.getElementById("user-profile-mobile");
   const userAvatarMobile = document.getElementById("user-avatar-mobile");
   const userNameMobileDropdown = document.getElementById(
@@ -46,52 +51,73 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const logoutButtonMobile = document.getElementById("logout-button-mobile");
 
-  // --- Modal Logic ---
-  const openModal = () => {
+  // Payment Modal
+  const paymentModalContainer = document.getElementById(
+    "payment-choice-modal-container"
+  );
+  const paymentModalCloseButton = document.getElementById(
+    "payment-modal-close-button"
+  );
+  const stripeButton = document.getElementById("pay-with-stripe-btn");
+  const paypalButton = document.getElementById("pay-with-paypal-btn");
+
+  // --- Modal Functions ---
+  const openLoginModal = () => {
     if (loginModalContainer) {
       loginModalContainer.classList.remove("hidden");
       document.body.style.overflow = "hidden";
     }
   };
 
-  const closeModal = () => {
+  const closeLoginModal = () => {
     if (loginModalContainer) {
       loginModalContainer.classList.add("hidden");
       document.body.style.overflow = "";
     }
   };
 
-  // --- UI Update Logic ---
+  const showPaymentModal = () => {
+    if (paymentModalContainer) {
+      paymentModalContainer.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+  };
+
+  const hidePaymentModal = () => {
+    if (paymentModalContainer) {
+      paymentModalContainer.classList.add("hidden");
+      // Only reset body overflow if the login modal is also closed
+      if (loginModalContainer.classList.contains("hidden")) {
+        document.body.style.overflow = "";
+      }
+    }
+  };
+
+  // --- UI Update Functions ---
   const updateUIForLoggedInUser = (user) => {
     if (!user || !user.picture || !user.name) return;
-    if (loginButton) loginButton.classList.add("hidden");
-    if (mobileLoginButton) mobileLoginButton.classList.add("hidden");
-    if (userProfileDesktop) userProfileDesktop.classList.remove("hidden");
-    if (userProfileMobile) userProfileMobile.classList.remove("hidden");
+    loginButton?.classList.add("hidden");
+    mobileLoginButton?.classList.add("hidden");
+    userProfileDesktop?.classList.remove("hidden");
+    userProfileMobile?.classList.remove("hidden");
     if (userAvatarDesktop) userAvatarDesktop.src = user.picture;
     if (userNameDesktop) userNameDesktop.textContent = user.name;
     if (userAvatarMobile) userAvatarMobile.src = user.picture;
-
     if (creditsNumber) creditsNumber.innerHTML = user.credits;
     if (credits_mobile) credits_mobile.innerHTML = user.credits;
     if (userNameMobileDropdown) userNameMobileDropdown.textContent = user.name;
   };
 
   const updateUIForLoggedOutUser = () => {
-    if (loginButton) loginButton.classList.remove("hidden");
-    if (mobileLoginButton) mobileLoginButton.classList.remove("hidden");
-    if (userProfileDesktop) userProfileDesktop.classList.add("hidden");
-    if (userProfileMobile) userProfileMobile.classList.add("hidden");
-    if (userDropdownMenu) userDropdownMenu.classList.add("hidden");
-    if (userDropdownMenuMobile) userDropdownMenuMobile.classList.add("hidden");
+    loginButton?.classList.remove("hidden");
+    mobileLoginButton?.classList.remove("hidden");
+    userProfileDesktop?.classList.add("hidden");
+    userProfileMobile?.classList.add("hidden");
+    userDropdownMenu?.classList.add("hidden");
+    userDropdownMenuMobile?.classList.add("hidden");
   };
 
-  // --- Event Handlers ---
-  const handleLoginClick = (event) => {
-    event.preventDefault();
-    openModal();
-  };
-
+  // --- Core Logic Functions ---
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.removeItem("loggedInUser");
@@ -99,188 +125,103 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUIForLoggedOutUser();
   };
 
-  // --- Initial Check on Page Load ---
   const checkLoginStatus = () => {
     const token = localStorage.getItem("auth_token");
     const userString = localStorage.getItem("loggedInUser");
     if (token && userString) {
       try {
         const user = JSON.parse(userString);
-        console.log(user);
         updateUIForLoggedInUser(user);
       } catch (e) {
         console.error("Failed to parse user data from localStorage", e);
-        localStorage.removeItem("loggedInUser");
-        localStorage.removeItem("auth_token");
-        updateUIForLoggedOutUser();
+        handleLogout(new Event("logout")); // Simulate logout event
       }
     } else {
       updateUIForLoggedOutUser();
     }
   };
 
-  // --- Message Handler from Popup ---
-  function handleAuthMessage(event) {
-    if (event.origin !== BaseUrl) {
-      console.warn(`Message from unexpected origin ignored: ${event.origin}`);
-      return;
+  async function updateUser() {
+    let token = localStorage.getItem("auth_token");
+    if (!token) return;
+    try {
+      const response = await fetch(`${BaseUrl}/prod-api/g/getUser`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      if (data.data) {
+        localStorage.setItem("loggedInUser", JSON.stringify(data.data));
+        updateUIForLoggedInUser(data.data);
+      }
+    } catch (error) {
+      console.error("Failed to update user:", error);
     }
+  }
+
+  function handleAuthMessage(event) {
+    if (event.origin !== BaseUrl) return;
     if (!event.data || typeof event.data.token !== "string") {
-      console.error(
-        "Invalid or missing data in message from backend:",
-        event.data
-      );
-      closeModal();
-      return;
+      console.error("Invalid message from backend:", event.data);
+      return closeLoginModal();
     }
     window.removeEventListener("message", handleAuthMessage);
     try {
       const parsedData = JSON.parse(event.data.token);
-      const user = parsedData.user;
-      const jwtToken = parsedData.token;
-      if (!jwtToken || !user) {
-        console.error("Parsed data from backend is missing user or token.");
-        closeModal();
-        return;
-      }
+      const { user, token: jwtToken } = parsedData;
+      if (!jwtToken || !user) throw new Error("Missing user or token.");
       localStorage.setItem("auth_token", jwtToken);
       localStorage.setItem("loggedInUser", JSON.stringify(user));
       updateUIForLoggedInUser(user);
-      closeModal();
+      closeLoginModal();
     } catch (error) {
-      console.error("Error parsing auth response from backend:", error);
-      closeModal();
+      console.error("Error parsing auth response:", error);
+      closeLoginModal();
     }
   }
 
-  // --- Attach All Event Listeners ---
-
-  // Login buttons
-  if (loginButton) loginButton.addEventListener("click", handleLoginClick);
-  if (mobileLoginButton)
-    mobileLoginButton.addEventListener("click", handleLoginClick);
-
-  // Logout buttons
-  if (logoutButtonDesktop)
-    logoutButtonDesktop.addEventListener("click", handleLogout);
-  if (logoutButtonMobile)
-    logoutButtonMobile.addEventListener("click", handleLogout);
-
-  // Modal close functionality
-  if (modalCloseButton) modalCloseButton.addEventListener("click", closeModal);
-  if (loginModalContainer)
-    loginModalContainer.addEventListener("click", (event) => {
-      if (event.target === loginModalContainer) closeModal();
-    });
-  document.addEventListener("keydown", (event) => {
-    if (
-      loginModalContainer &&
-      !loginModalContainer.classList.contains("hidden") &&
-      event.key === "Escape"
-    ) {
-      closeModal();
-    }
-  });
-
-  // Google Login button in Modal
-  if (googleLoginButton)
-    googleLoginButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-      const dateString = new Date().toDateString();
-      const params = {
-        client_id: GOOGLE_CLIENT_ID,
-        redirect_uri: BACKEND_REDIRECT_URI,
-        response_type: "code",
-        scope: "openid email profile",
-        prompt: "select_account",
-        state: `${dateString}_youtube`,
-      };
-      const finalAuthUrl = `${googleAuthUrl}?${new URLSearchParams(params)}`;
-      const width = 600,
-        height = 600;
-      const left = window.screen.width / 2 - width / 2;
-      const top = window.screen.height / 2 - height / 2;
-      window.open(
-        finalAuthUrl,
-        "GoogleLogin",
-        `width=${width},height=${height},left=${left},top=${top}`
-      );
-      window.removeEventListener("message", handleAuthMessage);
-      window.addEventListener("message", handleAuthMessage, false);
-    });
-
-  // User profile dropdown toggles
-  if (userMenuButton)
-    userMenuButton.addEventListener("click", () =>
-      userDropdownMenu.classList.toggle("hidden")
-    );
-  if (userMenuButtonMobile)
-    userMenuButtonMobile.addEventListener("click", () =>
-      userDropdownMenuMobile.classList.toggle("hidden")
-    );
-
-  // Close dropdowns when clicking outside
-  document.addEventListener("click", (event) => {
-    if (userProfileDesktop && !userProfileDesktop.contains(event.target)) {
-      userDropdownMenu.classList.add("hidden");
-    }
-    if (userProfileMobile && !userProfileMobile.contains(event.target)) {
-      userDropdownMenuMobile.classList.add("hidden");
-    }
-  });
-
-  /**
-   * Handles the purchase flow when a user clicks a purchase button.
-   * 1. Checks if the user is logged in. If not, opens the login modal.
-   * 2. If logged in, sets a loading state on the button.
-   * 3. Calls the backend to create a PayPal order.
-   * 4. Redirects the user to the PayPal checkout URL.
-   * 5. Restores the button state if anything goes wrong.
-   */
-  async function handlePurchase(event) {
+  // --- Purchase Flow ---
+  function handlePurchase(event) {
     event.preventDefault();
-
     const isLoggedIn = !!localStorage.getItem("auth_token");
-
     if (!isLoggedIn) {
-      openModal(); // Use the existing function to open the login modal
-      return; // Stop the function here
+      return openLoginModal();
+    }
+    selectedProductId = event.currentTarget.dataset.productId;
+    showPaymentModal();
+  }
+
+  async function handlePayPalPayment() {
+    if (!selectedProductId) return alert("Please select a plan first.");
+
+    const userInfoStr = localStorage.getItem("loggedInUser");
+    const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
+    if (!userInfo || !userInfo.googleUserId) {
+      hidePaymentModal();
+      openLoginModal();
+      return alert("Your session is invalid. Please log in again.");
     }
 
-    // If we reach here, the user is logged in.
-    const button = event.currentTarget;
-    const originalButtonText = button.innerHTML;
+    const originalButtonText = paypalButton.innerHTML;
 
     try {
-      // Step 2: Set loading state
-      button.disabled = true;
-      button.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processing...`;
+      // Disable both buttons to prevent multiple clicks
+      paypalButton.disabled = true;
+      stripeButton.disabled = true;
+      paypalButton.innerHTML = `Processing...`;
 
-      const productId = button.dataset.productId;
-      const userInfoStr = localStorage.getItem("loggedInUser");
-      const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
-
-      if (!userInfo || !userInfo.googleUserId) {
-        throw new Error("User session is invalid. Please log in again.");
-      }
-
-      // Step 3: Call backend API
-      const response = await fetch(
-        "https://api.ytvidhub.com/prod-api/paypal/createOrder", // Using your consistent API domain
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // Include Authorization header if your backend requires it
-            // "Authorization": `Bearer ${localStorage.getItem("auth_token")}`
-          },
-          body: JSON.stringify({
-            googleUserId: userInfo.googleUserId,
-            type: productId,
-          }),
-        }
-      );
+      const response = await fetch(`${BaseUrl}/prod-api/paypal/createOrder`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          googleUserId: userInfo.googleUserId,
+          type: selectedProductId,
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -290,95 +231,168 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const data = await response.json();
-
       if (data && data.data) {
-        window.location.href = data.data; // Redirect the current tab to PayPal
+        window.location.href = data.data; // Redirect to PayPal
       } else {
         throw new Error("Checkout URL not found in API response.");
       }
     } catch (error) {
-      console.error("Purchase failed:", error);
+      console.error("PayPal Purchase failed:", error);
       alert(`An error occurred: ${error.message}`);
     } finally {
-      button.disabled = false;
-      button.innerHTML = originalButtonText;
+      // Re-enable buttons and restore text, regardless of success or failure
+      paypalButton.disabled = false;
+      stripeButton.disabled = false;
+      paypalButton.innerHTML = originalButtonText;
     }
   }
 
-  // Attach the handlePurchase listener to all purchase buttons
-  if (purchaseButtons.length > 0) {
-    purchaseButtons.forEach((button) => {
-      button.addEventListener("click", handlePurchase);
-    });
-  }
+  async function handleStripePayment() {
+    if (!selectedProductId) return alert("Please select a plan first.");
 
-  async function updateUser() {
-    let token = localStorage.getItem("auth_token");
+    const userInfoStr = localStorage.getItem("loggedInUser");
+    const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
+    if (!userInfo || !userInfo.googleUserId) {
+      hidePaymentModal();
+      openLoginModal();
+      return alert("Your session is invalid. Please log in again.");
+    }
+
+    const originalButtonText = stripeButton.innerHTML;
+
     try {
-      const response = await fetch(
-        "https://api.ytvidhub.com/prod-api/g/getUser",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      if (!response.ok) return;
+      // Disable both buttons to prevent multiple clicks
+      paypalButton.disabled = true;
+      stripeButton.disabled = true;
+      stripeButton.innerHTML = `Processing...`;
+
+      const response = await fetch(`${BaseUrl}/prod-api/stripe/getPayUrl`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          googleUserId: userInfo.googleUserId,
+          type: selectedProductId,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || `API Error: ${response.statusText}`
+        );
+      }
+
       const data = await response.json();
-      console.log(data);
-      if (data.data) {
-        localStorage.setItem("loggedInUser", JSON.stringify(data.data)); // Sync local storage
-        updateUIForLoggedInUser(data.data);
+      if (data && data.data) {
+        window.location.href = data.data; // Redirect to PayPal
+      } else {
+        throw new Error("Checkout URL not found in API response.");
       }
     } catch (error) {
-      console.error("Failed to update user:", error);
+      console.error("PayPal Purchase failed:", error);
+      alert(`An error occurred: ${error.message}`);
+    } finally {
+      // Re-enable buttons and restore text, regardless of success or failure
+      paypalButton.disabled = false;
+      stripeButton.disabled = false;
+      stripeButton.innerHTML = originalButtonText;
     }
   }
 
-  updateUser();
+  // --- Attach Event Listeners ---
+  loginButton?.addEventListener("click", openLoginModal);
+  mobileLoginButton?.addEventListener("click", openLoginModal);
 
-  // --- Run on Load ---
-  checkLoginStatus();
+  logoutButtonDesktop?.addEventListener("click", handleLogout);
+  logoutButtonMobile?.addEventListener("click", handleLogout);
 
-  // Get the button
-  const backToTopButton = document.getElementById("back-to-top-btn");
+  modalCloseButton?.addEventListener("click", closeLoginModal);
+  loginModalContainer?.addEventListener("click", (e) => {
+    if (e.target === loginModalContainer) closeLoginModal();
+  });
 
-  // When the user scrolls down 300px from the top of the document, show the button
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) {
-      backToTopButton.classList.add("show");
+  googleLoginButton?.addEventListener("click", (e) => {
+    e.preventDefault();
+    const googleAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const params = {
+      client_id: GOOGLE_CLIENT_ID,
+      redirect_uri: BACKEND_REDIRECT_URI,
+      response_type: "code",
+      scope: "openid email profile",
+      prompt: "select_account",
+      state: `${new Date().toDateString()}_youtube`,
+    };
+    const finalAuthUrl = `${googleAuthUrl}?${new URLSearchParams(params)}`;
+    const width = 600,
+      height = 600;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+    window.open(
+      finalAuthUrl,
+      "GoogleLogin",
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+    window.addEventListener("message", handleAuthMessage, { once: true });
+  });
+
+  userMenuButton?.addEventListener("click", () =>
+    userDropdownMenu?.classList.toggle("hidden")
+  );
+  userMenuButtonMobile?.addEventListener("click", () =>
+    userDropdownMenuMobile?.classList.toggle("hidden")
+  );
+
+  purchaseButtons.forEach((button) =>
+    button.addEventListener("click", handlePurchase)
+  );
+
+  paypalButton?.addEventListener("click", handlePayPalPayment);
+  stripeButton?.addEventListener("click", handleStripePayment);
+
+  paymentModalCloseButton?.addEventListener("click", hidePaymentModal);
+  paymentModalContainer?.addEventListener("click", (e) => {
+    if (e.target === paymentModalContainer) hidePaymentModal();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLoginModal();
+      hidePaymentModal();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (userProfileDesktop && !userProfileDesktop.contains(event.target)) {
+      userDropdownMenu?.classList.add("hidden");
+    }
+    if (userProfileMobile && !userProfileMobile.contains(event.target)) {
+      userDropdownMenuMobile?.classList.add("hidden");
+    }
+  });
+
+  // --- Back to Top & Contact Buttons ---
+  const backToTopBtn = document.getElementById("back-to-top-btn");
+  const contactBtn = document.getElementById("contact-btn");
+
+  const handleScrollButtons = () => {
+    if (window.scrollY > 200) {
+      backToTopBtn?.classList.add("show");
+      contactBtn?.classList.add("show");
     } else {
-      backToTopButton.classList.remove("show");
+      backToTopBtn?.classList.remove("show");
+      contactBtn?.classList.remove("show");
     }
-  });
+  };
 
-  // When the user clicks on the button, scroll to the top of the document smoothly
-  backToTopButton.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  });
-});
-const backToTopBtn = document.getElementById("back-to-top-btn");
-const contactBtn = document.getElementById("contact-btn");
+  window.addEventListener("scroll", handleScrollButtons);
+  backToTopBtn?.addEventListener("click", () =>
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  );
+  contactBtn?.addEventListener(
+    "click",
+    () => (window.location.href = "https://ytvidhub.com/feedback.html")
+  );
 
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 200) {
-    backToTopBtn.classList.add("show");
-    contactBtn.classList.add("show"); // 你也可以一直显示
-  } else {
-    backToTopBtn.classList.remove("show");
-    contactBtn.classList.remove("show");
-  }
-});
-
-backToTopBtn.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-contactBtn.addEventListener("click", () => {
-  window.location.href = "https://ytvidhub.com/feedback.html";
+  checkLoginStatus();
+  updateUser();
 });

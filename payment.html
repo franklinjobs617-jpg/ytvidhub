@@ -315,18 +315,16 @@
 
           const checkPaymentStatus = async () => {
             try {
-              // The full query string is automatically passed from the PayPal redirect
               const response = await fetch(
                 `https://api.ytvidhub.com/prod-api/paypal/retUrl${window.location.search}`
               );
 
               if (!response.ok) {
-                // Handle HTTP errors like 500, 404 etc.
                 console.error(
                   "API request failed with status:",
                   response.status
                 );
-                return "PENDING"; // Assume it's a temporary server issue and retry
+                return "PENDING"; 
               }
 
               const data = await response.json();
@@ -341,15 +339,14 @@
               }
             } catch (error) {
               console.error("Failed to fetch payment status:", error);
-              return "PENDING"; // On network error, keep polling
+              return "PENDING"; 
             }
           };
 
           const startPaymentVerification = () => {
             showState("loading");
             let checkAttempts = 0;
-            const MAX_ATTEMPTS = 20; // Poll for up to 1 minute (20 * 3s)
-
+            const MAX_ATTEMPTS = 20; 
             const pollingInterval = setInterval(async () => {
               checkAttempts++;
               const status = await checkPaymentStatus();
@@ -378,13 +375,11 @@
             }, 3000);
           };
 
-          // --- MAIN LOGIC ---
           const urlParams = new URLSearchParams(window.location.search);
           const payerId = urlParams.get("PayerID");
           const paymentId =
             urlParams.get("paymentId") || urlParams.get("token");
 
-          // If essential params are missing, user likely canceled on PayPal's site.
           if (!payerId || !paymentId) {
             showState("failure", {
               title: "Payment Canceled",
@@ -392,7 +387,6 @@
                 "It looks like you canceled the payment process. You have not been charged.",
             });
           } else {
-            // If params are present, start the verification process.
             startPaymentVerification();
           }
         });

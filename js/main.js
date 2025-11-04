@@ -554,7 +554,6 @@ function saveToHistory(type, videos) {
     history.unshift(newEntry);
 
     if (history.length > 50) {
-      // Keep history to a reasonable size
       history.pop();
     }
 
@@ -714,14 +713,11 @@ function startPolling() {
         if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
 
         try {
-          // Attempt to download the file first. This can throw an error.
           await downloadBulkFile();
 
-          // If download succeeds, show the success screen and update user credits.
           showDownloadStatus("complete");
           await updateUser();
         } catch (error) {
-          // If download fails (e.g., for credit reasons), show an appropriate error screen.
           if (
             error.message &&
             error.message.toLowerCase().includes("credits")
@@ -764,9 +760,6 @@ async function checkTaskStatus(taskId) {
   };
 }
 
-// =======================================================================
-// ===     START OF REVAMPED DOWNLOAD STATUS UI (WITH FIXES)           ===
-// =======================================================================
 function showDownloadStatus(status, totalFiles = 0) {
   let contentHTML = "";
   // Inject CSS for the animated stripes, ensuring it only happens once
@@ -852,9 +845,7 @@ function showDownloadStatus(status, totalFiles = 0) {
   downloadStatusContent.innerHTML = contentHTML;
   downloadStatusArea.classList.remove("hidden");
 }
-// =======================================================================
-// ===      END OF REVAMPED DOWNLOAD STATUS UI (WITH FIXES)            ===
-// =======================================================================
+
 
 function startPerceivedProgress(totalFiles) {
   if (perceivedProgressInterval) clearInterval(perceivedProgressInterval);
@@ -904,7 +895,6 @@ async function downloadBulkFile() {
     }
   );
 
-  // Check if the response is JSON, which indicates an error.
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
     const errorData = await response.json();
