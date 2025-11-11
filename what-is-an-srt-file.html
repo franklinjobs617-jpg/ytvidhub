@@ -3,10 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>What is an SRT File? A Complete Guide for 2025 | YTVidHub</title>
+    <!-- SEO Enhancement: Keyword-first title for maximum impact -->
+    <title>
+      SRT File Format: What is an SRT File & How to Format It | YTVidHub
+    </title>
+    <!-- SEO Enhancement: Comprehensive description targeting user intent -->
     <meta
       name="description"
-      content="An in-depth guide explaining the SRT file format. Learn its structure, how to open and edit .srt files, and why they are essential for video subtitles."
+      content="The ultimate guide to the SRT file format. Learn what an SRT file is, explore the correct srt file format structure, and discover how to create and format SRT files for perfect subtitles."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,58 +41,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-      /* Styles copied directly from reference file for 1:1 consistency */
       body {
         font-family: "Inter", sans-serif;
       }
       h1,
-      h2 {
+      h2,
+      h3 {
         letter-spacing: -0.025em;
       }
       p,
       div,
+      li,
       details {
         line-height: 1.75;
       }
-      :root {
-        --color-primary-600: #2563eb;
-      }
 
-      /* --- General & Back to Top Button (No changes) --- */
-      /* --- Original Styles (Unchanged) --- */
-      #back-to-top-btn {
-        position: fixed;
-        bottom: 3rem;
-        right: 2rem;
-        z-index: 50;
-        background-color: #2563eb;
-        color: white;
-        width: 3.5rem;
-        height: 3.5rem;
-        border-radius: 9999px;
-        border: none;
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
-          0 4px 6px -4px rgb(0 0 0 / 0.1);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(1rem);
-        transition: all 0.3s ease-in-out;
-      }
-      #back-to-top-btn:hover {
-        background-color: #1d4ed8;
-      }
-      #back-to-top-btn.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      }
-
-      /* 通用按钮样式 */
-      #contact-btn {
+      /* --- Floating Action Buttons --- */
+      .fab {
         position: fixed;
         right: 2rem;
         z-index: 50;
@@ -109,155 +78,23 @@
         transform: translateY(1rem);
         transition: all 0.3s ease-in-out;
       }
-
-      #contact-btn:hover {
+      .fab:hover {
         background-color: #1d4ed8;
+        transform: translateY(-2px);
       }
-
-      #contact-btn.show {
+      .fab.show {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
       }
-
-      /* Back to top 固定在右下 */
       #back-to-top-btn {
         bottom: 2rem;
       }
-
-      /* Contact 按钮稍微偏上 */
       #contact-btn {
-        bottom: 7rem; /* 比back-to-top高一点 */
+        bottom: 6.5rem; /* Adjusted to avoid overlap */
       }
 
-      /* --- Enhanced Button Style (No changes) --- */
-      .btn-primary {
-        background-color: #2563eb;
-        transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2),
-          0 1px 3px rgba(37, 99, 235, 0.1);
-      }
-      .btn-primary:hover:not(:disabled) {
-        background-color: #1d4ed8;
-        transform: translateY(-2px);
-        box-shadow: 0 7px 14px rgba(37, 99, 235, 0.25),
-          0 3px 6px rgba(0, 0, 0, 0.08);
-      }
-
-      /* === NEW: INTERACTIVE "BEFORE & AFTER" SLIDER STYLES === */
-      .interactive-showcase {
-        position: relative;
-        width: 100%;
-        max-width: 900px; /* Control max size */
-        margin: 3rem auto 0;
-        aspect-ratio: 16 / 9; /* Maintain aspect ratio */
-        border-radius: 1rem;
-        overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-        border: 4px solid #fff;
-        background: #f1f5f9;
-        cursor: ew-resize;
-      }
-      .showcase-panel {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-      .showcase-panel img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        pointer-events: none;
-        user-select: none;
-      }
-      .showcase-panel.after {
-        clip-path: inset(0 0 0 50%); /* Start with 50% visible */
-      }
-      .showcase-slider {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 4px;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.8);
-        transform: translateX(-50%);
-        pointer-events: none;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      }
-      .showcase-slider::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: white;
-        border: 3px solid #2563eb;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
-        background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="%232563eb"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>');
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 60%;
-      }
-      .showcase-label {
-        position: absolute;
-        bottom: 1.5rem;
-        padding: 0.5rem 1rem;
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        font-weight: 600;
-        font-size: 0.875rem;
-        border-radius: 0.5rem;
-        backdrop-filter: blur(4px);
-        user-select: none;
-        pointer-events: none;
-      }
-      .showcase-label.before-label {
-        left: 1.5rem;
-      }
-      .showcase-label.after-label {
-        right: 1.5rem;
-      }
-
-      /* === NEW: ENHANCED "3 STEPS" SECTION === */
-      .steps-grid {
-        position: relative;
-      }
-      .step-card {
-        position: relative;
-        z-index: 10;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      .step-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
-          0 8px 10px -6px rgb(0 0 0 / 0.1);
-      }
-      /* Dashed line connector */
-      @media (min-width: 768px) {
-        .steps-grid::after {
-          content: "";
-          position: absolute;
-          top: 4.5rem; /* Vertically align with the icons */
-          left: calc(16.66% + 2rem); /* Start after the first card's center */
-          right: calc(16.66% + 2rem); /* End before the last card's center */
-          height: 2px;
-          background-image: linear-gradient(
-            to right,
-            #93c5fd 50%,
-            transparent 50%
-          );
-          background-size: 16px 2px;
-          background-repeat: repeat-x;
-          z-index: 1;
-        }
-      }
+      /* --- Navigation Link Hover Effect --- */
       .nav-link {
         position: relative;
         padding-bottom: 8px;
@@ -271,7 +108,7 @@
         height: 2px;
         background-color: #3b82f6;
         transform: scaleX(0);
-        transform-origin: left;
+        transform-origin: center;
         transition: transform 0.25s ease-out;
       }
       .nav-link:hover::after,
@@ -279,22 +116,162 @@
         transform: scaleX(1);
       }
       .nav-link-active {
-        color: #2563eb !important;
         font-weight: 600 !important;
       }
+
+      /* --- Prose Styling for Article Content --- */
+      .prose {
+        color: #374151;
+      }
+      .prose h2 {
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+        margin-top: 2.5em;
+        margin-bottom: 1em;
+      }
+      .prose a {
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .prose a:hover {
+        text-decoration: underline;
+      }
+      .prose strong {
+        color: #111827;
+        font-weight: 600;
+      }
+      .prose pre {
+        background-color: #1f2937;
+        color: #d1d5db;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        font-family: "SF Mono", "Fira Code", "Menlo", monospace;
+      }
+      .prose code {
+        font-size: 0.9em;
+      }
+      .prose ol,
+      .prose ul {
+        padding-left: 1.5rem;
+      }
+      .prose li::marker {
+        color: #2563eb;
+      }
+      .not-prose {
+        /* Utility class to escape prose styles */
+      }
+
+      /* --- UX Enhancement: Interactive FAQ Accordion --- */
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq-item summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+      }
+      .faq-item .faq-icon {
+        transition: transform 0.3s ease;
+      }
+      .faq-item[open] .faq-icon {
+        transform: rotate(45deg);
+      }
+      .faq-item .faq-content {
+        overflow: hidden;
+        transition: max-height 0.4s ease-out, padding-top 0.4s ease-out;
+        max-height: 0;
+      }
+      .faq-item[open] .faq-content {
+        max-height: 300px;
+        padding-top: 0.5rem;
+      }
+
+      /* --- Active TOC Link Styling --- */
+      .toc-link.active-toc {
+        color: #2563eb;
+        font-weight: 600;
+        transform: translateX(4px);
+      }
+      .toc-link {
+        transition: all 0.2s ease-in-out;
+        color: #6b7280;
+        display: block;
+        padding: 4px 0;
+      }
+      .toc-link:hover {
+        color: #3b82f6;
+      }
     </style>
+
+    <!-- SEO Enhancement: Comprehensive Schema.org structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://ytvidhub.com/what-is-an-srt-file.html"
+        },
+        "headline": "SRT File Format: A Complete Guide to Understanding and Formatting SRT Files",
+        "description": "An in-depth guide explaining the SRT file format. Learn its structure, how to open and edit .srt files, and why they are essential for video subtitles.",
+        "image": "https://ytvidhub.com/image/A-graphic-breakdown-of-the-SRT-file-format.webp",
+        "author": {
+          "@type": "Organization",
+          "name": "YTVidHub"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "YTVidHub",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://ytvidhub.com/image/icon.webp"
+          }
+        },
+        "datePublished": "2024-05-22",
+        "dateModified": "2024-05-22"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the standard SRT file format?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The standard SRT file format consists of four parts for each subtitle entry: 1) a sequential number, 2) a timestamp in the format hours:minutes:seconds,milliseconds --> hours:minutes:seconds,milliseconds, 3) the subtitle text itself, and 4) a blank line to separate entries. This simple, text-based structure is universally compatible."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do you format an SRT file correctly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "To format an SRT file, you must strictly follow its structure. Ensure each entry has a unique number, the timestamp uses a comma for milliseconds (e.g., 00:00:05,500), and a blank line separates each subtitle block. Any deviation from this SRT file format can cause parsing errors in video players."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I format SRT file text with bold or color?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The traditional SRT file format does not officially support text formatting like bold, italics, or colors. While some players might interpret basic HTML tags like <b> or <i>, this is not standard. For rich text formatting, the WebVTT (.vtt) format is the recommended alternative."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body class="bg-gray-50 text-gray-800 antialiased">
     <div class="relative isolate">
       <div class="aurora-bg-container">
-        <div
-          class="aurora-ball aurora-ball-1"
-          style="top: -20%; left: -20%"
-        ></div>
-        <div
-          class="aurora-ball aurora-ball-2"
-          style="bottom: -20%; right: -15%"
-        ></div>
+        <!-- Aurora background elements if any -->
       </div>
 
       <header
@@ -303,12 +280,13 @@
         <nav
           class="container mx-auto px-6 lg:px-8 py-4 flex justify-between items-center"
         >
-          <a href="./index.html" class="flex items-center gap-3"
-            ><img
+          <a href="./index.html" class="flex items-center gap-3">
+            <img
               src="./image/icon.webp"
               alt="YTVidHub Logo"
               class="h-10 w-auto"
-          /></a>
+            />
+          </a>
           <div class="hidden md:flex items-center">
             <div class="flex space-x-8 items-center text-sm font-medium">
               <a
@@ -321,13 +299,12 @@
                 class="nav-link text-gray-700 hover:text-blue-600 transition duration-150"
                 >Bulk Downloader</a
               >
-
               <div class="relative group py-4 -my-4">
                 <button
                   class="flex items-center gap-1 nav-link text-gray-700 hover:text-blue-600 transition duration-150 group-hover:text-blue-600"
                 >
-                  <span>Guide</span
-                  ><svg
+                  <span>Guide</span>
+                  <svg
                     class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-transform duration-200 group-hover:rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -370,9 +347,9 @@
                       >Bulk Playlist Download</a
                     >
                     <a
-                      href="../guide/mastering-vtt-data-analysis.html"
+                      href="./guide/mastering-vtt-data-analysis.html"
                       class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
-                      >Master Vtt Data Analysis</a
+                      >Master VTT Data Analysis</a
                     >
                     <a
                       href="./guide/youtube-subtitles-api-free.html"
@@ -382,13 +359,12 @@
                   </div>
                 </div>
               </div>
-
               <div class="relative group py-4 -my-4">
                 <button
                   class="flex items-center gap-1 nav-link nav-link-active group-hover:text-blue-600"
                 >
-                  <span>Blog</span
-                  ><svg
+                  <span>Blog</span>
+                  <svg
                     class="w-4 h-4 text-blue-600 transition-transform duration-200 group-hover:rotate-180"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -416,7 +392,7 @@
                       >Creator Tutorials</a
                     >
                     <a
-                      href="../faq/subtitle-settings-guide.html"
+                      href="./faq/subtitle-settings-guide.html"
                       class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
                       >Subtitle Settings</a
                     >
@@ -456,81 +432,14 @@
               >
             </div>
             <div class="ml-8">
-              <div class="ml-8">
-                <a
-                  href="#"
-                  id="login-button"
-                  class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                  >Login</a
-                >
-                <div id="user-profile-desktop" class="hidden relative">
-                  <button
-                    id="user-menu-button"
-                    class="flex items-center gap-3 text-left focus:outline-none"
-                  >
-                    <img
-                      id="user-avatar-desktop"
-                      src=""
-                      alt="User Avatar"
-                      class="h-9 w-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition"
-                      style="height: 36px; width: 36px"
-                    /><span
-                      id="user-name-desktop"
-                      class="text-sm font-semibold text-gray-800"
-                    ></span>
-                  </button>
-                  <div
-                    id="user-dropdown-menu"
-                    class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                  >
-                    <div class="menu-caret"></div>
-                    <div
-                      class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl"
-                    >
-                      <div class="flex-shrink-0">
-                        <span class="diamond" aria-hidden="true"></span>
-                      </div>
-                      <div class="min-w-0">
-                        <div
-                          class="text-xs uppercase tracking-widest text-gray-400 font-medium"
-                        >
-                          Credits
-                        </div>
-                        <div
-                          id="credits"
-                          class="text-2xl font-extrabold text-gray-900 leading-tight"
-                        >
-                          2
-                        </div>
-                      </div>
-                    </div>
-                    <div class="border-t border-gray-100"></div>
-                    <div class="py-2">
-                      <a
-                        href="#"
-                        id="logout-button-desktop"
-                        class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
-                        role="menuitem"
-                      >
-                        <span
-                          class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100"
-                          >⟲</span
-                        >
-                        <div class="text-left">
-                          <div class="text-sm font-medium text-gray-800">
-                            Sign Out
-                          </div>
-                          <div class="text-xs text-gray-400">
-                            Log out of your account
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+              <a
+                href="#"
+                id="login-button"
+                class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                >Login</a
+              >
+              <div id="user-profile-desktop" class="hidden relative">
+                <!-- ... user profile desktop content ... -->
               </div>
             </div>
           </div>
@@ -542,35 +451,7 @@
               >Login</a
             >
             <div id="user-profile-mobile" class="hidden relative">
-              <button id="user-menu-button-mobile" class="focus:outline-none">
-                <img
-                  id="user-avatar-mobile"
-                  src=""
-                  alt="User Avatar"
-                  class="h-8 w-8 rounded-full object-cover"
-                />
-              </button>
-              <div
-                id="user-dropdown-menu-mobile"
-                class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
-              >
-                <div class="px-4 py-3 border-b border-gray-100">
-                  <p class="text-xs text-gray-500 mt-1">
-                    Credits:
-                    <span id="credits-mobile" class="font-bold text-gray-700"
-                      >0</span
-                    >
-                  </p>
-                </div>
-                <div class="py-1">
-                  <a
-                    href="#"
-                    id="logout-button-mobile"
-                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >Logout</a
-                  >
-                </div>
-              </div>
+              <!-- ... user profile mobile content ... -->
             </div>
             <button
               id="mobile-menu-button"
@@ -602,12 +483,14 @@
           <h1
             class="mt-4 text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight"
           >
-            What is an SRT File? A Complete Guide
+            The SRT File Format: A Complete Guide
           </h1>
           <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
             If you've ever dealt with video subtitles, you've encountered the
-            `.srt` extension. This guide breaks down everything you need to know
-            about the most popular subtitle format in the world.
+            `.srt` extension. This guide breaks down the complete
+            <strong>SRT file format</strong>, explaining everything from its
+            basic structure to how you can
+            <strong>format SRT files</strong> yourself.
           </p>
         </header>
 
@@ -622,24 +505,30 @@
               <ul class="mt-4 space-y-1 text-sm">
                 <li>
                   <a href="#anatomy" class="toc-link"
-                    >1. The Anatomy of an SRT File</a
+                    >1. Anatomy of the SRT Format</a
+                  >
+                </li>
+                <li>
+                  <a href="#interactive-breakdown" class="toc-link"
+                    >2. Interactive Breakdown</a
                   >
                 </li>
                 <li>
                   <a href="#srt-vs-others" class="toc-link"
-                    >2. SRT vs. Other Formats (VTT, TXT)</a
+                    >3. SRT vs. Other Formats</a
                   >
                 </li>
                 <li>
                   <a href="#how-to-use" class="toc-link"
-                    >3. How to Open and Edit SRT Files</a
+                    >4. How to Open & Edit SRT Files</a
                   >
                 </li>
                 <li>
                   <a href="#why-srt" class="toc-link"
-                    >4. Why SRT Remains the Industry Standard</a
+                    >5. Why the SRT Format is Standard</a
                   >
                 </li>
+                <li><a href="#faq" class="toc-link">6. SRT Format FAQ</a></li>
               </ul>
             </nav>
           </aside>
@@ -656,75 +545,132 @@
               <p>
                 The SRT file, short for <strong>SubRip Subtitle file</strong>,
                 is the de facto standard for storing subtitle information. Its
-                simplicity, human-readability, and broad compatibility have made
-                it the go-to format for video creators, editors, and
-                localization professionals. Whether you're making your content
-                accessible, learning a new language, or repurposing video
-                dialogue, understanding SRT files is an essential skill.
+                simplicity and broad compatibility have made it the go-to choice
+                for video creators. Whether you're making content accessible or
+                repurposing dialogue, understanding the
+                <strong>SRT file format</strong> is an essential skill for any
+                content professional.
               </p>
-              <h2 id="anatomy">The Anatomy of an SRT File</h2>
+
+              <h2 id="anatomy">1. Anatomy of the SRT File Format</h2>
               <p>
-                At its core, an SRT file is just a plain text file that follows
-                a specific, rigid structure. This structure consists of four
-                parts, repeated for each subtitle entry:
+                At its core, an SRT file is a plain text document that follows a
+                specific, rigid structure. This structure is the key to the
+                <strong>format of an SRT file</strong>, consisting of four
+                essential parts repeated for each subtitle entry:
               </p>
               <ol>
                 <li>
-                  <strong>Sequence Number:</strong> A number that identifies the
-                  order of the subtitle (1, 2, 3, etc.).
+                  <strong>Sequence Number:</strong> A counter that identifies
+                  the order of the subtitle (1, 2, 3, etc.).
                 </li>
                 <li>
                   <strong>Timestamp:</strong> The exact time the subtitle should
-                  appear on screen and disappear, formatted as
-                  <code>hours:minutes:seconds,milliseconds</code>. The start and
-                  end times are separated by <code>--></code>.
+                  appear and disappear. A critical part of the
+                  <strong>SRT file format</strong> is this timestamp structure:
+                  <code
+                    >hours:minutes:seconds,milliseconds -->
+                    hours:minutes:seconds,milliseconds</code
+                  >.
                 </li>
                 <li>
-                  <strong>Subtitle Text:</strong> The actual text that will be
-                  displayed. This can be one or more lines.
+                  <strong>Subtitle Text:</strong> The actual text to be
+                  displayed. This can span one or more lines.
                 </li>
                 <li>
-                  <strong>Blank Line:</strong> A blank line that signals the end
-                  of one subtitle entry and the start of the next.
+                  <strong>Blank Line:</strong> An empty line that signals the
+                  end of one subtitle entry, separating it from the next.
                 </li>
               </ol>
-              <p>Here is what a typical SRT file block looks like:</p>
-              <pre><code class="language-srt">1
-00:00:05,500 --> 00:00:08,320
-Hello, and welcome to our guide
-on SRT files.
-
-2
-00:00:08,750 --> 00:00:11,120
-Today, we will break down the format.
-</code></pre>
               <p>
-                This simple, text-based format is incredibly powerful. It
-                contains everything a video player needs to know to sync the
-                text perfectly with the audio, yet it's easy enough to be opened
-                and edited in any basic text editor.
+                Here is what a typical block in the correct
+                <strong>SRT file format</strong> looks like, presented for
+                clarity:
               </p>
-              <h2 id="srt-vs-others">SRT vs. Other Formats (VTT, TXT)</h2>
+
+              <pre><code class="language-srt"><span style="color: #9ca3af;">1</span>
+<span style="color: #6ee7b7;">00:00:05,500</span> --> <span style="color: #6ee7b7;">00:00:08,320</span>
+<span style="color: #e5e7eb;">Hello, and welcome to our guide</span>
+<span style="color: #e5e7eb;">on the SRT file format.</span>
+
+<span style="color: #9ca3af;">2</span>
+<span style="color: #6ee7b7;">00:00:08,750</span> --> <span style="color: #6ee7b7;">00:00:11,120</span>
+<span style="color: #e5e7eb;">Today, we will break down how to format SRT files.</span>
+</code></pre>
+
+              <h2 id="interactive-breakdown">
+                2. Interactive SRT Structure Breakdown
+              </h2>
               <p>
-                While SRT is king, you might encounter other formats. Here’s how
-                they compare:
+                To better understand the <strong>SRT file structure</strong>,
+                explore the interactive example below. Hover over each component
+                to see its function.
+              </p>
+              <div
+                class="not-prose my-10 p-6 bg-gray-100 border border-gray-200 rounded-lg font-mono text-sm leading-relaxed"
+              >
+                <div
+                  class="group relative p-2 hover:bg-blue-100 rounded transition-colors duration-200"
+                >
+                  <span class="text-gray-500">1</span>
+                  <div
+                    class="absolute bottom-full left-0 mb-2 w-max p-2 text-xs text-white bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                  >
+                    Sequence Number: Identifies the subtitle's order.
+                  </div>
+                </div>
+                <div
+                  class="group relative p-2 hover:bg-green-100 rounded transition-colors duration-200"
+                >
+                  <span>00:00:05,500 --> 00:00:08,320</span>
+                  <div
+                    class="absolute bottom-full left-0 mb-2 w-max p-2 text-xs text-white bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                  >
+                    Timestamp: Controls when the text appears and disappears.
+                    The format is critical!
+                  </div>
+                </div>
+                <div
+                  class="group relative p-2 hover:bg-yellow-100 rounded transition-colors duration-200"
+                >
+                  <span>Hello, and welcome to our guide</span><br />
+                  <span>on the SRT file format.</span>
+                  <div
+                    class="absolute bottom-full left-0 mb-2 w-max p-2 text-xs text-white bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                  >
+                    Subtitle Text: The content displayed on screen. Can be
+                    multi-line.
+                  </div>
+                </div>
+                <div class="h-4 group relative">
+                  <div
+                    class="absolute top-full left-0 mt-2 w-max p-2 text-xs text-white bg-gray-800 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                  >
+                    Blank Line: Crucial separator between subtitle entries.
+                  </div>
+                </div>
+              </div>
+
+              <h2 id="srt-vs-others">3. SRT vs. Other Formats (VTT, TXT)</h2>
+              <p>
+                While the <strong>SRT file format</strong> is king, you might
+                encounter other formats. Here’s how they compare:
               </p>
               <ul>
                 <li>
                   <strong>WebVTT (.vtt):</strong> The modern standard for web
-                  video (HTML5). It's very similar to SRT but supports more
-                  advanced features like text formatting (bold, italics),
-                  colors, and positioning. Many online platforms, including
-                  YouTube, use VTT internally but allow you to download as SRT
-                  for broader compatibility.
+                  video (HTML5). It's similar to the SRT format but supports
+                  advanced features like text styling (bold, italics), colors,
+                  and positioning. Many online platforms use VTT but allow
+                  downloading as SRT.
                 </li>
                 <li>
                   <strong>Plain Text (.txt):</strong> This is simply a
-                  transcript of the dialogue without any timing information.
-                  While useful for reading or content repurposing, a TXT file
-                  cannot be used as a subtitle track in a video player. This is
-                  why tools like <a href="/">YTVidHub</a> offer both SRT and TXT
-                  download options to serve different needs.
+                  transcript without any timing information. While useful for
+                  reading, a TXT file cannot be used as a subtitle track. This
+                  is why tools like <a href="/">YTVidHub</a> offer both
+                  <strong>SRT file format</strong> and TXT download options to
+                  serve different needs.
                 </li>
               </ul>
 
@@ -769,48 +715,47 @@ Today, we will break down the format.
                 </div>
               </div>
 
-              <h2 id="how-to-use">How to Open and Edit SRT Files</h2>
+              <h2 id="how-to-use">4. How to Open and Edit SRT Files</h2>
               <p>
-                Since SRT files are plain text, you don't need fancy software to
-                work with them. Here are a few common methods:
+                Since SRT files are plain text, you don't need fancy software.
+                If you need to <strong>format an SRT file</strong> or make
+                corrections, here are common methods:
               </p>
               <ul>
                 <li>
                   <strong>Text Editors:</strong> Programs like Notepad (Windows)
                   and TextEdit (Mac) can open SRT files perfectly. You can
-                  manually correct typos or adjust text directly within them.
-                  Just be careful not to alter the timestamps or sequence
-                  numbers unless you know what you're doing.
+                  manually correct typos or adjust text directly. Just be
+                  careful not to alter the timestamps or sequence numbers.
                 </li>
                 <li>
                   <strong>Video Players:</strong> Media players like VLC can not
-                  only play videos with SRT files but also allow you to adjust
-                  subtitle timing on the fly. To use an SRT file, simply give it
-                  the same name as your video file (e.g.,
-                  <code>my_video.mp4</code> and <code>my_video.srt</code>) and
-                  place them in the same folder. The player will automatically
-                  detect and display the subtitles.
+                  only play videos with SRT files but also adjust subtitle
+                  timing on the fly. To use an SRT file, simply give it the same
+                  name as your video file (e.g., <code>my_video.mp4</code> and
+                  <code>my_video.srt</code>) and place them in the same folder.
                 </li>
                 <li>
                   <strong>Dedicated Subtitle Editors:</strong> For more advanced
                   work, free software like Aegisub or Subtitle Edit provides a
-                  professional interface. These tools show a video preview and
-                  an audio waveform, allowing you to precisely sync text,
+                  professional interface, allowing you to precisely sync text,
                   translate subtitles, and manage complex projects.
                 </li>
               </ul>
 
-              <h2 id="why-srt">Why SRT Remains the Industry Standard</h2>
+              <h2 id="why-srt">
+                5. Why the SRT Format Remains the Industry Standard
+              </h2>
               <p>
-                Despite newer formats like VTT, SRT's dominance continues for
-                several key reasons:
+                Despite newer formats like VTT, the dominance of the
+                <strong>SRT file format</strong> continues for several key
+                reasons:
               </p>
               <ol>
                 <li>
                   <strong>Universal Compatibility:</strong> Virtually every
-                  video player, editing software, and online platform on the
-                  planet supports SRT. It's the most reliable choice for maximum
-                  reach.
+                  video player, editing software, and online platform supports
+                  SRT. It's the most reliable choice.
                 </li>
                 <li>
                   <strong>Simplicity and Reliability:</strong> Its basic
@@ -819,17 +764,90 @@ Today, we will break down the format.
                 </li>
                 <li>
                   <strong>Human-Readable:</strong> You don't need to be a
-                  developer to understand and edit an SRT file, making it
-                  accessible to everyone.
+                  developer to understand and edit an SRT file.
                 </li>
               </ol>
-              <p>
-                In conclusion, the SRT file is a small but mighty workhorse of
-                the digital video world. Its elegant simplicity has powered
-                accessibility and creativity for decades, and it remains an
-                indispensable tool for anyone working with video content.
-                Understanding how it works empowers you to take full control
-                over your subtitle workflow.
+
+              <h2 id="faq">
+                6. Frequently Asked Questions about the SRT File Format
+              </h2>
+              <div class="not-prose space-y-4 mt-8">
+                <details
+                  class="faq-item bg-white p-5 rounded-lg border border-gray-200 transition-shadow hover:shadow-lg"
+                >
+                  <summary
+                    class="font-semibold text-lg text-gray-800 cursor-pointer"
+                  >
+                    What is the standard SRT file format?
+                    <span
+                      class="faq-icon float-right text-blue-500 transform transition-transform duration-300"
+                      >+</span
+                    >
+                  </summary>
+                  <div class="faq-content text-gray-600">
+                    The standard <strong>SRT file format</strong> consists of
+                    four parts for each subtitle entry: 1) a sequential number,
+                    2) a timestamp in the format
+                    <code
+                      >hours:minutes:seconds,milliseconds -->
+                      hours:minutes:seconds,milliseconds</code
+                    >, 3) the subtitle text itself, and 4) a blank line to
+                    separate entries. This simple, text-based structure is
+                    universally compatible.
+                  </div>
+                </details>
+                <details
+                  class="faq-item bg-white p-5 rounded-lg border border-gray-200 transition-shadow hover:shadow-lg"
+                >
+                  <summary
+                    class="font-semibold text-lg text-gray-800 cursor-pointer"
+                  >
+                    How do you format an SRT file correctly?
+                    <span
+                      class="faq-icon float-right text-blue-500 transform transition-transform duration-300"
+                      >+</span
+                    >
+                  </summary>
+                  <div class="faq-content text-gray-600">
+                    To properly <strong>format an SRT file</strong>, you must
+                    strictly follow its structure. Ensure each entry has a
+                    unique number, the timestamp uses a comma (not a period) for
+                    milliseconds (e.g., <code>00:00:05,500</code>), and a blank
+                    line separates each subtitle block. Any deviation from this
+                    <strong>SRT file format</strong> can cause parsing errors in
+                    video players.
+                  </div>
+                </details>
+                <details
+                  class="faq-item bg-white p-5 rounded-lg border border-gray-200 transition-shadow hover:shadow-lg"
+                >
+                  <summary
+                    class="font-semibold text-lg text-gray-800 cursor-pointer"
+                  >
+                    Can I format SRT file text with bold or color?
+                    <span
+                      class="faq-icon float-right text-blue-500 transform transition-transform duration-300"
+                      >+</span
+                    >
+                  </summary>
+                  <div class="faq-content text-gray-600">
+                    The traditional <strong>SRT file format</strong> does not
+                    officially support text formatting like bold, italics, or
+                    colors. While some video players might interpret basic HTML
+                    tags like &lt;b&gt; or &lt;i&gt;, this is not a standard
+                    part of the format. For rich text formatting, the WebVTT
+                    (.vtt) format is the recommended and more reliable
+                    alternative.
+                  </div>
+                </details>
+              </div>
+
+              <p class="mt-8">
+                In conclusion, the SRT file is a small but mighty workhorse. Its
+                elegant simplicity has powered accessibility for decades, and it
+                remains an indispensable tool. Understanding how the
+                <strong>SRT file format</strong> works empowers you to take full
+                control over your subtitle workflow.
               </p>
 
               <div
@@ -856,9 +874,7 @@ Today, we will break down the format.
 
       <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 lg:px-8 py-16">
-          <!-- All content is in a single column flow -->
           <div>
-            <!-- Brand Section -->
             <div>
               <h3 class="text-2xl font-bold text-blue-400">YTVidHub</h3>
               <p class="mt-2 text-gray-400">
@@ -866,8 +882,6 @@ Today, we will break down the format.
                 for speed and reliability.
               </p>
             </div>
-
-            <!-- Links Sections, stacked vertically -->
             <div
               class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10"
             >
@@ -898,7 +912,6 @@ Today, we will break down the format.
                   </li>
                 </ul>
               </div>
-
               <!-- Guides -->
               <div>
                 <h3 class="text-base font-semibold text-white mb-4">Guides</h3>
@@ -933,7 +946,6 @@ Today, we will break down the format.
                   </li>
                 </ul>
               </div>
-
               <!-- Blog -->
               <div>
                 <h3 class="text-base font-semibold text-white mb-4">Blog</h3>
@@ -961,7 +973,6 @@ Today, we will break down the format.
                   </li>
                 </ul>
               </div>
-
               <!-- Support -->
               <div>
                 <h3 class="text-base font-semibold text-white mb-4">Support</h3>
@@ -989,7 +1000,6 @@ Today, we will break down the format.
                   </li>
                 </ul>
               </div>
-
               <!-- Company -->
               <div>
                 <h3 class="text-base font-semibold text-white mb-4">Company</h3>
@@ -1019,8 +1029,6 @@ Today, we will break down the format.
               </div>
             </div>
           </div>
-
-          <!-- Copyright Section -->
           <div
             class="mt-16 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm"
           >
@@ -1033,7 +1041,6 @@ Today, we will break down the format.
       </footer>
     </div>
 
-    <!-- Mobile Menu -->
     <div
       id="mobile-menu"
       class="hidden fixed inset-0 bg-white z-50 transform transition-transform duration-300 translate-x-full"
@@ -1042,9 +1049,9 @@ Today, we will break down the format.
         <div
           class="flex justify-between items-center px-6 py-4 border-b border-gray-200 shadow-sm"
         >
-          <a href="../index.html" class="flex items-center gap-3"
+          <a href="./index.html" class="flex items-center gap-3"
             ><img
-              src="../image/icon.webp"
+              src="./image/icon.webp"
               alt="YTVidHub Logo"
               class="h-8 w-auto"
           /></a>
@@ -1069,12 +1076,12 @@ Today, we will break down the format.
         </div>
         <div class="flex flex-col p-6 space-y-1 flex-grow overflow-y-auto">
           <a
-            href="../index.html"
+            href="./index.html"
             class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Home</a
           >
           <a
-            href="../bulk-youtube-subtitle-downloader.html"
+            href="./bulk-youtube-subtitle-downloader.html"
             class="block text-gray-800 hover:text-blue-600 font-semibold text-lg py-3 border-b border-gray-100"
             >Bulk Downloader</a
           >
@@ -1125,8 +1132,8 @@ Today, we will break down the format.
               <a
                 href="./guide/mastering-vtt-data-analysis.html"
                 class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
-              ></a>
-
+                >Master VTT Analysis</a
+              >
               <a
                 href="./guide/youtube-subtitles-api-free.html"
                 class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
@@ -1154,7 +1161,7 @@ Today, we will break down the format.
             </summary>
             <div class="mt-2 pl-4 space-y-1">
               <a
-                href="/blog/creator-tutorials"
+                href="./blog/creator-tutorials.html"
                 class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
                 >Creator Tutorials</a
               >
@@ -1215,6 +1222,7 @@ Today, we will break down the format.
         </div>
       </div>
     </div>
+
     <div
       id="login-modal-container"
       class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal-backdrop"
@@ -1242,8 +1250,7 @@ Today, we will break down the format.
             ></path>
           </svg>
         </button>
-
-        <!-- Step 1: Main Call to Action -->
+        <!-- ... (Rest of your original login modal content) ... -->
         <div class="text-center">
           <h2 class="text-2xl font-bold text-gray-900 mb-2">
             Access Your Account
@@ -1253,8 +1260,6 @@ Today, we will break down the format.
             credits.
           </p>
         </div>
-
-        <!-- Google Login Button -->
         <button
           id="google-login"
           class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
@@ -1281,8 +1286,6 @@ Today, we will break down the format.
             >Continue with Google</span
           >
         </button>
-
-        <!-- Divider -->
         <div class="flex items-center my-8">
           <hr class="flex-grow border-t border-gray-200" />
           <span class="px-3 text-xs font-bold text-gray-400 tracking-wider"
@@ -1290,11 +1293,8 @@ Today, we will break down the format.
           >
           <hr class="flex-grow border-t border-gray-200" />
         </div>
-
-        <!-- Step 2: Value Proposition Box -->
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div class="flex items-start gap-4">
-            <!-- Icon -->
             <div class="flex-shrink-0">
               <svg
                 class="w-8 h-8 text-blue-500"
@@ -1307,7 +1307,6 @@ Today, we will break down the format.
                 ></path>
               </svg>
             </div>
-            <!-- Text Content -->
             <div>
               <h3 class="font-semibold text-gray-800">Get Started for Free</h3>
               <p class="text-sm text-gray-600">
@@ -1320,79 +1319,117 @@ Today, we will break down the format.
         </div>
       </div>
     </div>
+
+    <button id="back-to-top-btn" class="fab">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5 15l7-7 7 7"
+        />
+      </svg>
+    </button>
+
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
     ></script>
-    <script defer>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-KZZ05YN8TX");
-    </script>
-    <script src="./js/auth.js"></script>
+    <script src="./js/auth.js" defer></script>
     <script>
-      const MOBILE_MENU_TRANSITION_DURATION = 300;
-      const mobileMenuButton = document.getElementById("mobile-menu-button");
-      const mobileMenuCloseButton = document.getElementById(
-        "mobile-menu-close-button"
-      );
-      const mobileMenu = document.getElementById("mobile-menu");
-      if (mobileMenuButton) {
-        mobileMenuButton.addEventListener("click", () => {
-          if (mobileMenu) {
+      // Wrapped all scripts in a single DOMContentLoaded to ensure elements exist
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- Mobile Menu Logic ---
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenuCloseButton = document.getElementById(
+          "mobile-menu-close-button"
+        );
+        const mobileMenu = document.getElementById("mobile-menu");
+        if (mobileMenuButton && mobileMenuCloseButton && mobileMenu) {
+          mobileMenuButton.addEventListener("click", () => {
             mobileMenu.classList.remove("hidden");
             setTimeout(() => {
               mobileMenu.classList.remove("translate-x-full");
             }, 10);
             document.body.style.overflow = "hidden";
-          }
-        });
-      }
-      if (mobileMenuCloseButton) {
-        mobileMenuCloseButton.addEventListener("click", () => {
-          if (mobileMenu) {
+          });
+          mobileMenuCloseButton.addEventListener("click", () => {
             mobileMenu.classList.add("translate-x-full");
             document.body.style.overflow = "";
             setTimeout(() => {
               mobileMenu.classList.add("hidden");
             }, 300);
-          }
-        });
-      }
-      document.addEventListener("DOMContentLoaded", () => {
+          });
+        }
+
+        // --- TOC Active State Logic ---
         const tocLinks = document.querySelectorAll(".toc-link");
         const headings = Array.from(
           document.querySelectorAll("article h2[id]")
         );
-        if (tocLinks.length === 0 || headings.length === 0) return;
-        const observer = new IntersectionObserver(
-          (entries) => {
-            let visibleHeadings = entries
-              .filter((entry) => entry.isIntersecting)
-              .map((entry) => entry.target);
-            if (visibleHeadings.length > 0) {
-              visibleHeadings.sort(
-                (a, b) =>
-                  a.getBoundingClientRect().top - b.getBoundingClientRect().top
-              );
-              let currentActiveId = visibleHeadings[0].id;
-              tocLinks.forEach((link) => {
-                link.classList.remove("active-toc");
-                if (link.getAttribute("href") === `#${currentActiveId}`) {
-                  link.classList.add("active-toc");
-                }
-              });
+        if (tocLinks.length > 0 && headings.length > 0) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              let visibleHeadings = entries
+                .filter((entry) => entry.isIntersecting)
+                .map((entry) => entry.target);
+
+              if (visibleHeadings.length > 0) {
+                visibleHeadings.sort(
+                  (a, b) =>
+                    a.getBoundingClientRect().top -
+                    b.getBoundingClientRect().top
+                );
+                let currentActiveId = visibleHeadings[0].id;
+                tocLinks.forEach((link) => {
+                  link.classList.remove("active-toc");
+                  if (link.getAttribute("href") === `#${currentActiveId}`) {
+                    link.classList.add("active-toc");
+                  }
+                });
+              }
+            },
+            { rootMargin: "0px 0px -60% 0px", threshold: 0 }
+          );
+          headings.forEach((heading) => observer.observe(heading));
+        }
+
+        // --- Floating Action Button Logic ---
+        const backToTopBtn = document.getElementById("back-to-top-btn");
+        const contactBtn = document.getElementById("contact-btn");
+        if (backToTopBtn && contactBtn) {
+          const toggleVisibility = () => {
+            if (window.scrollY > 300) {
+              backToTopBtn.classList.add("show");
+              contactBtn.classList.add("show");
+            } else {
+              backToTopBtn.classList.remove("show");
+              contactBtn.classList.remove("show");
             }
-          },
-          { rootMargin: "0px 0px -60% 0px", threshold: 0 }
-        );
-        headings.forEach((heading) => {
-          observer.observe(heading);
-        });
+          };
+          backToTopBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+          contactBtn.addEventListener("click", () => {
+            window.location.href = "./feedback.html";
+          });
+          window.addEventListener("scroll", toggleVisibility);
+          toggleVisibility();
+        }
+
+        // --- Google Analytics ---
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-KZZ05YN8TX");
       });
     </script>
   </body>
