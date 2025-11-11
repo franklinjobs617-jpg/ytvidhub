@@ -1,122 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-    <!-- Core Pages -->
     <url>
         <loc>https://ytvidhub.com/index.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>daily</changefreq>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://ytvidhub.com/bulk-youtube-subtitle-downloader.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>weekly</changefreq>
+        <loc>https://ytvidhub.com/pricing.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://ytvidhub.com/pricing.html</loc>
-        <lastmod>2025-10-11</lastmod>
+
+    <url>
+        <loc>https://ytvidhub.com/tools/subtitle-extractor-online.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://ytvidhub.com/bulk-youtube-subtitle-downloader.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://ytvidhub.com/how-to-use.html</loc>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
-    <!-- Guide Pages -->
     <url>
         <loc>https://ytvidhub.com/data-prep-guide.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ytvidhub.com/guide/clean-transcript-no-timestamp.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://ytvidhub.com/guide/data-prep-toolkit.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://ytvidhub.com/guide/mastering-vtt-data-analysis.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://ytvidhub.com/guide/playlist-subtitles-bulk.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://ytvidhub.com/guide/youtube-subtitles-api-free.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Blog Pages -->
-
-
-
-
-
- 
-
-    <!-- Blog Pages -->
-    <url>
-        <loc>https://ytvidhub.com/blog/subtitle-accuracy-problem.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://ytvidhub.com/blog/engineering-decisions-ytvidhub.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://ytvidhub.com/blog/spanish-yt-channels-subtitles.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-
-    <!-- Informational & Support Pages -->
-    <url>
-        <loc>https://ytvidhub.com/how-to-use.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
         <loc>https://ytvidhub.com/what-is-an-srt-file.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>yearly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <url>
+        <loc>https://ytvidhub.com/blog/creator-tutorials.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://ytvidhub.com/blog/subtitle-accuracy-problem.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://ytvidhub.com/blog/engineering-decisions-ytvidhub.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://ytvidhub.com/blog/spanish-yt-channels-subtitles.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <url>
         <loc>https://ytvidhub.com/faq.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://ytvidhub.com/feedback.html</loc>
-        <lastmod>2025-10-11</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.4</priority>
+        <loc>https://ytvidhub.com/faq/subtitle-settings-guide.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
     </url>
 
-    <!-- Company & Legal Pages -->
     <url>
         <loc>https://ytvidhub.com/about.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.5</priority>
     </url>
     <url>
+        <loc>https://ytvidhub.com/history.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.4</priority>
+    </url>
+    <url>
+        <loc>https://ytvidhub.com/feedback.html</loc>
+        <lastmod>2024-05-22</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.4</priority>
+    </url>
+    <url>
         <loc>https://ytvidhub.com/privacy-policy.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
     <url>
         <loc>https://ytvidhub.com/terms-of-service.html</loc>
-        <lastmod>2025-10-11</lastmod>
+        <lastmod>2024-05-22</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>

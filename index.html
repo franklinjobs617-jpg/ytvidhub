@@ -392,7 +392,6 @@
       }
     </style>
   </head>
-  <!-- NEW: Changed body background for better contrast -->
   <body class="bg-slate-50 text-gray-800 antialiased">
     <div class="relative isolate">
       <header
@@ -467,12 +466,11 @@
                       class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
                       >Bulk Playlist Download</a
                     >
-
                     <a
-                    href="../guide/mastering-vtt-data-analysis.html"
-                    class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
-                    >Master Vtt Data Analysis</a
-                  >
+                      href="../guide/mastering-vtt-data-analysis.html"
+                      class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                      >Master Vtt Data Analysis</a
+                    >
                     <a
                       href="./guide/youtube-subtitles-api-free.html"
                       class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors"
@@ -556,56 +554,140 @@
             </div>
             <div class="ml-8">
               <div class="ml-8">
-                <a href="#" id="login-button" class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">Login</a>
+                <a
+                  href="#"
+                  id="login-button"
+                  class="text-sm font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                  >Login</a
+                >
                 <div id="user-profile-desktop" class="hidden relative">
-                  <button id="user-menu-button" class="flex items-center gap-3 text-left focus:outline-none">
-                    <img id="user-avatar-desktop" src="" alt="User Avatar" class="h-9 w-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition" style="height: 36px; width: 36px" /><span id="user-name-desktop" class="text-sm font-semibold text-gray-800"></span>
+                  <button
+                    id="user-menu-button"
+                    class="flex items-center gap-3 text-left focus:outline-none"
+                  >
+                    <img
+                      id="user-avatar-desktop"
+                      src=""
+                      alt="User Avatar"
+                      class="h-9 w-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500 transition"
+                      style="height: 36px; width: 36px"
+                    /><span
+                      id="user-name-desktop"
+                      class="text-sm font-semibold text-gray-800"
+                    ></span>
                   </button>
-                  <div id="user-dropdown-menu" class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                  <div
+                    id="user-dropdown-menu"
+                    class="hidden absolute right-0 mt-3 w-64 origin-top-right rounded-2xl bg-white border border-gray-100 shadow-md z-50 transition-all duration-160 ease-out"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="user-menu-button"
+                  >
                     <div class="menu-caret"></div>
-                    <div class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl">
+                    <div
+                      class="px-5 pt-4 pb-3 flex items-center gap-4 bg-white rounded-t-2xl"
+                    >
                       <div class="flex-shrink-0">
                         <span class="diamond" aria-hidden="true"></span>
                       </div>
                       <div class="min-w-0">
-                        <div class="text-xs uppercase tracking-widest text-gray-400 font-medium">Credits</div>
-                        <div id="credits" class="text-2xl font-extrabold text-gray-900 leading-tight">2</div>
+                        <div
+                          class="text-xs uppercase tracking-widest text-gray-400 font-medium"
+                        >
+                          Credits
+                        </div>
+                        <div
+                          id="credits"
+                          class="text-2xl font-extrabold text-gray-900 leading-tight"
+                        >
+                          2
+                        </div>
                       </div>
                     </div>
                     <div class="border-t border-gray-100"></div>
                     <div class="py-2">
-                      <a href="#" id="logout-button-desktop" class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150" role="menuitem">
-                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100">⟲</span>
+                      <a
+                        href="#"
+                        id="logout-button-desktop"
+                        class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-150"
+                        role="menuitem"
+                      >
+                        <span
+                          class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 text-gray-600 text-sm font-semibold border border-gray-100"
+                          >⟲</span
+                        >
                         <div class="text-left">
-                          <div class="text-sm font-medium text-gray-800">Sign Out</div>
-                          <div class="text-xs text-gray-400">Log out of your account</div>
+                          <div class="text-sm font-medium text-gray-800">
+                            Sign Out
+                          </div>
+                          <div class="text-xs text-gray-400">
+                            Log out of your account
+                          </div>
                         </div>
                       </a>
                     </div>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
-          </div>
           <div class="md:hidden flex items-center gap-4">
-            <a href="#" id="login-button-mobile" class="text-sm font-semibold text-gray-700 hover:text-blue-600">Login</a>
+            <a
+              href="#"
+              id="login-button-mobile"
+              class="text-sm font-semibold text-gray-700 hover:text-blue-600"
+              >Login</a
+            >
             <div id="user-profile-mobile" class="hidden relative">
               <button id="user-menu-button-mobile" class="focus:outline-none">
-                <img id="user-avatar-mobile" src="" alt="User Avatar" class="h-8 w-8 rounded-full object-cover" />
+                <img
+                  id="user-avatar-mobile"
+                  src=""
+                  alt="User Avatar"
+                  class="h-8 w-8 rounded-full object-cover"
+                />
               </button>
-              <div id="user-dropdown-menu-mobile" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+              <div
+                id="user-dropdown-menu-mobile"
+                class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+              >
                 <div class="px-4 py-3 border-b border-gray-100">
-                  <p class="text-xs text-gray-500 mt-1">Credits: <span id="credits-mobile" class="font-bold text-gray-700">0</span></p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Credits:
+                    <span id="credits-mobile" class="font-bold text-gray-700"
+                      >0</span
+                    >
+                  </p>
                 </div>
                 <div class="py-1">
-                  <a href="#" id="logout-button-mobile" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Logout</a>
+                  <a
+                    href="#"
+                    id="logout-button-mobile"
+                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >Logout</a
+                  >
                 </div>
               </div>
             </div>
-            <button id="mobile-menu-button" class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button>
-        </div>
- 
-   
+            <button
+              id="mobile-menu-button"
+              class="text-gray-600 hover:text-blue-600 focus:outline-none p-1"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                ></path>
+              </svg>
+            </button>
+          </div>
         </nav>
       </header>
 
@@ -1947,7 +2029,6 @@
                   </p>
                 </div>
               </details>
-
             </div>
           </div>
         </section>
@@ -2222,10 +2303,9 @@
                 >Bulk Playlist Download</a
               >
               <a
-              href="./guide/mastering-vtt-data-analysis.html"
-              class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
-              ></a
-            >
+                href="./guide/mastering-vtt-data-analysis.html"
+                class="block text-gray-600 hover:text-blue-600 font-medium text-base py-2"
+              ></a>
 
               <a
                 href="./guide/youtube-subtitles-api-free.html"
