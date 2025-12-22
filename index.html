@@ -239,30 +239,13 @@
       }
       /* 通用按钮样式 */
       #contact-btn {
-        position: fixed;
-        right: 2rem;
-        z-index: 50;
-        background-color: #2563eb;
-        color: white;
-        width: 3.5rem;
-        height: 3.5rem;
-        border-radius: 9999px;
-        border: none;
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
-          0 4px 6px -4px rgb(0 0 0 / 0.1);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(1rem);
-        transition: all 0.3s ease-in-out;
+        position: fixed; right: 2rem; z-index: 50; width: 3.5rem; height: 3.5rem; border-radius: 9999px; border: none;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+        cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden;
+        transform: translateY(1rem); transition: all 0.3s ease-in-out;
       }
 
-      #contact-btn:hover {
-        background-color: #1d4ed8;
-      }
+      #contact-btn:hover { color: #4338ca; }
 
       #contact-btn.show {
         opacity: 1;
@@ -276,9 +259,7 @@
       }
 
       /* Contact 按钮稍微偏上 */
-      #contact-btn {
-        bottom: 7rem; /* 比back-to-top高一点 */
-      }
+      #contact-btn { bottom: 7rem; background-color: white; color: #4f46e5; }
 
       /* Header Link Hover Effect - THIS IS THE CRITICAL FIX */
       .nav-link {
@@ -2552,22 +2533,7 @@
       </svg>
     </button>
 
-    <button id="contact-btn" title="Contact us">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M21 8.25a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 8.25m18 0v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 17.25v-9m18 0L12 13.125 3 8.25"
-        />
-      </svg>
-    </button>
+    <button id="contact-btn" title="Contact us"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 8.25m18 0v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 17.25v-9m18 0L12 13.125 3 8.25" /></svg></button>
 
     <script src="./js/auth.js" defer></script>
     <script src="./js/main.js" defer></script>

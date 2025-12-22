@@ -552,6 +552,12 @@
                 content professional.
               </p>
 
+              <div class="bg-blue-50 border-l-4 border-blue-600 p-6 mb-8 rounded-r-lg">
+                <h3 class="text-lg font-bold text-gray-900 mt-0">What is an SRT file?</h3>
+                <p class="mb-0 text-gray-700">
+                  An <strong>SRT file</strong> (SubRip Subtitle) is the most common plain-text file type used for video subtitles. Identified by the <strong>.srt file extension</strong>, it stores subtitle information in a simple format containing numeric counters, timecodes (hours:minutes:seconds,milliseconds), and subtitle text. It does not contain video or audio data, only text.
+                </p>
+              </div>
               <h2 id="anatomy">1. Anatomy of the SRT File Format</h2>
               <p>
                 At its core, an SRT file is a plain text document that follows a
@@ -652,6 +658,38 @@
               </div>
 
               <h2 id="srt-vs-others">3. SRT vs. Other Formats (VTT, TXT)</h2>
+              <div class="overflow-x-auto my-8">
+                <table class="min-w-full text-sm text-left text-gray-500 border border-gray-200 rounded-lg">
+                  <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                      <th class="px-6 py-3 border-b">Feature</th>
+                      <th class="px-6 py-3 border-b bg-blue-50">SRT (.srt)</th>
+                      <th class="px-6 py-3 border-b">WebVTT (.vtt)</th>
+                      <th class="px-6 py-3 border-b">Plain Text (.txt)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="bg-white border-b">
+                      <td class="px-6 py-4 font-medium text-gray-900">Best For</td>
+                      <td class="px-6 py-4 bg-blue-50 font-semibold text-blue-700">Universal Compatibility</td>
+                      <td class="px-6 py-4">HTML5 Web Players</td>
+                      <td class="px-6 py-4">Reading / Transcripts</td>
+                    </tr>
+                    <tr class="bg-white border-b">
+                      <td class="px-6 py-4 font-medium text-gray-900">Timecodes</td>
+                      <td class="px-6 py-4 bg-blue-50">Yes (Comma separator)</td>
+                      <td class="px-6 py-4">Yes (Dot separator)</td>
+                      <td class="px-6 py-4">No</td>
+                    </tr>
+                    <tr class="bg-white">
+                      <td class="px-6 py-4 font-medium text-gray-900">Styling (Bold/Color)</td>
+                      <td class="px-6 py-4 bg-blue-50">Limited / Unofficial</td>
+                      <td class="px-6 py-4">Fully Supported</td>
+                      <td class="px-6 py-4">None</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <p>
                 While the <strong>SRT file format</strong> is king, you might
                 encounter other formats. Here’s how they compare:
@@ -709,7 +747,7 @@
                     <a
                       href="/"
                       class="inline-block bg-blue-600 text-white font-semibold py-2.5 px-5 rounded-lg shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 duration-200"
-                      >Try Our Downloader</a
+                      >Try Our YouTube Subtitle Downloader</a
                     >
                   </div>
                 </div>
