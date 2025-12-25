@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Anton } from "next/font/google";
-import Script from "next/script";
 import { AuthProvider } from "@/context/AuthContext";
 import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const fontBody = Inter({
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -52,39 +52,26 @@ export default function RootLayout({
   };
 
   return (
-    // 1. 添加 suppressHydrationWarning 解决因插件或脚本引起的微小不一致报错
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        
-        {/* 3. 处理 AdSense 脚本：移至 head 并调整加载策略 */}
-        {/* 如果依然有 data-nscript 警告，可以尝试改用原生的 <script> */}
-        <Script
-          id="adsbygoogle-init"
-          strategy="afterInteractive" 
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
           crossOrigin="anonymous"
+        ></script>
+        {/* SEO JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body
         className={`${fontBody.variable} ${fontDisplay.variable} font-sans bg-white text-slate-900 antialiased`}
       >
         <AuthProvider>
-          <NextTopLoader
-            color="#7c3aed"
-            initialPosition={0.08}
-            crawlSpeed={200}
-            height={3}
-            showSpinner={false}
-            easing="ease"
-            speed={200}
-            shadow="0 0 10px #7c3aed,0 0 5px #7c3aed"
-          />
-          {/* 4. 确保 main 只是一个包裹，不要在 layout 和 page 之间产生多余的 div 嵌套 */}
-          <main>{children}</main>
+          <NextTopLoader color="#7c3aed" showSpinner={false} />
+          {children}
+          <Toaster richColors closeButton position="top-center" offset="90px" />
         </AuthProvider>
       </body>
     </html>
