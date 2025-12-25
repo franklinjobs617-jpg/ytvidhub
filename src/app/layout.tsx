@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Anton } from "next/font/google";
 import Script from "next/script";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
@@ -36,52 +34,56 @@ export const metadata: Metadata = {
   },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "YTVidHub - Ultimate YouTube Subtitle Downloader",
-  url: "https://ytvidhub.com/",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: "https://ytvidhub.com/?q={search_term_string}",
-    "query-input": "required name=search_term_string",
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" className="scroll-smooth">
-      <body
-        className={`${fontBody.variable} ${fontDisplay.variable} font-sans bg-white text-slate-900 antialiased`}
-      >
-        <Script
-          id="adsbygoogle-init"
-          strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
-          crossOrigin="anonymous"
-        />
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "YTVidHub - Ultimate YouTube Subtitle Downloader",
+    url: "https://ytvidhub.com/",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://ytvidhub.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
 
+  return (
+    // 1. 添加 suppressHydrationWarning 解决因插件或脚本引起的微小不一致报错
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-
+        
+        {/* 3. 处理 AdSense 脚本：移至 head 并调整加载策略 */}
+        {/* 如果依然有 data-nscript 警告，可以尝试改用原生的 <script> */}
+        <Script
+          id="adsbygoogle-init"
+          strategy="afterInteractive" 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body
+        className={`${fontBody.variable} ${fontDisplay.variable} font-sans bg-white text-slate-900 antialiased`}
+      >
         <AuthProvider>
           <NextTopLoader
-            color="#7c3aed" // 换成你的主色调，比如 violet-600
+            color="#7c3aed"
             initialPosition={0.08}
             crawlSpeed={200}
             height={3}
-            crawl={true}
-            showSpinner={false} // 关闭右上角的转圈圈，只留条，更高级
+            showSpinner={false}
             easing="ease"
             speed={200}
-            shadow="0 0 10px #7c3aed,0 0 5px #7c3aed" // 发光效果
+            shadow="0 0 10px #7c3aed,0 0 5px #7c3aed"
           />
+          {/* 4. 确保 main 只是一个包裹，不要在 layout 和 page 之间产生多余的 div 嵌套 */}
           <main>{children}</main>
         </AuthProvider>
       </body>
