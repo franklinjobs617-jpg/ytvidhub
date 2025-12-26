@@ -29,7 +29,12 @@ const plans = [
     period: "/ month",
     desc: "For the dedicated content creator & researcher who needs reliable, daily access.",
     features: [
-      { text: "500 Credits/month", highlight: true, sub: "(Process 500 URLs)", disabled: false },
+      {
+        text: "500 Credits/month",
+        highlight: true,
+        sub: "(Process 500 URLs)",
+        disabled: false,
+      },
       { text: "Download up to 50 URLs at once", disabled: false },
       { text: "Priority Queue - your jobs run first", disabled: false },
       { text: "Access to all output formats (JSON)", disabled: false },
@@ -66,8 +71,13 @@ const plans = [
     originalPrice: "$239",
     tag: "SAVE 16%",
     desc: "The ultimate toolkit. Unlock massive scale, automation, and get 2 months free.",
-    features:[
-      { text: "3,000 Credits/month", highlight: true, sub: "(36,000/year)", disabled: false },
+    features: [
+      {
+        text: "3,000 Credits/month",
+        highlight: true,
+        sub: "(36,000/year)",
+        disabled: false,
+      },
       { text: "Full API Access to automate everything", disabled: false },
       { text: "All Premium Features Included", disabled: false },
       { text: "Discounted top-up credits", disabled: false },
@@ -103,8 +113,7 @@ export default function PricingPage() {
 
       <section className="relative pt-12 pb-16 text-center px-6">
         <h1 className="text-5xl md:text-6xl font-display font-black italic uppercase tracking-wide text-slate-900 mb-6 drop-shadow-sm">
-          The Perfect Plan 
-            For Your Ambition
+          The Perfect Plan For Your Ambition
         </h1>
         <p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium">
           Stop wasting time on manual downloads. Choose a plan and supercharge

@@ -15,7 +15,6 @@ export default function PaymentChoiceModal({ isOpen, onClose, selectedPlanId }: 
 
   const BASE_URL = "https://api.ytvidhub.com";
 
-  // 通用的支付处理逻辑
   const handlePayment = async (provider: "stripe" | "paypal") => {
     if (!selectedPlanId || !user?.googleUserId) {
       alert("User session invalid or no plan selected.");
@@ -75,7 +74,7 @@ export default function PaymentChoiceModal({ isOpen, onClose, selectedPlanId }: 
 
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Choose Payment Method</h2>
-          <p className="text-slate-500 text-sm">Secure payment for Plan ID: <span className="font-mono text-slate-700">{selectedPlanId}</span></p>
+          {/* <p className="text-slate-500 text-sm">Secure payment for Plan ID: <span className="font-mono text-slate-700">{selectedPlanId}</span></p> */}
         </div>
 
         <div className="space-y-4">
