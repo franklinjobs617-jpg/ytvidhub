@@ -32,7 +32,6 @@ export default function BulkDownloaderPage() {
       />
 
       <main>
-        {/* === 1. HERO SECTION (与 Pricing 页一致的居中排版) === */}
         <section className="bg-slate-50 relative overflow-hidden">
           <div className="absolute top-[-20%] left-[-20%] w-[35rem] h-[35rem] bg-blue-400/20 rounded-full blur-[100px] animate-pulse"></div>
           <div className="absolute bottom-[-20%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-400/20 rounded-full blur-[100px] animate-pulse"></div>
