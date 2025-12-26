@@ -158,7 +158,7 @@ export default function HeroSection() {
               .join(",")
           : videoResults
               .filter((v) => selectedIds.has(v.id))
-              .map((v?:any) => v.url)
+              .map((v?: any) => v.url)
               .join(",");
       if (!targetUrls) return;
       router.push(
@@ -212,7 +212,6 @@ export default function HeroSection() {
 
       {/* === 1. 保留你原本的背景 === */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-
       <section className="relative pt-12 pb-16 md:pt-14 md:pb-24">
         <div className="container mx-auto px-4 md:px-6 lg:px-8 text-center">
           {!user && (
@@ -232,7 +231,7 @@ export default function HeroSection() {
             </h1>
             <h2 className="text-base md:text-lg font-medium text-slate-600 max-w-2xl mx-auto italic">
               Stop 100 clicks. Extract pure{" "}
-              <span className="text-slate-900 font-bold border-b-2 border-blue-200">
+              <span className="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md">
                 LLM-Ready Data
               </span>{" "}
               in seconds.

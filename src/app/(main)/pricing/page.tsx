@@ -102,7 +102,7 @@ export default function PricingPage() {
       <div className="absolute bottom-[-20%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-400/20 rounded-full blur-[100px] animate-pulse"></div>
 
       <section className="relative pt-12 pb-16 text-center px-6">
-        <h1 className="text-5xl md:text-7xl font-display font-black italic uppercase tracking-wide text-slate-900 mb-6 drop-shadow-sm">
+        <h1 className="text-5xl md:text-6xl font-display font-black italic uppercase tracking-wide text-slate-900 mb-6 drop-shadow-sm">
           The Perfect Plan 
             For Your Ambition
         </h1>

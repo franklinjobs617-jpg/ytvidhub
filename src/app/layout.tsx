@@ -51,6 +51,37 @@ export default function RootLayout({
     },
   };
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Is this YouTube subtitle downloader completely free?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "YTVidHub is free for single downloads and includes 5 daily credits for bulk operations. Professional plans are available for high-volume data needs.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What URL formats are supported?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "We support standard YouTube video URLs, playlist URLs, and channel page URLs. For bulk processing via file upload, ensure each URL is on a new line in a simple .txt or .csv file. The system automatically filters out invalid or duplicate links.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "What language are subtitles in?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "YTVidHub supports ALL languages available on YouTube. This includes manually uploaded captions by the creator (highest quality) and auto-generated subtitles for languages like Chinese (Mandarin), Spanish, German, and more.",
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
@@ -59,10 +90,13 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
           crossOrigin="anonymous"
         ></script>
-        {/* SEO JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       </head>
       <body

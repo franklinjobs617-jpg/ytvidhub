@@ -7,7 +7,7 @@ export function useSubtitleDownloader() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const [summaryData, setSummaryData] = useState<string>(""); // 流式数据改为 string
+  const [summaryData, setSummaryData] = useState<string>("");
   const [statusText, setStatusText] = useState("");
   const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -109,10 +109,9 @@ export function useSubtitleDownloader() {
     }
   };
 
-  // 🔥 修复后的生成 AI 摘要 (流式)
   const generateAiSummary = async (videoUrl: string, onChunk?: (chunk: string) => void) => {
     setIsAiLoading(true);
-    setSummaryData(""); // 开始时清空上一次的内容
+    setSummaryData(""); 
     
     try {
       const response = await subtitleApi.generateSummaryStream(videoUrl);
@@ -135,10 +134,8 @@ export function useSubtitleDownloader() {
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
         
-        // 更新 Hook 内部状态
         setSummaryData(accumulatedText);
         
-        // 如果外部传入了回调，也执行它
         if (onChunk) onChunk(accumulatedText);
       }
       

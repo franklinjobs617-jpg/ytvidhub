@@ -1,4 +1,4 @@
-import HeroSection from "@/components/landing/HeroSection"; // 假设你把第一部分也拆出去了
+import HeroSection from "@/components/landing/HeroSection"; 
 import HowItWorks from "@/components/landing/HowItWorks";
 import ComparisonSlider from "@/components/landing/ComparisonSlider";
 import FeaturesGrid from "@/components/landing/FeaturesGrid";

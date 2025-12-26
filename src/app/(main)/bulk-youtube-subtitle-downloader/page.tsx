@@ -38,7 +38,7 @@ export default function BulkDownloaderPage() {
           <div className="absolute bottom-[-20%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-400/20 rounded-full blur-[100px] animate-pulse"></div>
 
           <div className="relative pt-12 pb-16 text-center px-6 z-10">
-            <h1 className="text-5xl md:text-7xl font-display font-black italic uppercase tracking-wide text-slate-900 mb-6 drop-shadow-sm leading-tight">
+            <h1 className="text-5xl md:text-6xl font-display font-black italic uppercase tracking-wide text-slate-900 mb-6 drop-shadow-sm leading-tight">
               Simple, Powerful Bulk Extraction
             </h1>
 
