@@ -30,6 +30,7 @@ const navigation = {
       href: "/guide/mastering-vtt-data-analysis",
     },
     { name: "YouTube API Alt", href: "/guide/youtube-subtitles-api-free" },
+    {name:"Youtube Subtitles For Llm Data",href:"/guide/youtube-subtitles-for-llm-data" },
   ],
   blog: [
     {

@@ -11,7 +11,6 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      {/* (main) 分组下的所有页面都会被包裹在这里 */}
       <main className="min-h-screen">{children}</main>
       <Footer />
 

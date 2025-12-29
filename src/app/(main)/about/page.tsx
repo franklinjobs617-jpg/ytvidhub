@@ -132,16 +132,13 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* === 3. CONTACT SECTION (彻底优化：去除大黑框，改为轻量级卡片) === */}
             <section id="contact" className="mt-48">
               <div className="max-w-4xl mx-auto text-center">
                 <h2 className="text-3xl md:text-5xl font-display uppercase tracking-widest text-slate-900 mb-12 leading-tight">
                   Get In Touch
                 </h2>
 
-                {/* 轻量级联系卡片 */}
                 <div className="relative p-12 md:p-20 rounded-[3rem] bg-white border border-slate-200 shadow-[0_30px_70px_rgba(0,0,0,0.05)] overflow-hidden">
-                  {/* 装饰性背景 */}
                   <div className="absolute -top-24 -right-24 w-64 h-64 bg-blue-50 rounded-full blur-[80px]"></div>
                   <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-indigo-50 rounded-full blur-[80px]"></div>
 
