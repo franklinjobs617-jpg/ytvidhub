@@ -186,8 +186,6 @@ export default function AboutPage() {
           </div>
         </article>
       </main>
-
-      {/* Floating Buttons (与首页一致) */}
     
 
       <LoginModal
