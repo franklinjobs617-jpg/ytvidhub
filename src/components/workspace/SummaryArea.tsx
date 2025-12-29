@@ -4,8 +4,16 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Brain, Copy, Check } from "lucide-react";
-import { FlashcardView } from "./FlashcardView";
+import {
+  Sparkles,
+  Brain,
+  Copy,
+  Check,
+  Share2,
+  Download,
+  Terminal,
+} from "lucide-react";
+import { FlashcardView } from "./FlashcardView"; // 见下方代码
 
 export function SummaryArea({
   data,
@@ -15,7 +23,6 @@ export function SummaryArea({
   mobileSubTab,
 }: any) {
   const [activeTab, setActiveTab] = useState("analysis");
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -29,6 +36,7 @@ export function SummaryArea({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // 解析数据逻辑
   const { meta, analysisContent, flashcards } = useMemo(() => {
     if (!data) return { meta: {}, analysisContent: "", flashcards: [] };
     let currentData = data;
@@ -47,52 +55,44 @@ export function SummaryArea({
     }
 
     const parts = currentData.split("---START_CARDS---");
-    const analysis = parts[0] || "";
-    const rawCards = parts[1] || "";
-
-    const cards: any[] = [];
-    if (rawCards) {
-      const blocks = rawCards.split("---").filter((b: any) => b.includes("Q:"));
-      blocks.forEach((block: any) => {
-        const q = block.match(/Q:\s?([\s\S]*?)(?=A:|$)/)?.[1]?.trim();
-        const a = block.match(/A:\s?([\s\S]*?)(?=T:|$)/)?.[1]?.trim();
-        const t = block.match(/T:\s?\[?(\d{1,3}:\d{2})\]?/)?.[1]?.trim();
-        if (q) cards.push({ question: q, answer: a || "Thinking...", time: t });
-      });
-    }
-    return { meta: metaData, analysisContent: analysis, flashcards: cards };
+    return {
+      meta: metaData,
+      analysisContent: parts[0] || "",
+      flashcards: parseCards(parts[1] || ""),
+    };
   }, [data]);
 
-  const components = {
-    p: ({ children }: any) => (
-      <p className="leading-7 text-slate-600 mb-4">{children}</p>
-    ),
-    h2: ({ children }: any) => (
-      <h2 className="text-lg font-bold mt-8 mb-4 text-slate-800 border-l-4 border-violet-500 pl-3">
-        {children}
-      </h2>
-    ),
-    li: ({ children }: any) => (
-      <li className="mb-2 text-slate-600 list-disc ml-4">{children}</li>
-    ),
-  };
+  function parseCards(raw: string) {
+    const cards: any[] = [];
+    const blocks = raw.split("---").filter((b: any) => b.includes("Q:"));
+    blocks.forEach((block: any) => {
+      const q = block.match(/Q:\s?([\s\S]*?)(?=A:|$)/)?.[1]?.trim();
+      const a = block.match(/A:\s?([\s\S]*?)(?=T:|$)/)?.[1]?.trim();
+      const t = block.match(/T:\s?\[?(\d{1,3}:\d{2})\]?/)?.[1]?.trim();
+      if (q) cards.push({ question: q, answer: a || "Thinking...", time: t });
+    });
+    return cards;
+  }
 
   return (
-    <div className="h-full flex flex-col bg-[#fcfcfd]">
-      <header className="flex h-12 px-6 border-b border-slate-100 bg-white items-center justify-between shrink-0">
-        <div className="flex gap-6 h-full">
+    <div className="h-full flex flex-col bg-[#F9FAFB]">
+      <header className="flex h-14 px-6 border-b border-slate-100 bg-white/80 backdrop-blur-md items-center justify-between shrink-0 sticky top-0 z-30">
+        <div className="flex gap-8 h-full">
           {[
-            { id: "analysis", label: "Analysis", icon: Sparkles },
+            { id: "analysis", label: "Insights", icon: Sparkles },
             { id: "flashcards", label: "Cards", icon: Brain },
           ].map((t) => (
             <button
               key={t.id}
               onClick={() => setActiveTab(t.id)}
-              className={`relative h-full flex items-center gap-2 text-[10px] font-black uppercase tracking-widest ${
-                activeTab === t.id ? "text-violet-600" : "text-slate-400"
+              className={`relative h-full flex items-center gap-2 text-xs font-bold tracking-tight transition-all ${
+                activeTab === t.id
+                  ? "text-violet-600"
+                  : "text-slate-400 hover:text-slate-600"
               }`}
             >
-              <t.icon size={14} /> {t.label}
+              <t.icon size={16} strokeWidth={activeTab === t.id ? 2.5 : 2} />
+              {t.label}
               {activeTab === t.id && (
                 <motion.div
                   layoutId="tab-underline"
@@ -102,80 +102,122 @@ export function SummaryArea({
             </button>
           ))}
         </div>
-        {activeTab === "analysis" && data && (
-          <button
-            onClick={handleCopy}
-            className="p-2 hover:bg-slate-50 rounded-lg transition-colors"
-          >
-            {copied ? (
-              <Check size={14} className="text-green-500" />
-            ) : (
-              <Copy size={14} className="text-slate-400" />
-            )}
-          </button>
+
+        {data && (
+          <div className="flex gap-2">
+            <button
+              onClick={handleCopy}
+              className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-all active:scale-95"
+            >
+              {copied ? (
+                <Check size={16} className="text-green-500" />
+              ) : (
+                <Copy size={16} />
+              )}
+            </button>
+          </div>
         )}
       </header>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 md:p-10">
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
         <AnimatePresence mode="wait">
           {!data && !isLoading ? (
-            <div className="h-full flex flex-col items-center justify-center text-center py-20">
-              <Sparkles size={40} className="text-violet-200 mb-6" />
-              <h2 className="text-xl font-bold mb-4 text-slate-800">
-                No Analysis Found
+            <div className="h-full flex flex-col items-center justify-center p-8 text-center min-h-[400px]">
+              <div className="w-20 h-20 bg-violet-50 rounded-3xl flex items-center justify-center mb-6 animate-bounce">
+                <Sparkles size={32} className="text-violet-500" />
+              </div>
+              <h2 className="text-xl font-black text-slate-800 mb-2">
+                Ready to Decode?
               </h2>
+              <p className="text-slate-500 text-sm max-w-[240px] mb-8">
+                Click analyze to transform this video into structured knowledge
+                cards.
+              </p>
               <button
                 onClick={onStartAnalysis}
-                className="px-6 py-3 bg-violet-600 text-white rounded-xl font-bold shadow-lg shadow-violet-100"
+                className="group flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-violet-600 transition-all shadow-xl shadow-slate-200"
               >
-                Analyze Now
+                Analyze Now{" "}
+                <Terminal
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
               </button>
             </div>
           ) : activeTab === "analysis" ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="max-w-2xl mx-auto"
-            >
-              {meta.tags && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {meta.tags
-                    .replace(/[\[\]]/g, "")
-                    .split(",")
-                    .map((t: any, i: number) => (
-                      <span
-                        key={i}
-                        className="px-2 py-1 bg-white border border-slate-100 text-slate-400 text-[10px] font-bold rounded-md"
-                      >
-                        #{t.trim()}
-                      </span>
-                    ))}
-                </div>
-              )}
-              <article className="prose prose-slate max-w-none prose-sm">
-                <ReactMarkdown
-                  components={components as any}
-                  remarkPlugins={[remarkGfm]}
-                >
-                  {analysisContent}
-                </ReactMarkdown>
-              </article>
-              {isLoading && (
-                <div className="mt-8 flex items-center gap-2 text-violet-500 font-bold animate-pulse text-[10px] uppercase tracking-widest">
-                  <span className="w-1.5 h-4 bg-violet-500 rounded-full" /> AI
-                  is thinking...
-                </div>
-              )}
-            </motion.div>
+            <div className="p-6 md:p-10 max-w-2xl mx-auto w-full">
+              <AnalysisBody
+                isLoading={isLoading}
+                content={analysisContent}
+                tags={meta.tags}
+              />
+            </div>
           ) : (
-            <FlashcardView
-              cards={flashcards}
-              isLoading={isLoading}
-              onSeek={onSeek}
-            />
+            <div className="py-6 md:py-10 w-full">
+              {" "}
+              <FlashcardView
+                cards={flashcards}
+                isLoading={isLoading}
+                onSeek={onSeek}
+              />
+            </div>
           )}
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+// 独立的总结内容渲染组件，包含 Skeleton
+function AnalysisBody({ isLoading, content, tags }: any) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-2xl mx-auto p-6 md:p-10"
+    >
+      {tags && (
+        <div className="flex flex-wrap gap-2 mb-8">
+          {tags
+            .replace(/[\[\]]/g, "")
+            .split(",")
+            .map((t: any, i: number) => (
+              <span
+                key={i}
+                className="px-3 py-1 bg-violet-50 text-violet-600 text-[10px] font-black rounded-full uppercase"
+              >
+                #{t.trim()}
+              </span>
+            ))}
+        </div>
+      )}
+
+      {/* 当正在加载且没数据时，显示占位 */}
+      {isLoading && !content ? (
+        <div className="space-y-6">
+          <div className="h-8 bg-slate-200 rounded-md w-3/4 animate-pulse" />
+          <div className="space-y-3">
+            <div className="h-4 bg-slate-100 rounded w-full animate-pulse" />
+            <div className="h-4 bg-slate-100 rounded w-5/6 animate-pulse" />
+            <div className="h-4 bg-slate-100 rounded w-4/6 animate-pulse" />
+          </div>
+          <div className="h-40 bg-slate-50 rounded-2xl w-full animate-pulse" />
+        </div>
+      ) : (
+        <article className="prose prose-slate max-w-none prose-sm sm:prose-base">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+          {isLoading && (
+            <div className="mt-8 flex items-center gap-3 py-4 border-t border-slate-50 text-violet-500 font-bold italic animate-pulse">
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" />
+              </div>
+              AI is capturing more insights...
+            </div>
+          )}
+        </article>
+      )}
+    </motion.div>
   );
 }
