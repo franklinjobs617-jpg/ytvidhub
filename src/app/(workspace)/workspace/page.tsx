@@ -116,13 +116,68 @@ function WorkspaceContent() {
     };
   }, [resize, stopResizing]);
 
+// 在 WorkspaceContent 组件内部添加这个常量
+const MOCK_AI_DATA = `---
+tags: AI, LLM, Data Engineering, Research
+---
+# 🚀 YouTube Data for LLM Training
+
+Extracting subtitles in bulk is the **gold standard** for creating high-quality conversational datasets. This video explains why clean text outperforms raw crawls.
+
+## Key Insights
+- **Cleanliness**: Removing filler words like "um" increases model accuracy.
+- **Bulk Action**: Handling 100+ videos at once saves 90% of prep time.
+- **Formats**: JSONL is the preferred format for fine-tuning.
+
+---START_CARDS---
+---
+Q: Why is bulk downloading better than manual extraction?
+A: It allows researchers to build massive datasets from entire playlists in seconds, ensuring consistency in data formatting.
+T: 01:24
+---
+Q: What defines "Clean Data" in this context?
+A: Data that has had timestamps, advertising segments, and filler words removed to maximize the signal-to-noise ratio.
+T: 05:40
+---
+Q: Which format is best for OpenAI fine-tuning?
+A: JSONL (JSON Lines) is recommended as it allows the model to process each conversation turn as a separate object.
+T: 12:15
+`;
+
+// ... 在 WorkspaceContent 内部修改这个函数 ...
+const handleRequestAnalysis = async (url?: string, videoId?: string) => {
+  const targetUrl = url || currentVideo?.url;
+  if (!targetUrl) return;
+
+  // 1. 进入加载状态
+  // 注意：这里由于 useSubtitleDownloader 是外部 hook，我们可能需要手动模拟它的状态变化
+  // 如果你的 hook 没提供 setLoading，你可以自己定义一个本地的 isMockLoading
+  
+  if (window.innerWidth < 768) setActiveTab("analysis");
+
+  // --- 模拟开始 ---
+  // 先清空旧数据
+  setSummaryData(""); 
+  
+  // 模拟 AI 思考延迟
+  setTimeout(() => {
+    setSummaryData(MOCK_AI_DATA);
+    // 注意：如果是真实 Hook，这里可能需要调用 generateAiSummary。
+    // 为了模拟，我们直接用 setSummaryData 填充。
+  }, 1500); 
+  // --- 模拟结束 ---
+};
   // --- 业务处理 ---
-  const handleRequestAnalysis = async (url?: string, videoId?: string) => {
-    const targetUrl = url || currentVideo?.url;
-    if (!targetUrl || isAiLoading) return;
-    if (window.innerWidth < 768) setActiveTab("analysis");
-    await generateAiSummary(targetUrl);
-  };
+  // const handleRequestAnalysis = async (url?: string, videoId?: string) => {
+  //   const targetUrl = url || currentVideo?.url;
+  //   if (!targetUrl || isAiLoading) return;
+  //   if (window.innerWidth < 768) setActiveTab("analysis");
+  //   await generateAiSummary(MOCK_AI_RESPONSE);
+  // };
+
+
+
+
 
   const handleSeek = (timeStr: string) => {
     const parts = timeStr.split(":").map(Number);

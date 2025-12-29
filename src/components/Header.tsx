@@ -34,6 +34,10 @@ const navigation = {
   ],
   blog: [
     {
+      name:'ai Youtube Video Summarizer',
+      href: "/blog/ai-youtube-video-summarizer",
+    },
+    {
       name: "Subtitle Accuracy Problem",
       href: "/blog/subtitle-accuracy-problem",
     },
