@@ -109,10 +109,13 @@ export function useSubtitleDownloader() {
     }
   };
 
-  const generateAiSummary = async (videoUrl: string, onChunk?: (chunk: string) => void) => {
+  const generateAiSummary = async (
+    videoUrl: string,
+    onChunk?: (chunk: string) => void
+  ) => {
     setIsAiLoading(true);
-    setSummaryData(""); 
-    
+    setSummaryData("");
+
     try {
       const response = await subtitleApi.generateSummaryStream(videoUrl);
 
@@ -130,15 +133,15 @@ export function useSubtitleDownloader() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        
+
         const chunk = decoder.decode(value, { stream: true });
         accumulatedText += chunk;
-        
+
         setSummaryData(accumulatedText);
-        
+
         if (onChunk) onChunk(accumulatedText);
       }
-      
+
       return accumulatedText;
     } catch (err: any) {
       console.error("Summary Stream Error:", err);

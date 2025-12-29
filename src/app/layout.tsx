@@ -18,10 +18,36 @@ const fontDisplay = Anton({
   display: "swap",
 });
 
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ytvidhub.com"), 
   title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
   description:
     "Stop 100 clicks for data preparation. YTVidHub offers unique bulk download for playlists/channels and converts to optimized, clean TXT for LLM training. 5 free daily credits.",
+  openGraph: {
+    title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
+    description: "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training and research.",
+    url: "https://ytvidhub.com/",
+    siteName: "YTVidHub",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/image/og-image.webp", 
+        width: 1200,
+        height: 630,
+        alt: "YTVidHub - Bulk YouTube Subtitle Downloader",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
+    description: "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training.",
+    images: ["/image/og-image.webp"], 
+  },
+
   alternates: {
     canonical: "https://ytvidhub.com/",
   },

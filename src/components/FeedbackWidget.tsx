@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { MessageSquarePlus, X, Send, Loader2 } from "lucide-react";
-import { toast } from "sonner"; // 既然你已经装了 sonner
+import { toast } from "sonner";
 
 export default function FeedbackWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [contact, setContact] = useState(""); // 选填：用户的联系方式
+  const [contact, setContact] = useState(""); 
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {

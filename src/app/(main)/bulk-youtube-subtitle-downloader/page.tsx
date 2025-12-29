@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
@@ -9,8 +8,6 @@ export default function BulkDownloaderPage() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showScrollBtns, setShowScrollBtns] = useState(false);
-
- 
 
   const handleAction = (e: React.MouseEvent) => {
     if (!user) {
@@ -47,7 +44,6 @@ export default function BulkDownloaderPage() {
               seconds.
             </p>
 
-            {/* 按钮组 */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
               <Link
                 href="/"
@@ -64,12 +60,10 @@ export default function BulkDownloaderPage() {
               </Link>
             </div>
 
-            {/* === 3. 产品 Mockup：保持原有的专业感，但间距微调以适配新排版 === */}
             <div className="max-w-4xl mx-auto">
               <div className="bg-white/80 backdrop-blur-sm rounded-[2rem] border border-slate-200 shadow-2xl p-1">
                 <div className="bg-slate-50 rounded-[1.8rem] p-6 md:p-10 border border-slate-100">
                   <div className="grid md:grid-cols-2 gap-10 items-center">
-                    {/* 左侧代码展示 */}
                     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-inner text-left font-mono text-xs leading-7 text-slate-400">
                       <div className="flex items-center gap-2">
                         <span className="text-blue-500 font-bold">01.</span>
