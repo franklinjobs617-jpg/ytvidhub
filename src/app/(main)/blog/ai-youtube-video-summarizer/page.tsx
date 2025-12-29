@@ -137,7 +137,7 @@ export default function AISummaryBlogPage() {
           ].map((box, i) => (
             <div key={i} className="group p-10 bg-white rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-2xl transition-all text-center">
               <div className="w-16 h-16 mx-auto bg-slate-900 text-white rounded-2xl flex items-center justify-center mb-8 transition-transform group-hover:rotate-12">
-                {React.cloneElement(box.icon as React.ReactElement, { size: 30 })}
+                {React.cloneElement(box.icon as React.ReactElement)}
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4 uppercase italic tracking-tighter">{box.title}</h3>
               <p className="text-slate-500 text-sm leading-relaxed">{box.desc}</p>
