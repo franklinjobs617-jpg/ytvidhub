@@ -3,6 +3,7 @@ import { Inter, Anton } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
+import Script from "next/script";
 import "./globals.css";
 
 const fontBody = Inter({
@@ -18,22 +19,22 @@ const fontDisplay = Anton({
   display: "swap",
 });
 
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ytvidhub.com"), 
+  metadataBase: new URL("https://ytvidhub.com"),
   title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
   description:
     "Stop 100 clicks for data preparation. YTVidHub offers unique bulk download for playlists/channels and converts to optimized, clean TXT for LLM training. 5 free daily credits.",
   openGraph: {
     title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
-    description: "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training and research.",
+    description:
+      "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training and research.",
     url: "https://ytvidhub.com/",
     siteName: "YTVidHub",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/image/og-image.webp", 
+        url: "/image/og-image.webp",
         width: 1200,
         height: 630,
         alt: "YTVidHub - Bulk YouTube Subtitle Downloader",
@@ -44,8 +45,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
-    description: "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training.",
-    images: ["/image/og-image.webp"], 
+    description:
+      "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training.",
+    images: ["/image/og-image.webp"],
   },
 
   alternates: {
@@ -116,6 +118,16 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
           crossOrigin="anonymous"
         ></script>
+
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "uszhcgfose");
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
