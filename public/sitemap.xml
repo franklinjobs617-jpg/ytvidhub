@@ -103,7 +103,7 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc></loc>https://ytvidhub.com/guide/srt-vs-vtt</loc>
+        <loc>https://ytvidhub.com/guide/srt-vs-vtt</loc> <!-- 修正了这一行 -->
         <lastmod>2025-05-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
