@@ -31,6 +31,10 @@ const navigation = {
     },
     { name: "YouTube API Alt", href: "/guide/youtube-subtitles-api-free" },
     {name:"Youtube Subtitles For Llm Data",href:"/guide/youtube-subtitles-for-llm-data" },
+    {
+      name:"Srt Vs Vtt Format",
+      href:"/guide/srt-vs-vtt"
+    }
   ],
   blog: [
     {
