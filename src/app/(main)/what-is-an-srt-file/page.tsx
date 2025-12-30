@@ -1157,7 +1157,7 @@ export default function SrtFileGuidePage() {
                         />
                       </Link>
                       <p className="text-slate-400 text-xs mt-6">
-                        No credit card required • 100 free SRT extractions •
+                        No credit card required • 5 free SRT extractions •
                         Enterprise API available
                       </p>
                     </div>
