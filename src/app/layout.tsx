@@ -118,6 +118,20 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
           crossOrigin="anonymous"
         ></script>
+        {/* Google Analytics - Global Site Tag (gtag.js) */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX" //
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KZZ05YN8TX'); 
+  `}
+        </Script>
 
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
