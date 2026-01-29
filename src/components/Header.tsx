@@ -30,15 +30,15 @@ const navigation = {
       href: "/guide/mastering-vtt-data-analysis",
     },
     { name: "YouTube API Alt", href: "/guide/youtube-subtitles-api-free" },
-    {name:"Youtube Subtitles For Llm Data",href:"/guide/youtube-subtitles-for-llm-data" },
+    { name: "Youtube Subtitles For Llm Data", href: "/guide/youtube-subtitles-for-llm-data" },
     {
-      name:"Srt Vs Vtt Format",
-      href:"/guide/srt-vs-vtt"
+      name: "Srt Vs Vtt Format",
+      href: "/guide/srt-vs-vtt"
     }
   ],
   blog: [
     {
-      name:'ai Youtube Video Summarizer',
+      name: 'ai Youtube Video Summarizer',
       href: "/blog/ai-youtube-video-summarizer",
     },
     {
@@ -110,42 +110,38 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-6 lg:gap-8">
             <Link
               href="/"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${
-                isActive("/")
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/")
                   ? "text-blue-600"
                   : "text-slate-500 hover:text-slate-900"
-              }`}
+                }`}
             >
               Home
             </Link>
 
             <Link
               href="/bulk-youtube-subtitle-downloader"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${
-                isActive("/bulk-youtube-subtitle-downloader")
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/bulk-youtube-subtitle-downloader")
                   ? "text-blue-600"
                   : "text-slate-500 hover:text-slate-900"
-              }`}
+                }`}
             >
               Bulk Downloader
             </Link>
 
             <div className="relative group h-20 flex items-center">
               <button
-                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${
-                  isParentActive(navigation.guides)
+                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.guides)
                     ? "text-blue-600"
                     : "text-slate-500 group-hover:text-blue-600"
-                }`}
+                  }`}
               >
                 <span>Guide</span>
                 <ChevronDown
                   size={14}
-                  className={`transition-transform duration-200 group-hover:rotate-180 ${
-                    isParentActive(navigation.guides)
+                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.guides)
                       ? "text-blue-600"
                       : "text-slate-400"
-                  }`}
+                    }`}
                 />
               </button>
               <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
@@ -154,11 +150,10 @@ export default function Header() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                        isActive(item.href)
+                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
                           ? "bg-blue-50 text-blue-600 font-bold"
                           : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
-                      }`}
+                        }`}
                     >
                       {item.name}
                     </Link>
@@ -169,20 +164,18 @@ export default function Header() {
 
             <div className="relative group h-20 flex items-center">
               <button
-                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${
-                  isParentActive(navigation.blog)
+                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.blog)
                     ? "text-blue-600"
                     : "text-slate-500 group-hover:text-blue-600"
-                }`}
+                  }`}
               >
                 <span>Blog</span>
                 <ChevronDown
                   size={14}
-                  className={`transition-transform duration-200 group-hover:rotate-180 ${
-                    isParentActive(navigation.blog)
+                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.blog)
                       ? "text-blue-600"
                       : "text-slate-400"
-                  }`}
+                    }`}
                 />
               </button>
               <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-56 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
@@ -191,11 +184,10 @@ export default function Header() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-                        isActive(item.href)
+                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
                           ? "bg-blue-50 text-blue-600 font-bold"
                           : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
-                      }`}
+                        }`}
                     >
                       {item.name}
                     </Link>
@@ -206,11 +198,10 @@ export default function Header() {
 
             <Link
               href="/pricing"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${
-                isActive("/pricing")
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/pricing")
                   ? "text-blue-600"
                   : "text-slate-500 hover:text-slate-900"
-              }`}
+                }`}
             >
               Pricing
             </Link>
@@ -330,21 +321,18 @@ export default function Header() {
       </header>
 
       <div
-        className={`fixed inset-0 z-[60] flex flex-col md:hidden transition-all duration-300 ${
-          mobileMenuOpen ? "visible" : "invisible"
-        }`}
+        className={`fixed inset-0 z-[60] flex flex-col md:hidden transition-all duration-300 ${mobileMenuOpen ? "visible" : "invisible"
+          }`}
       >
         <div
-          className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${
-            mobileMenuOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setMobileMenuOpen(false)}
         />
 
         <div
-          className={`relative w-[80%] max-w-sm h-full bg-white shadow-2xl transition-transform duration-300 flex flex-col ${
-            mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`relative w-[80%] max-w-sm h-full bg-white shadow-2xl transition-transform duration-300 flex flex-col ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           <div className="flex justify-between items-center px-6 h-16 border-b border-slate-100 shrink-0">
             <span className="font-bold text-lg uppercase tracking-tighter flex items-center gap-2">
@@ -362,19 +350,17 @@ export default function Header() {
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             <Link
               href="/"
-              className={`block text-lg font-bold ${
-                isActive("/") ? "text-blue-600" : "text-slate-900"
-              }`}
+              className={`block text-lg font-bold ${isActive("/") ? "text-blue-600" : "text-slate-900"
+                }`}
             >
               Home
             </Link>
             <Link
               href="/bulk-youtube-subtitle-downloader"
-              className={`block text-lg font-bold ${
-                isActive("/bulk-youtube-subtitle-downloader")
+              className={`block text-lg font-bold ${isActive("/bulk-youtube-subtitle-downloader")
                   ? "text-blue-600"
                   : "text-slate-900"
-              }`}
+                }`}
             >
               Bulk Downloader
             </Link>
@@ -382,11 +368,10 @@ export default function Header() {
             {/* Guides Group */}
             <div className="space-y-3">
               <p
-                className={`text-xs font-bold uppercase tracking-widest ${
-                  isParentActive(navigation.guides)
+                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.guides)
                     ? "text-blue-600"
                     : "text-slate-400"
-                }`}
+                  }`}
               >
                 Guides
               </p>
@@ -394,9 +379,8 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`block pl-4 py-1 text-base font-medium ${
-                    isActive(item.href) ? "text-blue-600" : "text-slate-600"
-                  }`}
+                  className={`block pl-4 py-1 text-base font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -405,11 +389,10 @@ export default function Header() {
 
             <div className="space-y-3">
               <p
-                className={`text-xs font-bold uppercase tracking-widest ${
-                  isParentActive(navigation.blog)
+                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.blog)
                     ? "text-blue-600"
                     : "text-slate-400"
-                }`}
+                  }`}
               >
                 Blog
               </p>
@@ -417,9 +400,8 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`block pl-4 py-1 text-base font-medium ${
-                    isActive(item.href) ? "text-blue-600" : "text-slate-600"
-                  }`}
+                  className={`block pl-4 py-1 text-base font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -428,9 +410,8 @@ export default function Header() {
 
             <Link
               href="/pricing"
-              className={`block text-lg font-bold ${
-                isActive("/pricing") ? "text-blue-600" : "text-slate-900"
-              }`}
+              className={`block text-lg font-bold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"
+                }`}
             >
               Pricing
             </Link>

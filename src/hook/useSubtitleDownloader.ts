@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { subtitleApi } from "@/lib/api";
 
-export function useSubtitleDownloader() {
+export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -37,9 +37,8 @@ export function useSubtitleDownloader() {
         url: item.url,
         title: item.video_info.title || "Untitled",
         uploader: item.video_info.uploader || "Unknown",
-        thumbnail: `https://i.ytimg.com/vi/${
-          (item.url.match(/[?&]v=([^&#]+)/) || [])[1] || item.url.slice(-11)
-        }/hqdefault.jpg`,
+        thumbnail: `https://i.ytimg.com/vi/${(item.url.match(/[?&]v=([^&#]+)/) || [])[1] || item.url.slice(-11)
+          }/hqdefault.jpg`,
         hasSubtitles: item.can_download,
       }));
     } finally {
@@ -50,25 +49,53 @@ export function useSubtitleDownloader() {
   const startSingleDownload = async (video: any, format: string) => {
     setIsDownloading(true);
     setProgress(10);
-    setStatusText("Connecting...");
-    startSmoothProgress(98);
+    setStatusText("Checking credits...");
+
     try {
+      setStatusText("Connecting...");
+      startSmoothProgress(98);
+
       const blob = await subtitleApi.downloadSingle({
         url: video.url,
         lang: "en",
         format,
         title: video.title,
       });
+
       setProgress(100);
       setStatusText("Complete!");
       triggerDownload(
         blob,
         `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`
       );
+
+      // 刷新积分显示
+      if (onCreditsChanged) {
+        onCreditsChanged();
+      }
+
       setTimeout(() => setIsDownloading(false), 800);
     } catch (err: any) {
       setIsDownloading(false);
-      alert(err.message);
+
+      // 特殊处理积分不足的错误
+      if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
+        const shouldBuyCredits = confirm(
+          "Subtitle download requires 1 credit. You don't have enough credits.\n\nWould you like to purchase more credits?"
+        );
+        if (shouldBuyCredits) {
+          window.open("/pricing", "_blank");
+        }
+      } else if (err.message.includes("login")) {
+        const shouldLogin = confirm(
+          "Please login to download subtitles.\n\nWould you like to login now?"
+        );
+        if (shouldLogin) {
+          window.location.href = "/";
+        }
+      } else {
+        alert(err.message);
+      }
     } finally {
       if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     }
@@ -77,9 +104,12 @@ export function useSubtitleDownloader() {
   const startBulkDownload = async (videos: any[], format: string) => {
     setIsDownloading(true);
     setProgress(5);
-    setStatusText("Initializing...");
-    startSmoothProgress(30);
+    setStatusText("Checking credits...");
+
     try {
+      setStatusText("Initializing...");
+      startSmoothProgress(30);
+
       const task = await subtitleApi.submitBulkTask(videos, "en", format);
       const timer = setInterval(async () => {
         try {
@@ -90,6 +120,12 @@ export function useSubtitleDownloader() {
             setStatusText("Success!");
             const blob = await subtitleApi.downloadZip(task.task_id);
             triggerDownload(blob, `bulk_subs_${Date.now()}.zip`);
+
+            // 刷新积分显示
+            if (onCreditsChanged) {
+              onCreditsChanged();
+            }
+
             setTimeout(() => setIsDownloading(false), 1000);
           } else {
             const [c, t] = (status.progress || "0/0").split("/").map(Number);
@@ -103,7 +139,25 @@ export function useSubtitleDownloader() {
       }, 3000);
     } catch (err: any) {
       setIsDownloading(false);
-      alert(err.message);
+
+      // 特殊处理积分不足的错误
+      if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
+        const shouldBuyCredits = confirm(
+          `Bulk download requires ${videos.length} credits (1 per video). You don't have enough credits.\n\nWould you like to purchase more credits?`
+        );
+        if (shouldBuyCredits) {
+          window.open("/pricing", "_blank");
+        }
+      } else if (err.message.includes("login")) {
+        const shouldLogin = confirm(
+          "Please login to download subtitles.\n\nWould you like to login now?"
+        );
+        if (shouldLogin) {
+          window.location.href = "/";
+        }
+      } else {
+        alert(err.message);
+      }
     } finally {
       if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     }
@@ -142,13 +196,46 @@ export function useSubtitleDownloader() {
         if (onChunk) onChunk(accumulatedText);
       }
 
+      // AI总结完成后才扣除积分
+      try {
+        await subtitleApi.deductCreditsAfterSummary();
+        console.log('AI Summary credits deducted successfully');
+      } catch (creditError) {
+        console.error('Failed to deduct credits after AI summary:', creditError);
+        // 即使扣除积分失败，也不影响已生成的总结
+      }
+
       return accumulatedText;
     } catch (err: any) {
       console.error("Summary Stream Error:", err);
-      alert(err.message || "An error occurred while generating summary");
+
+      // 特殊处理积分不足的错误
+      if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
+        const shouldBuyCredits = confirm(
+          "AI Summary requires 2 credits. You don't have enough credits.\n\nWould you like to purchase more credits?"
+        );
+        if (shouldBuyCredits) {
+          window.open("/pricing", "_blank");
+        }
+      } else if (err.message.includes("login")) {
+        const shouldLogin = confirm(
+          "Please login to use AI Summary feature.\n\nWould you like to login now?"
+        );
+        if (shouldLogin) {
+          window.location.href = "/";
+        }
+      } else {
+        alert(err.message || "An error occurred while generating summary");
+      }
+
       throw err;
     } finally {
       setIsAiLoading(false);
+
+      // AI总结完成后也刷新积分
+      if (onCreditsChanged) {
+        onCreditsChanged();
+      }
     }
   };
 

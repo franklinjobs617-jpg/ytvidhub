@@ -14,6 +14,8 @@ export function ControlBar({
   canAction,
   actionLabel,
   isDownloading,
+  isActionClicked = false, // 新增：按钮点击状态
+  mode = "download", // 新增：当前模式
 }: any) {
   
   // 判断是否是未登录状态（根据你的逻辑，未登录可能是 "--" 或者 "0"）
@@ -104,17 +106,25 @@ export function ControlBar({
             flex-1 md:flex-none flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-black text-sm transition-all shadow-sm
             ${
               canAction
-                ? "bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:shadow-slate-200/50 active:scale-[0.98]"
+                ? isActionClicked
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-200/50 scale-[0.98]"
+                  : "bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:shadow-slate-200/50 active:scale-[0.98]"
                 : "bg-slate-100 text-slate-300 cursor-not-allowed"
             }
           `}
         >
           {isDownloading ? (
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          ) : isActionClicked && mode === "summary" ? (
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          ) : mode === "summary" ? (
+              <Sparkles size={16} />
           ) : (
               <Download size={16} />
           )}
-          <span className="uppercase tracking-widest">{actionLabel}</span>
+          <span className="uppercase tracking-widest">
+            {isActionClicked && mode === "summary" ? "Opening..." : actionLabel}
+          </span>
         </button>
       </div>
     </div>

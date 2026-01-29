@@ -3,6 +3,8 @@
 import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
+import { subtitleApi } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 import { Sidebar } from "@/components/workspace/Sidebar";
 import { VideoPlayer } from "@/components/workspace/VideoPlayer";
 import { TranscriptArea } from "@/components/workspace/TranscriptArea";
@@ -14,25 +16,44 @@ import {
   Brain,
   Video as VideoIcon,
 } from "lucide-react";
+import { LoadingTransition } from "@/components/workspace/LoadingTransition";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { refreshUser } = useAuth();
 
   // URL 参数获取
   const urlsParam = searchParams.get("urls");
   const fromParam = searchParams.get("from");
+  const modeParam = searchParams.get("mode");
   const isFromHome = fromParam === "home";
+  const isSummaryMode = modeParam === "summary";
+
+  // --- 数据预处理 (瞬时解析 ID) ---
+  const initialUrls = urlsParam ? decodeURIComponent(urlsParam).split(",") : [];
+  const placeholderVideos = initialUrls.map(url => {
+    const id = (url.match(/[?&]v=([^&#]+)/) || [])[1] || url.slice(-11);
+    return { 
+      id, 
+      url, 
+      title: "Loading video info...", 
+      uploader: "...", 
+      hasSubtitles: true,
+      thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+    };
+  });
 
   // 状态管理
-  const [videoList, setVideoList] = useState<any[]>([]);
-  const [currentVideo, setCurrentVideo] = useState<any>(null);
+  const [videoList, setVideoList] = useState<any[]>(placeholderVideos);
+  const [currentVideo, setCurrentVideo] = useState<any>(placeholderVideos[0] || null);
   const [currentTime, setCurrentTime] = useState(0);
   const [seekTime, setSeekTime] = useState<number | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<"video" | "analysis" | "quiz">(
-    "video"
+    isSummaryMode ? "analysis" : "video"
   );
+  const [isVideoInfoLoaded, setIsVideoInfoLoaded] = useState(false);
 
   // 布局调整状态
   const [leftWidth, setLeftWidth] = useState(50);
@@ -54,37 +75,81 @@ function WorkspaceContent() {
 
     const urls = decodeURIComponent(urlsParam).split(",");
 
-    analyzeUrls(urls).then((results) => {
+    // 如果是summary模式，先快速获取视频信息，然后立即开始分析
+    if (isSummaryMode && urls.length === 1) {
+      // 快速获取视频信息
+      subtitleApi.getVideoInfo(urls[0]).then((videoInfo) => {
+        const enhancedVideo = {
+          id: videoInfo.id || (urls[0].match(/[?&]v=([^&#]+)/) || [])[1] || urls[0].slice(-11),
+          url: urls[0],
+          title: videoInfo.title || 'Loading...',
+          uploader: videoInfo.uploader || '...',
+          hasSubtitles: videoInfo.has_subtitles,
+          thumbnail: videoInfo.thumbnail || `https://i.ytimg.com/vi/${videoInfo.id}/hqdefault.jpg`,
+          duration: videoInfo.duration
+        };
+        
+        setCurrentVideo(enhancedVideo);
+        setVideoList([enhancedVideo]);
+        setIsVideoInfoLoaded(true);
+
+        // 立即开始AI分析
+        if (isFromHome) {
+          const storageKey = `auto_analyzed_${enhancedVideo.id}`;
+          const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
+
+          if (!hasAnalyzedInSession) {
+            setTimeout(() => {
+              handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id);
+            }, 300);
+            sessionStorage.setItem(storageKey, "true");
+          }
+          
+          // 清理URL参数
+          const newParams = new URLSearchParams(searchParams.toString());
+          newParams.delete("from");
+          newParams.delete("mode");
+          router.replace(`/workspace?${newParams.toString()}`, {
+            scroll: false,
+          });
+        }
+      }).catch(() => {
+        // 如果快速获取失败，回退到完整分析
+        analyzeUrls(urls).then(handleAnalysisResults);
+      });
+    } else {
+      // 非summary模式或多个URL，使用完整分析
+      analyzeUrls(urls).then(handleAnalysisResults);
+    }
+
+    function handleAnalysisResults(results: any[]) {
       setVideoList(results);
+      setIsVideoInfoLoaded(true);
 
       if (results.length > 0) {
         const firstVideo = results[0];
         setCurrentVideo(firstVideo);
 
-        if (isFromHome) {
+        if (isFromHome && isSummaryMode) {
           const storageKey = `auto_analyzed_${firstVideo.id}`;
           const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
 
           if (!hasAnalyzedInSession) {
-            handleRequestAnalysis(firstVideo.url, firstVideo.id);
-
+            setTimeout(() => {
+              handleRequestAnalysis(firstVideo.url, firstVideo.id);
+            }, 300);
             sessionStorage.setItem(storageKey, "true");
-
-            const newParams = new URLSearchParams(searchParams.toString());
-            newParams.delete("from");
-            router.replace(`/workspace?${newParams.toString()}`, {
-              scroll: false,
-            });
-          } else {
-            const newParams = new URLSearchParams(searchParams.toString());
-            newParams.delete("from");
-            router.replace(`/workspace?${newParams.toString()}`, {
-              scroll: false,
-            });
           }
+          
+          const newParams = new URLSearchParams(searchParams.toString());
+          newParams.delete("from");
+          newParams.delete("mode");
+          router.replace(`/workspace?${newParams.toString()}`, {
+            scroll: false,
+          });
         }
       }
-    });
+    }
   }, [urlsParam]);
 
   const startResizing = useCallback(() => {
@@ -116,64 +181,22 @@ function WorkspaceContent() {
     };
   }, [resize, stopResizing]);
 
-// 在 WorkspaceContent 组件内部添加这个常量
-const MOCK_AI_DATA = `---
-tags: AI, LLM, Data Engineering, Research
----
-# 🚀 YouTube Data for LLM Training
 
-Extracting subtitles in bulk is the **gold standard** for creating high-quality conversational datasets. This video explains why clean text outperforms raw crawls.
 
-## Key Insights
-- **Cleanliness**: Removing filler words like "um" increases model accuracy.
-- **Bulk Action**: Handling 100+ videos at once saves 90% of prep time.
-- **Formats**: JSONL is the preferred format for fine-tuning.
-
----START_CARDS---
----
-Q: Why is bulk downloading better than manual extraction?
-A: It allows researchers to build massive datasets from entire playlists in seconds, ensuring consistency in data formatting.
-T: 01:24
----
-Q: What defines "Clean Data" in this context?
-A: Data that has had timestamps, advertising segments, and filler words removed to maximize the signal-to-noise ratio.
-T: 05:40
----
-Q: Which format is best for OpenAI fine-tuning?
-A: JSONL (JSON Lines) is recommended as it allows the model to process each conversation turn as a separate object.
-T: 12:15
-`;
-
-// ... 在 WorkspaceContent 内部修改这个函数 ...
-const handleRequestAnalysis = async (url?: string, videoId?: string) => {
-  const targetUrl = url || currentVideo?.url;
-  if (!targetUrl) return;
-
-  // 1. 进入加载状态
-  // 注意：这里由于 useSubtitleDownloader 是外部 hook，我们可能需要手动模拟它的状态变化
-  // 如果你的 hook 没提供 setLoading，你可以自己定义一个本地的 isMockLoading
-  
-  if (window.innerWidth < 768) setActiveTab("analysis");
-
-  // --- 模拟开始 ---
-  // 先清空旧数据
-  setSummaryData(""); 
-  
-  // 模拟 AI 思考延迟
-  setTimeout(() => {
-    setSummaryData(MOCK_AI_DATA);
-    // 注意：如果是真实 Hook，这里可能需要调用 generateAiSummary。
-    // 为了模拟，我们直接用 setSummaryData 填充。
-  }, 1500); 
-  // --- 模拟结束 ---
-};
-  // --- 业务处理 ---
-  // const handleRequestAnalysis = async (url?: string, videoId?: string) => {
-  //   const targetUrl = url || currentVideo?.url;
-  //   if (!targetUrl || isAiLoading) return;
-  //   if (window.innerWidth < 768) setActiveTab("analysis");
-  //   await generateAiSummary(MOCK_AI_RESPONSE);
-  // };
+  const handleRequestAnalysis = async (url?: string, videoId?: string) => {
+    const targetUrl = url || currentVideo?.url;
+    if (!targetUrl || isAiLoading) return;
+    if (window.innerWidth < 768) setActiveTab("analysis");
+    
+    try {
+      await generateAiSummary(targetUrl);
+      // AI总结完成后刷新用户积分显示
+      await refreshUser();
+    } catch (error) {
+      // 错误已经在generateAiSummary中处理了
+      console.error("AI Summary failed:", error);
+    }
+  };
 
 
 
@@ -192,10 +215,10 @@ const handleRequestAnalysis = async (url?: string, videoId?: string) => {
   if (!currentVideo)
     return (
       <div className="h-screen flex items-center justify-center bg-white">
-        <Loader2 className="animate-spin text-violet-600 w-8 h-8" />
-        <span className="ml-3 text-slate-500 font-medium">
-          Loading workspace...
-        </span>
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-slate-500 font-medium">Loading workspace...</p>
+        </div>
       </div>
     );
 
@@ -229,9 +252,8 @@ const handleRequestAnalysis = async (url?: string, videoId?: string) => {
 
         <main className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
           <div
-            className={`flex-col bg-white transition-all duration-0 md:duration-75 ease-linear ${
-              activeTab === "video" ? "flex h-full" : "hidden md:flex"
-            }`}
+            className={`flex-col bg-white transition-all duration-0 md:duration-75 ease-linear ${activeTab === "video" ? "flex h-full" : "hidden md:flex"
+              }`}
             style={{
               width:
                 typeof window !== "undefined" && window.innerWidth >= 768
@@ -266,9 +288,8 @@ const handleRequestAnalysis = async (url?: string, videoId?: string) => {
 
           {/* RIGHT: Analysis Area */}
           <div
-            className={`flex-1 overflow-hidden bg-[#fcfcfd] ${
-              activeTab !== "video" ? "flex" : "hidden md:flex"
-            }`}
+            className={`flex-1 overflow-hidden bg-[#fcfcfd] ${activeTab !== "video" ? "flex" : "hidden md:flex"
+              }`}
           >
             <div className="w-full h-full">
               <SummaryArea
@@ -293,9 +314,8 @@ const handleRequestAnalysis = async (url?: string, videoId?: string) => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex flex-col items-center gap-1 px-4 py-2 ${
-              activeTab === tab.id ? "text-violet-600" : "text-slate-400"
-            }`}
+            className={`flex flex-col items-center gap-1 px-4 py-2 ${activeTab === tab.id ? "text-violet-600" : "text-slate-400"
+              }`}
           >
             <tab.icon size={20} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
             <span className="text-[10px] font-bold uppercase tracking-wide">
@@ -308,7 +328,6 @@ const handleRequestAnalysis = async (url?: string, videoId?: string) => {
   );
 }
 
-// === 2. 导出包裹了 Suspense 的组件 ===
 export default function WorkspacePage() {
   return (
     <Suspense

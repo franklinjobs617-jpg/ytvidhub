@@ -39,7 +39,7 @@ export default function SpanishYTChannelsBlogPage() {
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
       <title>Top Spanish YouTube Channels for Language Learning Subtitles</title>
-      <meta name="description" content="Find the best Spanish YouTube channels with quality subtitles for language learning. Download transcripts easily to create Anki flashcards." />
+      <meta name="description" content="Find the best Spanish YouTube channels with quality subtitles for language learning. Download transcripts easily for study materials." />
       <link rel="canonical" href="https://ytvidhub.com/blog/spanish-yt-channels-subtitles" />
 
       <main>
@@ -141,7 +141,7 @@ export default function SpanishYTChannelsBlogPage() {
                     </div>
                     <img
                       src="../image/language-learning-anki-youtube-workflow.webp"
-                      alt="Language learning workflow: Scene showing the use of YouTube subtitle data to create Anki flashcards for study."
+                      alt="Language learning workflow: Scene showing the use of YouTube subtitle data for language study materials."
                       className="w-full h-auto"
                     />
                   </div>

@@ -1,19 +1,22 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
-  Brain,
   Copy,
   Check,
-  Share2,
+  Target,
+  Lightbulb,
+  BookOpen,
   Download,
-  Terminal,
+  ChevronRight,
+  MessageSquare,
+  Zap,
+  ArrowRight,
 } from "lucide-react";
-import { FlashcardView } from "./FlashcardView"; // 见下方代码
 
 export function SummaryArea({
   data,
@@ -22,202 +25,440 @@ export function SummaryArea({
   onStartAnalysis,
   mobileSubTab,
 }: any) {
-  const [activeTab, setActiveTab] = useState("analysis");
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    if (mobileSubTab)
-      setActiveTab(mobileSubTab === "quiz" ? "flashcards" : "analysis");
-  }, [mobileSubTab]);
-
   const handleCopy = () => {
-    navigator.clipboard.writeText(analysisContent);
+    navigator.clipboard.writeText(data || "");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // 解析数据逻辑
-  const { meta, analysisContent, flashcards } = useMemo(() => {
-    if (!data) return { meta: {}, analysisContent: "", flashcards: [] };
-    let currentData = data;
-    const metaData: Record<string, string> = {};
-
-    const metaMatch = currentData.match(/^---([\s\S]*?)---/);
-    if (metaMatch) {
-      currentData = currentData.replace(metaMatch[0], "").trim();
-      metaMatch[1]
-        .trim()
-        .split("\n")
-        .forEach((row: any) => {
-          const [k, ...v] = row.split(":");
-          if (k && v.length) metaData[k.trim()] = v.join(":").trim();
-        });
+  // 智能解析AI返回的内容 - 只解析sections，不解析卡片
+  const sections = useMemo(() => {
+    if (!data) return [];
+    
+    console.log("Raw AI data:", data);
+    
+    // 尝试解析结构化内容
+    const lines = data.split('\n').filter((line: string) => line.trim());
+    const sections: any[] = [];
+    
+    let currentSection: any = null;
+    let currentContent: string[] = [];
+    
+    for (const line of lines) {
+      // 检测标题（## 或 # 开头）
+      if (line.match(/^#{1,3}\s+/)) {
+        // 保存上一个section
+        if (currentSection) {
+          currentSection.content = currentContent.join('\n').trim();
+          sections.push(currentSection);
+        }
+        
+        // 开始新section
+        const title = line.replace(/^#{1,3}\s+/, '').trim();
+        const level = (line.match(/^#+/) || [''])[0].length;
+        
+        // 跳过不需要的section
+        if (title.toLowerCase().includes('deprecated') || 
+            title.toLowerCase().includes('unused')) {
+          currentSection = null;
+          currentContent = [];
+          continue;
+        }
+        
+        currentSection = {
+          id: title.toLowerCase().replace(/\s+/g, '-'),
+          title,
+          level,
+          content: '',
+          type: getContentType(title)
+        };
+        currentContent = [];
+      }
+      // 普通内容行
+      else if (line.trim() && currentSection) {
+        currentContent.push(line);
+      }
     }
-
-    const parts = currentData.split("---START_CARDS---");
-    return {
-      meta: metaData,
-      analysisContent: parts[0] || "",
-      flashcards: parseCards(parts[1] || ""),
-    };
+    
+    // 保存最后一个section
+    if (currentSection) {
+      currentSection.content = currentContent.join('\n').trim();
+      sections.push(currentSection);
+    }
+    
+    // 如果没有检测到sections，创建一个默认的
+    if (sections.length === 0 && data.trim()) {
+      // 过滤掉问答格式的内容
+      const filteredContent = data
+        .split('\n')
+        .filter((line:any) => !line.match(/^(Q|问|A|答|T|时间)\s*[:：]/))
+        .join('\n')
+        .trim();
+      
+      if (filteredContent) {
+        sections.push({
+          id: 'summary',
+          title: 'AI Analysis',
+          level: 1,
+          content: filteredContent,
+          type: 'summary'
+        });
+      }
+    }
+    
+    console.log("Parsed sections:", sections);
+    
+    return sections;
   }, [data]);
 
-  function parseCards(raw: string) {
-    const cards: any[] = [];
-    const blocks = raw.split("---").filter((b: any) => b.includes("Q:"));
-    blocks.forEach((block: any) => {
-      const q = block.match(/Q:\s?([\s\S]*?)(?=A:|$)/)?.[1]?.trim();
-      const a = block.match(/A:\s?([\s\S]*?)(?=T:|$)/)?.[1]?.trim();
-      const t = block.match(/T:\s?\[?(\d{1,3}:\d{2})\]?/)?.[1]?.trim();
-      if (q) cards.push({ question: q, answer: a || "Thinking...", time: t });
-    });
-    return cards;
+  function getContentType(title: string) {
+    const lower = title.toLowerCase();
+    if (lower.includes('summary') || lower.includes('总结')) return 'summary';
+    if (lower.includes('key') || lower.includes('重点') || lower.includes('要点')) return 'keypoints';
+    if (lower.includes('insight') || lower.includes('洞察')) return 'insights';
+    if (lower.includes('takeaway') || lower.includes('收获')) return 'takeaways';
+    return 'content';
   }
 
   return (
-    <div className="h-full flex flex-col bg-[#F9FAFB]">
-      <header className="flex h-14 px-6 border-b border-slate-100 bg-white/80 backdrop-blur-md items-center justify-between shrink-0 sticky top-0 z-30">
-        <div className="flex gap-8 h-full">
-          {[
-            { id: "analysis", label: "Insights", icon: Sparkles },
-            { id: "flashcards", label: "Cards", icon: Brain },
-          ].map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setActiveTab(t.id)}
-              className={`relative h-full flex items-center gap-2 text-xs font-bold tracking-tight transition-all ${
-                activeTab === t.id
-                  ? "text-violet-600"
-                  : "text-slate-400 hover:text-slate-600"
-              }`}
-            >
-              <t.icon size={16} strokeWidth={activeTab === t.id ? 2.5 : 2} />
-              {t.label}
-              {activeTab === t.id && (
-                <motion.div
-                  layoutId="tab-underline"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-violet-600"
-                />
-              )}
-            </button>
-          ))}
+    <div className="h-full flex flex-col bg-slate-50">
+      {/* Header */}
+      <header className="flex h-16 px-6 border-b border-slate-200 bg-white items-center justify-between shrink-0 sticky top-0 z-30 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <Sparkles size={20} className="text-blue-600" />
+            <div>
+              <h2 className="font-semibold text-slate-900">AI Analysis</h2>
+              <p className="text-xs text-slate-500">
+                {sections.length} sections analyzed
+              </p>
+            </div>
+          </div>
         </div>
 
-        {data && (
-          <div className="flex gap-2">
-            <button
-              onClick={handleCopy}
-              className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-all active:scale-95"
-            >
-              {copied ? (
-                <Check size={16} className="text-green-500" />
-              ) : (
-                <Copy size={16} />
-              )}
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {data && (
+            <>
+              <button
+                onClick={handleCopy}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all"
+              >
+                {copied ? (
+                  <Check size={16} className="text-green-500" />
+                ) : (
+                  <Copy size={16} />
+                )}
+                {copied ? "Copied!" : "Copy"}
+              </button>
+              
+              <button className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+                <Download size={16} />
+                Export
+              </button>
+            </>
+          )}
+        </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar">
-        <AnimatePresence mode="wait">
-          {!data && !isLoading ? (
-            <div className="h-full flex flex-col items-center justify-center p-8 text-center min-h-[400px]">
-              <div className="w-20 h-20 bg-violet-50 rounded-3xl flex items-center justify-center mb-6 animate-bounce">
-                <Sparkles size={32} className="text-violet-500" />
-              </div>
-              <h2 className="text-xl font-black text-slate-800 mb-2">
-                Ready to Decode?
-              </h2>
-              <p className="text-slate-500 text-sm max-w-[240px] mb-8">
-                Click analyze to transform this video into structured knowledge
-                cards.
-              </p>
-              <button
-                onClick={onStartAnalysis}
-                className="group flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-violet-600 transition-all shadow-xl shadow-slate-200"
-              >
-                Analyze Now{" "}
-                <Terminal
-                  size={18}
-                  className="group-hover:translate-x-1 transition-transform"
-                />
-              </button>
-            </div>
-          ) : activeTab === "analysis" ? (
-            <div className="p-6 md:p-10 max-w-2xl mx-auto w-full">
-              <AnalysisBody
-                isLoading={isLoading}
-                content={analysisContent}
-                tags={meta.tags}
-              />
-            </div>
-          ) : (
-            <div className="py-6 md:py-10 w-full">
-              {" "}
-              <FlashcardView
-                cards={flashcards}
-                isLoading={isLoading}
-                onSeek={onSeek}
-              />
-            </div>
-          )}
-        </AnimatePresence>
+      {/* Content */}
+      <div className="flex-1 overflow-hidden">
+        {!data && !isLoading ? (
+          <EmptyState onStartAnalysis={onStartAnalysis} />
+        ) : (
+          <OverviewContent 
+            sections={sections} 
+            isLoading={isLoading} 
+            onSeek={onSeek}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-// 独立的总结内容渲染组件，包含 Skeleton
-function AnalysisBody({ isLoading, content, tags }: any) {
+// 空状态组件 - 重新设计
+function EmptyState({ onStartAnalysis }: any) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="max-w-2xl mx-auto p-6 md:p-10"
-    >
-      {tags && (
-        <div className="flex flex-wrap gap-2 mb-8">
-          {tags
-            .replace(/[\[\]]/g, "")
-            .split(",")
-            .map((t: any, i: number) => (
-              <span
-                key={i}
-                className="px-3 py-1 bg-violet-50 text-violet-600 text-[10px] font-black rounded-full uppercase"
-              >
-                #{t.trim()}
-              </span>
-            ))}
+    <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="max-w-md"
+      >
+        {/* Icon */}
+        <div className="relative mb-8">
+          <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
+            <Sparkles size={40} className="text-white" />
+          </div>
+          <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+            <Zap size={16} className="text-yellow-800" />
+          </div>
         </div>
-      )}
 
-      {/* 当正在加载且没数据时，显示占位 */}
-      {isLoading && !content ? (
-        <div className="space-y-6">
-          <div className="h-8 bg-slate-200 rounded-md w-3/4 animate-pulse" />
-          <div className="space-y-3">
+        {/* Content */}
+        <h2 className="text-2xl font-bold text-slate-900 mb-3">
+          Ready to Unlock Insights
+        </h2>
+        <p className="text-slate-600 mb-8 leading-relaxed">
+          Transform this video into structured knowledge with AI-powered analysis. 
+          Get key insights, summaries, and actionable takeaways.
+        </p>
+
+        {/* Features */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="text-center">
+            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+              <Target size={20} className="text-blue-600" />
+            </div>
+            <p className="text-xs font-medium text-slate-600">Key Insights</p>
+          </div>
+          <div className="text-center">
+            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+              <Sparkles size={20} className="text-green-600" />
+            </div>
+            <p className="text-xs font-medium text-slate-600">Summary</p>
+          </div>
+          <div className="text-center">
+            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+              <BookOpen size={20} className="text-purple-600" />
+            </div>
+            <p className="text-xs font-medium text-slate-600">Takeaways</p>
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <button
+          onClick={onStartAnalysis}
+          className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+        >
+          <Sparkles size={20} className="group-hover:rotate-12 transition-transform" />
+          Start AI Analysis
+          <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+        </button>
+
+        <div className="flex items-center justify-between mt-4">
+          <p className="text-xs text-slate-500">
+            Powered by advanced AI • Takes 30-60 seconds
+          </p>
+          <div className="flex items-center gap-1.5 px-2 py-1 bg-amber-50 border border-amber-100 rounded-full">
+            <span className="text-xs font-bold text-amber-700">2 Credits</span>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// 概览内容组件 - 重新设计为NotebookLM风格
+function OverviewContent({ sections, isLoading, onSeek }: any) {
+  if (isLoading && sections.length === 0) {
+    return <LoadingSkeleton />;
+  }
+
+  return (
+    <div className="h-full overflow-y-auto bg-slate-50">
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+        {/* 视频标题卡片 */}
+        {sections.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm"
+          >
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <BookOpen size={24} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <h1 className="text-xl font-bold text-slate-900 mb-2">
+                  {sections[0]?.title?.replace(/^#+ /, '') || 'Video Analysis'}
+                </h1>
+                <p className="text-slate-600 text-sm">
+                  AI-powered analysis with key insights and study materials
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                  ✓ Analyzed
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* 内容区块 */}
+        <div className="grid gap-4">
+          {sections.map((section: any, index: number) => (
+            <SectionCard 
+              key={section.id} 
+              section={section} 
+              index={index}
+              onSeek={onSeek}
+            />
+          ))}
+        </div>
+        
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm"
+          >
+            <div className="flex items-center gap-3 text-blue-600">
+              <div className="flex gap-1">
+                <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" />
+              </div>
+              <span className="font-medium">AI is analyzing more content...</span>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// 加载骨架屏
+function LoadingSkeleton() {
+  return (
+    <div className="w-full max-w-4xl mx-auto p-6 md:p-8 lg:p-12 space-y-8">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="space-y-4">
+          <div className="h-6 bg-slate-200 rounded-lg w-1/3 animate-pulse" />
+          <div className="space-y-2">
             <div className="h-4 bg-slate-100 rounded w-full animate-pulse" />
             <div className="h-4 bg-slate-100 rounded w-5/6 animate-pulse" />
             <div className="h-4 bg-slate-100 rounded w-4/6 animate-pulse" />
           </div>
-          <div className="h-40 bg-slate-50 rounded-2xl w-full animate-pulse" />
         </div>
-      ) : (
-        <article className="prose prose-slate max-w-none prose-sm sm:prose-base">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-          {isLoading && (
-            <div className="mt-8 flex items-center gap-3 py-4 border-t border-slate-50 text-violet-500 font-bold italic animate-pulse">
-              <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" />
+      ))}
+    </div>
+  );
+}
+
+// 内容区块组件 - 重新设计为更美观的卡片
+function SectionCard({ section, index, onSeek }: any) {
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const getIcon = (type: string) => {
+    switch (type) {
+      case 'summary': return Sparkles;
+      case 'keypoints': return Target;
+      case 'insights': return Lightbulb;
+      case 'takeaways': return BookOpen;
+      default: return BookOpen;
+    }
+  };
+
+  const getColor = (type: string) => {
+    switch (type) {
+      case 'summary': return 'blue';
+      case 'keypoints': return 'green';
+      case 'insights': return 'purple';
+      case 'takeaways': return 'orange';
+      default: return 'slate';
+    }
+  };
+
+  const IconComponent = getIcon(section.type);
+  const color = getColor(section.type);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      className="bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden"
+    >
+      {/* 卡片头部 */}
+      <div className="flex items-center justify-between p-4 border-b border-slate-100">
+        <div className="flex items-center gap-3">
+          <div className={`
+            w-10 h-10 rounded-lg flex items-center justify-center
+            ${color === 'blue' ? 'bg-blue-100 text-blue-600' : ''}
+            ${color === 'green' ? 'bg-green-100 text-green-600' : ''}
+            ${color === 'purple' ? 'bg-purple-100 text-purple-600' : ''}
+            ${color === 'orange' ? 'bg-orange-100 text-orange-600' : ''}
+            ${color === 'slate' ? 'bg-slate-100 text-slate-600' : ''}
+          `}>
+            <IconComponent size={20} />
+          </div>
+          <div>
+            <h3 className="font-semibold text-slate-900">
+              {section.title}
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {section.content.length > 100 ? `${section.content.substring(0, 100)}...` : section.content.substring(0, 50)}
+            </p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsBookmarked(!isBookmarked)}
+            className={`p-2 rounded-lg transition-all ${
+              isBookmarked 
+                ? 'text-yellow-600 bg-yellow-50 hover:bg-yellow-100' 
+                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            <BookOpen size={16} />
+          </button>
+          
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
+          >
+            <ChevronRight 
+              size={16} 
+              className={`transform transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* 卡片内容 */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="p-4">
+              <div className="prose prose-slate max-w-none prose-sm">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {section.content}
+                </ReactMarkdown>
               </div>
-              AI is capturing more insights...
+              
+              {/* 操作按钮 */}
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100">
+                <button className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+                  <Copy size={12} />
+                  Copy
+                </button>
+                
+                <button className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+                  <MessageSquare size={12} />
+                  Ask AI
+                </button>
+                
+                <button className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+                  <Zap size={12} />
+                  Create Card
+                </button>
+              </div>
             </div>
-          )}
-        </article>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

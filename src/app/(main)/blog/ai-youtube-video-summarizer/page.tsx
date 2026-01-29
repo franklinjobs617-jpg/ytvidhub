@@ -26,7 +26,7 @@ export default function AISummaryBlogPage() {
       </title>
       <meta
         name="description"
-        content="Unlock the power of YTVidHub AI YouTube Summarizer. Batch extract transcripts to text, generate study flashcards, and get interactive video insights instantly."
+        content="Unlock the power of YTVidHub AI YouTube Summarizer. Batch extract transcripts to text, generate structured insights, and get interactive video analysis instantly."
       />
 
       <main className="max-w-6xl mx-auto px-6 py-12 md:py-10">
@@ -42,7 +42,7 @@ export default function AISummaryBlogPage() {
             Experience the next generation of video learning. Our AI engine
             transforms{" "}
             <strong>YouTube transcripts into actionable knowledge</strong>,
-            flashcards, and searchable text blocks.
+            insights, and searchable text blocks.
           </p>
         </header>
 
@@ -95,8 +95,8 @@ export default function AISummaryBlogPage() {
             <div className="md:col-span-7 grid sm:grid-cols-2 gap-8">
               {[
                 {
-                  title: "Flashcard Deck",
-                  desc: "Automated extraction of definitions and key facts into interactive cards.",
+                  title: "Structured Analysis",
+                  desc: "Automated extraction of key insights and concepts into organized sections.",
                   icon: <Zap />,
                 },
                 {
@@ -209,7 +209,7 @@ export default function AISummaryBlogPage() {
             {
               icon: <Zap />,
               title: "Rapid Learners",
-              desc: "Skip the fluff. Get straight to the insights and test your knowledge with flashcards.",
+              desc: "Skip the fluff. Get straight to the insights and structured analysis.",
             },
           ].map((box, i) => (
             <div
@@ -237,7 +237,7 @@ export default function AISummaryBlogPage() {
             {[
               {
                 q: "How does the AI YouTube summarizer help with study?",
-                a: "By extracting flashcards and structured notes, YTVidHub automates the 'Active Recall' process, saving students hours of manual note-taking.",
+                a: "By extracting structured insights and organized notes, YTVidHub automates the content analysis process, saving students hours of manual note-taking.",
               },
               {
                 q: "Can I export YouTube transcripts for AI training?",
