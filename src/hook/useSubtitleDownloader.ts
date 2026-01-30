@@ -196,14 +196,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         if (onChunk) onChunk(accumulatedText);
       }
 
-      // AI总结完成后才扣除积分
-      try {
-        await subtitleApi.deductCreditsAfterSummary();
-        console.log('AI Summary credits deducted successfully');
-      } catch (creditError) {
-        console.error('Failed to deduct credits after AI summary:', creditError);
-        // 即使扣除积分失败，也不影响已生成的总结
-      }
+      return accumulatedText;
 
       return accumulatedText;
     } catch (err: any) {

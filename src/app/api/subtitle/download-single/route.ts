@@ -35,8 +35,20 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        // 获取请求体
+        const body = await request.json()
+        const { url, lang, format, title } = body
+
+        if (!url) {
+            return NextResponse.json(
+                { error: 'Video URL is required' },
+                { status: 400 }
+            )
+        }
+
         // 检查用户积分
         const userCredits = parseInt(user?.credits || "0") || 0;
+
         
         console.log('Single download credit check:', {
             userData: user,
@@ -48,17 +60,6 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { error: `Insufficient credits. You have ${userCredits} credits, but subtitle download requires 1 credit.` },
                 { status: 402 }
-            )
-        }
-
-        // 获取请求体
-        const body = await request.json()
-        const { url, lang, format, title } = body
-
-        if (!url) {
-            return NextResponse.json(
-                { error: 'Video URL is required' },
-                { status: 400 }
             )
         }
 

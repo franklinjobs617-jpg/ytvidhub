@@ -54,7 +54,10 @@ export async function POST(request: NextRequest) {
             userData: user,
             userCredits,
             requiredCredits,
-            videoCount: videos.length
+            videoCount: videos.length,
+            userEmail: user.email,
+            userGoogleId: user.googleUserId,
+            userType: user.type
         });
         
         if (!user || userCredits < requiredCredits) {

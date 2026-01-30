@@ -51,7 +51,8 @@ export async function POST(request: NextRequest) {
             googleUserId: user.googleUserId,
             email: user.email,
             credits: user.credits,
-            type: user.type
+            type: user.type,
+            rawUserData: user
         })
 
         // 查找数据库中的用户记录

@@ -16,7 +16,6 @@ import {
   Brain,
   Video as VideoIcon,
 } from "lucide-react";
-import { LoadingTransition } from "@/components/workspace/LoadingTransition";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -31,15 +30,14 @@ function WorkspaceContent() {
   const isFromHome = fromParam === "home";
   const isSummaryMode = modeParam === "summary";
 
-  // --- 数据预处理 (瞬时解析 ID) ---
   const initialUrls = urlsParam ? decodeURIComponent(urlsParam).split(",") : [];
   const placeholderVideos = initialUrls.map(url => {
     const id = (url.match(/[?&]v=([^&#]+)/) || [])[1] || url.slice(-11);
-    return { 
-      id, 
-      url, 
-      title: "Loading video info...", 
-      uploader: "...", 
+    return {
+      id,
+      url,
+      title: "Loading video info...",
+      uploader: "...",
       hasSubtitles: true,
       thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
     };
@@ -53,13 +51,18 @@ function WorkspaceContent() {
   const [activeTab, setActiveTab] = useState<"video" | "analysis" | "quiz">(
     isSummaryMode ? "analysis" : "video"
   );
-  const [isVideoInfoLoaded, setIsVideoInfoLoaded] = useState(false);
 
-  // 布局调整状态
-  const [leftWidth, setLeftWidth] = useState(50);
+  // 布局调整状态 - 减小视频区域初始宽度，给分析更多空间
+  const [leftWidth, setLeftWidth] = useState(35); // 从50改为35
   const isResizing = useRef(false);
 
-  const hasAutoAnalyzed = useRef(false);
+  // 防止重复分析的状态管理
+  const analysisCache = useRef<Map<string, string>>(new Map());
+  const isAnalyzing = useRef<Set<string>>(new Set());
+
+  // 新增：URL 输入框状态
+  const [inputUrl, setInputUrl] = useState("");
+  const [isAddingVideo, setIsAddingVideo] = useState(false);
 
   const {
     analyzeUrls,
@@ -68,6 +71,24 @@ function WorkspaceContent() {
     isAiLoading,
     setSummaryData,
   } = useSubtitleDownloader();
+
+  // --- 视频切换时的缓存管理 ---
+  useEffect(() => {
+    if (!currentVideo?.id) return;
+
+    // 检查是否有缓存的分析结果
+    const cachedResult = analysisCache.current.get(currentVideo.id);
+    if (cachedResult) {
+      console.log("📋 Loading cached analysis for:", currentVideo.title);
+      setSummaryData(cachedResult);
+      return;
+    }
+
+    // 如果没有缓存且不在分析中，清空当前数据
+    if (!isAnalyzing.current.has(currentVideo.id)) {
+      setSummaryData("");
+    }
+  }, [currentVideo?.id]);
 
   // --- 初始化逻辑 ---
   useEffect(() => {
@@ -88,24 +109,30 @@ function WorkspaceContent() {
           thumbnail: videoInfo.thumbnail || `https://i.ytimg.com/vi/${videoInfo.id}/hqdefault.jpg`,
           duration: videoInfo.duration
         };
-        
+
         setCurrentVideo(enhancedVideo);
         setVideoList([enhancedVideo]);
-        setIsVideoInfoLoaded(true);
 
-        // 立即开始AI分析
+        // 立即开始AI分析 - 只对从首页来的用户自动开始
+        const storageKey = `auto_analyzed_${enhancedVideo.id}`;
+        const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
+        const cachedResult = analysisCache.current.get(enhancedVideo.id);
+
+        if (cachedResult) {
+          console.log("📋 Using cached analysis for:", enhancedVideo.title);
+          setSummaryData(cachedResult);
+        } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(enhancedVideo.id)) {
+          console.log("🚀 Auto-starting AI analysis for video from home:", enhancedVideo.title);
+          setTimeout(() => {
+            handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id);
+          }, 500);
+          sessionStorage.setItem(storageKey, "true");
+        } else {
+          console.log("📋 Video ready for manual analysis:", enhancedVideo.id);
+        }
+
+        // 清理URL参数
         if (isFromHome) {
-          const storageKey = `auto_analyzed_${enhancedVideo.id}`;
-          const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
-
-          if (!hasAnalyzedInSession) {
-            setTimeout(() => {
-              handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id);
-            }, 300);
-            sessionStorage.setItem(storageKey, "true");
-          }
-          
-          // 清理URL参数
           const newParams = new URLSearchParams(searchParams.toString());
           newParams.delete("from");
           newParams.delete("mode");
@@ -114,33 +141,39 @@ function WorkspaceContent() {
           });
         }
       }).catch(() => {
-        // 如果快速获取失败，回退到完整分析
         analyzeUrls(urls).then(handleAnalysisResults);
       });
     } else {
-      // 非summary模式或多个URL，使用完整分析
       analyzeUrls(urls).then(handleAnalysisResults);
     }
 
     function handleAnalysisResults(results: any[]) {
       setVideoList(results);
-      setIsVideoInfoLoaded(true);
 
       if (results.length > 0) {
         const firstVideo = results[0];
         setCurrentVideo(firstVideo);
 
-        if (isFromHome && isSummaryMode) {
-          const storageKey = `auto_analyzed_${firstVideo.id}`;
-          const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
+        // 自动开始AI分析 - 只对从首页来的用户自动开始
+        const storageKey = `auto_analyzed_${firstVideo.id}`;
+        const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
+        const cachedResult = analysisCache.current.get(firstVideo.id);
 
-          if (!hasAnalyzedInSession) {
-            setTimeout(() => {
-              handleRequestAnalysis(firstVideo.url, firstVideo.id);
-            }, 300);
-            sessionStorage.setItem(storageKey, "true");
-          }
-          
+        if (cachedResult) {
+          console.log("📋 Using cached analysis for:", firstVideo.title);
+          setSummaryData(cachedResult);
+        } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(firstVideo.id)) {
+          console.log("🚀 Auto-starting AI analysis for video from home:", firstVideo.title);
+          setTimeout(() => {
+            handleRequestAnalysis(firstVideo.url, firstVideo.id);
+          }, 500);
+          sessionStorage.setItem(storageKey, "true");
+        } else {
+          console.log("📋 Video ready for manual analysis:", firstVideo.id);
+        }
+
+        // 清理URL参数
+        if (isFromHome) {
           const newParams = new URLSearchParams(searchParams.toString());
           newParams.delete("from");
           newParams.delete("mode");
@@ -151,6 +184,43 @@ function WorkspaceContent() {
       }
     }
   }, [urlsParam]);
+
+  // --- Handle Video Switching & Caching ---
+  useEffect(() => {
+    if (!currentVideo?.id) return;
+
+    // Switch to cached result if available
+    const cached = analysisCache.current.get(currentVideo.id);
+    if (cached) {
+      console.log("📋 Switching to cached result for:", currentVideo.title);
+      setSummaryData(cached);
+    } else {
+      // If we are not currently loading an analysis for THIS video, clear it
+      if (!isAiLoading) {
+        setSummaryData("");
+      }
+    }
+  }, [currentVideo?.id]);
+
+  // --- Cache results when loading finishes ---
+  useEffect(() => {
+    if (summaryData && currentVideo?.id && !isAiLoading) {
+      // Verify we aren't caching an old summary for a new video
+      // This logic is safer now that we clear summaryData on ID change
+      analysisCache.current.set(currentVideo.id, summaryData);
+      console.log("💾 Cached completed analysis result for:", currentVideo.title);
+    }
+  }, [summaryData, currentVideo?.id, isAiLoading]);
+
+  // 调试用：监控状态
+  useEffect(() => {
+    console.log("🔍 Workspace State:", {
+      activeVideo: currentVideo?.id,
+      isAiLoading,
+      dataSize: summaryData?.length || 0,
+      cached: currentVideo?.id ? !!analysisCache.current.get(currentVideo.id) : false
+    });
+  }, [currentVideo?.id, isAiLoading, summaryData]);
 
   const startResizing = useCallback(() => {
     isResizing.current = true;
@@ -183,18 +253,107 @@ function WorkspaceContent() {
 
 
 
-  const handleRequestAnalysis = async (url?: string, videoId?: string) => {
+  const handleRequestAnalysis = async (url?: string, videoId?: string, forceRegenerate = false) => {
     const targetUrl = url || currentVideo?.url;
-    if (!targetUrl || isAiLoading) return;
+    const targetId = videoId || currentVideo?.id;
+
+    if (!targetUrl || !targetId || isAiLoading) return;
+
+    // 如果是强制重新生成，清除缓存和session标记
+    if (forceRegenerate) {
+      analysisCache.current.delete(targetId);
+      sessionStorage.removeItem(`auto_analyzed_${targetId}`);
+      setSummaryData(""); // 立即清空当前数据
+    } else {
+      // 检查是否已经有缓存结果
+      const cachedResult = analysisCache.current.get(targetId);
+      if (cachedResult) {
+        console.log("📋 Using cached analysis for:", targetId);
+        setSummaryData(cachedResult);
+        return;
+      }
+    }
+
+    // 检查是否正在分析中
+    if (isAnalyzing.current.has(targetId)) {
+      console.log("⏳ Analysis already in progress for:", targetId);
+      return;
+    }
+
+    console.log("🚀 Starting AI analysis for:", targetUrl, forceRegenerate ? "(Force regenerate)" : "");
+    isAnalyzing.current.add(targetId);
+
     if (window.innerWidth < 768) setActiveTab("analysis");
-    
+
     try {
-      await generateAiSummary(targetUrl);
+      await generateAiSummary(targetUrl, (chunk) => {
+        // 实时更新显示的内容
+        // console.log("📝 Received chunk:", chunk.length, "characters");
+      });
+      console.log("✅ AI analysis completed successfully");
+
       // AI总结完成后刷新用户积分显示
       await refreshUser();
     } catch (error) {
+      console.error("❌ AI Summary failed:", error);
       // 错误已经在generateAiSummary中处理了
-      console.error("AI Summary failed:", error);
+    } finally {
+      isAnalyzing.current.delete(targetId);
+    }
+  };
+
+  // 新增：处理新 URL 分析
+  const handleAnalyzeNewUrl = async () => {
+    if (!inputUrl.trim() || isAddingVideo) return;
+
+    const targetUrl = inputUrl.trim();
+
+    // 简单的 Youtube URL 验证
+    if (!targetUrl.includes("youtube.com") && !targetUrl.includes("youtu.be")) {
+      alert("Please enter a valid YouTube URL");
+      return;
+    }
+
+    setIsAddingVideo(true);
+    try {
+      console.log("🔍 Fetching info for new URL:", targetUrl);
+      // 获取视频信息
+      const videoInfo = await subtitleApi.getVideoInfo(targetUrl);
+      const videoId = videoInfo.id || (targetUrl.match(/[?&]v=([^&#]+)/) || [])[1] || targetUrl.slice(-11);
+
+      const newVideo = {
+        id: videoId,
+        url: targetUrl,
+        title: videoInfo.title || 'Unknown Video',
+        uploader: videoInfo.uploader || '...',
+        hasSubtitles: videoInfo.has_subtitles,
+        thumbnail: videoInfo.thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+        duration: videoInfo.duration
+      };
+
+      // 添加到列表并切换
+      setVideoList(prev => {
+        if (prev.some(v => v.id === videoId)) return prev;
+        return [newVideo, ...prev];
+      });
+
+      // 先清空当前的总结，防止串台
+      setSummaryData("");
+      setCurrentVideo(newVideo);
+      setInputUrl("");
+
+      // 切换到分析标签并开始分析
+      setActiveTab("analysis");
+
+      // 立即触发分析逻辑
+      // handleRequestAnalysis 内部会检查缓存，所以安全
+      handleRequestAnalysis(targetUrl, videoId);
+
+    } catch (error) {
+      console.error("Failed to add video:", error);
+      alert("Failed to fetch video info. Please check the URL and try again.");
+    } finally {
+      setIsAddingVideo(false);
     }
   };
 
@@ -224,17 +383,67 @@ function WorkspaceContent() {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-white overflow-hidden font-sans">
-      <header className="h-14 border-b border-slate-100 flex items-center justify-between px-4 shrink-0 z-[60] bg-white">
-        <div className="flex items-center gap-3">
+      <header className="h-14 border-b border-slate-100 flex items-center justify-between px-4 shrink-0 z-[60] bg-white gap-4">
+        <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={() => router.push("/")}
             className="p-2 hover:bg-slate-50 rounded-lg transition-colors"
           >
             <ArrowLeft size={18} className="text-slate-500" />
           </button>
-          <span className="text-lg font-black tracking-tighter text-violet-600 italic">
+          <span className="hidden sm:inline text-lg font-black tracking-tighter text-violet-600 italic">
             YTvidHub
           </span>
+        </div>
+
+        {/* 新增：URL 输入区域 */}
+        <div className="flex-1 max-w-2xl flex items-center gap-2">
+          <div className="relative flex-1">
+            <input
+              type="text"
+              placeholder="Paste YouTube URL to analyze..."
+              value={inputUrl}
+              onChange={(e) => setInputUrl(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAnalyzeNewUrl()}
+              className="w-full h-9 pl-3 pr-10 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all"
+            />
+            {isAddingVideo && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                <Loader2 size={14} className="animate-spin text-slate-400" />
+              </div>
+            )}
+          </div>
+          <button
+            onClick={handleAnalyzeNewUrl}
+            disabled={!inputUrl.trim() || isAddingVideo}
+            className="h-9 px-4 bg-violet-600 hover:bg-violet-700 disabled:bg-slate-200 text-white text-sm font-bold rounded-lg transition-colors shrink-0 flex items-center gap-1.5"
+          >
+            <Sparkles size={14} />
+            <span className="hidden md:inline">Analyze</span>
+          </button>
+        </div>
+
+        {/* 新增：积分显示和购买按钮 */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-100 rounded-full">
+            <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center">
+              <span className="text-[10px] font-black text-amber-900">C</span>
+            </div>
+            <span className="text-sm font-bold text-amber-700 tabular-nums">
+              {useAuth().user?.credits ?? 0}
+            </span>
+            <span className="hidden lg:inline text-[10px] font-bold text-amber-600/70 uppercase tracking-wide">
+              Credits
+            </span>
+          </div>
+
+          <button
+            onClick={() => router.push("/pricing")}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold rounded-full transition-all shadow-sm group"
+          >
+            <Sparkles size={12} className="text-amber-400 group-hover:scale-110 transition-transform" />
+            <span>Upgrade</span>
+          </button>
         </div>
       </header>
 
@@ -244,8 +453,11 @@ function WorkspaceContent() {
             videos={videoList}
             activeId={currentVideo.id}
             onSelect={(v: any) => {
-              setCurrentVideo(v);
-              if (v.id !== currentVideo.id) setSummaryData("");
+              // 只有当选择不同视频时才切换
+              if (v.id !== currentVideo.id) {
+                setCurrentVideo(v);
+                // 不需要清空summaryData，让缓存逻辑处理
+              }
             }}
           />
         </div>
@@ -261,13 +473,13 @@ function WorkspaceContent() {
                   : "100%",
             }}
           >
-            <div className="p-4 shrink-0 bg-white border-b border-slate-50">
+            <div className="p-3 shrink-0 bg-white border-b border-slate-50">
               <VideoPlayer
                 videoId={currentVideo.id}
                 seekTime={seekTime}
                 onTimeUpdate={setCurrentTime}
               />
-              <h1 className="mt-4 text-sm md:text-lg font-black text-slate-800 line-clamp-2 leading-tight">
+              <h1 className="mt-3 text-sm md:text-base font-semibold text-slate-800 line-clamp-2 leading-tight">
                 {currentVideo.title}
               </h1>
             </div>
@@ -297,6 +509,7 @@ function WorkspaceContent() {
                 isLoading={isAiLoading}
                 onSeek={handleSeek}
                 onStartAnalysis={() => handleRequestAnalysis()}
+                onRegenerate={() => handleRequestAnalysis(undefined, undefined, true)}
                 mobileSubTab={activeTab}
               />
             </div>

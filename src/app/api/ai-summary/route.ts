@@ -35,22 +35,6 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // 检查用户积分
-        const userCredits = parseInt(user?.credits || "0") || 0;
-        
-        console.log('AI Summary credit check:', {
-            userData: user,
-            userCredits,
-            required: 2
-        });
-        
-        if (!user || userCredits < 2) {
-            return NextResponse.json(
-                { error: `Insufficient credits. You have ${userCredits} credits, but AI Summary requires 2 credits.` },
-                { status: 402 }
-            )
-        }
-
         // 获取请求体
         const body = await request.json()
         const { url } = body
@@ -62,7 +46,25 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        // 检查用户积分
+        const userCredits = parseInt(user?.credits || "0") || 0;
+
+        console.log('AI Summary credit check:', {
+            userData: user,
+            userCredits,
+            required: 2
+        });
+
+        if (!user || userCredits < 2) {
+            return NextResponse.json(
+                { error: `Insufficient credits. You have ${userCredits} credits, but AI Summary requires 2 credits.` },
+                { status: 402 }
+            )
+        }
+
         console.log('Proxying AI summary request for URL:', url)
+
+        const startTime = Date.now();
 
         // 代理请求到真实的后端API
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_summary_stream", {
@@ -73,6 +75,11 @@ export async function POST(request: NextRequest) {
             body: JSON.stringify({ url }),
         });
 
+        console.log('Backend response received in:', Date.now() - startTime, 'ms', {
+            status: backendResponse.status,
+            headers: Object.fromEntries(backendResponse.headers.entries())
+        });
+
         if (!backendResponse.ok) {
             const errorData = await backendResponse.text().catch(() => 'Unknown error')
             console.error('Backend API error:', errorData)
@@ -80,6 +87,35 @@ export async function POST(request: NextRequest) {
                 { error: 'Failed to generate summary' },
                 { status: backendResponse.status }
             )
+        }
+
+        // 扣除积分
+        try {
+            console.log('Deducting AI summary credits...');
+            const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ amount: 2, reason: `AI Summary for URL: ${url}` }),
+            });
+
+            if (!deductResponse.ok) {
+                const errorData = await deductResponse.json().catch(() => ({}));
+                console.error('Failed to deduct credits:', errorData);
+                return NextResponse.json(
+                    { error: errorData.error || 'Failed to deduct credits' },
+                    { status: 402 }
+                );
+            }
+            console.log('Credits deducted successfully.');
+        } catch (deductError) {
+            console.error('Credit deduction error:', deductError);
+            return NextResponse.json(
+                { error: 'System error during credit deduction' },
+                { status: 500 }
+            );
         }
 
         // 返回流式响应

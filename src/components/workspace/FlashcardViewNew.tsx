@@ -12,6 +12,7 @@ export function FlashcardView({ cards, isLoading, onSeek }: any) {
   const [studyMode, setStudyMode] = useState<'browse' | 'study'>('browse');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [studiedCards, setStudiedCards] = useState<Set<number>>(new Set());
+  const [showSummary, setShowSummary] = useState(false);
 
   if (isLoading && cards.length === 0) {
     return (
@@ -50,11 +51,29 @@ export function FlashcardView({ cards, isLoading, onSeek }: any) {
       {/* Header with controls */}
       <div className="bg-white border-b border-slate-200 p-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 mb-1">Content Analysis</h2>
-            <p className="text-sm text-slate-500">
-              Feature no longer available
-            </p>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <Brain size={20} className="text-blue-600" />
+              <div>
+                <h2 className="text-lg font-bold text-slate-900 mb-1">AI Analysis</h2>
+                <p className="text-sm text-slate-500">
+                  {cards.length} sections analyzed
+                </p>
+              </div>
+            </div>
+            
+            {/* Toggle Button */}
+            <button
+              onClick={() => setShowSummary(!showSummary)}
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+                showSummary 
+                  ? 'bg-blue-100 text-blue-700 border border-blue-200' 
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              <BookOpen size={16} />
+              {showSummary ? 'Hide Summary' : 'Show Summary'}
+            </button>
           </div>
           
           <div className="flex items-center gap-3">
@@ -100,22 +119,28 @@ export function FlashcardView({ cards, isLoading, onSeek }: any) {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
-        {studyMode === 'browse' ? (
-          <BrowseMode 
-            cards={cards} 
-            studiedCards={studiedCards}
-            setStudiedCards={setStudiedCards}
-            onSeek={onSeek} 
-          />
+        {showSummary ? (
+          <SummaryView cards={cards} onSeek={onSeek} />
         ) : (
-          <StudyMode 
-            cards={cards}
-            currentIndex={currentCardIndex}
-            setCurrentIndex={setCurrentCardIndex}
-            studiedCards={studiedCards}
-            setStudiedCards={setStudiedCards}
-            onSeek={onSeek}
-          />
+          <>
+            {studyMode === 'browse' ? (
+              <BrowseMode 
+                cards={cards} 
+                studiedCards={studiedCards}
+                setStudiedCards={setStudiedCards}
+                onSeek={onSeek} 
+              />
+            ) : (
+              <StudyMode 
+                cards={cards}
+                currentIndex={currentCardIndex}
+                setCurrentIndex={setCurrentCardIndex}
+                studiedCards={studiedCards}
+                setStudiedCards={setStudiedCards}
+                onSeek={onSeek}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

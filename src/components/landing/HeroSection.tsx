@@ -47,6 +47,14 @@ export default function HeroSection() {
   const [userCredits, setUserCredits] = useState<string>("--");
   const [activeSummaryId, setActiveSummaryId] = useState<string | null>(null);
 
+  const refreshCredits = () => {
+    if (user) {
+      subtitleApi
+        .syncUser()
+        .then((data) => data && setUserCredits(data.credits || "0"));
+    }
+  };
+
   const {
     analyzeUrls,
     startSingleDownload,
@@ -57,7 +65,7 @@ export default function HeroSection() {
     summaryData,
     progress,
     statusText,
-  } = useSubtitleDownloader();
+  } = useSubtitleDownloader(refreshCredits);
 
   useEffect(() => {
     if (user) {

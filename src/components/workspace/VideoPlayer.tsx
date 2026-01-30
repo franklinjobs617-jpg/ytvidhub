@@ -29,7 +29,7 @@ export function VideoPlayer({
     );
 
   return (
-    <div className="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-lg">
+    <div className="aspect-video w-full rounded-lg overflow-hidden bg-black shadow-md">
       <iframe
         ref={iframeRef}
         width="100%"
