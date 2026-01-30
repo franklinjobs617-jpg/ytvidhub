@@ -38,6 +38,10 @@ const navigation = {
   ],
   blog: [
     {
+      name: "YouTube Subtitle Downloader",
+      href: "/youtube-subtitle-downloader",
+    },
+    {
       name: 'ai Youtube Video Summarizer',
       href: "/blog/ai-youtube-video-summarizer",
     },

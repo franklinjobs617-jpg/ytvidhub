@@ -76,18 +76,21 @@ function WorkspaceContent() {
   useEffect(() => {
     if (!currentVideo?.id) return;
 
+    // 立即清空当前显示的数据，防止显示错误内容
+    setSummaryData("");
+
     // 检查是否有缓存的分析结果
     const cachedResult = analysisCache.current.get(currentVideo.id);
     if (cachedResult) {
       console.log("📋 Loading cached analysis for:", currentVideo.title);
-      setSummaryData(cachedResult);
+      // 使用 setTimeout 确保清空操作先执行
+      setTimeout(() => {
+        setSummaryData(cachedResult);
+      }, 50);
       return;
     }
 
-    // 如果没有缓存且不在分析中，清空当前数据
-    if (!isAnalyzing.current.has(currentVideo.id)) {
-      setSummaryData("");
-    }
+    console.log("📋 No cached data for video:", currentVideo.id);
   }, [currentVideo?.id]);
 
   // --- 初始化逻辑 ---
@@ -189,26 +192,30 @@ function WorkspaceContent() {
   useEffect(() => {
     if (!currentVideo?.id) return;
 
-    // Switch to cached result if available
+    // 立即清空显示内容，防止串台
+    setSummaryData("");
+
+    // 检查缓存
     const cached = analysisCache.current.get(currentVideo.id);
     if (cached) {
       console.log("📋 Switching to cached result for:", currentVideo.title);
-      setSummaryData(cached);
+      // 延迟一点时间确保清空操作完成
+      setTimeout(() => {
+        setSummaryData(cached);
+      }, 100);
     } else {
-      // If we are not currently loading an analysis for THIS video, clear it
-      if (!isAiLoading) {
-        setSummaryData("");
-      }
+      console.log("📋 No cache found for:", currentVideo.id);
     }
   }, [currentVideo?.id]);
 
   // --- Cache results when loading finishes ---
   useEffect(() => {
     if (summaryData && currentVideo?.id && !isAiLoading) {
-      // Verify we aren't caching an old summary for a new video
-      // This logic is safer now that we clear summaryData on ID change
-      analysisCache.current.set(currentVideo.id, summaryData);
-      console.log("💾 Cached completed analysis result for:", currentVideo.title);
+      // 只有当数据不为空且确实是当前视频的结果时才缓存
+      if (summaryData.trim().length > 0) {
+        analysisCache.current.set(currentVideo.id, summaryData);
+        console.log("💾 Cached completed analysis result for:", currentVideo.title);
+      }
     }
   }, [summaryData, currentVideo?.id, isAiLoading]);
 
@@ -218,7 +225,8 @@ function WorkspaceContent() {
       activeVideo: currentVideo?.id,
       isAiLoading,
       dataSize: summaryData?.length || 0,
-      cached: currentVideo?.id ? !!analysisCache.current.get(currentVideo.id) : false
+      cached: currentVideo?.id ? !!analysisCache.current.get(currentVideo.id) : false,
+      analyzingSet: Array.from(isAnalyzing.current)
     });
   }, [currentVideo?.id, isAiLoading, summaryData]);
 
@@ -257,31 +265,41 @@ function WorkspaceContent() {
     const targetUrl = url || currentVideo?.url;
     const targetId = videoId || currentVideo?.id;
 
-    if (!targetUrl || !targetId || isAiLoading) return;
+    if (!targetUrl || !targetId) return;
+
+    console.log("🔍 Analysis request:", { targetId, forceRegenerate, isAiLoading, isAnalyzing: isAnalyzing.current.has(targetId) });
+
+    // 如果正在加载且不是强制重新生成，直接返回
+    if (isAiLoading && !forceRegenerate) {
+      console.log("⏳ Analysis already in progress, skipping...");
+      return;
+    }
 
     // 如果是强制重新生成，清除缓存和session标记
     if (forceRegenerate) {
       analysisCache.current.delete(targetId);
       sessionStorage.removeItem(`auto_analyzed_${targetId}`);
       setSummaryData(""); // 立即清空当前数据
+      console.log("🔄 Force regenerate: cleared cache for", targetId);
     } else {
-      // 检查是否已经有缓存结果
+      // 严格检查缓存 - 只有在没有缓存时才继续
       const cachedResult = analysisCache.current.get(targetId);
-      if (cachedResult) {
-        console.log("📋 Using cached analysis for:", targetId);
+      if (cachedResult && cachedResult.trim().length > 0) {
+        console.log("📋 Using cached analysis for:", targetId, "length:", cachedResult.length);
         setSummaryData(cachedResult);
         return;
       }
     }
 
-    // 检查是否正在分析中
+    // 检查是否正在分析中 - 防止重复请求
     if (isAnalyzing.current.has(targetId)) {
       console.log("⏳ Analysis already in progress for:", targetId);
       return;
     }
 
-    console.log("🚀 Starting AI analysis for:", targetUrl, forceRegenerate ? "(Force regenerate)" : "");
+    // 添加到分析中的集合，防止重复调用
     isAnalyzing.current.add(targetId);
+    console.log("🚀 Starting AI analysis for:", targetUrl, forceRegenerate ? "(Force regenerate)" : "");
 
     if (window.innerWidth < 768) setActiveTab("analysis");
 
@@ -290,15 +308,21 @@ function WorkspaceContent() {
         // 实时更新显示的内容
         // console.log("📝 Received chunk:", chunk.length, "characters");
       });
-      console.log("✅ AI analysis completed successfully");
+      console.log("✅ AI analysis completed successfully for:", targetId);
 
       // AI总结完成后刷新用户积分显示
       await refreshUser();
     } catch (error) {
-      console.error("❌ AI Summary failed:", error);
+      console.error("❌ AI Summary failed for:", targetId, error);
+      // 如果是积分不足错误，清除正在分析的标记
+      if (error instanceof Error && error.message.includes("credit")) {
+        console.log("💳 Credit error detected, clearing analysis flag");
+      }
       // 错误已经在generateAiSummary中处理了
     } finally {
+      // 确保清除分析标记
       isAnalyzing.current.delete(targetId);
+      console.log("🏁 Analysis finished, removed from analyzing set:", targetId);
     }
   };
 
@@ -339,15 +363,30 @@ function WorkspaceContent() {
 
       // 先清空当前的总结，防止串台
       setSummaryData("");
+      
+      // 切换到新视频
       setCurrentVideo(newVideo);
       setInputUrl("");
 
-      // 切换到分析标签并开始分析
+      // 切换到分析标签
       setActiveTab("analysis");
 
-      // 立即触发分析逻辑
-      // handleRequestAnalysis 内部会检查缓存，所以安全
-      handleRequestAnalysis(targetUrl, videoId);
+      // 检查是否有缓存，如果没有则开始分析
+      const cachedResult = analysisCache.current.get(videoId);
+      if (cachedResult && cachedResult.trim().length > 0) {
+        console.log("📋 Using cached analysis for new video:", videoId);
+        setTimeout(() => {
+          setSummaryData(cachedResult);
+        }, 100);
+      } else if (!isAnalyzing.current.has(videoId)) {
+        // 只有在没有正在分析时才开始新的分析
+        console.log("🚀 Starting analysis for new video:", videoId);
+        setTimeout(() => {
+          handleRequestAnalysis(targetUrl, videoId);
+        }, 200);
+      } else {
+        console.log("⏳ Analysis already in progress for new video:", videoId);
+      }
 
     } catch (error) {
       console.error("Failed to add video:", error);
@@ -455,8 +494,10 @@ function WorkspaceContent() {
             onSelect={(v: any) => {
               // 只有当选择不同视频时才切换
               if (v.id !== currentVideo.id) {
+                console.log("🔄 Switching video from", currentVideo.id, "to", v.id);
                 setCurrentVideo(v);
-                // 不需要清空summaryData，让缓存逻辑处理
+                // 立即清空当前显示的摘要，防止串台
+                setSummaryData("");
               }
             }}
           />

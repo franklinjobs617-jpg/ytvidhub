@@ -171,11 +171,12 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     setSummaryData("");
 
     try {
+      console.log("🚀 Starting AI summary for:", videoUrl);
       const response = await subtitleApi.generateSummaryStream(videoUrl);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || "Failed to start AI summary");
+        throw new Error(errorData.error || errorData.message || "Failed to start AI summary");
       }
 
       const reader = response.body?.getReader();
@@ -196,9 +197,10 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         if (onChunk) onChunk(accumulatedText);
       }
 
+      console.log("✅ AI summary completed, length:", accumulatedText.length);
       return accumulatedText;
     } catch (err: any) {
-      console.error("Summary Stream Error:", err);
+      console.error("❌ Summary Stream Error:", err);
 
       // 特殊处理积分不足的错误
       if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
@@ -222,8 +224,10 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       throw err;
     } finally {
       setIsAiLoading(false);
+      console.log("🏁 AI summary process finished");
 
-      // AI总结完成后也刷新积分
+      // 注意：积分扣除已经在API层面处理，这里只需要刷新用户信息
+      // 不需要再次调用 deductCreditsAfterSummary
       if (onCreditsChanged) {
         onCreditsChanged();
       }
