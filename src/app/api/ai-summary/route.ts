@@ -62,34 +62,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        console.log('Proxying AI summary request for URL:', url)
-
-        const startTime = Date.now();
-
-        // 代理请求到真实的后端API
-        const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_summary_stream", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ url }),
-        });
-
-        console.log('Backend response received in:', Date.now() - startTime, 'ms', {
-            status: backendResponse.status,
-            headers: Object.fromEntries(backendResponse.headers.entries())
-        });
-
-        if (!backendResponse.ok) {
-            const errorData = await backendResponse.text().catch(() => 'Unknown error')
-            console.error('Backend API error:', errorData)
-            return NextResponse.json(
-                { error: 'Failed to generate summary' },
-                { status: backendResponse.status }
-            )
-        }
-
-        // 扣除积分
+        // 1. 先扣除积分 (按照 lib/api.ts 的逻辑，确保在请求开始前就扣费成功)
         try {
             console.log('Deducting AI summary credits...');
             const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
@@ -98,7 +71,7 @@ export async function POST(request: NextRequest) {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify({ amount: 2, reason: `AI Summary for URL: ${url}` }),
+                body: JSON.stringify({ amount: 2, reason: "AI Summary Generation" }),
             });
 
             if (!deductResponse.ok) {
@@ -106,7 +79,7 @@ export async function POST(request: NextRequest) {
                 console.error('Failed to deduct credits:', errorData);
                 return NextResponse.json(
                     { error: errorData.error || 'Failed to deduct credits' },
-                    { status: 402 }
+                    { status: deductResponse.status || 402 }
                 );
             }
             console.log('Credits deducted successfully.');
@@ -116,6 +89,31 @@ export async function POST(request: NextRequest) {
                 { error: 'System error during credit deduction' },
                 { status: 500 }
             );
+        }
+
+        // 2. 代理请求到真实的后端API
+        console.log('Proxying AI summary request for URL:', url)
+        const startTime = Date.now();
+        const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_summary_stream", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // 必须透传 Authorization Header
+            },
+            body: JSON.stringify({ url }),
+        });
+
+        console.log('Backend response received in:', Date.now() - startTime, 'ms', {
+            status: backendResponse.status
+        });
+
+        if (!backendResponse.ok) {
+            const errorData = await backendResponse.text().catch(() => 'Unknown error')
+            console.error('Backend API error:', errorData)
+            return NextResponse.json(
+                { error: 'Failed to generate summary' },
+                { status: backendResponse.status }
+            )
         }
 
         // 返回流式响应

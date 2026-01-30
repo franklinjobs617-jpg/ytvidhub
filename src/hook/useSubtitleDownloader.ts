@@ -197,8 +197,6 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       }
 
       return accumulatedText;
-
-      return accumulatedText;
     } catch (err: any) {
       console.error("Summary Stream Error:", err);
 
