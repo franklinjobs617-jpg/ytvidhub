@@ -8,7 +8,10 @@ export const metadata: Metadata = {
         title: 'Download YouTube Subtitles | Extract SRT, VTT, TXT Free',
         description: 'Extract high-accuracy subtitles from any YouTube video instantly. Supports multiple formats and AI-ready text.',
         type: 'website',
-    }
+    },
+    alternates: {
+        canonical: 'https://ytvidhub.com/download-subs-from-youtube',
+    },
 };
 
 export default function DownloadSubsLayout({

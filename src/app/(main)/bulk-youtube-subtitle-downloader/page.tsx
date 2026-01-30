@@ -18,16 +18,7 @@ export default function BulkDownloaderPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      {/* SEO 优化后的 Title 和 Meta */}
-      <title>Bulk YouTube Subtitle Downloader | Extract SRT, TXT & Playlist Captions | YTVidHub</title>
-      <meta
-        name="description"
-        content="The best bulk YouTube subtitle downloader to extract SRT, VTT, and TXT transcripts from multiple videos or entire playlists. High-speed batch processing for AI datasets and creators."
-      />
-      <link
-        rel="canonical"
-        href="https://ytvidhub.com/bulk-youtube-subtitle-downloader"
-      />
+
 
       <main>
         {/* === 1. HERO SECTION (保持原有样式) === */}
@@ -264,9 +255,8 @@ export default function BulkDownloaderPage() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className={`flex flex-col ${
-                    item.reverse ? "md:flex-row-reverse" : "md:flex-row"
-                  } items-center gap-16 lg:gap-24`}
+                  className={`flex flex-col ${item.reverse ? "md:flex-row-reverse" : "md:flex-row"
+                    } items-center gap-16 lg:gap-24`}
                 >
                   <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
                     <div

@@ -1,5 +1,5 @@
 import { Metadata } from "next"; // 
-import HeroSection from "@/components/landing/HeroSection"; 
+import HeroSection from "@/components/landing/HeroSection";
 import HowItWorks from "@/components/landing/HowItWorks";
 import ComparisonSlider from "@/components/landing/ComparisonSlider";
 import FeaturesGrid from "@/components/landing/FeaturesGrid";
@@ -16,19 +16,22 @@ export const metadata: Metadata = {
     url: "https://ytvidhub.com",
     images: [
       {
-        url: "/image/og-home.webp", 
+        url: "/image/og-home.webp",
         width: 1200,
         height: 630,
         alt: "YTVidHub Homepage Preview",
       },
     ],
   },
-  
+
   twitter: {
     card: "summary_large_image",
     title: "YTVidHub | Bulk YouTube Subtitle Downloader",
     description: "The fastest way to get YouTube data for your LLM projects.",
     images: ["/image/og-home.webp"],
+  },
+  alternates: {
+    canonical: "https://ytvidhub.com",
   },
 };
 
