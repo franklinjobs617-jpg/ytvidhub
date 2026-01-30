@@ -97,12 +97,26 @@ function WorkspaceContent() {
   useEffect(() => {
     if (!urlsParam) return;
 
+    let isCancelled = false;
+    let autoStartTimer: NodeJS.Timeout | null = null;
+
     const urls = decodeURIComponent(urlsParam).split(",");
+
+    // 清理函数
+    const cleanup = () => {
+      isCancelled = true;
+      if (autoStartTimer) {
+        clearTimeout(autoStartTimer);
+        autoStartTimer = null;
+      }
+    };
 
     // 如果是summary模式，先快速获取视频信息，然后立即开始分析
     if (isSummaryMode && urls.length === 1) {
       // 快速获取视频信息
       subtitleApi.getVideoInfo(urls[0]).then((videoInfo) => {
+        if (isCancelled) return;
+
         const enhancedVideo = {
           id: videoInfo.id || (urls[0].match(/[?&]v=([^&#]+)/) || [])[1] || urls[0].slice(-11),
           url: urls[0],
@@ -126,10 +140,16 @@ function WorkspaceContent() {
           setSummaryData(cachedResult);
         } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(enhancedVideo.id)) {
           console.log("🚀 Auto-starting AI analysis for video from home:", enhancedVideo.title);
-          setTimeout(() => {
-            handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id);
-          }, 500);
-          sessionStorage.setItem(storageKey, "true");
+
+          if (autoStartTimer) clearTimeout(autoStartTimer);
+
+          autoStartTimer = setTimeout(() => {
+            // 双重检查：确保在 timer 执行时也没有被取消，且 session 标记未被设置
+            if (!isCancelled && !sessionStorage.getItem(storageKey)) {
+              handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id);
+              sessionStorage.setItem(storageKey, "true");
+            }
+          }, 800);
         } else {
           console.log("📋 Video ready for manual analysis:", enhancedVideo.id);
         }
@@ -144,13 +164,17 @@ function WorkspaceContent() {
           });
         }
       }).catch(() => {
-        analyzeUrls(urls).then(handleAnalysisResults);
+        if (!isCancelled) {
+          analyzeUrls(urls).then(handleAnalysisResults);
+        }
       });
     } else {
       analyzeUrls(urls).then(handleAnalysisResults);
     }
 
     function handleAnalysisResults(results: any[]) {
+      if (isCancelled) return;
+
       setVideoList(results);
 
       if (results.length > 0) {
@@ -167,10 +191,16 @@ function WorkspaceContent() {
           setSummaryData(cachedResult);
         } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(firstVideo.id)) {
           console.log("🚀 Auto-starting AI analysis for video from home:", firstVideo.title);
-          setTimeout(() => {
-            handleRequestAnalysis(firstVideo.url, firstVideo.id);
-          }, 500);
-          sessionStorage.setItem(storageKey, "true");
+
+          if (autoStartTimer) clearTimeout(autoStartTimer);
+
+          autoStartTimer = setTimeout(() => {
+            // 双重检查
+            if (!isCancelled && !sessionStorage.getItem(storageKey)) {
+              handleRequestAnalysis(firstVideo.url, firstVideo.id);
+              sessionStorage.setItem(storageKey, "true");
+            }
+          }, 800);
         } else {
           console.log("📋 Video ready for manual analysis:", firstVideo.id);
         }
@@ -186,6 +216,8 @@ function WorkspaceContent() {
         }
       }
     }
+
+    return cleanup;
   }, [urlsParam]);
 
   // --- Handle Video Switching & Caching ---
@@ -363,7 +395,7 @@ function WorkspaceContent() {
 
       // 先清空当前的总结，防止串台
       setSummaryData("");
-      
+
       // 切换到新视频
       setCurrentVideo(newVideo);
       setInputUrl("");
