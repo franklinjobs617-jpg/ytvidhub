@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
       <div className="container mx-auto px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10">
-          
+
           {/* Company Info - 占据 2 列宽在移动端以保证醒目 */}
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-xl font-bold text-white mb-4">
@@ -17,13 +17,19 @@ export default function Footer() {
               speed and reliability. Optimized for LLM and AI training research.
             </p>
           </div>
-          
+
           {/* Product Column */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Product</h3>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link href="/" className="hover:text-violet-400 transition-colors">Home</Link>
+              </li>
+              <li>
+                <Link href="/youtube-subtitle-downloader" className="hover:text-violet-400 transition-colors">Downloader</Link>
+              </li>
+              <li>
+                <Link href="/download-subs-from-youtube" className="hover:text-violet-400 transition-colors">Download Subs</Link>
               </li>
               <li>
                 <Link href="/bulk-youtube-subtitle-downloader" className="hover:text-violet-400 transition-colors">Bulk Downloader</Link>
@@ -72,14 +78,14 @@ export default function Footer() {
 
         {/* 底部装饰线 */}
         <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col items-center">
-          
+
           {/* 分享区块 */}
           <div className="mb-8 text-center">
             <p className="text-xs font-medium text-slate-500 uppercase tracking-[0.2em] mb-4">
               Share this tool with your team
             </p>
             <div className="flex justify-center bg-slate-800/50 p-3 rounded-2xl backdrop-blur-sm">
-               <Share />
+              <Share />
             </div>
           </div>
 

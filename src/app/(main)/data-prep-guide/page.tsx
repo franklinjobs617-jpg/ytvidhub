@@ -62,14 +62,12 @@ export default function DataPrepGuidePage() {
     <div className="bg-white min-h-screen font-sans selection:bg-blue-50 text-slate-900 antialiased">
       <DataPrepGuideSchema />
 
-      {/* 背景装饰：工业网格 */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03]"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%23000' fill-rule='evenodd'/%3E%3C/svg%3E")` }}
       />
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
 
-        {/* === 1. HERO SECTION === */}
         <section className="relative pt-20 pb-16 border-b border-slate-100">
           <div className="max-w-5xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8">
@@ -108,10 +106,8 @@ export default function DataPrepGuidePage() {
           </div>
         </section>
 
-        {/* === 2. MAIN LAYOUT === */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-16">
 
-          {/* STICKY SIDEBAR NAV */}
           <aside className="hidden lg:block lg:col-span-3 sticky top-32 h-fit">
             <nav className="space-y-1">
               {[

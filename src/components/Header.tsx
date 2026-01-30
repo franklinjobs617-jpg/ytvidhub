@@ -42,6 +42,10 @@ const navigation = {
       href: "/youtube-subtitle-downloader",
     },
     {
+      name: "Download Subs",
+      href: "/download-subs-from-youtube",
+    },
+    {
       name: 'ai Youtube Video Summarizer',
       href: "/blog/ai-youtube-video-summarizer",
     },
@@ -115,8 +119,8 @@ export default function Header() {
             <Link
               href="/"
               className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/")
-                  ? "text-blue-600"
-                  : "text-slate-500 hover:text-slate-900"
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
                 }`}
             >
               Home
@@ -125,8 +129,8 @@ export default function Header() {
             <Link
               href="/bulk-youtube-subtitle-downloader"
               className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/bulk-youtube-subtitle-downloader")
-                  ? "text-blue-600"
-                  : "text-slate-500 hover:text-slate-900"
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
                 }`}
             >
               Bulk Downloader
@@ -135,16 +139,16 @@ export default function Header() {
             <div className="relative group h-20 flex items-center">
               <button
                 className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.guides)
-                    ? "text-blue-600"
-                    : "text-slate-500 group-hover:text-blue-600"
+                  ? "text-blue-600"
+                  : "text-slate-500 group-hover:text-blue-600"
                   }`}
               >
                 <span>Guide</span>
                 <ChevronDown
                   size={14}
                   className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.guides)
-                      ? "text-blue-600"
-                      : "text-slate-400"
+                    ? "text-blue-600"
+                    : "text-slate-400"
                     }`}
                 />
               </button>
@@ -155,8 +159,8 @@ export default function Header() {
                       key={item.name}
                       href={item.href}
                       className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                          ? "bg-blue-50 text-blue-600 font-bold"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+                        ? "bg-blue-50 text-blue-600 font-bold"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
                         }`}
                     >
                       {item.name}
@@ -169,16 +173,16 @@ export default function Header() {
             <div className="relative group h-20 flex items-center">
               <button
                 className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.blog)
-                    ? "text-blue-600"
-                    : "text-slate-500 group-hover:text-blue-600"
+                  ? "text-blue-600"
+                  : "text-slate-500 group-hover:text-blue-600"
                   }`}
               >
                 <span>Blog</span>
                 <ChevronDown
                   size={14}
                   className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.blog)
-                      ? "text-blue-600"
-                      : "text-slate-400"
+                    ? "text-blue-600"
+                    : "text-slate-400"
                     }`}
                 />
               </button>
@@ -189,8 +193,8 @@ export default function Header() {
                       key={item.name}
                       href={item.href}
                       className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                          ? "bg-blue-50 text-blue-600 font-bold"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+                        ? "bg-blue-50 text-blue-600 font-bold"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
                         }`}
                     >
                       {item.name}
@@ -203,8 +207,8 @@ export default function Header() {
             <Link
               href="/pricing"
               className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/pricing")
-                  ? "text-blue-600"
-                  : "text-slate-500 hover:text-slate-900"
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
                 }`}
             >
               Pricing
@@ -362,8 +366,8 @@ export default function Header() {
             <Link
               href="/bulk-youtube-subtitle-downloader"
               className={`block text-lg font-bold ${isActive("/bulk-youtube-subtitle-downloader")
-                  ? "text-blue-600"
-                  : "text-slate-900"
+                ? "text-blue-600"
+                : "text-slate-900"
                 }`}
             >
               Bulk Downloader
@@ -373,8 +377,8 @@ export default function Header() {
             <div className="space-y-3">
               <p
                 className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.guides)
-                    ? "text-blue-600"
-                    : "text-slate-400"
+                  ? "text-blue-600"
+                  : "text-slate-400"
                   }`}
               >
                 Guides
@@ -394,8 +398,8 @@ export default function Header() {
             <div className="space-y-3">
               <p
                 className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.blog)
-                    ? "text-blue-600"
-                    : "text-slate-400"
+                  ? "text-blue-600"
+                  : "text-slate-400"
                   }`}
               >
                 Blog
