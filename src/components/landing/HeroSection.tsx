@@ -60,6 +60,8 @@ export default function HeroSection() {
         }
       } catch (error) {
         console.error("❌ Failed to refresh credits:", error);
+        // 如果刷新失败，显示警告但不阻止用户操作
+        setUserCredits("--");
       }
     }
   };
@@ -356,8 +358,11 @@ export default function HeroSection() {
 
             <div className="mt-8 text-center">
               {!user ? (
-                <div className="space-y-2">
-                  <p className="text-sm text-slate-600">🎉 <strong>Sign up free</strong> for our YouTube subtitle downloader and get 5 downloads instantly</p>
+                <div className="space-y-3">
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 max-w-md mx-auto">
+                    <p className="text-sm text-amber-800 font-semibold">⚠️ <strong>Registration Required</strong></p>
+                    <p className="text-xs text-amber-700 mt-1">You need to sign up (free) to download subtitles. Get 5 instant credits to try all features.</p>
+                  </div>
                   <p className="text-xs text-slate-400 font-medium">No credit card required • High-speed bulk subtitle extraction</p>
                 </div>
               ) : (

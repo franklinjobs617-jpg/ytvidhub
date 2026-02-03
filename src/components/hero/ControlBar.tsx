@@ -44,13 +44,17 @@ export function ControlBar({
                   <Coins size={18} className="text-amber-500 relative z-10" fill="currentColor" />
                 </div>
                 <div className="flex flex-col leading-none">
-                  <span className={`text-sm font-black tabular-nums ${isGuest ? "text-slate-400" : "text-slate-700"}`}>
+                  <span className={`text-sm font-black tabular-nums ${isGuest ? "text-slate-400" : creditsNum <= 0 ? "text-red-600" : "text-slate-700"}`}>
                     {userCredits}
                   </span>
                   <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider scale-90 origin-left">
                     Credits
                   </span>
                 </div>
+                {/* 积分状态指示器 */}
+                {!isGuest && (
+                  <div className={`w-2 h-2 rounded-full ${creditsNum <= 0 ? "bg-red-500 animate-pulse" : creditsNum <= 2 ? "bg-yellow-500" : "bg-green-500"}`}></div>
+                )}
               </div>
 
               {/* 分割线 */}
@@ -81,6 +85,15 @@ export function ControlBar({
                     style={{ width: `${(creditsNum / maxCredits) * 100}%` }}
                   />
                 </div>
+              </div>
+            )}
+
+            {/* 积分不足警告 */}
+            {!isGuest && creditsNum <= 0 && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg animate-pulse">
+                <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider">
+                  ⚠️ No Credits Left
+                </span>
               </div>
             )}
           </div>

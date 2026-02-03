@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema";
+import { InteractiveDemo } from "@/components/demo/InteractiveDemo";
+import { TestimonialSection } from "@/components/testimonials/TestimonialSection";
 
 export default function YouTubeSubtitleDownloaderPage() {
     const { user } = useAuth();
@@ -51,6 +53,11 @@ export default function YouTubeSubtitleDownloaderPage() {
                             >
                                 Bulk Download Tool
                             </Link>
+                        </div>
+
+                        {/* Interactive Demo Section */}
+                        <div className="max-w-4xl mx-auto mb-8">
+                            <InteractiveDemo />
                         </div>
 
                         {/* Visual Demo */}
@@ -301,6 +308,10 @@ export default function YouTubeSubtitleDownloaderPage() {
                         </div>
                     </div>
                 </section>
+
+                {/* === TESTIMONIALS SECTION === */}
+                <TestimonialSection />
+
                 {/* === 6. FEATURES COMPARISON === */}
                 <section className="py-16 bg-white">
                     <div className="container mx-auto px-6 max-w-5xl">
