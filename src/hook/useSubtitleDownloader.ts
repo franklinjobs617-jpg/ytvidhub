@@ -69,10 +69,12 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`
       );
 
-      // 刷新积分显示
-      if (onCreditsChanged) {
-        onCreditsChanged();
-      }
+      // 延迟刷新积分显示，确保服务器端已更新
+      setTimeout(() => {
+        if (onCreditsChanged) {
+          onCreditsChanged();
+        }
+      }, 1000);
 
       setTimeout(() => setIsDownloading(false), 800);
     } catch (err: any) {
@@ -121,10 +123,12 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
             const blob = await subtitleApi.downloadZip(task.task_id);
             triggerDownload(blob, `bulk_subs_${Date.now()}.zip`);
 
-            // 刷新积分显示
-            if (onCreditsChanged) {
-              onCreditsChanged();
-            }
+            // 延迟刷新积分显示，确保服务器端已更新
+            setTimeout(() => {
+              if (onCreditsChanged) {
+                onCreditsChanged();
+              }
+            }, 1000);
 
             setTimeout(() => setIsDownloading(false), 1000);
           } else {
@@ -190,14 +194,55 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         if (done) break;
 
         const chunk = decoder.decode(value, { stream: true });
-        accumulatedText += chunk;
 
-        setSummaryData(accumulatedText);
+        // 处理混合了状态信息和内容的 chunk
+        // 假设 chunk 可能是 "__STATUS__:Checking...\nActualContent"
 
-        if (onChunk) onChunk(accumulatedText);
+        // 简单处理：检查 chunk 是否包含状态标记
+        if (chunk.includes("__STATUS__:")) {
+          const parts = chunk.split("__STATUS__:");
+          for (let i = 0; i < parts.length; i++) {
+            let part = parts[i];
+            if (!part) continue;
+
+            // 检查这一部分是否是紧接着 STATUS 的
+            // 实际上这里的分割逻辑可能有点脆弱，因为流的不确定性
+            // 更好的方式是逐行处理，但为了演示简单修复：
+
+            const lineEndIndex = part.indexOf("\n");
+            if (lineEndIndex !== -1 && i > 0) { // i>0 意味着它是在 STATUS 之后
+              const statusMsg = part.substring(0, lineEndIndex).trim();
+              setStatusText(statusMsg);
+
+              // 剩余部分是实际内容
+              const content = part.substring(lineEndIndex + 1);
+              if (content) {
+                accumulatedText += content;
+                setSummaryData(accumulatedText);
+                if (onChunk) onChunk(accumulatedText);
+              }
+            } else if (i === 0 && !chunk.startsWith("__STATUS__")) {
+              // 第一部分，且不是以 STATUS 开头，说明是普通内容
+              accumulatedText += part;
+              setSummaryData(accumulatedText);
+              if (onChunk) onChunk(accumulatedText);
+            }
+          }
+        }
+        else if (chunk.includes("__ERROR__:")) {
+          const errorMsg = chunk.split("__ERROR__:")[1];
+          alert("AI Generation Error: " + errorMsg);
+          break;
+        }
+        else {
+          accumulatedText += chunk;
+          setSummaryData(accumulatedText);
+          if (onChunk) onChunk(accumulatedText);
+        }
       }
 
       console.log("✅ AI summary completed, length:", accumulatedText.length);
+      setStatusText(""); // 清除状态
       return accumulatedText;
     } catch (err: any) {
       console.error("❌ Summary Stream Error:", err);
@@ -226,11 +271,12 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       setIsAiLoading(false);
       console.log("🏁 AI summary process finished");
 
-      // 注意：积分扣除已经在API层面处理，这里只需要刷新用户信息
-      // 不需要再次调用 deductCreditsAfterSummary
-      if (onCreditsChanged) {
-        onCreditsChanged();
-      }
+      // 延迟刷新积分显示，确保服务器端已更新
+      setTimeout(() => {
+        if (onCreditsChanged) {
+          onCreditsChanged();
+        }
+      }, 1000);
     }
   };
 

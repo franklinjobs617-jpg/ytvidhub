@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+
+// 防止重复扣除积分的缓存（5秒内相同请求视为重复）
+const recentDeductions = new Map<string, number>();
 
 export async function POST(request: NextRequest) {
     try {
@@ -14,28 +16,6 @@ export async function POST(request: NextRequest) {
 
         const token = authHeader.split(' ')[1]
 
-        // 通过现有的API获取用户信息来验证token
-        const userResponse = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!userResponse.ok) {
-            return NextResponse.json(
-                { error: 'Invalid token' },
-                { status: 401 }
-            )
-        }
-
-        const userData = await userResponse.json()
-        const user = userData.data
-
-        if (!user || !user.email) {
-            return NextResponse.json(
-                { error: 'User data not found' },
-                { status: 400 }
-            )
-        }
-
         // 获取请求体
         const body = await request.json()
         const { amount, reason } = body
@@ -47,110 +27,71 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        console.log('Received user data from API:', {
-            googleUserId: user.googleUserId,
-            email: user.email,
-            credits: user.credits,
-            type: user.type,
-            rawUserData: user
-        })
-
-        // 查找数据库中的用户记录
-        let dbUser = null;
-
-        // 方式1: 用googleUserId + type="2"查找
-        if (user.googleUserId) {
-            console.log('Searching by googleUserId:', user.googleUserId)
-            dbUser = await prisma.user.findFirst({
-                where: {
-                    googleUserId: user.googleUserId,
-                    type: "2"
-                }
-            })
-            console.log('Found by googleUserId:', dbUser ? 'YES' : 'NO')
-        }
-
-        // 方式2: 如果没找到，用email + type="2"查找
-        if (!dbUser && user.email) {
-            console.log('Searching by email:', user.email)
-            dbUser = await prisma.user.findFirst({
-                where: {
-                    email: user.email,
-                    type: "2"
-                }
-            })
-            console.log('Found by email:', dbUser ? 'YES' : 'NO')
-        }
-
-        console.log('Database user lookup:', {
-            searchGoogleUserId: user.googleUserId,
-            searchEmail: user.email,
-            foundUser: dbUser ? {
-                id: dbUser.id,
-                googleUserId: dbUser.googleUserId,
-                email: dbUser.email,
-                credits: dbUser.credits,
-                type: dbUser.type
-            } : null
-        })
-
-
-        if (!dbUser) {
-            return NextResponse.json(
-                { error: `User not found in database. GoogleUserId: ${user.googleUserId}, Email: ${user.email}` },
-                { status: 404 }
-            )
-        }
-
-        // 检查积分是否足够
-        const currentCredits = parseInt(dbUser.credits || "0") || 0
-
-        console.log('Credit check:', {
-            email: user.email,
-            dbCredits: dbUser.credits,
-            parsedCredits: currentCredits,
-            requestedAmount: amount,
-            hasEnough: currentCredits >= amount
-        })
-
-        if (isNaN(currentCredits) || currentCredits < amount) {
-            return NextResponse.json(
-                { error: `Insufficient credits. You have ${currentCredits} credits, but need ${amount}.` },
-                { status: 402 }
-            )
-        }
-
-        // 扣除积分
-        const newCredits = currentCredits - amount
-        await prisma.user.update({
-            where: {
-                id: dbUser.id
-            },
-            data: {
-                credits: newCredits.toString()
+        // 创建防重复标识符
+        const deductionKey = `${token.slice(-10)}_${amount}_${reason}`;
+        const now = Date.now();
+        
+        // 检查是否在5秒内有相同的扣除请求
+        if (recentDeductions.has(deductionKey)) {
+            const lastTime = recentDeductions.get(deductionKey)!;
+            if (now - lastTime < 5000) { // 5秒内
+                console.log('Duplicate credit deduction prevented:', { amount, reason, timeDiff: now - lastTime });
+                return NextResponse.json(
+                    { error: 'Duplicate deduction request detected' },
+                    { status: 429 }
+                );
             }
-        })
+        }
+
+        // 记录本次请求
+        recentDeductions.set(deductionKey, now);
+        
+        // 清理过期的记录（超过10秒的）
+        for (const [key, time] of recentDeductions.entries()) {
+            if (now - time > 10000) {
+                recentDeductions.delete(key);
+            }
+        }
+
+        console.log('Processing credit deduction:', { amount, reason, deductionKey });
+
+        // 直接调用外部API扣除积分（因为外部数据库和本地数据库是同一个）
+        const deductResponse = await fetch("https://api.ytvidhub.com/prod-api/g/deductCredits", {
+            method: 'POST',
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ amount, reason })
+        });
+
+        if (!deductResponse.ok) {
+            const errorData = await deductResponse.json().catch(() => ({}))
+            // 如果扣除失败，清除记录以允许重试
+            recentDeductions.delete(deductionKey);
+            return NextResponse.json(
+                { error: errorData.message || 'Failed to deduct credits' },
+                { status: deductResponse.status }
+            )
+        }
+
+        const result = await deductResponse.json()
 
         console.log('Credit deduction successful:', {
-            userId: dbUser.id,
-            oldCredits: currentCredits,
             deductedAmount: amount,
-            newCredits: newCredits
+            reason,
+            result
         })
 
         return NextResponse.json({
             success: true,
             message: `Successfully deducted ${amount} credits`,
-            remainingCredits: newCredits,
+            remainingCredits: result.data?.remainingCredits,
             reason
         })
 
     } catch (error) {
-        console.error('Credit deduction error details:', {
-            error: error,
-            message: error instanceof Error ? error.message : 'Unknown error',
-            stack: error instanceof Error ? error.stack : undefined
-        })
+        console.error('Credit deduction error:', error)
         return NextResponse.json(
             { error: `Internal server error: ${error instanceof Error ? error.message : 'Unknown error'}` },
             { status: 500 }

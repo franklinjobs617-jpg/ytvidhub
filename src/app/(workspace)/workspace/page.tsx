@@ -130,7 +130,6 @@ function WorkspaceContent() {
         setCurrentVideo(enhancedVideo);
         setVideoList([enhancedVideo]);
 
-        // 立即开始AI分析 - 只对从首页来的用户自动开始
         const storageKey = `auto_analyzed_${enhancedVideo.id}`;
         const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
         const cachedResult = analysisCache.current.get(enhancedVideo.id);
@@ -144,7 +143,6 @@ function WorkspaceContent() {
           if (autoStartTimer) clearTimeout(autoStartTimer);
 
           autoStartTimer = setTimeout(() => {
-            // 双重检查：确保在 timer 执行时也没有被取消，且 session 标记未被设置
             if (!isCancelled && !sessionStorage.getItem(storageKey)) {
               handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id);
               sessionStorage.setItem(storageKey, "true");
@@ -307,6 +305,12 @@ function WorkspaceContent() {
       return;
     }
 
+    // 检查是否正在分析中 - 防止重复请求（移到前面，更严格的检查）
+    if (isAnalyzing.current.has(targetId) && !forceRegenerate) {
+      console.log("⏳ Analysis already in progress for:", targetId);
+      return;
+    }
+
     // 如果是强制重新生成，清除缓存和session标记
     if (forceRegenerate) {
       analysisCache.current.delete(targetId);
@@ -321,12 +325,6 @@ function WorkspaceContent() {
         setSummaryData(cachedResult);
         return;
       }
-    }
-
-    // 检查是否正在分析中 - 防止重复请求
-    if (isAnalyzing.current.has(targetId)) {
-      console.log("⏳ Analysis already in progress for:", targetId);
-      return;
     }
 
     // 添加到分析中的集合，防止重复调用

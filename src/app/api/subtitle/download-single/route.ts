@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
         // 获取请求体
         const body = await request.json()
-        const { url, lang, format, title } = body
+        const { url, lang, format, title, isPreview } = body
 
         if (!url) {
             return NextResponse.json(
@@ -46,41 +46,46 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // 检查用户积分
-        const userCredits = parseInt(user?.credits || "0") || 0;
+        // 这里的逻辑修改：如果是预览(isPreview=true)，则不扣除积分，也不强求有积分
+        // 只有下载文件时才检查积分和扣费
+        if (!isPreview) {
+            // 检查用户积分
+            const userCredits = parseInt(user?.credits || "0") || 0;
 
-        
-        console.log('Single download credit check:', {
-            userData: user,
-            userCredits,
-            required: 1
-        });
-        
-        if (!user || userCredits < 1) {
-            return NextResponse.json(
-                { error: `Insufficient credits. You have ${userCredits} credits, but subtitle download requires 1 credit.` },
-                { status: 402 }
-            )
-        }
+            console.log('Single download credit check:', {
+                userData: user,
+                userCredits,
+                required: 1
+            });
 
-        console.log('Proxying single download request for URL:', url)
+            if (!user || userCredits < 1) {
+                return NextResponse.json(
+                    { error: `Insufficient credits. You have ${userCredits} credits, but subtitle download requires 1 credit.` },
+                    { status: 402 }
+                )
+            }
 
-        // 先扣除积分
-        const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ amount: 1, reason: "Subtitle Download" })
-        });
+            console.log('Proxying single download request for URL:', url)
 
-        if (!deductResponse.ok) {
-            const errorData = await deductResponse.json().catch(() => ({}));
-            return NextResponse.json(
-                { error: errorData.error || "Failed to deduct credits" },
-                { status: deductResponse.status }
-            )
+            // 先扣除积分
+            const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ amount: 1, reason: "Subtitle Download" })
+            });
+
+            if (!deductResponse.ok) {
+                const errorData = await deductResponse.json().catch(() => ({}));
+                return NextResponse.json(
+                    { error: errorData.error || "Failed to deduct credits" },
+                    { status: deductResponse.status }
+                )
+            }
+        } else {
+            console.log('Proxying PREVIEW request (no credit deduction) for URL:', url)
         }
 
         // 代理请求到真实的后端API

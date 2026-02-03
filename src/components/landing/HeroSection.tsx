@@ -45,12 +45,22 @@ export default function HeroSection() {
   const [downloadFormat, setDownloadFormat] = useState("srt");
   const [userCredits, setUserCredits] = useState<string>("--");
   const [activeSummaryId, setActiveSummaryId] = useState<string | null>(null);
+  const [isActionClicked, setIsActionClicked] = useState(false);
 
-  const refreshCredits = () => {
+  const refreshCredits = async () => {
     if (user) {
-      subtitleApi
-        .syncUser()
-        .then((data) => data && setUserCredits(data.credits || "0"));
+      try {
+        const data = await subtitleApi.syncUser();
+        if (data) {
+          const newCredits = data.credits || "0";
+          if (newCredits !== userCredits) {
+            setUserCredits(newCredits);
+            console.log("✅ Credits updated:", userCredits, "→", newCredits);
+          }
+        }
+      } catch (error) {
+        console.error("❌ Failed to refresh credits:", error);
+      }
     }
   };
 
@@ -68,9 +78,15 @@ export default function HeroSection() {
 
   useEffect(() => {
     if (user) {
-      subtitleApi
-        .syncUser()
-        .then((data) => data && setUserCredits(data.credits || "0"));
+      // 初始加载时获取积分
+      refreshCredits();
+
+      // 设置定期刷新积分（每30秒检查一次）
+      const interval = setInterval(() => {
+        refreshCredits();
+      }, 30000);
+
+      return () => clearInterval(interval);
     } else {
       setUserCredits("--");
     }
@@ -114,46 +130,78 @@ export default function HeroSection() {
   };
 
   const handleMainAction = async () => {
-    if (!urls.trim() && videoResults.length === 0) {
-      setInputError(true);
-      toast.error("Please enter a YouTube link first.", { position: "top-center" });
-      return;
-    }
-    if (videoResults.length === 0) {
-      const lines = urls.split("\n").map((u) => u.trim()).filter((u) => u.length > 0);
-      const invalidLinks = lines.filter((link) => !isValidYoutubeUrl(link));
-      if (invalidLinks.length > 0) {
+    // 设置按钮点击状态
+    setIsActionClicked(true);
+
+    try {
+      if (!urls.trim() && videoResults.length === 0) {
         setInputError(true);
-        toast.error("Invalid YouTube URL detected", { position: "top-center" });
+        toast.error("Please enter a YouTube link first.", { position: "top-center" });
         return;
       }
-    }
-    if (!user) {
-      toast.success("Sign up free to get 5 YouTube subtitle downloads instantly!", { position: "top-center" });
-      setShowLoginModal(true);
-      return;
-    }
-    if (selectedMode === "summary") {
-      let targetUrls = videoResults.length === 0
-        ? urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http")).join(",")
-        : videoResults.filter((v) => selectedIds.has(v.id)).map((v?: any) => v.url).join(",");
-      if (!targetUrls) return;
-      router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home`);
-      return;
-    }
-    if (videoResults.length === 0) {
-      const uniqueUrls = Array.from(new Set(urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http"))));
-      if (uniqueUrls.length === 0) return;
-      const results = await analyzeUrls(uniqueUrls);
-      setVideoResults(results);
-      setSelectedIds(new Set(results.filter((v: any) => v.hasSubtitles).map((v: any) => v.id)));
-    } else {
-      const selectedVideos = videoResults.filter((v) => selectedIds.has(v.id));
-      if (selectedVideos.length === 0) {
-        toast.warning("Please select at least one video.");
+      if (videoResults.length === 0) {
+        const lines = urls.split("\n").map((u) => u.trim()).filter((u) => u.length > 0);
+        const invalidLinks = lines.filter((link) => !isValidYoutubeUrl(link));
+        if (invalidLinks.length > 0) {
+          setInputError(true);
+          toast.error("Invalid YouTube URL detected", { position: "top-center" });
+          return;
+        }
+      }
+      if (!user) {
+        toast.success("Sign up free to get 5 YouTube subtitle downloads instantly!", { position: "top-center" });
+        setShowLoginModal(true);
         return;
       }
-      selectedVideos.length === 1 ? await startSingleDownload(selectedVideos[0], downloadFormat) : await startBulkDownload(selectedVideos, downloadFormat);
+      if (selectedMode === "summary") {
+        let targetUrls = videoResults.length === 0
+          ? urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http")).join(",")
+          : videoResults.filter((v) => selectedIds.has(v.id)).map((v?: any) => v.url).join(",");
+        if (!targetUrls) return;
+
+        // 立即给用户反馈，表示操作已开始
+        toast.success("Opening AI Workspace...", {
+          position: "top-center",
+          duration: 2000
+        });
+
+        // 立即跳转，不等待任何异步操作
+        router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home&mode=summary`);
+        return;
+      }
+      if (videoResults.length === 0) {
+        const uniqueUrls = Array.from(new Set(urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http"))));
+        if (uniqueUrls.length === 0) return;
+        const results = await analyzeUrls(uniqueUrls);
+        setVideoResults(results);
+        setSelectedIds(new Set(results.filter((v: any) => v.hasSubtitles).map((v: any) => v.id)));
+      } else {
+        const selectedVideos = videoResults.filter((v) => selectedIds.has(v.id));
+        if (selectedVideos.length === 0) {
+          toast.warning("Please select at least one video.");
+          return;
+        }
+
+        // 执行下载操作
+        if (selectedVideos.length === 1) {
+          await startSingleDownload(selectedVideos[0], downloadFormat);
+        } else {
+          await startBulkDownload(selectedVideos, downloadFormat);
+        }
+
+        // 下载完成后，立即刷新一次积分
+        await refreshCredits();
+
+        // 额外再延迟刷新一次（确保数据一致性）
+        setTimeout(() => {
+          refreshCredits();
+        }, 2000);
+      }
+    } finally {
+      // 重置按钮状态
+      setTimeout(() => {
+        setIsActionClicked(false);
+      }, 1000);
     }
   };
 
@@ -299,6 +347,7 @@ export default function HeroSection() {
                   canReset={videoResults.length > 0 || !!urls}
                   isAnalyzing={isAnalyzing}
                   isDownloading={isDownloading}
+                  isActionClicked={isActionClicked}
                   canAction={!isAnalyzing && (videoResults.length > 0 || !!urls)}
                   actionLabel={actionLabel}
                 />

@@ -35,6 +35,7 @@ export function TranscriptArea({
         lang: "en",
         format: "vtt",
         title: "transcript",
+        isPreview: true,
       })
       .then(async (blob) => setTranscriptVtt(await blob.text()))
       .catch(() => setTranscriptVtt(""))
@@ -84,22 +85,20 @@ export function TranscriptArea({
         <div className="flex bg-slate-100 p-0.5 rounded-lg shrink-0 border border-slate-200/50">
           <button
             onClick={() => setIsSmartMode(true)}
-            className={`p-1.5 rounded-md transition-all ${
-              isSmartMode
+            className={`p-1.5 rounded-md transition-all ${isSmartMode
                 ? "bg-white shadow-sm text-violet-600"
                 : "text-slate-400 hover:text-slate-600"
-            }`}
+              }`}
             title="Smart View (Grouped)"
           >
             <AlignLeft size={14} />
           </button>
           <button
             onClick={() => setIsSmartMode(false)}
-            className={`p-1.5 rounded-md transition-all ${
-              !isSmartMode
+            className={`p-1.5 rounded-md transition-all ${!isSmartMode
                 ? "bg-white shadow-sm text-violet-600"
                 : "text-slate-400 hover:text-slate-600"
-            }`}
+              }`}
             title="List View (Raw)"
           >
             <List size={14} />
@@ -173,10 +172,9 @@ export function TranscriptArea({
                 <div
                   className={`
                     text-slate-700 transition-colors
-                    ${
-                      isSmartMode
-                        ? "text-sm leading-6 text-justify"
-                        : "text-sm leading-snug pl-12 -mt-5"
+                    ${isSmartMode
+                      ? "text-sm leading-6 text-justify"
+                      : "text-sm leading-snug pl-12 -mt-5"
                     }
                 `}
                 >

@@ -27,8 +27,11 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // 创建请求唯一标识符（用户token + URL）
-        const requestKey = `${token.slice(-10)}_${url}`;
+        // 创建请求唯一标识符（用户token + URL的hash，确保唯一性）
+        const urlHash = Buffer.from(url).toString('base64').slice(0, 10);
+        const requestKey = `${token.slice(-10)}_${urlHash}`;
+        
+        console.log('AI Summary request:', { url, requestKey, hasActiveRequest: activeRequests.has(requestKey) });
         
         // 检查是否有相同的请求正在进行
         if (activeRequests.has(requestKey)) {
@@ -99,7 +102,7 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
 
     // 1. 先扣除积分
     try {
-        console.log('Deducting AI summary credits for:', user.email);
+        console.log('Deducting AI summary credits for:', user.email, 'URL:', url);
         const deductResponse = await fetch(`${origin}/api/deduct-credits`, {
             method: "POST",
             headers: {
@@ -117,7 +120,7 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
                 { status: deductResponse.status || 402 }
             );
         }
-        console.log('Credits deducted successfully for:', user.email);
+        console.log('Credits deducted successfully for:', user.email, 'Amount: 2');
     } catch (deductError) {
         console.error('Credit deduction error:', deductError);
         return NextResponse.json(

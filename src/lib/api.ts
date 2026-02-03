@@ -66,6 +66,7 @@ export const subtitleApi = {
     lang: string;
     format: string;
     title: string;
+    isPreview?: boolean;
   }) {
     const res = await authenticatedFetch("/api/subtitle/download-single", {
       method: "POST",
@@ -98,17 +99,36 @@ export const subtitleApi = {
     return res.json();
   },
 
-  // 7. 同步用户信息/积分
+  // 7. 同步用户信息/积分 (使用本地API获取最新积分)
   async syncUser() {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
     if (!token) return null;
-    const res = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.data;
+
+    try {
+      // 优先使用本地API获取最新积分
+      const res = await fetch("/api/sync-user", {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        return json.data;
+      }
+
+      // 如果本地API失败，回退到外部API
+      const fallbackRes = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!fallbackRes.ok) return null;
+      const fallbackJson = await fallbackRes.json();
+      return fallbackJson.data;
+    } catch (error) {
+      console.error("Failed to sync user:", error);
+      return null;
+    }
   },
 
   // 8. 扣除积分 (使用本地API)
