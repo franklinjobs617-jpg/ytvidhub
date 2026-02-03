@@ -238,10 +238,8 @@ function WorkspaceContent() {
     }
   }, [currentVideo?.id]);
 
-  // --- Cache results when loading finishes ---
   useEffect(() => {
     if (summaryData && currentVideo?.id && !isAiLoading) {
-      // 只有当数据不为空且确实是当前视频的结果时才缓存
       if (summaryData.trim().length > 0) {
         analysisCache.current.set(currentVideo.id, summaryData);
         console.log("💾 Cached completed analysis result for:", currentVideo.title);
@@ -455,8 +453,8 @@ function WorkspaceContent() {
       <header className="h-14 border-b border-slate-100 flex items-center justify-between px-4 shrink-0 z-[60] bg-white gap-4">
         <div className="flex items-center gap-3 shrink-0">
           <button
-            onClick={() => router.push("/")}
-            className="p-2 hover:bg-slate-50 rounded-lg transition-colors"
+            onClick={() => window.location.href = "/"}
+            className="p-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer"
           >
             <ArrowLeft size={18} className="text-slate-500" />
           </button>

@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import PaymentChoiceModal from "@/components/pricing/PaymentChoiceModal";
 import FAQ from "@/components/landing/FAQ";
+import CustomCreditSlider from "@/components/pricing/CustomCreditSlider";
 import { features } from "process";
 
 const plans = [
@@ -122,16 +123,20 @@ export default function PricingPage() {
       </section>
 
       <section className="pb-24 px-4 lg:px-8">
+        {/* === Custom Credit Slider (High Visibility) === */}
+        <div className="mb-10">
+          <CustomCreditSlider onRequestLogin={() => setShowLoginModal(true)} />
+        </div>
+
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {plans.map((plan) => (
             <div
               key={plan.name}
               className={`
                 relative flex flex-col p-6 rounded-2xl border transition-all duration-300
-                ${
-                  plan.highlight
-                    ? "bg-white border-blue-200 ring-4 ring-blue-500/10 shadow-2xl scale-105 z-10"
-                    : "bg-white/80 backdrop-blur-sm border-slate-200 hover:border-blue-200 hover:shadow-xl"
+                ${plan.highlight
+                  ? "bg-white border-blue-200 ring-4 ring-blue-500/10 shadow-2xl scale-105 z-10"
+                  : "bg-white/80 backdrop-blur-sm border-slate-200 hover:border-blue-200 hover:shadow-xl"
                 }
               `}
             >
@@ -148,13 +153,12 @@ export default function PricingPage() {
 
               <div className="mb-6">
                 <h3
-                  className={`text-xl font-bold uppercase tracking-wide mb-2 ${
-                    plan.name === "Researcher"
-                      ? "text-purple-600"
-                      : plan.highlight
+                  className={`text-xl font-bold uppercase tracking-wide mb-2 ${plan.name === "Researcher"
+                    ? "text-purple-600"
+                    : plan.highlight
                       ? "text-blue-600"
                       : "text-slate-700"
-                  }`}
+                    }`}
                 >
                   {plan.name}
                 </h3>
@@ -180,14 +184,12 @@ export default function PricingPage() {
                 {plan.features.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-start text-sm ${
-                      feature.disabled ? "text-slate-400" : "text-slate-700"
-                    }`}
+                    className={`flex items-start text-sm ${feature.disabled ? "text-slate-400" : "text-slate-700"
+                      }`}
                   >
                     <svg
-                      className={`w-5 h-5 mr-3 flex-shrink-0 ${
-                        feature.disabled ? "text-slate-300" : "text-green-500"
-                      }`}
+                      className={`w-5 h-5 mr-3 flex-shrink-0 ${feature.disabled ? "text-slate-300" : "text-green-500"
+                        }`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -219,10 +221,9 @@ export default function PricingPage() {
                 disabled={!plan.id}
                 className={`
                   w-full py-3.5 rounded-xl font-bold uppercase tracking-wide text-xs transition-all duration-200
-                  ${
-                    !plan.id
-                      ? "bg-slate-100 text-slate-400 cursor-default"
-                      : plan.highlight
+                  ${!plan.id
+                    ? "bg-slate-100 text-slate-400 cursor-default"
+                    : plan.highlight
                       ? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200"
                       : "bg-slate-900 text-white hover:bg-slate-800 shadow-md"
                   }
@@ -233,6 +234,9 @@ export default function PricingPage() {
             </div>
           ))}
         </div>
+
+
+
 
         {/* === Credits Explanation === */}
         <div className="mt-20 max-w-4xl mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
@@ -252,10 +256,7 @@ export default function PricingPage() {
             </div>
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
               <p className="font-bold text-slate-900 text-lg mb-1">
-                5-10 Credits{" "}
-                <span className="text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full ml-2">
-                  Coming Soon
-                </span>
+                2 Credits{" "}
               </p>
               <p className="text-slate-600 text-sm">
                 AI-powered transcription & summary for 1 YouTube URL.
