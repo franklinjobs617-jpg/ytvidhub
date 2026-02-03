@@ -1,11 +1,15 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowUpRight, Zap } from "lucide-react";
+
 export interface VideoResult {
   id: string;
   title: string;
   thumbnail: string;
   duration: string;
   hasSubtitles: boolean;
+  url?: string;
 }
 
 interface DownloaderViewProps {
@@ -36,8 +40,38 @@ export function DownloaderView({
     onSelectionChange(next);
   };
 
+  // 判断是否显示批量处理升级提示
+  const shouldShowUpgradeBanner = videos.length >= 10;
+
   return (
     <div className="flex flex-col h-full bg-white animate-in fade-in duration-300">
+      {/* 批量处理升级 Banner */}
+      {shouldShowUpgradeBanner && (
+        <div className="mx-4 mt-4 mb-2 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Zap size={16} className="text-white" fill="currentColor" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-blue-900">
+                  Bulk processing detected!
+                </h3>
+                <p className="text-xs text-blue-700">
+                  Use our Pro features to export all {videos.length}+ subtitles in one ZIP file.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/pricing"
+              className="flex items-center gap-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs font-bold"
+            >
+              Upgrade <ArrowUpRight size={14} />
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* 顶部工具栏：全选 */}
       <div className="flex items-center justify-between px-6 py-3 border-b border-slate-100 bg-slate-50/50">
         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">

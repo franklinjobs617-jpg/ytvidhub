@@ -8,26 +8,26 @@ import CoreCapabilities from "@/components/landing/CoreCapabilities";
 import FAQ from "@/components/landing/FAQ";
 
 export const metadata: Metadata = {
-  title: "YTVidHub | Bulk YouTube Subtitle Downloader for LLM & AI Training",
-  description: "Extract clean, formatted subtitles from entire YouTube playlists or channels. The ultimate data preparation tool for LLM training and research. Start for free.",
+  title: "YouTube Subtitle Downloader | Bulk Extract SRT, VTT & TXT Captions | YTVidHub",
+  description: "Professional YouTube subtitle downloader for single videos and bulk playlist extraction. Download SRT, VTT, TXT captions for AI training, accessibility, and content creation. Free tool with 5 daily credits.",
   openGraph: {
-    title: "YTVidHub - One-Click Bulk YouTube Subtitle Extraction",
-    description: "Convert YouTube videos to clean TXT data for AI/LLM training. Supports playlists, channels, and multi-language subtitles.",
+    title: "YouTube Subtitle Downloader | Bulk Extract Captions from Videos & Playlists",
+    description: "Download YouTube subtitles from single videos or entire playlists. Professional tool for AI training, content creation, and accessibility projects.",
     url: "https://ytvidhub.com",
     images: [
       {
         url: "/image/og-home.webp",
         width: 1200,
         height: 630,
-        alt: "YTVidHub Homepage Preview",
+        alt: "YTVidHub YouTube Subtitle Downloader Tool",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "YTVidHub | Bulk YouTube Subtitle Downloader",
-    description: "The fastest way to get YouTube data for your LLM projects.",
+    title: "YouTube Subtitle Downloader | Extract Captions & Transcripts",
+    description: "Download subtitles from YouTube videos and playlists. Perfect for AI training and content creation.",
     images: ["/image/og-home.webp"],
   },
   alternates: {

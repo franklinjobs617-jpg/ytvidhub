@@ -21,13 +21,27 @@ const fontDisplay = Anton({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ytvidhub.com"),
-  title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
+  title: "YouTube Subtitle Downloader | Bulk Extract SRT, VTT & TXT Captions",
   description:
-    "Stop 100 clicks for data preparation. YTVidHub offers unique bulk download for playlists/channels and converts to optimized, clean TXT for LLM training. 5 free daily credits.",
+    "Professional YouTube subtitle downloader for single videos and bulk playlist extraction. Download SRT, VTT, TXT captions for AI training, accessibility, and content creation. Free with 5 daily credits.",
+  
+  keywords: [
+    "youtube subtitle downloader",
+    "bulk youtube subtitle downloader", 
+    "youtube caption downloader",
+    "download youtube subtitles",
+    "youtube transcript downloader",
+    "youtube srt downloader",
+    "youtube vtt downloader",
+    "bulk subtitle extractor",
+    "youtube playlist subtitle download",
+    "ai training data extraction"
+  ],
+  
   openGraph: {
-    title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
+    title: "YouTube Subtitle Downloader | Bulk Extract Captions from Videos & Playlists",
     description:
-      "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training and research.",
+      "Download YouTube subtitles from single videos or entire playlists. Professional tool for AI training, content creation, and accessibility projects.",
     url: "https://ytvidhub.com/",
     siteName: "YTVidHub",
     locale: "en_US",
@@ -37,16 +51,16 @@ export const metadata: Metadata = {
         url: "/image/og-image.webp",
         width: 1200,
         height: 630,
-        alt: "YTVidHub - Bulk YouTube Subtitle Downloader",
+        alt: "YTVidHub - YouTube Subtitle Downloader Tool",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Bulk YouTube Subtitle Downloader for LLM & Research Data Prep",
+    title: "YouTube Subtitle Downloader | Extract Captions & Transcripts",
     description:
-      "Stop 100 clicks for data preparation. Bulk download YouTube subtitles for LLM training.",
+      "Download subtitles from YouTube videos and playlists. Perfect for AI training and content creation.",
     images: ["/image/og-image.webp"],
   },
 
@@ -69,12 +83,31 @@ export default function RootLayout({
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "YTVidHub - Ultimate YouTube Subtitle Downloader",
-    url: "https://ytvidhub.com/",
-    potentialAction: {
+    "@type": "WebApplication",
+    "name": "YTVidHub - YouTube Subtitle Downloader",
+    "description": "Professional YouTube subtitle downloader for single videos and bulk playlist extraction. Download SRT, VTT, TXT captions for AI training and content creation.",
+    "url": "https://ytvidhub.com/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "featureList": [
+      "YouTube subtitle downloader",
+      "Bulk YouTube subtitle extraction", 
+      "SRT format download",
+      "VTT format download",
+      "TXT format download",
+      "Playlist subtitle download",
+      "AI training data extraction",
+      "Multi-language support"
+    ],
+    "potentialAction": {
       "@type": "SearchAction",
-      target: "https://ytvidhub.com/?q={search_term_string}",
+      "target": "https://ytvidhub.com/?q={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };
@@ -85,26 +118,42 @@ export default function RootLayout({
     mainEntity: [
       {
         "@type": "Question",
-        name: "Is this YouTube subtitle downloader completely free?",
+        name: "How do I download YouTube subtitles for free?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "YTVidHub is free for single downloads and includes 5 daily credits for bulk operations. Professional plans are available for high-volume data needs.",
+          text: "YTVidHub is a free YouTube subtitle downloader that allows you to extract captions from individual videos or bulk download from playlists. Simply paste the YouTube URL and choose your preferred format (SRT, VTT, or TXT).",
         },
       },
       {
         "@type": "Question",
-        name: "What URL formats are supported?",
+        name: "Can I download subtitles from YouTube playlists in bulk?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "We support standard YouTube video URLs, playlist URLs, and channel page URLs. For bulk processing via file upload, ensure each URL is on a new line in a simple .txt or .csv file. The system automatically filters out invalid or duplicate links.",
+          text: "Yes! Our bulk YouTube subtitle downloader can extract captions from entire playlists and channels. Professional plans support unlimited bulk downloads for large-scale projects.",
         },
       },
       {
         "@type": "Question",
-        name: "What language are subtitles in?",
+        name: "What subtitle formats are supported?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "YTVidHub supports ALL languages available on YouTube. This includes manually uploaded captions by the creator (highest quality) and auto-generated subtitles for languages like Chinese (Mandarin), Spanish, German, and more.",
+          text: "Our YouTube subtitle downloader supports SRT (SubRip), VTT (WebVTT), and clean TXT formats. Choose the format that best fits your needs - SRT for video players, VTT for web, or TXT for AI training.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Does this work with auto-generated YouTube captions?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, our YouTube transcript downloader can extract both manually uploaded subtitles and YouTube's auto-generated closed captions in all available languages.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is there a limit to how many YouTube subtitles I can download?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Free users get 5 daily credits for subtitle downloads. Pro members enjoy unlimited bulk YouTube subtitle extraction for large-scale AI training and content creation projects.",
         },
       },
     ],

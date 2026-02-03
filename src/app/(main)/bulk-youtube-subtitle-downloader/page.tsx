@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import BulkDownloaderSchema from "@/components/seo/BulkDownloaderSchema";
 
 export default function BulkDownloaderPage() {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ export default function BulkDownloaderPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-
+      <BulkDownloaderSchema />
 
       <main>
         {/* === 1. HERO SECTION (保持原有样式) === */}
@@ -29,11 +30,11 @@ export default function BulkDownloaderPage() {
           <div className="relative pt-12 pb-16 text-center px-6 z-10">
             {/* 关键词注入 H1 */}
             <h1 className="text-5xl md:text-6xl font-display font-black italic uppercase tracking-wide text-slate-900 mb-6 drop-shadow-sm leading-tight">
-              Powerful <span className="text-blue-600">Bulk YouTube Subtitle</span> Extraction
+              <span className="text-blue-600">Bulk YouTube Subtitle Downloader</span> - Extract Captions from Playlists
             </h1>
 
             <p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium mb-10 leading-relaxed">
-              Stop wasting time on manual downloads. Use our <strong>YouTube playlist subtitle downloader</strong> to batch extract captions—no matter the size—and get a perfectly organized ZIP file in seconds.
+              The most powerful <strong>bulk YouTube subtitle downloader</strong> for extracting SRT, VTT, and TXT captions from entire playlists, channels, and multiple videos. Perfect for <strong>AI training datasets</strong>, content creation, and accessibility projects.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
@@ -101,12 +102,70 @@ export default function BulkDownloaderPage() {
         </section>
 
         {/* === [新增板块]：针对 Google 关键词的文本导流 (SEO 内容) === */}
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-6 max-w-4xl text-center">
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">The Ultimate YouTube Video Subtitle Downloader</h2>
-            <p className="text-slate-600 leading-relaxed">
-              Are you looking for an efficient way to <strong>download YouTube subtitles for multiple videos</strong>? YTVidHub is designed to be the fastest <strong>youtube subtitle downloader</strong> on the market. Whether you need to extract <strong>closed captions (CC)</strong> for AI training, accessibility, or content repurposing, our batch processing engine ensures you get the highest quality transcripts without the manual hassle.
-            </p>
+        <section className="py-16 bg-white border-t border-slate-100">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">Professional Bulk YouTube Subtitle Extraction</h2>
+              <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                YTVidHub is the industry-leading <strong>bulk YouTube subtitle downloader</strong> trusted by AI researchers, content creators, and accessibility professionals worldwide.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Playlist Subtitle Download</h3>
+                <p className="text-slate-600">Extract subtitles from entire YouTube playlists with thousands of videos in one operation.</p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Lightning Fast Processing</h3>
+                <p className="text-slate-600">Our advanced <strong>batch YouTube subtitle extractor</strong> processes hundreds of videos simultaneously.</p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Multiple Format Support</h3>
+                <p className="text-slate-600">Download in SRT, VTT, or clean TXT format - perfect for any use case or platform.</p>
+              </div>
+            </div>
+
+            <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+              <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center">Why Choose Our Bulk YouTube Subtitle Downloader?</h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h4 className="text-lg font-semibold text-slate-900 mb-3">For AI & Machine Learning</h4>
+                  <ul className="space-y-2 text-slate-600">
+                    <li>• Clean TXT format perfect for training datasets</li>
+                    <li>• Bulk extraction for large-scale AI projects</li>
+                    <li>• Automated processing saves weeks of manual work</li>
+                    <li>• Compatible with popular ML frameworks</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-slate-900 mb-3">For Content Creators</h4>
+                  <ul className="space-y-2 text-slate-600">
+                    <li>• Extract transcripts for blog content creation</li>
+                    <li>• Download channel archives for backup</li>
+                    <li>• Create accessible content with proper captions</li>
+                    <li>• Repurpose video content across platforms</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -114,10 +173,10 @@ export default function BulkDownloaderPage() {
         <section className="py-20 md:py-28 bg-white border-t border-slate-100">
           <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="text-3xl md:text-4xl font-extrabold text-center text-slate-900 mb-4 tracking-tight">
-              Efficient YouTube Transcript Extraction
+              Advanced Bulk YouTube Subtitle Extraction Technology
             </h2>
             <p className="text-lg text-center text-slate-500 mb-16 max-w-2xl mx-auto leading-relaxed">
-              See how YTVidHub transforms your <strong>subtitle data collection</strong> workflow.
+              See how our <strong>professional bulk YouTube subtitle downloader</strong> transforms your subtitle extraction workflow.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8">
@@ -130,9 +189,10 @@ export default function BulkDownloaderPage() {
                 </h3>
                 <ul className="space-y-4 text-slate-500 text-sm">
                   <li>• Open dozens of browser tabs and wait.</li>
-                  <li>• Click "download srt" for every single video.</li>
+                  <li>• Click "download srt" for every single video manually.</li>
                   <li>• Deal with cryptically named files like "captions.srt".</li>
-                  <li>• Waste hours renaming and organizing for your project.</li>
+                  <li>• Waste hours renaming and organizing files.</li>
+                  <li>• Limited to one video at a time - no bulk processing.</li>
                 </ul>
               </div>
 
@@ -144,22 +204,55 @@ export default function BulkDownloaderPage() {
                   <span className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
                     ✓
                   </span>
-                  YTVidHub Bulk Engine
+                  YTVidHub Bulk Subtitle Downloader
                 </h3>
                 <ul className="space-y-4 text-slate-700 text-sm font-medium">
                   <li className="flex gap-3 items-center">
-                    ✓ Paste your entire playlist or channel URL.
+                    ✓ Paste entire playlist or channel URL for bulk processing.
                   </li>
                   <li className="flex gap-3 items-center">
                     ✓ Download <strong>YouTube playlist subtitles</strong> with one click.
                   </li>
                   <li className="flex gap-3 items-center">
-                    ✓ Clean TXT/VTT/SRT files named by video title.
+                    ✓ Clean SRT/VTT/TXT files named by video title.
                   </li>
                   <li className="flex gap-3 items-center">
-                    ✓ 100% automated, no manual intervention needed.
+                    ✓ Process thousands of videos simultaneously.
                   </li>
                 </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">Complete Bulk YouTube Subtitle Download Solution</h2>
+              <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                From single videos to massive playlists - our <strong>bulk YouTube subtitle downloader</strong> handles any scale of subtitle extraction project.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h3 className="font-bold text-slate-900 mb-2">Playlist Downloads</h3>
+                <p className="text-sm text-slate-600">Extract subtitles from entire YouTube playlists with our <strong>playlist subtitle downloader</strong>.</p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h3 className="font-bold text-slate-900 mb-2">Channel Archives</h3>
+                <p className="text-sm text-slate-600">Download all subtitles from YouTube channels using our <strong>bulk transcript extractor</strong>.</p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h3 className="font-bold text-slate-900 mb-2">Multiple Formats</h3>
+                <p className="text-sm text-slate-600">Get subtitles in SRT, VTT, or TXT format with our versatile <strong>YouTube caption downloader</strong>.</p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h3 className="font-bold text-slate-900 mb-2">AI Training Ready</h3>
+                <p className="text-sm text-slate-600">Clean text extraction perfect for machine learning and <strong>AI dataset creation</strong>.</p>
               </div>
             </div>
           </div>
@@ -169,10 +262,10 @@ export default function BulkDownloaderPage() {
         <section className="py-20 md:py-28 bg-slate-50/50">
           <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="text-3xl md:text-4xl font-extrabold text-center text-slate-900 mb-4 tracking-tight">
-              Built for Scale and Speed
+              Professional Bulk YouTube Subtitle Extraction Use Cases
             </h2>
             <p className="text-lg text-center text-slate-500 mb-16 max-w-2xl mx-auto leading-relaxed">
-              A versatile <strong>youtube video subtitle downloader</strong> for AI training, research, and marketing.
+              Discover why professionals choose our <strong>bulk YouTube subtitle downloader</strong> for AI training, research, and content creation.
             </p>
 
             <div className="grid md:grid-cols-3 gap-8">
@@ -180,17 +273,17 @@ export default function BulkDownloaderPage() {
                 {
                   icon: "🤖",
                   title: "AI & LLM Training",
-                  desc: "Extract massive datasets in Clean TXT format. Our bulk tool is the preferred choice for developers fine-tuning GPT and other AI models.",
+                  desc: "Extract massive subtitle datasets in Clean TXT format. Our <strong>bulk YouTube transcript downloader</strong> is the preferred choice for developers fine-tuning GPT and other AI models.",
                 },
                 {
                   icon: "📝",
                   title: "Content Repurposing",
-                  desc: "Turn entire video libraries into SEO-optimized blog posts. Quickly extract transcripts for show notes and social media copy.",
+                  desc: "Turn entire video libraries into SEO-optimized blog posts. Quickly extract transcripts for show notes and social media copy using our <strong>YouTube playlist subtitle extractor</strong>.",
                 },
                 {
                   icon: "📚",
                   title: "Digital Archiving",
-                  desc: "Backup your channel's metadata. Download precise SRT/VTT files for translation and accessibility audits.",
+                  desc: "Backup your channel's metadata and captions. Download precise SRT/VTT files for translation and accessibility audits with our <strong>bulk subtitle extraction tool</strong>.",
                 },
               ].map((item, i) => (
                 <div
@@ -399,7 +492,7 @@ export default function BulkDownloaderPage() {
         <section className="py-24 bg-slate-50" id="bulk-faq">
           <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
             <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900 mb-12 text-center">
-              YouTube Subtitle FAQ
+              Bulk YouTube Subtitle Downloader FAQ
             </h2>
 
             <div className="space-y-4">
@@ -408,7 +501,7 @@ export default function BulkDownloaderPage() {
                   q: "How do I download an entire YouTube playlist with subtitles?",
                   a: (
                     <>
-                      To download a <strong>YouTube playlist with subtitles</strong>, simply copy the playlist URL from your browser and paste it into YTVidHub's bulk tool. Our engine will crawl the entire list, extract the captions for each video, and bundle them into a ZIP file for you.
+                      To download a <strong>YouTube playlist with subtitles</strong> in bulk, simply copy the playlist URL from your browser and paste it into YTVidHub's <strong>bulk subtitle downloader</strong>. Our advanced engine will crawl the entire playlist, extract the captions for each video, and bundle them into an organized ZIP file for you.
                     </>
                   ),
                 },
@@ -416,7 +509,7 @@ export default function BulkDownloaderPage() {
                   q: "Can I extract subtitles from multiple YouTube videos at once?",
                   a: (
                     <>
-                      Yes! You can paste a list of multiple individual video URLs or a channel link. YTVidHub is the leading <strong>batch youtube subtitle downloader</strong>, allowing for unlimited URLs for Pro members.
+                      Yes! You can paste a list of multiple individual video URLs or a channel link. YTVidHub is the leading <strong>bulk YouTube subtitle downloader</strong> and <strong>batch subtitle extractor</strong>, allowing for unlimited URLs for Pro members.
                     </>
                   ),
                 },
@@ -432,7 +525,7 @@ export default function BulkDownloaderPage() {
                   q: "Does this tool support auto-generated YouTube subtitles?",
                   a: (
                     <>
-                      Absolutely. Our <strong>youtube transcript downloader</strong> can extract both manually uploaded subtitles and YouTube's auto-generated closed captions (CC) in any available language.
+                      Absolutely. Our <strong>bulk YouTube transcript downloader</strong> can extract both manually uploaded subtitles and YouTube's auto-generated closed captions (CC) in any available language. The tool works with all types of YouTube captions.
                     </>
                   ),
                 },
@@ -440,7 +533,7 @@ export default function BulkDownloaderPage() {
                   q: "Is there a limit to how many subtitles I can download?",
                   a: (
                     <>
-                      Free users have a daily quota. <strong>Pro members</strong> enjoy unlimited bulk extraction, allowing them to download subtitles for thousands of videos in a single operation.
+                      Free users have a daily quota for <strong>bulk subtitle downloads</strong>. <strong>Pro members</strong> enjoy unlimited bulk extraction, allowing them to download subtitles for thousands of videos in a single operation using our advanced <strong>YouTube playlist subtitle downloader</strong>.
                     </>
                   ),
                 },
@@ -475,14 +568,58 @@ export default function BulkDownloaderPage() {
           </div>
         </section>
 
+        {/* === [新增] 内部链接和相关工具部分 === */}
+        <section className="py-16 bg-white border-t border-slate-100">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">Related YouTube Subtitle Tools</h2>
+              <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                Explore our complete suite of YouTube subtitle and transcript extraction tools.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Single Video Downloader</h3>
+                <p className="text-slate-600 mb-4">
+                  Need to download subtitles from just one video? Try our <Link href="/youtube-subtitle-downloader" className="text-blue-600 font-semibold hover:underline">single YouTube subtitle downloader</Link> for quick, individual video caption extraction.
+                </p>
+                <Link href="/youtube-subtitle-downloader" className="text-blue-600 font-semibold hover:underline text-sm">
+                  Try Single Video Tool →
+                </Link>
+              </div>
+
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Data Preparation Guide</h3>
+                <p className="text-slate-600 mb-4">
+                  Learn how to prepare YouTube transcripts for AI training. Our <Link href="/data-prep-guide" className="text-blue-600 font-semibold hover:underline">comprehensive data prep guide</Link> covers best practices for ML datasets.
+                </p>
+                <Link href="/data-prep-guide" className="text-blue-600 font-semibold hover:underline text-sm">
+                  Read Guide →
+                </Link>
+              </div>
+
+              <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <h3 className="text-xl font-bold text-slate-900 mb-3">SRT vs VTT Guide</h3>
+                <p className="text-slate-600 mb-4">
+                  Understand the differences between subtitle formats. Our <Link href="/guide/srt-vs-vtt" className="text-blue-600 font-semibold hover:underline">SRT vs VTT comparison guide</Link> helps you choose the right format.
+                </p>
+                <Link href="/guide/srt-vs-vtt" className="text-blue-600 font-semibold hover:underline text-sm">
+                  Compare Formats →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* === 8. CTA SECTION (保持原有样式) === */}
         <section className="py-24 bg-slate-900 text-white relative overflow-hidden text-center">
           <div className="container mx-auto px-6 max-w-4xl relative z-10">
             <h2 className="text-3xl md:text-5xl font-extrabold mb-8 tracking-tight leading-tight text-white italic uppercase">
-              Scale Your Subtitle Workflow
+              Scale Your Bulk Subtitle Extraction
             </h2>
             <p className="text-lg text-slate-400 mb-12 max-w-2xl mx-auto font-medium">
-              Don't let manual extraction slow you down. YTVidHub is the professional's choice for <strong>bulk YouTube transcript downloads</strong>.
+              Don't let manual extraction slow you down. YTVidHub is the professional's choice for <strong>bulk YouTube subtitle downloads</strong> and <strong>playlist caption extraction</strong>.
             </p>
             <Link
               href="/pricing"
