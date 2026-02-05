@@ -1,18 +1,21 @@
 "use client";
 
-import { Download, Sparkles, Brain, Languages } from "lucide-react";
+import { Download, Sparkles } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from 'next-intl';
 
 export type FeatureMode = "download" | "summary" | "mindmap" | "translate";
 
 export function FeatureTabs({ currentMode, onChange }: any) {
   const [hoveredProTab, setHoveredProTab] = useState<string | null>(null);
+  const t = useTranslations('features.tabs');
+  const tTooltip = useTranslations('features');
 
   const tabs = [
-    { id: "download", label: "Bulk YouTube Subtitle Download", icon: Download, desc: "SRT / VTT / TXT", pro: true,soon:false },
-    { id: "summary", label: "AI Summary", icon: Sparkles, desc: "Insights & TL;DR", pro: true },
-    // { id: "mindmap", label: "Mind Map", icon: Brain, desc: "Visual Structure", pro: true, soon: true },
-    // { id: "translate", label: "Translation", icon: Languages, desc: "Dual Subtitles", pro: true, soon: true },
+    { id: "download", label: t('download.label'), icon: Download, desc: t('download.description'), pro: true,soon:false },
+    { id: "summary", label: t('summary.label'), icon: Sparkles, desc: t('summary.description'), pro: true },
+    // { id: "mindmap", label: t('mindmap.label'), icon: Brain, desc: t('mindmap.description'), pro: true, soon: true },
+    // { id: "translate", label: t('translate.label'), icon: Languages, desc: t('translate.description'), pro: true, soon: true },
   ];
 
   return (
@@ -81,7 +84,7 @@ export function FeatureTabs({ currentMode, onChange }: any) {
             {hoveredProTab === tab.id && tab.pro && !tab.soon && (
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                 <div className="bg-slate-900 text-white text-xs font-medium px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
-                  Free trial included - Get 5 credits to start
+                  {tTooltip('tooltip')}
                   <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-slate-900 rotate-45"></div>
                 </div>
               </div>

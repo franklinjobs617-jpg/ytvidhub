@@ -1,20 +1,24 @@
+"use client";
+
 import React from "react";
+import { useTranslations } from 'next-intl';
 
 export default function CoreCapabilities() {
+  const t = useTranslations('coreCapabilities');
+
   return (
     <section className="py-24 bg-slate-50">
       <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-20">
           <span className="text-sm font-bold uppercase text-blue-600 tracking-wider">
-            Core Capabilities
+            {t('badge')}
           </span>
           <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900 mt-3">
-            Engineered for Your Workflow
+            {t('title')}
           </h2>
           <p className="mt-4 text-lg text-slate-500 max-w-3xl mx-auto leading-relaxed">
-            Discover a suite of features designed to handle any task, from a
-            single video to an entire content library.
+            {t('description')}
           </p>
         </div>
 
@@ -37,16 +41,13 @@ export default function CoreCapabilities() {
             </div>
             <div className="text-left">
               <span className="text-blue-600 font-bold text-sm tracking-wide">
-                SEE IT IN ACTION
+                {t('action')}
               </span>
               <h3 className="mt-2 text-3xl font-bold text-slate-900 tracking-tight">
-                From Complexity to Simplicity
+                {t('actionTitle')}
               </h3>
               <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-                Whether it's an entire YouTube playlist or a text file with
-                hundreds of links, just paste it in. Our tool intelligently
-                parses, processes, and prepares everything for you, turning
-                hours of manual work into seconds of waiting.
+                {t('actionDescription')}
               </p>
             </div>
           </div>
@@ -153,16 +154,13 @@ export default function CoreCapabilities() {
             </div>
             <div className="text-left">
               <span className="text-blue-600 font-bold text-sm tracking-wide">
-                ADAPTIVE OUTPUT
+                {t('adaptive')}
               </span>
               <h3 className="mt-2 text-3xl font-bold text-slate-900 tracking-tight">
-                For Your Workflow, Not Against It
+                {t('adaptiveTitle')}
               </h3>
               <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-                Need timed captions for video editing? Choose SRT. Building an
-                accessible web player? VTT is ready. Just need a transcript for
-                analysis? Export as plain TXT. The choice is yours, for every
-                single file.
+                {t('adaptiveDescription')}
               </p>
             </div>
           </div>

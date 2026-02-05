@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Play, Download, FileText, Clock } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 const demoResults = {
   video: {
@@ -39,6 +40,7 @@ First, let's set up our development environment.`,
 export function InteractiveDemo() {
   const [selectedFormat, setSelectedFormat] = useState<'srt' | 'vtt' | 'txt'>('srt');
   const [showResult, setShowResult] = useState(false);
+  const t = useTranslations('demo');
 
   const handleDemo = () => {
     setShowResult(true);
@@ -49,9 +51,9 @@ export function InteractiveDemo() {
       <div className="bg-slate-50 border-b border-slate-200 px-6 py-4">
         <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
           <Play size={20} className="text-blue-600" />
-          Interactive Demo - See Real Results
+          {t('title')}
         </h3>
-        <p className="text-sm text-slate-600 mt-1">Try our subtitle extraction with a sample video</p>
+        <p className="text-sm text-slate-600 mt-1">{t('description')}</p>
       </div>
 
       <div className="p-6">
@@ -63,14 +65,14 @@ export function InteractiveDemo() {
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                 </svg>
               </div>
-              <h4 className="font-bold text-slate-900 mb-2">{demoResults.video.title}</h4>
+              <h4 className="font-bold text-slate-900 mb-2">{t('video.title')}</h4>
               <div className="flex items-center justify-center gap-4 text-sm text-slate-500">
                 <span className="flex items-center gap-1">
                   <Clock size={14} />
-                  {demoResults.video.duration}
+                  {t('video.duration')}
                 </span>
                 <span>•</span>
-                <span>English Subtitles Available</span>
+                <span>{t('video.subtitles')}</span>
               </div>
             </div>
 
@@ -95,7 +97,7 @@ export function InteractiveDemo() {
               className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all flex items-center gap-2 mx-auto"
             >
               <Download size={16} />
-              Extract Subtitles ({selectedFormat.toUpperCase()})
+              {t('button', { format: selectedFormat.toUpperCase() })}
             </button>
           </div>
         ) : (
@@ -103,13 +105,13 @@ export function InteractiveDemo() {
             <div className="flex items-center justify-between">
               <h4 className="font-bold text-slate-900 flex items-center gap-2">
                 <FileText size={16} className="text-green-600" />
-                Extracted Subtitles ({selectedFormat.toUpperCase()})
+                {t('result.title', { format: selectedFormat.toUpperCase() })}
               </h4>
               <button
                 onClick={() => setShowResult(false)}
                 className="text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
-                Try Another Format
+                {t('result.tryAnother')}
               </button>
             </div>
 
@@ -120,9 +122,9 @@ export function InteractiveDemo() {
             <div className="flex items-center justify-between text-sm text-slate-600 bg-green-50 rounded-lg p-3">
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                Extraction completed in 2.3 seconds
+                {t('result.completed')}
               </span>
-              <span className="font-medium">Ready for download</span>
+              <span className="font-medium">{t('result.ready')}</span>
             </div>
           </div>
         )}

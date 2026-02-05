@@ -1,7 +1,31 @@
-// utils/transcriptUtils.tsx
-import React from "react";
+import { useTranslations } from 'next-intl';
 
-// 格式化时间
+// Utility functions for transcript processing
+export function cleanTranscript(transcript: string, removeTimestamps: boolean = true): string {
+  if (!transcript) return '';
+
+  let cleaned = transcript;
+
+  if (removeTimestamps) {
+    // Remove timestamp lines (both SRT and VTT formats)
+    cleaned = cleaned.replace(/\d{2}:\d{2}:\d{2},\d{3}\s+-->\s+\d{2}:\d{2}:\d{2},\d{3}/g, '');
+    cleaned = cleaned.replace(/\d{2}:\d{2}:\d{2}\.\d{3}\s+-->\s+\d{2}:\d{2}:\d{2}\.\d{3}/g, '');
+    cleaned = cleaned.replace(/WEBVTT\s*\n\n/, '');
+    cleaned = cleaned.replace(/\d+\n\d{2}:\d{2}:\d{2},\d{3}\s+-->\s+\d{2}:\d{2}:\d{2},\d{3}[\s\S]*?\n\n/g, '');
+  }
+
+  // Remove sequence numbers in SRT format
+  cleaned = cleaned.replace(/^\d+\n/gm, '');
+
+  // Normalize whitespace
+  cleaned = cleaned.trim();
+  cleaned = cleaned.replace(/\s*/g,'');
+  cleaned = cleaned.replace(/\s+/g, ' ');
+
+  return cleaned;
+}
+
+// 旧版格式化时间函数 (保留兼容性)
 export const formatTime = (seconds: number) => {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
@@ -94,16 +118,63 @@ export const groupTranscriptByTime = (
 export const highlightText = (text: string, query: string) => {
   if (!query) return text;
   const parts = text.split(new RegExp(`(${query})`, "gi"));
-  return parts.map((part, index) =>
-    part.toLowerCase() === query.toLowerCase() ? (
-      <mark
-        key={index}
-        className="bg-yellow-200 text-slate-900 rounded-sm px-0.5 font-medium"
-      >
-        {part}
-      </mark>
-    ) : (
-      part
-    )
-  );
+};
+
+export function formatDuration(seconds: number): string {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+
+  if (h > 0) {
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  }
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// Internationalization utilities
+export const useI18nTranscriptUtils = () => {
+  const t = useTranslations('transcript');
+
+  const getFormatDescription = (format: 'srt' | 'vtt' | 'txt'): string => {
+    switch (format) {
+      case 'srt':
+        return t('formats.srt.description');
+      case 'vtt':
+        return t('formats.vtt.description');
+      case 'txt':
+        return t('formats.txt.description');
+      default:
+        return t('formats.default.description');
+    }
+  };
+
+  return {
+    getFormatDescription,
+  };
+};
+
+// Performance utility for large transcript processing
+export const processLargeTranscript = (transcript: string, chunkSize: number = 1000): string[] => {
+  const chunks: string[] = [];
+  for (let i = 0; i < transcript.length; i += chunkSize) {
+    chunks.push(transcript.slice(i, i + chunkSize));
+  }
+  return chunks;
+};
+
+// Validation utility
+export const validateTranscript = (transcript: string): { isValid: boolean; error?: string } => {
+  if (!transcript || typeof transcript !== 'string') {
+    return { isValid: false, error: 'Transcript is required and must be a string' };
+  }
+
+  if (transcript.length === 0) {
+    return { isValid: false, error: 'Transcript cannot be empty' };
+  }
+
+  if (transcript.length > 10 * 1024 * 1024) { // 10MB limit
+    return { isValid: false, error: 'Transcript is too large (maximum 10MB)' };
+  }
+
+  return { isValid: true };
 };

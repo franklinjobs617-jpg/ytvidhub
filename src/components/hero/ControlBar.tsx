@@ -3,6 +3,7 @@
 import { Coins, Download, RotateCcw, Zap, Sparkles, ChevronRight, HelpCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useTranslations } from 'next-intl';
 
 export function ControlBar({
   userCredits,
@@ -20,6 +21,8 @@ export function ControlBar({
 }: any) {
   
   const [showPricingTooltip, setShowPricingTooltip] = useState(false);
+  const t = useTranslations('credits');
+  const tActions = useTranslations('actions');
   
   // 判断是否是未登录状态
   const isGuest = userCredits === "--";
@@ -48,7 +51,7 @@ export function ControlBar({
                     {userCredits}
                   </span>
                   <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider scale-90 origin-left">
-                    Credits
+                    {t('credits')}
                   </span>
                 </div>
                 {/* 积分状态指示器 */}
@@ -66,7 +69,7 @@ export function ControlBar({
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-100 rounded-lg shadow-sm hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-blue-200 transition-all group/btn relative overflow-hidden"
               >
                 <span className="text-[11px] font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600 group-hover/btn:from-blue-700 group-hover/btn:to-violet-700">
-                  Get More
+                  {t('getMore')}
                 </span>
                 <Zap size={10} className="text-violet-500" fill="currentColor" />
                 <div className="absolute inset-0 bg-white/50 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
@@ -77,7 +80,7 @@ export function ControlBar({
             {!isGuest && creditsNum <= maxCredits && (
               <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-lg">
                 <span className="text-[10px] font-bold text-blue-700 uppercase tracking-wider">
-                  FREE PLAN: {creditsNum}/{maxCredits}
+                  {t('freePlan', { current: creditsNum, max: maxCredits })}
                 </span>
                 <div className="w-12 h-1.5 bg-blue-100 rounded-full overflow-hidden">
                   <div 
@@ -92,7 +95,7 @@ export function ControlBar({
             {!isGuest && creditsNum <= 0 && (
               <div className="flex items-center gap-2 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg animate-pulse">
                 <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider">
-                  ⚠️ No Credits Left
+                  ⚠️ {t('noCreditsLeft')}
                 </span>
               </div>
             )}
@@ -128,7 +131,7 @@ export function ControlBar({
               onClick={onReset}
               className="px-4 py-2 text-slate-400 hover:text-slate-600 transition-all text-xs font-bold uppercase tracking-widest flex items-center gap-2"
             >
-              <RotateCcw size={14} /> <span className="hidden md:inline">Reset</span>
+              <RotateCcw size={14} /> <span className="hidden md:inline">{tActions('reset')}</span>
             </button>
           )}
 

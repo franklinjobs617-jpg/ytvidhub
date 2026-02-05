@@ -1,6 +1,11 @@
+"use client";
+
 import React from "react";
+import { useTranslations } from 'next-intl';
 
 export default function HowItWorks() {
+  const t = useTranslations('howItWorks');
+
   return (
     <section className="relative py-20 bg-white overflow-hidden">
       {/* 装饰性背景：淡蓝色的模糊圆球，呼应 HeroSection */}
@@ -8,10 +13,10 @@ export default function HowItWorks() {
       <div className="container mx-auto px-6 lg:px-8">
         <div className="text-center mb-20">
           <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900">
-            How It Works
+            {t('title')}
           </h2>
           <p className="mt-4 text-lg text-slate-500 max-w-2xl mx-auto">
-            From raw link to clean data in seconds. No complex setup required.
+            {t('description')}
           </p>
         </div>
 
@@ -41,15 +46,14 @@ export default function HowItWorks() {
 
               {/* Step Number Badge */}
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider shadow-sm">
-                Step 01
+                {t('steps.1.badge')}
               </div>
 
               <h3 className="text-xl font-bold text-slate-900 mb-3">
-                Paste Links
+                {t('steps.1.title')}
               </h3>
               <p className="text-slate-500 leading-relaxed text-sm">
-                Paste YouTube video/playlist URLs, or upload a .txt file for
-                bulk processing.
+                {t('steps.1.description')}
               </p>
             </div>
           </div>
@@ -75,15 +79,14 @@ export default function HowItWorks() {
               </div>
 
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider shadow-sm">
-                Step 02
+                {t('steps.2.badge')}
               </div>
 
               <h3 className="text-xl font-bold text-slate-900 mb-3">
-                AI Analysis
+                {t('steps.2.title')}
               </h3>
               <p className="text-slate-500 leading-relaxed text-sm">
-                Our engine extracts subtitles and generates summaries or mind
-                maps instantly.
+                {t('steps.2.description')}
               </p>
             </div>
           </div>
@@ -109,15 +112,14 @@ export default function HowItWorks() {
               </div>
 
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider shadow-sm">
-                Step 03
+                {t('steps.3.badge')}
               </div>
 
               <h3 className="text-xl font-bold text-slate-900 mb-3">
-                Export Data
+                {t('steps.3.title')}
               </h3>
               <p className="text-slate-500 leading-relaxed text-sm">
-                Download as SRT/VTT/TXT, or copy the AI summary directly to your
-                notes.
+                {t('steps.3.description')}
               </p>
             </div>
           </div>

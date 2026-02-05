@@ -5,6 +5,7 @@ import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslations } from 'next-intl';
 import LoginModal from "@/components/LoginModel";
 import {
   Gift,
@@ -32,6 +33,13 @@ export default function HeroSection() {
   const router = useRouter();
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // 多语言翻译
+  const t = useTranslations('hero');
+  const tActions = useTranslations('actions');
+  const tStatus = useTranslations('status');
+  const tErrors = useTranslations('errors');
+  const tAuth = useTranslations('auth');
 
   // 状态管理
   const [selectedMode, setSelectedMode] = useState<FeatureMode>("download");
@@ -118,7 +126,7 @@ export default function HeroSection() {
     setUrls("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     setInputError(false);
     setIsFocused(true);
-    toast.success("Example links pasted!");
+    toast.success(tActions('pasteExample') + " pasted!");
     if (textareaRef.current) {
       textareaRef.current.focus();
     }
@@ -138,7 +146,7 @@ export default function HeroSection() {
     try {
       if (!urls.trim() && videoResults.length === 0) {
         setInputError(true);
-        toast.error("Please enter a YouTube link first.", { position: "top-center" });
+        toast.error(tErrors('enterUrl'), { position: "top-center" });
         return;
       }
       if (videoResults.length === 0) {
@@ -146,12 +154,12 @@ export default function HeroSection() {
         const invalidLinks = lines.filter((link) => !isValidYoutubeUrl(link));
         if (invalidLinks.length > 0) {
           setInputError(true);
-          toast.error("Invalid YouTube URL detected", { position: "top-center" });
+          toast.error(tErrors('invalidUrl'), { position: "top-center" });
           return;
         }
       }
       if (!user) {
-        toast.success("Sign up free to get 5 YouTube subtitle downloads instantly!", { position: "top-center" });
+        toast.success(tAuth('signupMessage'), { position: "top-center" });
         setShowLoginModal(true);
         return;
       }
@@ -162,7 +170,7 @@ export default function HeroSection() {
         if (!targetUrls) return;
 
         // 立即给用户反馈，表示操作已开始
-        toast.success("Opening AI Workspace...", {
+        toast.success(tActions('opening') + "...", {
           position: "top-center",
           duration: 2000
         });
@@ -180,7 +188,7 @@ export default function HeroSection() {
       } else {
         const selectedVideos = videoResults.filter((v) => selectedIds.has(v.id));
         if (selectedVideos.length === 0) {
-          toast.warning("Please select at least one video.");
+          toast.warning(tErrors('selectVideo'));
           return;
         }
 
@@ -207,7 +215,7 @@ export default function HeroSection() {
     }
   };
 
-  const actionLabel = isAnalyzing ? "Analyzing..." : selectedMode === "summary" ? (videoResults.length > 0 ? "Open AI Workspace" : "Analyze & Summarize") : (videoResults.length > 0 ? `Download (${selectedIds.size})` : "Analyze Link");
+  const actionLabel = isAnalyzing ? tActions('analyzing') : selectedMode === "summary" ? (videoResults.length > 0 ? tActions('openWorkspace') : tActions('analyze')) : (videoResults.length > 0 ? tActions('download').replace('{count}', selectedIds.size.toString()) : tActions('analyze'));
 
   return (
     <div className="relative isolate bg-white min-h-screen">
@@ -219,17 +227,19 @@ export default function HeroSection() {
           {!user && (
             <div className="mb-6">
               <div onClick={() => setShowLoginModal(true)} className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full border border-green-100 text-xs font-bold uppercase tracking-widest shadow-sm hover:bg-green-100 transition-colors">
-                <Gift size={14} /> Sign Up Free - Get 5 YouTube Subtitle Downloads Instantly
+                <Gift size={14} /> {t('cta.signup')}
               </div>
             </div>
           )}
 
           <div className="max-w-4xl mx-auto mb-12">
             <h1 className="text-4xl md:text-6xl font-display uppercase tracking-wide text-slate-900 leading-tight mb-4 drop-shadow-sm">
-              YouTube Subtitle Downloader
+              {t('title')}
             </h1>
             <h2 className="text-base md:text-lg font-medium text-slate-600 max-w-2xl mx-auto italic mb-4">
-              Professional <span className="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md font-semibold">bulk YouTube subtitle downloader</span> for single videos and entire playlists. Extract SRT, VTT & TXT captions for AI training, content creation, and accessibility projects.
+              {t.rich('subtitle', {
+                highlight: (chunks) => <span className="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md font-semibold">{chunks}</span>
+              })}
             </h2>
 
             {/* SEO关键词强化区域 */}
@@ -251,7 +261,7 @@ export default function HeroSection() {
                 {isAnalyzing ? (
                   <div className="flex-1 flex flex-col items-center justify-center p-12">
                     <div className="w-16 h-16 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin mb-6" />
-                    <h3 className="text-lg font-bold text-slate-700 animate-pulse">Syncing Video Data...</h3>
+                    <h3 className="text-lg font-bold text-slate-700 animate-pulse">{tStatus('syncing')}</h3>
                   </div>
                 ) : videoResults.length === 0 ? (
                   <>
@@ -268,24 +278,27 @@ export default function HeroSection() {
 
                       {/* 2. 标题与价值主张 */}
                       <div className="space-y-2 mb-8">
-                        <h3 className="text-2xl font-bold text-slate-900">Paste YouTube links to download subtitles</h3>
-                        <p className="text-sm text-slate-400 italic font-medium tracking-tight">"Unlock massive datasets for LLM training or research in seconds"</p>
+                        <h3 className="text-2xl font-bold text-slate-900">{t('placeholder.title')}</h3>
+                        <p className="text-sm text-slate-400 italic font-medium tracking-tight">"{t('placeholder.description')}"</p>
                       </div>
 
                       {/* 3. 支持类型说明 */}
                       <div className="flex flex-col items-center gap-4 mb-10">
                         <p className="text-slate-500 text-sm font-medium">
-                          Our <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">YouTube subtitle downloader</span> supports <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">Videos</span>, <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">Playlists</span>, and <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">Channels</span>
+                          {t.rich('placeholder.support', {
+                            tool: (chunks) => <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">{chunks}</span>,
+                            types: (chunks) => <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">{chunks}</span>
+                          })}
                         </p>
                         <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full border border-green-100 text-[10px] font-black uppercase tracking-widest shadow-sm">
-                          <TrendingUp size={12} className="animate-pulse" /> 2.4M+ Subtitles Extracted Today
+                          <TrendingUp size={12} className="animate-pulse" /> {t('features.extracted')}
                         </div>
                       </div>
 
                       {/* 4. 按钮 */}
                       <div className="pointer-events-auto">
                         <button onClick={(e) => { e.stopPropagation(); handlePasteExample(); }} className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl hover:bg-blue-600 hover:shadow-lg transition-all text-xs font-bold uppercase tracking-widest">
-                          <Clipboard size={14} /> Try Example Links
+                          <Clipboard size={14} /> {t('cta.secondary')}
                         </button>
                       </div>
                     </div>
@@ -303,14 +316,14 @@ export default function HeroSection() {
 
                     {inputError && (
                       <div className="absolute top-4 right-6 z-20 flex items-center gap-2 text-xs font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 animate-in fade-in slide-in-from-top-2">
-                        <AlertCircle size={14} /> Invalid URL detected
+                        <AlertCircle size={14} /> {tErrors('invalidUrl')}
                       </div>
                     )}
 
                     <div className="absolute bottom-4 right-5 z-20 pointer-events-none">
                       <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         <Info size={12} className="text-blue-600" />
-                        {user ? `${userCredits} Credits Remaining` : "Sign up for 5 free downloads"}
+                        {user ? t('credits.remaining', { count: userCredits }) : t('credits.signup')}
                       </div>
                     </div>
                   </>
@@ -331,7 +344,7 @@ export default function HeroSection() {
                       <div className="w-full bg-slate-100 rounded-full h-2.5 mb-2 overflow-hidden shadow-inner">
                         <div className="bg-blue-600 h-full transition-all duration-500 ease-out" style={{ width: `${Math.round(progress)}%` }}></div>
                       </div>
-                      <span className="text-xs font-bold text-slate-400">{Math.round(progress)}% Complete</span>
+                      <span className="text-xs font-bold text-slate-400">{Math.round(progress)}% {tActions('complete')}</span>
                     </div>
                   </div>
                 )}
@@ -360,13 +373,13 @@ export default function HeroSection() {
               {!user ? (
                 <div className="space-y-3">
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 max-w-md mx-auto">
-                    <p className="text-sm text-amber-800 font-semibold">⚠️ <strong>Registration Required</strong></p>
-                    <p className="text-xs text-amber-700 mt-1">You need to sign up (free) to download subtitles. Get 5 instant credits to try all features.</p>
+                    <p className="text-sm text-amber-800 font-semibold">⚠️ <strong>{tAuth('registrationRequired')}</strong></p>
+                    <p className="text-xs text-amber-700 mt-1">{tAuth('registrationNote')}</p>
                   </div>
-                  <p className="text-xs text-slate-400 font-medium">No credit card required • High-speed bulk subtitle extraction</p>
+                  <p className="text-xs text-slate-400 font-medium">{tAuth('noCardRequired')} • {t('bulkExtraction')}</p>
                 </div>
               ) : (
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Ready for high efficiency YouTube subtitle extraction</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t('ready')}</p>
               )}
             </div>
           </div>

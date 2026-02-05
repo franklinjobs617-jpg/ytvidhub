@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from '@/i18n/routing';
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import LoginModal from "@/components/LoginModel";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslations } from 'next-intl';
 import {
   Menu,
   X,
@@ -78,6 +79,8 @@ export default function Header() {
 
   const pathname = usePathname();
   const { user, logout, isLoading } = useAuth();
+  const t = useTranslations('navigation');
+  const tAuth = useTranslations('auth');
 
   const isActive = (path: string) => pathname === path;
   const isParentActive = (items: { href: string }[]) => {
@@ -123,7 +126,7 @@ export default function Header() {
                 : "text-slate-500 hover:text-slate-900"
                 }`}
             >
-              Home
+              {t('home')}
             </Link>
 
             <Link
@@ -133,7 +136,7 @@ export default function Header() {
                 : "text-slate-500 hover:text-slate-900"
                 }`}
             >
-              Bulk Downloader
+              {t('bulkDownloader')}
             </Link>
 
             <div className="relative group h-20 flex items-center">
@@ -143,7 +146,7 @@ export default function Header() {
                   : "text-slate-500 group-hover:text-blue-600"
                   }`}
               >
-                <span>Guide</span>
+                <span>{t('guide')}</span>
                 <ChevronDown
                   size={14}
                   className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.guides)
@@ -177,7 +180,7 @@ export default function Header() {
                   : "text-slate-500 group-hover:text-blue-600"
                   }`}
               >
-                <span>Blog</span>
+                <span>{t('blog')}</span>
                 <ChevronDown
                   size={14}
                   className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.blog)
@@ -211,7 +214,7 @@ export default function Header() {
                 : "text-slate-500 hover:text-slate-900"
                 }`}
             >
-              Pricing
+              {t('pricing')}
             </Link>
           </div>
 
@@ -228,7 +231,7 @@ export default function Header() {
                   onClick={() => setShowLoginModal(true)}
                   className="bg-slate-900 hover:bg-blue-600 text-white text-xs md:text-sm font-bold px-4 md:px-6 py-2 md:py-2.5 rounded-lg transition-all duration-200 shadow-md uppercase tracking-wide"
                 >
-                  Login
+                  {t('login')}
                 </button>
               </>
             ) : (
@@ -244,7 +247,7 @@ export default function Header() {
                       {user.credits}
                     </span>
                     <span className="hidden lg:inline text-[10px] font-bold text-amber-600/70 uppercase tracking-wide">
-                      Credits
+                      {t('credits')}
                     </span>
                   </div>
                 </Link>
@@ -283,12 +286,12 @@ export default function Header() {
                       <div className="p-1.5">
                         <div className="px-3 py-2 mb-1">
                           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                            Current Plan
+                            {t('currentPlan')}
                           </span>
                           <div className="flex items-center gap-2">
                             <Sparkles size={14} className="text-blue-500" />
                             <span className="text-sm font-bold text-slate-800">
-                              Free Plan
+                              {t('freePlan')}
                             </span>
                           </div>
                         </div>
@@ -297,7 +300,7 @@ export default function Header() {
                           href="/pricing"
                           className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition-colors"
                         >
-                          <Coins size={16} /> Buy Credits
+                          <Coins size={16} /> {t('buyCredits')}
                         </Link>
 
                         <div className="h-px bg-slate-100 my-1"></div>
@@ -309,7 +312,7 @@ export default function Header() {
                           }}
                           className="flex w-full items-center gap-3 px-3 py-2 text-sm font-medium text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
                         >
-                          <LogOut size={16} /> Sign Out
+                          <LogOut size={16} /> {t('logout')}
                         </button>
                       </div>
                     </div>
@@ -317,6 +320,8 @@ export default function Header() {
                 </div>
               </>
             )}
+
+            <LanguageSwitcher />
 
             <button
               onClick={() => setMobileMenuOpen(true)}
@@ -361,7 +366,7 @@ export default function Header() {
               className={`block text-lg font-bold ${isActive("/") ? "text-blue-600" : "text-slate-900"
                 }`}
             >
-              Home
+              {t('home')}
             </Link>
             <Link
               href="/bulk-youtube-subtitle-downloader"
@@ -370,7 +375,7 @@ export default function Header() {
                 : "text-slate-900"
                 }`}
             >
-              Bulk Downloader
+              {t('bulkDownloader')}
             </Link>
 
             {/* Guides Group */}
@@ -381,7 +386,7 @@ export default function Header() {
                   : "text-slate-400"
                   }`}
               >
-                Guides
+                {t('guide')}
               </p>
               {navigation.guides.map((item) => (
                 <Link
@@ -402,7 +407,7 @@ export default function Header() {
                   : "text-slate-400"
                   }`}
               >
-                Blog
+                {t('blog')}
               </p>
               {navigation.blog.map((item) => (
                 <Link
@@ -421,7 +426,7 @@ export default function Header() {
               className={`block text-lg font-bold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"
                 }`}
             >
-              Pricing
+              {t('pricing')}
             </Link>
           </div>
 
@@ -435,7 +440,7 @@ export default function Header() {
                 }}
                 className="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-rose-600 font-bold py-3 rounded-xl hover:bg-rose-50 transition-colors"
               >
-                <LogOut size={18} /> Sign Out
+                <LogOut size={18} /> {t('logout')}
               </button>
             ) : (
               <button
@@ -445,7 +450,7 @@ export default function Header() {
                 }}
                 className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-colors shadow-lg"
               >
-                Login / Sign Up
+                {t('login')} / {t('signup')}
               </button>
             )}
           </div>

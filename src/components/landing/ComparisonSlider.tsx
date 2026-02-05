@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslations } from 'next-intl';
 
 export default function ComparisonSlider() {
+  const t = useTranslations('comparisonSlider');
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,12 +58,13 @@ export default function ComparisonSlider() {
       <div className="container mx-auto px-6 lg:px-8 max-w-7xl relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900">
-            Stop 100 Clicks. <br className="hidden md:inline" />
-            Get 1 <span className="text-blue-600">Clean ZIP File</span>.
+            {t.rich('title', {
+              br: () => <br className="hidden md:inline" />,
+              highlight: (chunks) => <span className="text-blue-600">{chunks}</span>
+            })}
           </h2>
           <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-            Drag the slider to see the difference. Transform hours of tedious
-            manual work into a single, organized file.
+            {t('description')}
           </p>
         </div>
 
@@ -76,13 +79,13 @@ export default function ComparisonSlider() {
               <div className="absolute inset-0 w-full h-full bg-white">
                 <img
                   src="/image/ytvidhub-manual-download-process-before.webp"
-                  alt="Before: Manual Process"
+                  alt={t('before')}
                   className="w-full h-full object-cover object-center md:object-contain"
                   draggable={false}
                 />
 
                 <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 px-3 py-1.5 md:px-4 md:py-2 bg-slate-900/90 backdrop-blur-sm rounded-lg text-white text-xs md:text-sm font-bold shadow-lg border border-white/10 z-10">
-                  Before: The Manual Grind
+                  {t('before')}
                 </div>
               </div>
 
@@ -94,13 +97,13 @@ export default function ComparisonSlider() {
               >
                 <img
                   src="/image/ytvidhub-one-click-bulk-subtitle-download-after.webp"
-                  alt="After: Automated Process"
+                  alt={t('after')}
                   className="w-full h-full object-cover object-center md:object-contain"
                   draggable={false}
                 />
 
                 <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 px-3 py-1.5 md:px-4 md:py-2 bg-blue-600/90 backdrop-blur-sm rounded-lg text-white text-xs md:text-sm font-bold shadow-lg border border-white/20 z-10">
-                  After: One Click, One ZIP
+                  {t('after')}
                 </div>
               </div>
 
@@ -124,7 +127,7 @@ export default function ComparisonSlider() {
                   </svg>
                 </div>
               </div>
-   
+
             </div>
           </div>
         </div>
