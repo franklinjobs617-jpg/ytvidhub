@@ -26,6 +26,8 @@
     "title": "Descargar subtítulos YouTube",
     "subtitle": "La solución líder para {highlight} y obtener el contenido de sus videos favoritos. Extraiga SRT, VTT y TXT de listas de reproducción y canales al instante.",
     "highlight": "descargar videos de youtube con subtitulos",
+    "ready": "Listo para la extracción de subtítulos de YouTube de alta eficiencia",
+    "bulkExtraction": "Extracción masiva de subtítulos de alta velocidad",
     "cta": {
       "primary": "Comenzar a descargar subtítulos",
       "secondary": "Probar enlaces de ejemplo",
@@ -47,9 +49,7 @@
     "credits": {
       "remaining": "{count} Créditos restantes",
       "signup": "Regístrese para 5 descargas gratuitas",
-      "info": "1 ENLACE = 1 CRÉDITO DE DESCARGA",
-      "ready": "Listo para la extracción de subtítulos de YouTube de alta eficiencia",
-      "bulkExtraction": "Extracción masiva de subtítulos de alta velocidad"
+      "info": "1 ENLACE = 1 CRÉDITO DE DESCARGA"
     }
   },
   "comparisonSlider": {
@@ -233,7 +233,7 @@
       },
       "languages": {
         "question": "¿Funciona esto con diferentes idiomas?",
-        "answer": "¡Absolutamente! Nuestra herramienta puede descargar subtítulos en cualquier idioma disponible en el video de YouTube, incluidos los subtítulos generados automáticamente y los cargados manualmente."
+        "answer": "¡Absolutamente! Nuestra herramienta puede descargar subtítulos en any idioma disponible en el video de YouTube, incluidos los subtítulos generados automáticamente y los cargados manualmente."
       },
       "limits": {
         "question": "¿Hay límites de descarga?",
