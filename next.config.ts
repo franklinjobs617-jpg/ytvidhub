@@ -26,6 +26,7 @@ const nextConfig: NextConfig = {
   
   async redirects() {
     return [
+      // Redirect HTML extensions to clean URLs
       {
         source: "/index.html",
         destination: "/",
@@ -36,6 +37,13 @@ const nextConfig: NextConfig = {
         destination: "/:path*",
         permanent: true,
       },
+      // Redirect www to non-www
+      {
+        source: "www.:path{/}?",
+        destination: "/:path*",
+        permanent: true,
+      },
+      // Redirect HTTP to HTTPS (handled by hosting, but good to have as fallback)
     ];
   },
   

@@ -10,5 +10,4 @@ export const routing = defineRouting({
 export const { Link, redirect, usePathname, useRouter } =
     createNavigation(routing);
 
-// 导出路由类型定义，用于类型安全
 export type Locale = typeof routing.locales[number];
