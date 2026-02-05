@@ -14,27 +14,24 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
+// 1. 动态生成元数据 (SEO)
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
 
-  // 构建当前页面的完整 URL
   const baseUrl = "https://ytvidhub.com";
   const currentUrl = locale === 'en' ? baseUrl : `${baseUrl}/${locale}`;
 
-  // 动态生成 locale 映射
   const getOpenGraphLocale = (locale: string) => {
     switch (locale) {
-      case 'en':
-        return 'en_US';
-      case 'es':
-        return 'es_ES';
-      default:
-        return 'en_US';
+      case 'en': return 'en_US';
+      case 'es': return 'es_ES';
+      default: return 'en_US';
     }
   };
 
   return {
+    metadataBase: new URL(baseUrl),
     title: t('title'),
     description: t('description'),
     keywords: t('keywords').split(', '),
@@ -48,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       type: "website",
       images: [
         {
-          url: `${baseUrl}/image/og-image.webp`,
+          url: `/image/og-image.webp`,
           width: 1200,
           height: 630,
           alt: t('title'),
@@ -60,7 +57,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       card: "summary_large_image",
       title: t('title'),
       description: t('description'),
-      images: [`${baseUrl}/image/og-image.webp`],
+      images: [`/image/og-image.webp`],
     },
 
     alternates: {
@@ -68,11 +65,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       languages: {
         'en': `${baseUrl}/`,
         'es': `${baseUrl}/es/`,
-        'x-default': `${baseUrl}/`, // 添加默认语言标记
+        'x-default': `${baseUrl}/`,
       },
     },
 
-    // 添加其他 SEO 相关的元数据
     robots: {
       index: true,
       follow: true,
@@ -91,6 +87,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// 2. 布局组件
 export default async function LocaleLayout({
   children,
   params
@@ -99,6 +96,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const t = await getTranslations({ locale, namespace: 'schema' });
 
+  // 结构化数据 (JSON-LD)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -122,70 +120,34 @@ export default async function LocaleLayout({
       "Playlist subtitle download",
       "AI training data extraction",
       "Multi-language support"
-    ],
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://ytvidhub.com/?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
+    ]
   };
 
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: t('faq.q1'),
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: t('faq.a1'),
-        },
-      },
-      {
-        "@type": "Question",
-        name: t('faq.q2'),
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: t('faq.a2'),
-        },
-      },
-      {
-        "@type": "Question",
-        name: t('faq.q3'),
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: t('faq.a3'),
-        },
-      },
-      {
-        "@type": "Question",
-        name: t('faq.q4'),
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: t('faq.a4'),
-        },
-      },
-      {
-        "@type": "Question",
-        name: t('faq.q5'),
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: t('faq.a5'),
-        },
-      },
-    ],
+    "mainEntity": [
+      { "@type": "Question", "name": t('faq.q1'), "acceptedAnswer": { "@type": "Answer", "text": t('faq.a1') } },
+      { "@type": "Question", "name": t('faq.q2'), "acceptedAnswer": { "@type": "Answer", "text": t('faq.a2') } },
+      { "@type": "Question", "name": t('faq.q3'), "acceptedAnswer": { "@type": "Answer", "text": t('faq.a3') } },
+      { "@type": "Question", "name": t('faq.q4'), "acceptedAnswer": { "@type": "Answer", "text": t('faq.a4') } },
+      { "@type": "Question", "name": t('faq.q5'), "acceptedAnswer": { "@type": "Answer", "text": t('faq.a5') } }
+    ]
   };
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <head>
-        {/* 添加 hreflang 链接 */}
-        <link rel="alternate" hrefLang="en" href="https://ytvidhub.com/" />
-        <link rel="alternate" hrefLang="es" href="https://ytvidhub.com/es/" />
-        <link rel="alternate" hrefLang="x-default" href="https://ytvidhub.com/" />
+        {/* Google AdSense 广告代码 */}
+        <Script
+          id="adsbygoogle-init"
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
+          crossOrigin="anonymous"
+        />
       </head>
       <body>
+        {/* Google Analytics */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
@@ -200,7 +162,8 @@ export default async function LocaleLayout({
           `}
         </Script>
 
-        <Script id="microsoft-clarity" strategy="afterInteractive">
+        {/* Microsoft Clarity */}
+        <Script id="microsoft-clarity" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -210,6 +173,7 @@ export default async function LocaleLayout({
           `}
         </Script>
 
+        {/* 注入 JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
