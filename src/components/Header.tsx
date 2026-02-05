@@ -47,6 +47,10 @@ const navigation = {
       href: "/download-subs-from-youtube",
     },
     {
+      name: "How to Get YouTube Transcript",
+      href: "/blog/how-to-get-youtube-video-transcript",
+    },
+    {
       name: 'ai Youtube Video Summarizer',
       href: "/blog/ai-youtube-video-summarizer",
     },

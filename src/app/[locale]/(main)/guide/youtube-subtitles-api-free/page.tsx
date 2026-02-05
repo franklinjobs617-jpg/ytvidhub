@@ -25,13 +25,8 @@ export default function YouTubeApiAlternativeGuide() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      {/* === SEO & Metadata (100% 原样保留) === */}
-      <title>YouTube Subtitles API Alternatives: Free Export to JSON/TXT</title>
-      <meta name="description" content="Discover free alternatives to the YouTube Subtitles API. Export clean subtitles directly to JSON or TXT format for development or research." />
-      <link rel="canonical" href="https://ytvidhub.com/guide/youtube-subtitles-api-free" />
 
       <main>
-        {/* === 1. HERO SECTION (视觉重塑，技术导向) === */}
         <section className="relative pt-24 pb-20 md:pt-10 overflow-hidden bg-slate-50 bg-[url('data:image/svg+xml,%3Csvg_width=%2240%22_height=%2240%22_viewBox=%220_0_40_40%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg_fill=%22%23e5e7eb%22_fill-opacity=%220.5%22_fill-rule=%22evenodd%22%3E%3Cpath_d=%22M0_40L40_0H20L0_20M40_40V20L20_40%22/%3E%3C/g%3E%3C/svg%3E')]">
           <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white"></div>
           

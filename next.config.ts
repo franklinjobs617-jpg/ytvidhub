@@ -32,19 +32,11 @@ const nextConfig: NextConfig = {
         destination: "/:path*",
         permanent: true,
       },
-      // Redirect /index to root path
       {
         source: "/index",
         destination: "/",
         permanent: true,
-      },
-      // Redirect www to non-www
-      {
-        source: "www.:path{/}?",
-        destination: "/:path*",
-        permanent: true,
-      },
-      // Redirect HTTP to HTTPS (handled by hosting, but good to have as fallback)
+      }
     ];
   },
   

@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import {
@@ -19,16 +17,6 @@ import {
 export default function AISummaryBlogPage() {
   return (
     <div className="bg-[#F9FAFB] min-h-screen font-sans antialiased text-slate-800">
-      {/* SEO Meta Tags */}
-      <title>
-        AI YouTube Summarizer: Interactive Insights & Smart Transcripts |
-        YTVidHub
-      </title>
-      <meta
-        name="description"
-        content="Unlock the power of YTVidHub AI YouTube Summarizer. Batch extract transcripts to text, generate structured insights, and get interactive video analysis instantly."
-      />
-
       <main className="max-w-6xl mx-auto px-6 py-12 md:py-10">
         <header className="text-center mb-24 md:mb-32">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-violet-100 text-violet-700 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-8 shadow-sm">

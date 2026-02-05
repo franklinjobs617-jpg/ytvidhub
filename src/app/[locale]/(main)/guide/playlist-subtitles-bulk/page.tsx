@@ -25,10 +25,6 @@ export default function PlaylistBulkDownloadGuide() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      {/* === SEO & Metadata (100% Preserved) === */}
-      <title>Bulk Download: How to Get All YouTube Playlist Subtitles in 1 ZIP</title>
-      <meta name="description" content="The fastest way to download all YouTube playlist subtitles in bulk. Use YTVidHub to get clean, research-ready TXT files instantly." />
-      <link rel="canonical" href="https://ytvidhub.com/guide/playlist-subtitles-bulk" />
 
       <main>
         {/* === 1. HERO SECTION (Aligned with Pricing/Home) === */}

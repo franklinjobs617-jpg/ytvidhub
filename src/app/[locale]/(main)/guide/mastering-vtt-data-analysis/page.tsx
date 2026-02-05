@@ -25,16 +25,7 @@ export default function MasteringVttAnalysisGuide() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      {/* === SEO & Metadata (100% Preserved) === */}
-      <title>Mastering VTT Subtitles: Clean Downloads for Data Analysis</title>
-      <meta
-        name="description"
-        content="Stop manually cleaning WebVTT (.vtt) files. Learn how YTVidHub delivers the cleanest VTT data, bypasses the YouTube API limit, and enables bulk subtitle downloads for any data project."
-      />
-      <link
-        rel="canonical"
-        href="https://ytvidhub.com/guide/mastering-vtt-data-analysis"
-      />
+
 
       <main>
         {/* === 1. HERO SECTION (Aligned with Pricing/Bulk Downloader) === */}

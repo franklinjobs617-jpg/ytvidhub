@@ -1,10 +1,12 @@
 "use client";
 
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
-
+import { Metadata } from 'next';
 export default function SubtitleAccuracyBlogPage() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -20,10 +22,6 @@ export default function SubtitleAccuracyBlogPage() {
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
       <title>The Hidden Problem in Your Data Pipeline: Why Multilingual Subtitles are Rarely 'Ready-to-Use'</title>
       <link rel="canonical" href="https://ytvidhub.com/blog/subtitle-accuracy-problem" />
-      <link
-        rel="canonical"
-        href="https://ytvidhub.com/subtitle-accuracy-problem"
-      />
       <meta name="description" content="YTVidHub supports all languages, but we analyze why auto-generated multilingual subtitles have low accuracy. A must-read for researchers and data analysts before data prep." />
       <script type="application/ld+json">
         {`

@@ -25,10 +25,6 @@ export default function EngineeringDecisionsBlogPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      {/* === SEO & Metadata (100% 原样保留) === */}
-      <title>From Pain Point to Production: The Engineering Decisions Behind YTVidHub</title>
-      <meta name="description" content="A deep dive into the architectural challenges—from ASR accuracy to clean TXT output—that shaped the development of YTVidHub, the bulk YouTube subtitle downloader." />
-      <link rel="canonical" href="https://ytvidhub.com/blog/engineering-decisions-ytvidhub" />
 
       <main>
         {/* === 1. HERO SECTION (视觉氛围对齐定价页) === */}

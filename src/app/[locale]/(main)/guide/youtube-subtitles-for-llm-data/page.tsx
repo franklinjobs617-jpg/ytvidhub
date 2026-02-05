@@ -30,20 +30,6 @@ export default function LLMTechnicalGuide() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-indigo-100 text-slate-900 antialiased">
-      {/* === SEO & Metadata === */}
-      <title>
-        Bulk YouTube Subtitle Extraction for LLM Datasets: The Technical Guide |
-        YTVidHub
-      </title>
-      <meta
-        name="description"
-        content="A deep dive into extracting clean, high-signal conversational data from YouTube for Llama-3, GPT-4, and Mistral training. Learn to optimize token efficiency and scale dataset preparation."
-      />
-      <link
-        rel="canonical"
-        href="https://ytvidhub.com/guide/bulk-youtube-subtitles-llm-training-data"
-      />
-
       <main>
         {/* === HERO SECTION === */}
         <section className="relative pt-28 pb-24 overflow-hidden bg-[#0a0c10] text-white">

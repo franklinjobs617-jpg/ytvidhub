@@ -38,9 +38,6 @@ export default function SpanishYTChannelsBlogPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      <title>Top Spanish YouTube Channels for Language Learning Subtitles</title>
-      <meta name="description" content="Find the best Spanish YouTube channels with quality subtitles for language learning. Download transcripts easily for study materials." />
-      <link rel="canonical" href="https://ytvidhub.com/blog/spanish-yt-channels-subtitles" />
 
       <main>
         <section className="relative pt-24 pb-20 md:pt-10 md:pb-10 overflow-hidden bg-slate-50 bg-[url('data:image/svg+xml,%3Csvg_width=%2240%22_height=%2240%22_viewBox=%220_0_40_40%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg_fill=%22%23e5e7eb%22_fill-opacity=%220.5%22_fill-rule=%22evenodd%22%3E%3Cpath_d=%22M0_40L40_0H20L0_20M40_40V20L20_40%22/%3E%3C/g%3E%3C/svg%3E')]">
