@@ -345,6 +345,49 @@
       "a5": "Los usuarios gratuitos obtienen 5 créditos diarios para descargas de subtítulos. Los miembros Pro disfrutan de la extracción masiva ilimitada de subtítulos de YouTube para entrenamiento de IA a gran escala y proyectos de creación de contenido."
     }
   },
+  "singleDownloader": {
+    "hero": {
+      "title": "Descargador de <highlight>Subtítulos de YouTube</highlight> Individual",
+      "subtitle": "Extrae subtítulos de <strong>videos individuales de YouTube</strong> en segundos. Perfecto para editores de video, creadores de contenido y investigadores.",
+      "cta": {
+        "primary": "Descargar Subtítulos",
+        "secondary": "Descargador Masivo"
+      }
+    }
+  },
+  "formats": {
+    "title": "Formatos de Subtítulos Compatibles",
+    "description": "Elige el formato perfecto para tu flujo de trabajo. Cada formato está optimizado para diferentes casos de uso.",
+    "srt": {
+      "title": "Formato SRT",
+      "description": "El formato estándar de la industria para subtítulos con marcas de tiempo precisas. Perfecto para edición de video y reproductores multimedia."
+    },
+    "vtt": {
+      "title": "Formato VTT",
+      "description": "Formato web moderno con soporte para estilos avanzados. Ideal para reproductores web y aplicaciones en línea."
+    },
+    "txt": {
+      "title": "Formato TXT",
+      "description": "Texto plano limpio sin marcas de tiempo. Perfecto para entrenamiento de IA, análisis de texto y creación de contenido."
+    }
+  },
+  "howto": {
+    "title": "Cómo Descargar Subtítulos de YouTube",
+    "steps": {
+      "1": {
+        "title": "Pegar URL del Video",
+        "description": "Copia y pega la URL del video de YouTube del cual quieres extraer los subtítulos."
+      },
+      "2": {
+        "title": "Seleccionar Formato",
+        "description": "Elige entre SRT, VTT o TXT según tus necesidades específicas de proyecto."
+      },
+      "3": {
+        "title": "Descargar Instantáneamente",
+        "description": "Haz clic en descargar y obtén tus subtítulos procesados y listos para usar en segundos."
+      }
+    }
+  },
   "common": {
     "loading": "Cargando...",
     "error": "Error",

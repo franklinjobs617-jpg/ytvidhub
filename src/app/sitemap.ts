@@ -33,7 +33,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/terms-of-service', priority: 0.3, changeFreq: 'yearly' as const },
     ]
 
-    // 定义有多语言版本的页面（目前只有首页）
     const multilingualPages = [
         { path: '', priority: 1.0, changeFreq: 'weekly' as const },
     ]

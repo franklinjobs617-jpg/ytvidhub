@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "YouTube Subtitle Downloader | Bulk Extract SRT, VTT & TXT Captions",
-    "description": "Professional YouTube subtitle downloader for single videos and bulk playlist extraction. Download SRT, VTT, TXT captions for AI training, accessibility, and content creation. Free with 5 daily credits.",
+    "description": "Professional YouTube subtitle downloader for single videos and bulk playlist extraction. Download SRT, VTT, TXT captions for AI training, accessibility, and content creation.",
     "keywords": "youtube subtitle downloader, bulk youtube subtitle downloader, youtube caption downloader, download youtube subtitles, youtube transcript downloader, youtube srt downloader, youtube vtt downloader, bulk subtitle extractor, youtube playlist subtitle download, ai training data extraction"
   },
   "navigation": {
@@ -16,11 +16,11 @@
     "bulkDownloader": "Bulk Downloader",
     "guide": "Guide",
     "blog": "Blog",
+    "logout": "Sign Out",
     "credits": "Credits",
-    "currentPlan": "Current Plan",
-    "freePlan": "Free Plan",
     "buyCredits": "Buy Credits",
-    "logout": "Sign Out"
+    "currentPlan": "Current Plan",
+    "freePlan": "Free Plan"
   },
   "hero": {
     "title": "YouTube Subtitle Downloader",
@@ -75,54 +75,6 @@
       "ready": "Ready for download"
     }
   },
-  "features": {
-    "tabs": {
-      "download": {
-        "label": "Bulk YouTube Subtitle Download",
-        "description": "SRT / VTT / TXT"
-      },
-      "summary": {
-        "label": "AI Summary",
-        "description": "Insights & TL;DR"
-      },
-      "mindmap": {
-        "label": "Mind Map",
-        "description": "Visual Structure"
-      },
-      "translate": {
-        "label": "Translation",
-        "description": "Dual Subtitles"
-      }
-    },
-    "tooltip": "Free trial included - Get 5 credits to start"
-  },
-  "coreCapabilities": {
-    "badge": "Core Capabilities",
-    "title": "Engineered for Your Workflow",
-    "description": "Discover a suite of features designed to handle any task, from a single video to an entire content library.",
-    "action": "SEE IT IN ACTION",
-    "actionTitle": "From Complexity to Simplicity",
-    "actionDescription": "Whether it's an entire YouTube playlist or a text file with hundreds of links, just paste it in. Our tool intelligently parses, processes, and prepares everything for you, turning hours of manual work into seconds of waiting.",
-    "adaptive": "ADAPTIVE OUTPUT",
-    "adaptiveTitle": "For Your Workflow, Not Against It",
-    "adaptiveDescription": "Need timed captions for video editing? Choose SRT. Building an accessible web player? VTT is ready. Just need a transcript for analysis? Export as plain TXT. The choice is yours, for every single file."
-  },
-  "formats": {
-    "title": "Download YouTube Subtitles in Multiple Formats",
-    "description": "Choose the perfect format for your needs - from video editing to AI training",
-    "srt": {
-      "title": "SRT Subtitles",
-      "description": "Standard SubRip format with precise timestamps. Perfect for video players, editing software, and media production."
-    },
-    "vtt": {
-      "title": "VTT Captions",
-      "description": "WebVTT format for web players and HTML5 video. Includes styling options and web-optimized formatting."
-    },
-    "txt": {
-      "title": "Clean Text",
-      "description": "Pure transcript without timestamps. Ideal for AI training, content analysis, and text processing applications."
-    }
-  },
   "featuresGrid": {
     "title": "Optimized for Research & LLM Data",
     "description": "We're not just a downloader; we're a data-prep powerhouse. Get pristine, model-ready text without the hassle.",
@@ -147,6 +99,17 @@
       "text": "Want to dive deep into the data science behind transcript cleaning?",
       "button": "Read The Data Prep Guide"
     }
+  },
+  "coreCapabilities": {
+    "badge": "Core Capabilities",
+    "title": "Engineered for Your Workflow",
+    "description": "Discover a suite of features designed to handle any task, from a single video to an entire content library.",
+    "action": "SEE IT IN ACTION",
+    "actionTitle": "From Complexity to Simplicity",
+    "actionDescription": "Whether it's an entire YouTube playlist or a text file with hundreds of links, just paste it in. Our tool intelligently parses, processes, and prepares everything for you, turning hours of manual work into seconds of waiting.",
+    "adaptive": "ADAPTIVE OUTPUT",
+    "adaptiveTitle": "For Your Workflow, Not Against It",
+    "adaptiveDescription": "Need timed captions for video editing? Choose SRT. Building an accessible web player? VTT is ready. Just need a transcript for analysis? Export as plain TXT. The choice is yours, for every single file."
   },
   "howItWorks": {
     "title": "How It Works",
@@ -186,11 +149,11 @@
         "description": "Create clean text datasets for machine learning models and natural language processing."
       },
       "translation": {
-        "title": "Traducci贸n",
+        "title": "Translation",
         "description": "Use transcripts as source material for translating content into multiple languages."
       },
       "research": {
-        "title": "Investigaci贸n",
+        "title": "Research",
         "description": "Analyze video content for academic research, content analysis, and data mining."
       },
       "content": {
@@ -198,7 +161,7 @@
         "description": "Repurpose video content into blog posts, articles, and social media content."
       },
       "education": {
-        "title": "Educaci贸n",
+        "title": "Education",
         "description": "Create study materials and course transcripts for educational purposes."
       },
       "seo": {
@@ -353,6 +316,78 @@
     "noCreditsLeft": "No Credits Left",
     "getMore": "Get More"
   },
+  "features": {
+    "tabs": {
+      "download": {
+        "label": "Download Subtitles",
+        "description": "SRT, VTT, TXT Formats"
+      },
+      "summary": {
+        "label": "AI YouTube Summary",
+        "description": "Smart Summary & Key Points"
+      }
+    },
+    "tooltip": "Unlock Bulk features with Pro"
+  },
+  "schema": {
+    "name": "YTVidHub - YouTube Subtitle Downloader",
+    "description": "Professional YouTube subtitle downloader for single videos and bulk playlist extraction. Download SRT, VTT, TXT subtitles for AI training and content creation.",
+    "faq": {
+      "q1": "How do I download YouTube subtitles for free?",
+      "a1": "YTVidHub is a free YouTube subtitle downloader that allows you to extract captions from individual videos or download them in bulk from playlists. Simply paste the YouTube URL and choose your preferred format (SRT, VTT, or TXT).",
+      "q2": "Can I download YouTube playlist subtitles in bulk?",
+      "a2": "Yes! Our bulk YouTube subtitle downloader can extract subtitles from entire playlists and channels. Pro plans support unlimited bulk downloads for large-scale projects.",
+      "q3": "What subtitle formats are supported?",
+      "a3": "Our YouTube subtitle downloader supports SRT (SubRip), VTT (WebVTT), and clean TXT formats. Choose the format that best fits your needs: SRT for video players, VTT for web, or TXT for AI training.",
+      "q4": "Does it work with YouTube's auto-generated subtitles?",
+      "a4": "Yes, our YouTube transcript downloader can extract both manually uploaded subtitles and YouTube's auto-generated captions in all available languages.",
+      "q5": "Is there a limit on how many YouTube subtitles I can download?",
+      "a5": "Free users get 5 daily credits for subtitle downloads. Pro members enjoy unlimited bulk extraction of YouTube subtitles for large-scale AI training and content creation projects."
+    }
+  },
+  "singleDownloader": {
+    "hero": {
+      "title": "Individual <highlight>YouTube Subtitle</highlight> Downloader",
+      "subtitle": "Extract subtitles from <strong>single YouTube videos</strong> in seconds. Perfect for video editors, content creators, and researchers.",
+      "cta": {
+        "primary": "Download Subtitles",
+        "secondary": "Bulk Downloader"
+      }
+    }
+  },
+  "formats": {
+    "title": "Supported Subtitle Formats",
+    "description": "Choose the perfect format for your workflow. Each format is optimized for different use cases.",
+    "srt": {
+      "title": "SRT Format",
+      "description": "The industry standard format for subtitles with precise timestamps. Perfect for video editing and media players."
+    },
+    "vtt": {
+      "title": "VTT Format",
+      "description": "Modern web format with support for advanced styling. Ideal for web players and online applications."
+    },
+    "txt": {
+      "title": "TXT Format",
+      "description": "Clean plain text without timestamps. Perfect for AI training, text analysis, and content creation."
+    }
+  },
+  "howto": {
+    "title": "How to Download YouTube Subtitles",
+    "steps": {
+      "1": {
+        "title": "Paste Video URL",
+        "description": "Copy and paste the URL of the YouTube video you want to extract subtitles from."
+      },
+      "2": {
+        "title": "Select Format",
+        "description": "Choose between SRT, VTT, or TXT based on your specific project needs."
+      },
+      "3": {
+        "title": "Download Instantly",
+        "description": "Click download and get your processed subtitles ready to use in seconds."
+      }
+    }
+  },
   "common": {
     "loading": "Loading...",
     "error": "Error",
@@ -372,267 +407,25 @@
     "export": "Export",
     "import": "Import"
   },
-  "singleDownloader": {
-    "hero": {
-      "title": "Free {highlight} Downloader",
-      "highlight": "YouTube Subtitle",
-      "subtitle": "Extract {strong} in SRT, VTT, and TXT formats instantly. Download subtitles with timestamps for video editing or clean text for AI training and accessibility.",
-      "strong": "YouTube captions",
-      "cta": {
-        "primary": "Start Downloading Subtitles",
-        "secondary": "Bulk Download Tool"
-      }
-    }
-  },
-  "bulkDownloader": {
-    "hero": {
-      "title": "{highlight} - Extract Captions from Playlists",
-      "highlight": "Bulk YouTube Subtitle Downloader",
-      "subtitle": "The most powerful {strong} for extracting SRT, VTT, and TXT captions from entire playlists, channels, and multiple videos. Perfect for {ai}, content creation, and accessibility projects.",
-      "strong": "bulk YouTube subtitle downloader",
-      "ai": "AI training datasets",
-      "cta": {
-        "primary": "Start Bulk Downloading",
-        "secondary": "View Pricing Plans"
-      },
-      "demo": {
-        "batch": "Batch process 1000+ Subtitles at once",
-        "zip": "One Organized ZIP",
-        "formats": "SRT, VTT, or Plain TXT"
-      }
-    },
-    "seo": {
-      "title": "Professional Bulk YouTube Subtitle Extraction",
-      "description": "YTVidHub is the industry-leading {strong} trusted by AI researchers, content creators, and accessibility professionals worldwide.",
-      "strong": "bulk YouTube subtitle downloader",
-      "features": {
-        "playlist": {
-          "title": "Playlist Subtitle Download",
-          "description": "Extract subtitles from entire YouTube playlists with thousands of videos in one operation."
-        },
-        "fast": {
-          "title": "Lightning Fast Processing",
-          "description": "Our advanced {strong} processes hundreds of videos simultaneously.",
-          "strong": "batch YouTube subtitle extractor"
-        },
-        "formats": {
-          "title": "Multiple Format Support",
-          "description": "Download in SRT, VTT, or clean TXT format - perfect for any use case or platform."
-        }
-      },
-      "why": {
-        "title": "Why Choose Our Bulk YouTube Subtitle Downloader?",
-        "ai": {
-          "title": "For AI & Machine Learning",
-          "items": [
-            "Clean TXT format perfect for training datasets",
-            "Bulk extraction for large-scale AI projects",
-            "Automated processing saves weeks of manual work",
-            "Compatible with popular ML frameworks"
-          ]
-        },
-        "creators": {
-          "title": "For Content Creators",
-          "items": [
-            "Extract transcripts for blog content creation",
-            "Download channel archives for backup",
-            "Create accessible content with proper captions",
-            "Repurpose video content across platforms"
-          ]
-        }
-      }
-    },
-    "comparison": {
-      "title": "Advanced Bulk YouTube Subtitle Extraction Technology",
-      "description": "See how our {strong} transforms your subtitle extraction workflow.",
-      "strong": "professional bulk YouTube subtitle downloader",
-      "manual": {
-        "title": "Manual Subtitle Download",
-        "features": [
-          "Open dozens of browser tabs and wait.",
-          "Click \"download srt\" for every single video manually.",
-          "Deal with cryptically named files like \"captions.srt\".",
-          "Waste hours renaming and organizing files.",
-          "Limited to one video at a time - no bulk processing."
-        ]
-      },
-      "ours": {
-        "badge": "Professional",
-        "title": "YTVidHub Bulk Subtitle Downloader",
-        "features": [
-          "Paste entire playlist or channel URL for bulk processing.",
-          "Download {strong} with one click.",
-          "Clean SRT/VTT/TXT files named by video title.",
-          "Process thousands of videos simultaneously."
-        ],
-        "strong": "YouTube playlist subtitles"
-      }
-    },
-    "solution": {
-      "title": "Complete Bulk YouTube Subtitle Download Solution",
-      "description": "From single videos to massive playlists - our {strong} handles any scale of subtitle extraction project.",
-      "strong": "bulk YouTube subtitle downloader",
-      "items": {
-        "playlist": {
-          "title": "Playlist Downloads",
-          "description": "Extract subtitles from entire YouTube playlists with our {strong}.",
-          "strong": "playlist subtitle downloader"
-        },
-        "channel": {
-          "title": "Channel Archives",
-          "description": "Download all subtitles from YouTube channels using our {strong}.",
-          "strong": "bulk transcript extractor"
-        },
-        "formats": {
-          "title": "Multiple Formats",
-          "description": "Get subtitles in SRT, VTT, or TXT format with our versatile {strong}.",
-          "strong": "YouTube caption downloader"
-        },
-        "ai": {
-          "title": "AI Training Ready",
-          "description": "Clean text extraction perfect for machine learning and {strong}.",
-          "strong": "AI dataset creation"
-        }
-      }
-    },
-    "usecases": {
-      "title": "Professional Bulk YouTube Subtitle Extraction Use Cases",
-      "description": "Discover why professionals choose our {strong} for AI training, research, and content creation.",
-      "strong": "bulk YouTube subtitle downloader",
-      "items": [
-        {
-          "icon": "馃",
-          "title": "AI & LLM Training",
-          "description": "Extract massive subtitle datasets in Clean TXT format. Our {strong} is the preferred choice for developers fine-tuning GPT and other AI models.",
-          "strong": "bulk YouTube transcript downloader"
-        },
-        {
-          "icon": "馃摑",
-          "title": "Content Repurposing",
-          "description": "Turn entire video libraries into SEO-optimized blog posts. Quickly extract transcripts for show notes and social media copy using our {strong}.",
-          "strong": "YouTube playlist subtitle extractor"
-        },
-        {
-          "icon": "馃摎",
-          "title": "Digital Archiving",
-          "description": "Backup your channel's metadata and captions. Download precise SRT/VTT files for translation and accessibility audits with our {strong}.",
-          "strong": "bulk subtitle extraction tool"
-        }
-      ]
-    },
-    "guide": {
-      "title": "Simple Batch Subtitle Process",
-      "description": "How to {strong} in three easy stages.",
-      "strong": "download youtube playlist with subtitles",
-      "steps": [
-        {
-          "badge": "Step",
-          "step": "01",
-          "title": "Ingestion: Entire Playlists",
-          "description": "Paste your Playlist or Channel URL. Our recursive engine automatically harvests all individual video links for batch subtitle extraction."
-        },
-        {
-          "badge": "Step",
-          "step": "02",
-          "title": "Format Selection: SRT/VTT/TXT",
-          "description": "Choose the standard that fits your needs. We offer SRT for players, VTT for web, and 'Clean TXT' for AI-ready text corpora."
-        },
-        {
-          "badge": "Step",
-          "step": "03",
-          "title": "Final Delivery: Organized ZIP",
-          "description": "Our cloud-based engine processes the batch. Download a single ZIP file where every transcript is perfectly named by the original video title."
-        }
-      ]
-    },
-    "anyLink": {
-      "title": "Any Link. {br} Unlimited Scale.",
-      "description": "The most flexible {strong} that handles complex playlist structures and massive channel archives.",
-      "strong": "YouTube subtitle downloader",
-      "tags": [
-        "馃摵 Single Videos",
-        "馃搼 Full Playlists",
-        "馃懁 Channel Archives"
-      ],
-      "formats": {
-        "title": "Supported URL Formats",
-        "items": [
-          "youtube.com/playlist?list=...",
-          "youtube.com/@ChannelUsername",
-          "youtube.com/watch?v=..."
-        ]
-      }
-    },
-    "formatDetails": {
-      "title": "Download Subtitles in SRT, VTT, or TXT",
-      "description": "Precision or clean text? We support all major industry standards.",
-      "clean": {
-        "title": "Clean TXT Transcript",
-        "badge": "For AI & Research",
-        "description": "Automatically removes all timestamps and sequence numbers. Get a clean, readable transcript perfect for SEO blogs and LLM training."
-      },
-      "timed": {
-        "title": "Timed SRT / VTT",
-        "badge": "For Video Players",
-        "description": "Standard timecoded files (Start --> End). Perfect for re-uploading, video editing, or offline viewing with VLC."
-      }
-    },
-    "faq": {
-      "title": "Bulk YouTube Subtitle Downloader FAQ",
-      "items": [
-        {
-          "q": "How do I download an entire YouTube playlist with subtitles?",
-          "a": "To download a {strong1} in bulk, simply copy the playlist URL from your browser and paste it into YTVidHub's {strong2}. Our advanced engine will crawl the entire playlist, extract the captions for each video, and bundle them into an organized ZIP file for you.",
-          "strong1": "YouTube playlist with subtitles",
-          "strong2": "bulk subtitle downloader"
-        },
-        {
-          "q": "Can I extract subtitles from multiple YouTube videos at once?",
-          "a": "Yes! You can paste a list of multiple individual video URLs or a channel link. YTVidHub is the leading {strong1} and {strong2}, allowing for unlimited URLs for Pro members.",
-          "strong1": "bulk YouTube subtitle downloader",
-          "strong2": "batch subtitle extractor"
-        },
-        {
-          "q": "What file formats do you support for captions?",
-          "a": "We support the three most common formats: {strong1}, {strong2}, and {strong3}. You can toggle between these formats before starting your bulk download.",
-          "strong1": "SRT (SubRip)",
-          "strong2": "VTT (WebVTT)",
-          "strong3": "Clean TXT"
-        },
-        {
-          "q": "Does this tool support auto-generated YouTube subtitles?",
-          "a": "Absolutely. Our {strong} can extract both manually uploaded subtitles and YouTube's auto-generated closed captions (CC) in any available language. The tool works with all types of YouTube captions.",
-          "strong": "bulk YouTube transcript downloader"
-        },
-        {
-          "q": "Is there a limit to how many subtitles I can download?",
-          "a": "Free users have a daily quota for {strong1}. {strong2} enjoy unlimited bulk extraction, allowing them to download subtitles for thousands of videos in a single operation using our advanced {strong3}.",
-          "strong1": "bulk subtitle downloads",
-          "strong2": "Pro members",
-          "strong3": "YouTube playlist subtitle downloader"
-        }
-      ]
-    },
-    "footer": {
-      "description": "The essential toolkit for video content data extraction, built for speed and reliability. Optimized for LLM and AI training research.",
-      "product": "Product",
-      "resources": "Resources",
-      "legal": "Legal",
-      "share": "Share this tool with your team",
-      "rights": "All Rights Reserved",
-      "disclaimer": "Not affiliated with Google or YouTube.",
-      "home": "Home",
-      "downloader": "Downloader",
-      "downloadSubs": "Download Subs",
-      "bulkDownloader": "Bulk Downloader",
-      "pricing": "Pricing",
-      "dataPrepGuide": "Data Prep Guide",
-      "cleanTranscript": "Clean Transcript",
-      "faq": "FAQ",
-      "howToUse": "How to Use",
-      "aboutUs": "About Us",
-      "privacyPolicy": "Privacy Policy",
-      "termsOfService": "Terms of Service"
-    }
+  "footer": {
+    "description": "The essential toolkit for video content data extraction, built for speed and reliability. Optimized for LLM and AI training research.",
+    "product": "Product",
+    "resources": "Resources",
+    "legal": "Legal",
+    "share": "Share this tool with your team",
+    "rights": "All Rights Reserved",
+    "disclaimer": "Not affiliated with Google or YouTube.",
+    "home": "Home",
+    "downloader": "Downloader",
+    "downloadSubs": "Download Subtitles",
+    "bulkDownloader": "Bulk Downloader",
+    "pricing": "Pricing",
+    "dataPrepGuide": "Data Prep Guide",
+    "cleanTranscript": "Clean Transcript",
+    "faq": "FAQ",
+    "howToUse": "How to Use",
+    "aboutUs": "About Us",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
   }
 }
