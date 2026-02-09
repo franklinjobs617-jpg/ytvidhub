@@ -17,6 +17,7 @@ export default function Footer() {
             <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
               {t('description')}
             </p>
+            <a href="https://theresanaiforthat.com/ai/ytvidhub/?ref=featured&v=7340698" target="_blank" rel="nofollow"><img width="300" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600"></img></a>
           </div>
 
           {/* Product Column */}
