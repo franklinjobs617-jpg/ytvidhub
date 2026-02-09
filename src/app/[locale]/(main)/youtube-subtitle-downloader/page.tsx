@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from '@/i18n/routing';
 import { getTranslations } from 'next-intl/server';
-import { InteractiveDemo } from "@/components/demo/InteractiveDemo";
 import { TestimonialSection } from "@/components/testimonials/TestimonialSection";
 import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema";
 import { Metadata } from "next";
@@ -71,10 +70,7 @@ export default async function YouTubeSubtitleDownloaderPage({ params }: Props) {
                             </Link>
                         </div>
 
-                        {/* Interactive Demo Section */}
-                        <div className="max-w-4xl mx-auto mb-8">
-                            <InteractiveDemo />
-                        </div>
+
 
                         {/* Visual Demo */}
                         <div className="max-w-4xl mx-auto">
@@ -111,8 +107,8 @@ export default async function YouTubeSubtitleDownloaderPage({ params }: Props) {
                         </div>
                     </div>
                 </section>
-   
-             {/* === 2. WHAT IS YOUTUBE SUBTITLE DOWNLOADER === */}
+
+                {/* === 2. WHAT IS YOUTUBE SUBTITLE DOWNLOADER === */}
                 <section className="py-16 bg-white">
                     <div className="container mx-auto px-6 max-w-4xl">
                         <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">
@@ -260,8 +256,8 @@ export default async function YouTubeSubtitleDownloaderPage({ params }: Props) {
                             </div>
                         </div>
                     </div>
-                </section>   
-             {/* === 5. USE CASES === */}
+                </section>
+                {/* === 5. USE CASES === */}
                 <section className="py-16 bg-slate-50">
                     <div className="container mx-auto px-6 max-w-6xl">
                         <h2 className="text-3xl font-bold text-slate-900 mb-4 text-center">
@@ -397,8 +393,8 @@ export default async function YouTubeSubtitleDownloaderPage({ params }: Props) {
                             </div>
                         </div>
                     </div>
-                </section>      
-          {/* === 7. TECHNICAL SPECIFICATIONS === */}
+                </section>
+                {/* === 7. TECHNICAL SPECIFICATIONS === */}
                 <section className="py-16 bg-slate-50">
                     <div className="container mx-auto px-6 max-w-4xl">
                         <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">
