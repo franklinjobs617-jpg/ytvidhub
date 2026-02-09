@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Data Prep Toolkit: Complete Guide for YouTube Subtitles",
   description: "Comprehensive guide to preparing YouTube subtitles for data analysis, AI training, and research. Includes tools and best practices for clean data extraction.",
   alternates: {
-    canonical: "https://ytvidhub.com/guide/data-prep-toolkit",
+    canonical: "https://ytvidhub.com/guide/data-prep-toolkit/",
   },
 };
 

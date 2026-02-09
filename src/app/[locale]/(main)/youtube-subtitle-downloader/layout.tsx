@@ -3,10 +3,10 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Free YouTube Subtitle Downloader | Download SRT, VTT, TXT Captions | YTVidHub",
   description: "Download YouTube subtitles in SRT, VTT, and TXT formats for free. Extract captions from any video with timestamps or clean text for AI training and accessibility.",
-  
+
   keywords: [
     "youtube subtitle downloader",
-    "download youtube captions", 
+    "download youtube captions",
     "youtube srt download",
     "youtube vtt download",
     "youtube transcript downloader",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://ytvidhub.com/youtube-subtitle-downloader",
+    canonical: "https://ytvidhub.com/youtube-subtitle-downloader/",
   },
 
   robots: {

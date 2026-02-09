@@ -10,7 +10,7 @@ export const metadata: Metadata = {
         type: 'website',
     },
     alternates: {
-        canonical: 'https://ytvidhub.com/download-subs-from-youtube',
+        canonical: 'https://ytvidhub.com/download-subs-from-youtube/',
     },
 };
 

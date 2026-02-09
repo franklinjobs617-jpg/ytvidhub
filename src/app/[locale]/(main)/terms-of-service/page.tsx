@@ -14,7 +14,7 @@ export default function TermsOfServicePage() {
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollBtns(window.scrollY > 300);
-      
+
       // 侧边栏高亮逻辑
       const sections = ["acceptance", "service", "responsibilities", "disclaimer", "liability", "property", "termination", "changes", "law"];
       for (const section of sections) {
@@ -48,12 +48,12 @@ export default function TermsOfServicePage() {
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
       <title>Terms of Service | YTVidHub - Usage Guidelines</title>
       <meta name="description" content="Review the Terms of Service for using YTVidHub. This document outlines your responsibilities, our liability, and the proper use of our free subtitle downloader." />
-      <link rel="canonical" href="https://ytvidhub.com/terms-of-service" />
+      <link rel="canonical" href="https://ytvidhub.com/terms-of-service/" />
 
       <main>
         <section className="relative pt-24 pb-20 md:pt-10 md:pb-0 overflow-hidden bg-slate-50 bg-[url('data:image/svg+xml,%3Csvg_width=%2240%22_height=%2240%22_viewBox=%220_0_40_40%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg_fill=%22%23e5e7eb%22_fill-opacity=%220.5%22_fill-rule=%22evenodd%22%3E%3Cpath_d=%22M0_40L40_0H20L0_20M40_40V20L20_40%22/%3E%3C/g%3E%3C/svg%3E')]">
           <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white"></div>
-          
+
           <div className="absolute top-[-10%] left-[-10%] w-[35rem] h-[35rem] bg-blue-400/10 rounded-full blur-[120px] animate-pulse"></div>
 
           <div className="container mx-auto px-6 text-center relative z-10">
@@ -62,16 +62,16 @@ export default function TermsOfServicePage() {
                 Legal Documentation
               </span>
             </div>
-            
+
             <h1 className="text-4xl md:text-7xl font-display font-black uppercase tracking-tight text-slate-900 mb-8 leading-[1.1]">
               Terms of <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">
                 Service
               </span>
             </h1>
-            
+
             <p className="text-xl text-slate-500 max-w-3xl mx-auto mb-6 leading-relaxed font-medium">
-              Please read these terms carefully before using our service. 
+              Please read these terms carefully before using our service.
             </p>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
               Last Updated: October 11, 2025
@@ -83,7 +83,7 @@ export default function TermsOfServicePage() {
         <section className="py-24 bg-white border-y border-slate-100">
           <div className="container mx-auto px-6 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-              
+
               {/* Sidebar TOC (对齐专业文档风格) */}
               <aside className="hidden lg:block lg:col-span-3 sticky top-32 h-fit">
                 <p className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6 pl-4 border-l-4 border-blue-600">Sections</p>
@@ -92,11 +92,10 @@ export default function TermsOfServicePage() {
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                        activeTab === item.id 
-                        ? "bg-blue-50 text-blue-600 translate-x-2" 
+                      className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTab === item.id
+                        ? "bg-blue-50 text-blue-600 translate-x-2"
                         : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
-                      }`}
+                        }`}
                     >
                       {item.label}
                     </a>
@@ -107,10 +106,10 @@ export default function TermsOfServicePage() {
               {/* Main Clauses Area */}
               <div className="lg:col-span-9">
                 <div className="prose prose-slate prose-lg max-w-none text-slate-600 leading-[2] space-y-16">
-                  
+
                   <section id="acceptance" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        1. Acceptance of Terms
+                      1. Acceptance of Terms
                     </h2>
                     <p>
                       By accessing and using YTVidHub (the &quot;Service&quot;), you accept and
@@ -122,7 +121,7 @@ export default function TermsOfServicePage() {
 
                   <section id="service" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        2. Description of Service
+                      2. Description of Service
                     </h2>
                     <p>
                       YTVidHub provides a tool that allows users to download publicly
@@ -135,7 +134,7 @@ export default function TermsOfServicePage() {
 
                   <section id="responsibilities" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        3. User Responsibilities
+                      3. User Responsibilities
                     </h2>
                     <p className="mb-8 font-bold text-slate-900">You, the user, agree to the following:</p>
                     <ul className="space-y-6 list-none p-0">
@@ -156,7 +155,7 @@ export default function TermsOfServicePage() {
 
                   <section id="disclaimer" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        4. Disclaimer of Warranties
+                      4. Disclaimer of Warranties
                     </h2>
                     <p>
                       The Service is provided on an &quot;as-is&quot; and &quot;as-available&quot; basis.
@@ -168,7 +167,7 @@ export default function TermsOfServicePage() {
 
                   <section id="liability" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        5. Limitation of Liability
+                      5. Limitation of Liability
                     </h2>
                     <p>
                       In no event shall YTVidHub or its owners be liable for any direct,
@@ -181,7 +180,7 @@ export default function TermsOfServicePage() {
 
                   <section id="property" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        6. Intellectual Property
+                      6. Intellectual Property
                     </h2>
                     <p>
                       All content on this website, including the YTVidHub name, logo,
@@ -191,7 +190,7 @@ export default function TermsOfServicePage() {
 
                   <section id="termination" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        7. Termination of Service
+                      7. Termination of Service
                     </h2>
                     <p>
                       We reserve the right to modify, suspend, or terminate the Service
@@ -202,7 +201,7 @@ export default function TermsOfServicePage() {
 
                   <section id="changes" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        8. Changes to Terms
+                      8. Changes to Terms
                     </h2>
                     <p>
                       We may revise these Terms of Service from time to time. The most
@@ -213,14 +212,14 @@ export default function TermsOfServicePage() {
 
                   <section id="law" className="scroll-mt-32">
                     <h2 className="text-2xl md:text-4xl font-display uppercase tracking-wide text-slate-900 mb-6 border-b border-slate-100 pb-4">
-                        9. Governing Law
+                      9. Governing Law
                     </h2>
                     <div className="p-8 rounded-[2rem] bg-blue-50 border border-blue-100 shadow-sm">
-                        <p className="text-blue-900 font-bold m-0 leading-relaxed">
-                          This agreement shall be governed by and construed in accordance
-                          with the laws of the State of Delaware, United States, without
-                          regard to its conflict of law provisions.
-                        </p>
+                      <p className="text-blue-900 font-bold m-0 leading-relaxed">
+                        This agreement shall be governed by and construed in accordance
+                        with the laws of the State of Delaware, United States, without
+                        regard to its conflict of law provisions.
+                      </p>
                     </div>
                   </section>
 
@@ -231,7 +230,7 @@ export default function TermsOfServicePage() {
         </section>
       </main>
 
- 
+
 
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
 

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "SRT vs VTT: Complete Comparison Guide for Developers | YTVidHub",
   description: "Comprehensive technical comparison of SRT and WebVTT subtitle formats. Learn which format is best for AI training, web development, and bulk subtitle extraction.",
-  
+
   keywords: [
     "SRT vs VTT",
     "subtitle format comparison",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   ],
 
   authors: [{ name: "YTVidHub Technical Team" }],
-  
+
   openGraph: {
     title: "SRT vs VTT: Technical Comparison Guide for Developers",
     description: "Deep dive into SRT and WebVTT formats. Discover which subtitle format is best for your AI training, web development, or bulk extraction needs.",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://ytvidhub.com/guide/srt-vs-vtt",
+    canonical: "https://ytvidhub.com/guide/srt-vs-vtt/",
   },
 
   robots: {

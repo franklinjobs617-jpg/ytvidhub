@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl = "https://ytvidhub.com";
   const localePath = locale === 'en' ? "" : `/${locale}`;
-  const canonicalUrl = `${baseUrl}${localePath}`;
+  const canonicalUrl = `${baseUrl}${localePath}/`;
 
   return {
     title: t('title'),

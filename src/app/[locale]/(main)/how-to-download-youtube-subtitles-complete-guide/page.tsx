@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const baseUrl = "https://ytvidhub.com";
     const localePath = locale === 'en' ? "" : `/${locale}`;
-    const canonicalUrl = `${baseUrl}${localePath}/how-to-download-youtube-subtitles-complete-guide`;
+    const canonicalUrl = `${baseUrl}${localePath}/how-to-download-youtube-subtitles-complete-guide/`;
 
     return {
         title: "How to Download YouTube Subtitles: Complete Guide 2025 | Free Methods",

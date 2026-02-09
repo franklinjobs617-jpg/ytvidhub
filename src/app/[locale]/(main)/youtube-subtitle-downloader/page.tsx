@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const baseUrl = "https://ytvidhub.com";
     const path = "/youtube-subtitle-downloader";
     const localePath = locale === 'en' ? "" : `/${locale}`;
-    const canonicalUrl = `${baseUrl}${localePath}${path}`;
+    const canonicalUrl = `${baseUrl}${localePath}${path}/`;
 
     return {
         title: t('title'),
@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         alternates: {
             canonical: canonicalUrl,
             languages: {
-                'en': `${baseUrl}${path}`,
-                'es': `${baseUrl}/es${path}`,
+                'en': `${baseUrl}${path}/`,
+                'es': `${baseUrl}/es${path}/`,
             },
         },
     };

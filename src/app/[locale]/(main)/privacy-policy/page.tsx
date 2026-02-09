@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
         name="description"
         content="Read the official Privacy Policy for YTVidHub. We explain what little data we collect, our commitment to anonymity, and how we protect your privacy."
       />
-      <link rel="canonical" href="https://ytvidhub.com/privacy-policy" />
+      <link rel="canonical" href="https://ytvidhub.com/privacy-policy/" />
 
       <main>
         {/* === 1. HERO SECTION (视觉风格与 Terms 保持高度一致) === */}
@@ -110,11 +110,10 @@ export default function PrivacyPolicyPage() {
                     <a
                       key={item.id}
                       href={`#${item.id}`}
-                      className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                        activeTab === item.id
-                          ? "bg-blue-50 text-blue-600 translate-x-2 shadow-sm"
-                          : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
-                      }`}
+                      className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${activeTab === item.id
+                        ? "bg-blue-50 text-blue-600 translate-x-2 shadow-sm"
+                        : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
+                        }`}
                     >
                       {item.label}
                     </a>

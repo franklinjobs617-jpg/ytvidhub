@@ -8,17 +8,19 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['next-intl'],
     serverComponentsExternalPackages: [],
   },
-  
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
 
+  trailingSlash: true,
+
   images: {
-    formats: ['image/webp', 'image/avif'], 
+    formats: ['image/webp', 'image/avif'],
   },
 
   compress: true,
-  
+
   async redirects() {
     return [
       // Redirect HTML extensions to clean URLs
@@ -39,14 +41,14 @@ const nextConfig: NextConfig = {
       }
     ];
   },
-  
+
   webpack: (config: any, { isServer }: { isServer: boolean }) => {
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
-        fs: false, 
+        fs: false,
       };
-      
+
       config.module.rules.push({
         test: /\.json$/,
         type: 'json',

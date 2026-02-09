@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     },
 
     alternates: {
-        canonical: "https://ytvidhub.com/data-prep-guide",
+        canonical: "https://ytvidhub.com/data-prep-guide/",
     },
 
     robots: {

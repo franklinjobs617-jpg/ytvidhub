@@ -59,7 +59,7 @@ export default function DataPrepToolkitPage() {
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-900 antialiased">
       <title>Advanced YouTube Subtitle Data Preparation Toolkit: Beyond Simple Downloads</title>
       <meta name="description" content="The definitive Advanced YouTube Subtitle Data Preparation Toolkit for researchers and developers. Master bulk processing, clean raw transcripts, and bypass API limits with structured JSON output." />
-      <link rel="canonical" href="https://ytvidhub.com/guide/data-prep-toolkit" />
+      <link rel="canonical" href="https://ytvidhub.com/guide/data-prep-toolkit/" />
 
       {/* 背景装饰：工业网格 */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03]"

@@ -4,7 +4,7 @@ export const metadata: Metadata = {
     title: 'SRT File Format Guide 2026: Complete Tutorial for Subtitles & AI Applications',
     description: 'Master the SRT file format with our comprehensive 2026 guide. Learn to create, edit, and convert .srt subtitles for YouTube, video editing, and AI training.',
     alternates: {
-        canonical: 'https://ytvidhub.com/what-is-an-srt-file',
+        canonical: 'https://ytvidhub.com/what-is-an-srt-file/',
     },
     openGraph: {
         title: 'SRT File Format Guide 2026: Complete Tutorial for Subtitles & AI Applications',

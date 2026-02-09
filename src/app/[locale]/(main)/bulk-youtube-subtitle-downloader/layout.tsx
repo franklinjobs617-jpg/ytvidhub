@@ -3,10 +3,10 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Bulk YouTube Subtitle Downloader | Extract SRT, VTT & TXT Captions from Playlists | YTVidHub',
     description: 'Professional bulk YouTube subtitle downloader for extracting SRT, VTT, and TXT transcripts from multiple videos, playlists, and channels. Perfect for AI training, content creation, and accessibility. Download thousands of subtitles in one click.',
-    
+
     keywords: [
         'bulk youtube subtitle downloader',
-        'youtube playlist subtitle downloader', 
+        'youtube playlist subtitle downloader',
         'batch youtube subtitle extractor',
         'download youtube subtitles bulk',
         'youtube transcript downloader bulk',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     ],
 
     authors: [{ name: 'YTVidHub Team' }],
-    
+
     openGraph: {
         title: 'Bulk YouTube Subtitle Downloader | Extract Captions from Playlists & Channels',
         description: 'Download subtitles from thousands of YouTube videos at once. Professional bulk extraction tool for SRT, VTT, and TXT formats. Perfect for AI training and content creation.',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     },
 
     alternates: {
-        canonical: 'https://ytvidhub.com/bulk-youtube-subtitle-downloader',
+        canonical: 'https://ytvidhub.com/bulk-youtube-subtitle-downloader/',
     },
 
     robots: {

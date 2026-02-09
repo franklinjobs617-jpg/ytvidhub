@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const t = await getTranslations({ locale, namespace: 'metadata' });
 
   const baseUrl = "https://ytvidhub.com";
-  const currentUrl = locale === 'en' ? baseUrl : `${baseUrl}/${locale}`;
+  const currentUrl = locale === 'en' ? `${baseUrl}/` : `${baseUrl}/${locale}/`;
 
   const getOpenGraphLocale = (locale: string) => {
     switch (locale) {

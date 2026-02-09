@@ -84,7 +84,7 @@ export default function SrtFileGuidePage() {
         name="keywords"
         content="SRT file format, .srt subtitles, subtitle file format, SRT timestamp format, create SRT file, edit SRT file, SRT vs VTT, SRT to TXT, YouTube SRT downloader, AI training data"
       />
-      <link rel="canonical" href="https://ytvidhub.com/what-is-an-srt-file" />
+      <link rel="canonical" href="https://ytvidhub.com/what-is-an-srt-file/" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -248,25 +248,22 @@ export default function SrtFileGuidePage() {
                       <a
                         key={cat.id}
                         href={`#${cat.id}`}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all group ${
-                          activeSection === cat.id
-                            ? "bg-blue-50 text-blue-600 translate-x-2"
-                            : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
-                        }`}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all group ${activeSection === cat.id
+                          ? "bg-blue-50 text-blue-600 translate-x-2"
+                          : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
+                          }`}
                       >
                         <span
-                          className={`transition-transform ${
-                            activeSection === cat.id ? "scale-110" : ""
-                          }`}
+                          className={`transition-transform ${activeSection === cat.id ? "scale-110" : ""
+                            }`}
                         >
                           {cat.icon}
                         </span>
                         <span>{cat.label}</span>
                         <ChevronRight
                           size={12}
-                          className={`ml-auto opacity-0 group-hover:opacity-100 transition-opacity ${
-                            activeSection === cat.id ? "opacity-100" : ""
-                          }`}
+                          className={`ml-auto opacity-0 group-hover:opacity-100 transition-opacity ${activeSection === cat.id ? "opacity-100" : ""
+                            }`}
                         />
                       </a>
                     ))}
@@ -703,33 +700,30 @@ export default function SrtFileGuidePage() {
                               </td>
                               <td className="p-6">
                                 <span
-                                  className={`font-mono ${
-                                    row.feature.includes("AI")
-                                      ? "font-black text-blue-700"
-                                      : ""
-                                  }`}
+                                  className={`font-mono ${row.feature.includes("AI")
+                                    ? "font-black text-blue-700"
+                                    : ""
+                                    }`}
                                 >
                                   {row.srt}
                                 </span>
                               </td>
                               <td className="p-6">
                                 <span
-                                  className={`font-mono ${
-                                    row.feature.includes("AI")
-                                      ? "font-black text-violet-700"
-                                      : ""
-                                  }`}
+                                  className={`font-mono ${row.feature.includes("AI")
+                                    ? "font-black text-violet-700"
+                                    : ""
+                                    }`}
                                 >
                                   {row.vtt}
                                 </span>
                               </td>
                               <td className="p-6">
                                 <span
-                                  className={`font-mono ${
-                                    row.feature.includes("AI")
-                                      ? "font-black text-slate-900"
-                                      : ""
-                                  }`}
+                                  className={`font-mono ${row.feature.includes("AI")
+                                    ? "font-black text-slate-900"
+                                    : ""
+                                    }`}
                                 >
                                   {row.txt}
                                 </span>
