@@ -69,44 +69,44 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
             "value": "0"
         },
         "supply": [
-            {
-                "@type": "HowToSupply",
-                "name": "Computer or mobile device"
-            },
-            {
-                "@type": "HowToSupply",
-                "name": "Internet connection"
-            },
-            {
-                "@type": "HowToSupply",
-                "name": "YouTube video URL"
-            }
+            { "@type": "HowToSupply", "name": "Computer or mobile device" },
+            { "@type": "HowToSupply", "name": "Internet connection" },
+            { "@type": "HowToSupply", "name": "YouTube video URL" }
         ],
         "tool": [
-            {
-                "@type": "HowToTool",
-                "name": "YTVidHub Subtitle Downloader",
-                "url": "https://ytvidhub.com"
-            }
+            { "@type": "HowToTool", "name": "YTVidHub Subtitle Downloader" }
         ],
+        // Google 推荐使用 itemListElement 来包含步骤
         "step": [
             {
                 "@type": "HowToStep",
                 "name": "Choose Your Method",
-                "text": "Select between manual YouTube extraction or automated bulk downloading",
-                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#methods"
+                "position": 1,
+                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#methods",
+                "itemListElement": [{
+                    "@type": "HowToDirection",
+                    "text": "Select between manual YouTube extraction or automated bulk downloading"
+                }]
             },
             {
                 "@type": "HowToStep",
                 "name": "Extract Subtitles",
-                "text": "Follow the step-by-step instructions for your chosen method",
-                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#extraction"
+                "position": 2,
+                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#extraction",
+                "itemListElement": [{
+                    "@type": "HowToDirection",
+                    "text": "Follow the step-by-step instructions for your chosen method"
+                }]
             },
             {
                 "@type": "HowToStep",
                 "name": "Download and Save",
-                "text": "Save your subtitles in SRT, VTT, or TXT format",
-                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#formats"
+                "position": 3,
+                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#formats",
+                "itemListElement": [{
+                    "@type": "HowToDirection",
+                    "text": "Save your subtitles in SRT, VTT, or TXT format"
+                }]
             }
         ]
     };
@@ -157,7 +157,6 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
             }
         ]
     };
-
     return (
         <div className="bg-white min-h-screen">
             <script
@@ -213,7 +212,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
 
                     {/* Primary CTA */}
                     <div className="text-center mb-12">
-                        <Link 
+                        <Link
                             href="/youtube-subtitle-downloader"
                             className="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors shadow-lg hover:shadow-xl"
                         >
