@@ -56,116 +56,113 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function HowToDownloadYouTubeSubtitlesPage() {
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        "name": "How to Download YouTube Subtitles",
-        "description": "Complete guide on downloading YouTube subtitles using multiple methods including manual extraction and automated tools",
-        "image": "https://ytvidhub.com/image/og-subtitle-guide.webp",
-        "totalTime": "PT5M",
-        "estimatedCost": {
-            "@type": "MonetaryAmount",
-            "currency": "USD",
-            "value": "0"
+    // 合并结构化数据为单个数组，避免重复字段错误
+    const structuredData = [
+        {
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            "name": "How to Download YouTube Subtitles",
+            "description": "Complete guide on downloading YouTube subtitles using multiple methods including manual extraction and automated tools",
+            "image": "https://ytvidhub.com/image/og-subtitle-guide.webp",
+            "totalTime": "PT5M",
+            "estimatedCost": {
+                "@type": "MonetaryAmount",
+                "currency": "USD",
+                "value": "0"
+            },
+            "supply": [
+                { "@type": "HowToSupply", "name": "Computer or mobile device" },
+                { "@type": "HowToSupply", "name": "Internet connection" },
+                { "@type": "HowToSupply", "name": "YouTube video URL" }
+            ],
+            "tool": [
+                { "@type": "HowToTool", "name": "YTVidHub Subtitle Downloader", "url": "https://ytvidhub.com" }
+            ],
+            "step": [
+                {
+                    "@type": "HowToStep",
+                    "name": "Choose Your Method",
+                    "position": 1,
+                    "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#methods",
+                    "itemListElement": [{
+                        "@type": "HowToDirection",
+                        "text": "Select between manual YouTube extraction or automated bulk downloading"
+                    }]
+                },
+                {
+                    "@type": "HowToStep",
+                    "name": "Extract Subtitles",
+                    "position": 2,
+                    "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#extraction",
+                    "itemListElement": [{
+                        "@type": "HowToDirection",
+                        "text": "Follow the step-by-step instructions for your chosen method"
+                    }]
+                },
+                {
+                    "@type": "HowToStep",
+                    "name": "Download and Save",
+                    "position": 3,
+                    "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#formats",
+                    "itemListElement": [{
+                        "@type": "HowToDirection",
+                        "text": "Save your subtitles in SRT, VTT, or TXT format"
+                    }]
+                }
+            ]
         },
-        "supply": [
-            { "@type": "HowToSupply", "name": "Computer or mobile device" },
-            { "@type": "HowToSupply", "name": "Internet connection" },
-            { "@type": "HowToSupply", "name": "YouTube video URL" }
-        ],
-        "tool": [
-            { "@type": "HowToTool", "name": "YTVidHub Subtitle Downloader" }
-        ],
-        // Google 推荐使用 itemListElement 来包含步骤
-        "step": [
-            {
-                "@type": "HowToStep",
-                "name": "Choose Your Method",
-                "position": 1,
-                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#methods",
-                "itemListElement": [{
-                    "@type": "HowToDirection",
-                    "text": "Select between manual YouTube extraction or automated bulk downloading"
-                }]
-            },
-            {
-                "@type": "HowToStep",
-                "name": "Extract Subtitles",
-                "position": 2,
-                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#extraction",
-                "itemListElement": [{
-                    "@type": "HowToDirection",
-                    "text": "Follow the step-by-step instructions for your chosen method"
-                }]
-            },
-            {
-                "@type": "HowToStep",
-                "name": "Download and Save",
-                "position": 3,
-                "url": "https://ytvidhub.com/how-to-download-youtube-subtitles-complete-guide#formats",
-                "itemListElement": [{
-                    "@type": "HowToDirection",
-                    "text": "Save your subtitles in SRT, VTT, or TXT format"
-                }]
-            }
-        ]
-    };
-
-    const faqStructuredData = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "Can I download YouTube subtitles for free?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes! You can download YouTube subtitles for free using YouTube's built-in transcript feature or our YTVidHub tool. We offer 5 free downloads daily with no registration required."
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Can I download YouTube subtitles for free?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes! You can download YouTube subtitles for free using YouTube's built-in transcript feature or our YTVidHub tool. We offer 5 free downloads daily with no registration required."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What subtitle formats can I download?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Our tool supports SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Can I batch download subtitles from YouTube playlists?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes! Our batch YouTube subtitle downloader can extract subtitles from entire playlists and channels at once. This is perfect for creating large datasets for AI training or research projects."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Does this work with different languages?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Absolutely! Our tool can download subtitles in any language available on the YouTube video, including auto-generated captions and manually uploaded subtitles."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Is it legal to download YouTube subtitles?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, downloading subtitles for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service."
+                    }
                 }
-            },
-            {
-                "@type": "Question",
-                "name": "What subtitle formats can I download?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Our tool supports SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Can I batch download subtitles from YouTube playlists?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes! Our batch YouTube subtitle downloader can extract subtitles from entire playlists and channels at once. This is perfect for creating large datasets for AI training or research projects."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Does this work with different languages?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Absolutely! Our tool can download subtitles in any language available on the YouTube video, including auto-generated captions and manually uploaded subtitles."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Is it legal to download YouTube subtitles?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, downloading subtitles for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service."
-                }
-            }
-        ]
-    };
+            ]
+        }
+    ];
     return (
         <div className="bg-white min-h-screen">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
             />
 
             {/* Hero Section */}
