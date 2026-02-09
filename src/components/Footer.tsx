@@ -46,6 +46,9 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">{t('resources')}</h3>
             <ul className="space-y-3 text-sm">
               <li>
+                <Link href="/how-to-download-youtube-subtitles-complete-guide" className="hover:text-violet-400 transition-colors">{t('howToDownload')}</Link>
+              </li>
+              <li>
                 <Link href="/data-prep-guide" className="hover:text-violet-400 transition-colors">{t('dataPrepGuide')}</Link>
               </li>
               <li>

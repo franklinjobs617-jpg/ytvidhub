@@ -98,7 +98,7 @@ export default function SubtitleAccuracyBlogPage() {
                 As the developer of YTVidHub, we are frequently asked: <strong className="text-slate-900">"Do you support languages other than English?"</strong>
               </p>
               <p>
-                The answer is a definitive <strong className="text-slate-900">Yes.</strong> Our tool accesses all available subtitle files provided by YouTube. This includes Spanish, German, Japanese, and crucial languages like <strong className="text-slate-900">Mandarin Chinese</strong>.
+                The answer is a definitive <strong className="text-slate-900">Yes.</strong> Our <Link href="/" className="text-blue-600 underline font-bold hover:text-blue-700">batch YouTube subtitle downloader</Link> accesses all available subtitle files provided by YouTube. This includes Spanish, German, Japanese, and crucial languages like <strong className="text-slate-900">Mandarin Chinese</strong>.
               </p>
               <p>
                 However, this answer comes with a major warning: <strong className="text-slate-900 italic font-bold">The ability to download is not the same as the ability to use.</strong> For researchers, language learners, and data analysts, the quality of the <em>data inside the file</em> creates the single biggest bottleneck in their entire workflow.
@@ -186,7 +186,7 @@ export default function SubtitleAccuracyBlogPage() {
                    <p className="text-slate-400 mb-10 max-w-2xl mx-auto font-medium">
                      We solve the problem of access. Now, we are solving the problem of <strong className="text-blue-400">Accuracy</strong> and <strong className="text-blue-400">Ready-to-use Formats</strong>.
                    </p>
-                   <p className="text-slate-500 text-sm mb-12">We are working on a Pro service for near human-level transcription.</p>
+                   <p className="text-slate-500 mb-12">We are working on a Pro service for near human-level transcription. Meanwhile, try our <Link href="/" className="text-blue-400 underline font-bold hover:text-blue-300">playlist subtitle downloader</Link> for bulk processing.</p>
                    <Link href="mailto:franklinjobs617@gmail.com" className="inline-flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-500 text-white font-black py-5 px-14 rounded-2xl transition-all hover:-translate-y-1 shadow-xl shadow-blue-500/20 uppercase text-xs tracking-widest">
                      Join Mailing List for updates
                    </Link>

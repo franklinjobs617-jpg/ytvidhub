@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "YouTube Subtitle Downloader | Bulk Extract SRT, VTT & TXT Captions",
-    "description": "Professional YouTube subtitle downloader for single videos and bulk playlist extraction. Download SRT, VTT, TXT captions for AI training, accessibility, and content creation.",
-    "keywords": "youtube subtitle downloader, bulk youtube subtitle downloader, youtube caption downloader,"
+    "title": "Batch Download YouTube Subtitles (Playlist & Channel) - Free SRT Tool",
+    "description": "One-click tool to bulk download subtitles from YouTube playlists and channels. Save captions as .SRT or .TXT files. No installation or login needed. Fast & Free.",
+    "keywords": "youtube subtitle downloader, bulk youtube subtitle downloader, youtube caption downloader, batch download youtube subtitles, youtube playlist subtitle downloader"
   },
   "navigation": {
     "home": "Home",
@@ -16,6 +16,7 @@
     "bulkDownloader": "Bulk Downloader",
     "guide": "Guide",
     "blog": "Blog",
+    "howToGuide": "How to Download",
     "logout": "Sign Out",
     "credits": "Credits",
     "buyCredits": "Buy Credits",
@@ -23,9 +24,9 @@
     "freePlan": "Free Plan"
   },
   "hero": {
-    "title": "YouTube Subtitle Downloader",
-    "subtitle": "Professional {highlight} for single videos and entire playlists. Extract SRT, VTT & TXT captions for AI training, content creation, and accessibility projects.",
-    "highlight": "bulk YouTube subtitle downloader",
+    "title": "Batch YouTube Subtitle Downloader",
+    "subtitle": "One-click {highlight} for videos, playlists, and channels. Extract SRT & TXT captions instantly without registration. Perfect for bulk processing.",
+    "highlight": "playlist subtitle downloader",
     "cta": {
       "primary": "Start Downloading Subtitles",
       "secondary": "Try Example Links",
@@ -38,10 +39,10 @@
       "extracted": "2.4M+ Subtitles Extracted Today"
     },
     "placeholder": {
-      "title": "Paste YouTube links to download subtitles",
-      "description": "Unlock massive datasets for LLM training or research in seconds",
+      "title": "Paste YouTube video URLs, playlist links, or channel URLs",
+      "description": "Supports single videos, entire playlists, and channel bulk downloads",
       "support": "Our {tool} supports {types}",
-      "tool": "YouTube subtitle downloader",
+      "tool": "batch subtitle downloader",
       "types": "Videos, Playlists, and Channels"
     },
     "credits": {
@@ -419,6 +420,7 @@
     "downloader": "Downloader",
     "downloadSubs": "Download Subtitles",
     "bulkDownloader": "Bulk Downloader",
+    "howToDownload": "How to Download Subtitles",
     "pricing": "Pricing",
     "dataPrepGuide": "Data Prep Guide",
     "cleanTranscript": "Clean Transcript",

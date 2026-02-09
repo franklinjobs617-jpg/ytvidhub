@@ -4,8 +4,11 @@ import { routing } from '@/i18n/routing'
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://ytvidhub.com'
     const currentDate = new Date().toISOString().split('T')[0]
+    const todayDate = new Date().toISOString() // 今天的完整时间戳，用于首页
 
     const englishOnlyPages = [
+        { path: '/extract-youtube-subtitles-online-tool', priority: 0.95, changeFreq: 'monthly' as const },
+        { path: '/how-to-download-youtube-subtitles-complete-guide', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/pricing', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/tools/subtitle-extractor-online', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/bulk-youtube-subtitle-downloader', priority: 0.9, changeFreq: 'monthly' as const },
@@ -58,7 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
             sitemap.push({
                 url,
-                lastModified: currentDate,
+                lastModified: todayDate, // 首页使用今天的时间戳
                 changeFrequency: page.changeFreq,
                 priority: page.priority,
                 alternates: {

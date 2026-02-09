@@ -173,7 +173,6 @@ export default async function LocaleLayout({
           `}
         </Script>
 
-        {/* 注入 JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

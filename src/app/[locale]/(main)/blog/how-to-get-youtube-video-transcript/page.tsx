@@ -162,13 +162,13 @@ export default function HowToGetYouTubeTranscriptPage() {
                     <li className="flex items-start gap-3">
                       <CheckCircle2 size={24} className="text-violet-600 flex-shrink-0 mt-1" />
                       <span className="text-violet-700">
-                        <strong>Bulk Download Capabilities:</strong> Extract transcripts from entire playlists or multiple videos at once
+                        <strong>Bulk Download Capabilities:</strong> Extract transcripts from entire playlists or multiple videos at once with our <Link href="/" className="text-violet-800 underline font-bold hover:text-violet-900">batch YouTube subtitle downloader</Link>
                       </span>
                     </li>
                     <li className="flex items-start gap-3">
                       <CheckCircle2 size={24} className="text-violet-600 flex-shrink-0 mt-1" />
                       <span className="text-violet-700">
-                        <strong>LLM-Ready Formats:</strong> Download transcripts in clean TXT and structured JSON formats
+                        <strong>LLM-Ready Formats:</strong> Download transcripts in clean TXT and structured JSON formats using our <Link href="/" className="text-violet-800 underline font-bold hover:text-violet-900">playlist subtitle downloader</Link>
                       </span>
                     </li>
                     <li className="flex items-start gap-3">
@@ -201,7 +201,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                   <div>
                     <h3 className="text-xl font-bold text-slate-900 mb-4">Go to YTVidHub's Transcript Extractor</h3>
                     <p className="text-slate-600 leading-relaxed mb-4">
-                      Navigate to the YTVidHub subtitle downloader page where you can extract transcripts from YouTube videos.
+                      Navigate to our <Link href="/" className="text-violet-600 underline font-bold hover:text-violet-700">batch download YouTube subtitles</Link> tool where you can extract transcripts from YouTube videos, playlists, and channels.
                     </p>
                   </div>
                 </li>

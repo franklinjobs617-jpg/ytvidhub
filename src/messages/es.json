@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Descargar subtítulos YouTube | Bajar subtítulos Gratis",
-    "description": "La mejor herramienta para descargar videos de YouTube con subtítulos. Extraiga SRT, VTT y TXT de videos y listas de reproducción para IA y edición.",
-    "keywords": "descargar subtitulos youtube, descargar videos de youtube con subtitulos, descargar subtitulos de youtube"
+    "title": "Descargar Subtítulos YouTube Masivo (Playlist y Canal) - Gratis SRT",
+    "description": "Herramienta de un clic para descargar subtítulos masivos de listas de reproducción y canales de YouTube. Guarde subtítulos como archivos .SRT o .TXT. Sin instalación ni registro. Rápido y gratis.",
+    "keywords": "descargar subtitulos youtube, descargar videos de youtube con subtitulos, descargar subtitulos de youtube, descargar subtitulos youtube masivo, bajar subtitulos youtube playlist"
   },
   "navigation": {
     "home": "Inicio",
@@ -16,6 +16,7 @@
     "bulkDownloader": "Descargador masivo",
     "guide": "Guía",
     "blog": "Blog",
+    "howToGuide": "Cómo Descargar",
     "logout": "Cerrar sesión",
     "credits": "Créditos",
     "buyCredits": "Comprar créditos",
@@ -23,9 +24,9 @@
     "freePlan": "Plan gratuito"
   },
   "hero": {
-    "title": "Descargar subtítulos YouTube",
-    "subtitle": "La solución líder para {highlight} y obtener el contenido de sus videos favoritos. Extraiga SRT, VTT y TXT de listas de reproducción y canales al instante.",
-    "highlight": "descargar videos de youtube con subtitulos",
+    "title": "Descargador Masivo de Subtítulos YouTube",
+    "subtitle": "Herramienta de un clic para {highlight} de videos, listas de reproducción y canales. Extraiga SRT y TXT al instante sin registro. Perfecto para procesamiento masivo.",
+    "highlight": "descargar subtítulos de playlist",
     "ready": "Listo para la extracción de subtítulos de YouTube de alta eficiencia",
     "bulkExtraction": "Extracción masiva de subtítulos de alta velocidad",
     "cta": {
@@ -40,10 +41,10 @@
       "extracted": "Más de 2.4M subtítulos extraídos hoy"
     },
     "placeholder": {
-      "title": "Pegue enlaces de YouTube para descargar subtítulos",
-      "description": "Desbloquee conjuntos de datos masivos para entrenamiento de LLM o investigación en segundos",
+      "title": "Pegue URLs de videos de YouTube, enlaces de playlist o URLs de canales",
+      "description": "Admite videos individuales, listas de reproducción completas y descargas masivas de canales",
       "support": "Nuestra {tool} admite {types}",
-      "tool": "herramienta de descarga de subtítulos de YouTube",
+      "tool": "herramienta de descarga masiva de subtítulos",
       "types": "Videos, Listas de reproducción y Canales"
     },
     "credits": {
@@ -419,6 +420,7 @@
     "downloader": "Descargador",
     "downloadSubs": "Descargar subtítulos",
     "bulkDownloader": "Descargador masivo",
+    "howToDownload": "Cómo Descargar Subtítulos",
     "pricing": "Precios",
     "dataPrepGuide": "Guía de preparación de datos",
     "cleanTranscript": "Transcripción limpia",
