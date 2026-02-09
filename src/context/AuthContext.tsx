@@ -64,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
+        cache: "no-store",
       });
 
       if (response.ok) {

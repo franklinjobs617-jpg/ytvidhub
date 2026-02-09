@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
 
-// 防止重复扣除积分的缓存（5秒内相同请求视为重复）
+const prisma = new PrismaClient()
 const recentDeductions = new Map<string, number>();
 
 export async function POST(request: NextRequest) {
@@ -16,8 +17,31 @@ export async function POST(request: NextRequest) {
 
         const token = authHeader.split(' ')[1]
 
+        // 首先验证token并获取用户信息
+        const userResponse = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!userResponse.ok) {
+            return NextResponse.json(
+                { error: 'Invalid token' },
+                { status: 401 }
+            )
+        }
+
+        const userData = await userResponse.json()
+        const user = userData.data
+
+        if (!user || !user.email) {
+            return NextResponse.json(
+                { error: 'User data not found' },
+                { status: 400 }
+            )
+        }
+
         // 获取请求体
         const body = await request.json()
+        console.log('Deduct credits request:', body)
         const { amount, reason } = body
 
         if (!amount || amount <= 0) {
@@ -28,9 +52,9 @@ export async function POST(request: NextRequest) {
         }
 
         // 创建防重复标识符
-        const deductionKey = `${token.slice(-10)}_${amount}_${reason}`;
+        const deductionKey = `${user.email}_${amount}_${reason}`;
         const now = Date.now();
-        
+
         // 检查是否在5秒内有相同的扣除请求
         if (recentDeductions.has(deductionKey)) {
             const lastTime = recentDeductions.get(deductionKey)!;
@@ -45,7 +69,7 @@ export async function POST(request: NextRequest) {
 
         // 记录本次请求
         recentDeductions.set(deductionKey, now);
-        
+
         // 清理过期的记录（超过10秒的）
         for (const [key, time] of recentDeductions.entries()) {
             if (now - time > 10000) {
@@ -53,42 +77,83 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        console.log('Processing credit deduction:', { amount, reason, deductionKey });
-
-        // 直接调用外部API扣除积分（因为外部数据库和本地数据库是同一个）
-        const deductResponse = await fetch("https://api.ytvidhub.com/prod-api/g/deductCredits", {
-            method: 'POST',
-            headers: { 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ amount, reason })
+        console.log('Processing credit deduction via database:', { 
+            email: user.email, 
+            amount, 
+            reason, 
+            userType: user.type 
         });
 
-        if (!deductResponse.ok) {
-            const errorData = await deductResponse.json().catch(() => ({}))
-            // 如果扣除失败，清除记录以允许重试
+        // 直接操作数据库扣除积分
+        try {
+            const result = await prisma.$transaction(async (tx) => {
+                // 先获取当前用户的积分
+                const currentUser = await tx.user.findUnique({
+                    where: {
+                        email_type: {
+                            email: user.email,
+                            type: user.type.toString()
+                        }
+                    }
+                });
+
+                if (!currentUser) {
+                    throw new Error('User not found in database');
+                }
+
+                const currentCredits = parseInt(currentUser.credits) || 0;
+                
+                if (currentCredits < amount) {
+                    throw new Error(`Insufficient credits. Current: ${currentCredits}, Required: ${amount}`);
+                }
+
+                const newCredits = currentCredits - amount;
+
+                // 更新积分
+                const updatedUser = await tx.user.update({
+                    where: {
+                        email_type: {
+                            email: user.email,
+                            type: user.type.toString()
+                        }
+                    },
+                    data: {
+                        credits: newCredits.toString()
+                    }
+                });
+
+                return {
+                    previousCredits: currentCredits,
+                    newCredits: newCredits,
+                    deductedAmount: amount
+                };
+            });
+
+            console.log('Credit deduction successful:', {
+                email: user.email,
+                deductedAmount: amount,
+                previousCredits: result.previousCredits,
+                newCredits: result.newCredits,
+                reason
+            });
+
+            return NextResponse.json({
+                success: true,
+                message: `Successfully deducted ${amount} credits`,
+                remainingCredits: result.newCredits,
+                reason,
+                deductedAmount: amount
+            });
+
+        } catch (dbError: any) {
+            console.error('Database error during credit deduction:', dbError);
             recentDeductions.delete(deductionKey);
+            
             return NextResponse.json(
-                { error: errorData.message || 'Failed to deduct credits' },
-                { status: deductResponse.status }
-            )
+                { error: dbError.message || 'Database error during credit deduction' },
+                { status: 500 }
+            );
         }
-
-        const result = await deductResponse.json()
-
-        console.log('Credit deduction successful:', {
-            deductedAmount: amount,
-            reason,
-            result
-        })
-
-        return NextResponse.json({
-            success: true,
-            message: `Successfully deducted ${amount} credits`,
-            remainingCredits: result.data?.remainingCredits,
-            reason
-        })
 
     } catch (error) {
         console.error('Credit deduction error:', error)
@@ -96,5 +161,7 @@ export async function POST(request: NextRequest) {
             { error: `Internal server error: ${error instanceof Error ? error.message : 'Unknown error'}` },
             { status: 500 }
         )
+    } finally {
+        await prisma.$disconnect()
     }
 }

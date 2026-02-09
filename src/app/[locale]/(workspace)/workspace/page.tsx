@@ -21,7 +21,7 @@ import {
 function WorkspaceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { refreshUser } = useAuth();
+  const { user, refreshUser } = useAuth();
 
   // URL 参数获取
   const urlsParam = searchParams.get("urls");
@@ -43,7 +43,6 @@ function WorkspaceContent() {
     };
   });
 
-  // 状态管理
   const [videoList, setVideoList] = useState<any[]>(placeholderVideos);
   const [currentVideo, setCurrentVideo] = useState<any>(placeholderVideos[0] || null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -52,15 +51,12 @@ function WorkspaceContent() {
     isSummaryMode ? "analysis" : "video"
   );
 
-  // 布局调整状态 - 减小视频区域初始宽度，给分析更多空间
   const [leftWidth, setLeftWidth] = useState(35); // 从50改为35
   const isResizing = useRef(false);
 
-  // 防止重复分析的状态管理
   const analysisCache = useRef<Map<string, string>>(new Map());
   const isAnalyzing = useRef<Set<string>>(new Set());
 
-  // 新增：URL 输入框状态
   const [inputUrl, setInputUrl] = useState("");
   const [isAddingVideo, setIsAddingVideo] = useState(false);
 
@@ -72,18 +68,14 @@ function WorkspaceContent() {
     setSummaryData,
   } = useSubtitleDownloader();
 
-  // --- 视频切换时的缓存管理 ---
   useEffect(() => {
     if (!currentVideo?.id) return;
 
-    // 立即清空当前显示的数据，防止显示错误内容
     setSummaryData("");
 
-    // 检查是否有缓存的分析结果
     const cachedResult = analysisCache.current.get(currentVideo.id);
     if (cachedResult) {
       console.log("📋 Loading cached analysis for:", currentVideo.title);
-      // 使用 setTimeout 确保清空操作先执行
       setTimeout(() => {
         setSummaryData(cachedResult);
       }, 50);
@@ -497,7 +489,7 @@ function WorkspaceContent() {
               <span className="text-[10px] font-black text-amber-900">C</span>
             </div>
             <span className="text-sm font-bold text-amber-700 tabular-nums">
-              {useAuth().user?.credits ?? 0}
+              {user?.credits ?? 0}
             </span>
             <span className="hidden lg:inline text-[10px] font-bold text-amber-600/70 uppercase tracking-wide">
               Credits

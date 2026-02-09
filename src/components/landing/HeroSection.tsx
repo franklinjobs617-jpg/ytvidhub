@@ -14,30 +14,39 @@ import {
   Youtube,
   Clipboard,
   TrendingUp,
+  Sparkles,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 import { FeatureTabs, FeatureMode } from "@/components/hero/FeatureTabs";
-import { DownloaderView, VideoResult } from "@/components/views/DownloaderView";
+import { EnhancedDownloaderView, VideoResult } from "@/components/views/EnhancedDownloaderView";
 import { SummaryView } from "@/components/views/SummaryView";
 import { ControlBar } from "@/components/hero/ControlBar";
+import { PlaylistProcessingModal } from "@/components/playlist/PlaylistProcessingModal";
 
-// 校验工具
+// 校验工具 - 支持playlist和channel
 const isValidYoutubeUrl = (url: string) => {
   if (!url) return false;
-  const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
-  return regex.test(url.trim());
+  const patterns = [
+    /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/,  // 基本YouTube URL
+    /^(https?:\/\/)?(www\.)?youtube\.com\/playlist\?list=.+$/, // Playlist
+    /^(https?:\/\/)?(www\.)?youtube\.com\/channel\/.+$/,      // Channel
+    /^(https?:\/\/)?(www\.)?youtube\.com\/@.+$/,              // New channel format
+    /^(https?:\/\/)?(www\.)?youtube\.com\/c\/.+$/,            // Custom channel
+    /^(https?:\/\/)?(www\.)?youtube\.com\/user\/.+$/          // User channel
+  ];
+  return patterns.some(pattern => pattern.test(url.trim()));
 };
 
 export default function HeroSection() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   // 多语言翻译
   const t = useTranslations('hero');
   const tActions = useTranslations('actions');
-  const tStatus = useTranslations('status');
+  const tStatus = useTranslations('statusMessages');
   const tErrors = useTranslations('errors');
   const tAuth = useTranslations('auth');
 
@@ -51,25 +60,15 @@ export default function HeroSection() {
   const [videoResults, setVideoResults] = useState<VideoResult[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [downloadFormat, setDownloadFormat] = useState("srt");
-  const [userCredits, setUserCredits] = useState<string>("--");
   const [activeSummaryId, setActiveSummaryId] = useState<string | null>(null);
   const [isActionClicked, setIsActionClicked] = useState(false);
 
   const refreshCredits = async () => {
     if (user) {
       try {
-        const data = await subtitleApi.syncUser();
-        if (data) {
-          const newCredits = data.credits || "0";
-          if (newCredits !== userCredits) {
-            setUserCredits(newCredits);
-            console.log("✅ Credits updated:", userCredits, "→", newCredits);
-          }
-        }
+        await refreshUser();
       } catch (error) {
         console.error("❌ Failed to refresh credits:", error);
-        // 如果刷新失败，显示警告但不阻止用户操作
-        setUserCredits("--");
       }
     }
   };
@@ -84,6 +83,11 @@ export default function HeroSection() {
     summaryData,
     progress,
     statusText,
+    playlistProcessing,
+    showPlaylistModal,
+    pauseProcessing,
+    resumeProcessing,
+    cancelProcessing,
   } = useSubtitleDownloader(refreshCredits);
 
   useEffect(() => {
@@ -97,8 +101,6 @@ export default function HeroSection() {
       }, 30000);
 
       return () => clearInterval(interval);
-    } else {
-      setUserCredits("--");
     }
   }, [user]);
 
@@ -118,15 +120,51 @@ export default function HeroSection() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setUrls(e.target.value);
+    const val = e.target.value;
+
+    // AI Summary Mode: Auto-clean playlist URLs (Standard & Short)
+    if (selectedMode === 'summary') {
+      let cleanId = null;
+
+      // Case A: Standard URL (v=...) containing list=
+      if (val.includes('v=') && val.includes('list=')) {
+        const match = val.match(/[?&]v=([^&]+)/);
+        if (match) cleanId = match[1];
+      }
+      // Case B: Short URL (youtu.be/...) containing list=
+      else if (val.includes('youtu.be/') && val.includes('list=')) {
+        const match = val.match(/youtu\.be\/([^?&]+)/);
+        if (match) cleanId = match[1];
+      }
+
+      if (cleanId) {
+        const cleanUrl = `https://www.youtube.com/watch?v=${cleanId}`;
+        setUrls(cleanUrl);
+        setInputError(false);
+        toast.info("Playlist link detected", {
+          description: "AI Summary only supports single videos. We've optimized the link for you.",
+          icon: <Sparkles className="w-4 h-4 text-purple-500" />,
+          duration: 3000,
+        });
+        return;
+      }
+    }
+
+    setUrls(val);
     if (inputError) setInputError(false);
   };
 
   const handlePasteExample = () => {
-    setUrls("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    const examples = [
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME"
+    ];
+    const randomExample = examples[Math.floor(Math.random() * examples.length)];
+    setUrls(randomExample);
     setInputError(false);
     setIsFocused(true);
-    toast.success(tActions('pasteExample') + " pasted!");
+    const exampleType = randomExample.includes('playlist') ? 'playlist example' : 'video example';
+    toast.success(`${exampleType} pasted!`);
     if (textareaRef.current) {
       textareaRef.current.focus();
     }
@@ -140,7 +178,6 @@ export default function HeroSection() {
   };
 
   const handleMainAction = async () => {
-    // 设置按钮点击状态
     setIsActionClicked(true);
 
     try {
@@ -164,6 +201,18 @@ export default function HeroSection() {
         return;
       }
       if (selectedMode === "summary") {
+        if (user && (user.credits || 0) <= 0) {
+          toast.error(tErrors('insufficientCredits'), {
+            description: "You need credits to generate AI summaries.",
+            action: {
+              label: "Get Credits",
+              onClick: () => router.push('/pricing')
+            },
+            duration: 5000,
+          });
+          return;
+        }
+
         let targetUrls = videoResults.length === 0
           ? urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http")).join(",")
           : videoResults.filter((v) => selectedIds.has(v.id)).map((v?: any) => v.url).join(",");
@@ -175,7 +224,6 @@ export default function HeroSection() {
           duration: 2000
         });
 
-        // 立即跳转，不等待任何异步操作
         router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home&mode=summary`);
         return;
       }
@@ -186,6 +234,19 @@ export default function HeroSection() {
         setVideoResults(results);
         setSelectedIds(new Set(results.filter((v: any) => v.hasSubtitles).map((v: any) => v.id)));
       } else {
+        // Credits Check before Download
+        if (user && (user.credits || 0) <= 0) {
+          toast.error(tErrors('insufficientCredits'), {
+            description: "You need credits to download subtitles.",
+            action: {
+              label: "Get Credits",
+              onClick: () => router.push('/pricing')
+            },
+            duration: 5000,
+          });
+          return;
+        }
+
         const selectedVideos = videoResults.filter((v) => selectedIds.has(v.id));
         if (selectedVideos.length === 0) {
           toast.warning(tErrors('selectVideo'));
@@ -215,7 +276,7 @@ export default function HeroSection() {
     }
   };
 
-  const actionLabel = isAnalyzing ? tActions('analyzing') : selectedMode === "summary" ? (videoResults.length > 0 ? tActions('openWorkspace') : tActions('analyze')) : (videoResults.length > 0 ? tActions('download').replace('{count}', selectedIds.size.toString()) : tActions('analyze'));
+  const actionLabel = isAnalyzing ? tActions('analyzing') : selectedMode === "summary" ? (videoResults.length > 0 ? tActions('openWorkspace') : tActions('analyze')) : (videoResults.length > 0 ? tActions('download', { count: selectedIds.size }) : tActions('analyze'));
 
   return (
     <div className="relative isolate bg-white min-h-screen">
@@ -257,7 +318,13 @@ export default function HeroSection() {
                 </div>
               </div>
 
-              <div className="relative min-h-[400px] flex flex-col bg-white group cursor-text" onClick={handleAreaClick}>
+              <div
+                className={`relative min-h-[400px] flex flex-col bg-white group cursor-text transition-all duration-300 ${!isAnalyzing && videoResults.length === 0
+                  ? "border-2 border-dashed border-slate-200 hover:border-blue-300 hover:bg-slate-50/30"
+                  : ""
+                  }`}
+                onClick={handleAreaClick}
+              >
                 {isAnalyzing ? (
                   <div className="flex-1 flex flex-col items-center justify-center p-12">
                     <div className="w-16 h-16 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin mb-6" />
@@ -270,35 +337,60 @@ export default function HeroSection() {
 
                       {/* 1. 图标 */}
                       <div className="relative mb-6">
-                        <div className="absolute inset-0 bg-red-50 rounded-[2rem] blur-2xl opacity-70"></div>
-                        <div className="relative w-16 h-16 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center">
+                        <div className="absolute inset-0 rounded-[2rem] blur-2xl opacity-70 bg-red-50"></div>
+                        <div className="relative w-16 h-16 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                           <Youtube size={32} className="text-red-500" strokeWidth={1.5} />
+                          {selectedMode === 'summary' && (
+                            <div className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-sm border border-slate-100">
+                              <Sparkles size={14} className="text-purple-600 fill-purple-100" />
+                            </div>
+                          )}
                         </div>
                       </div>
 
                       {/* 2. 标题与价值主张 */}
-                      <div className="space-y-2 mb-8">
-                        <h3 className="text-2xl font-bold text-slate-900">{t('placeholder.title')}</h3>
-                        <p className="text-sm text-slate-400 italic font-medium tracking-tight">"{t('placeholder.description')}"</p>
+                      <div className="space-y-3 mb-8 text-center max-w-2xl">
+                        <h3 className="text-2xl font-bold text-slate-900 flex items-center justify-center gap-2">
+                          {selectedMode === 'summary' ? (
+                            <span>Paste a YouTube Video Link</span>
+                          ) : (
+                            <span>{t('placeholder.title')}</span>
+                          )}
+                          <span className={`inline-block w-0.5 h-6 animate-pulse rounded-full ${selectedMode === 'summary' ? 'bg-purple-500' : 'bg-blue-500'}`}></span>
+                        </h3>
+
+                        <p className="text-sm text-slate-400 font-medium tracking-tight">
+                          {selectedMode === 'summary' ? (
+                            <span>AI Summary is optimized for <span className="text-slate-600 font-semibold">single video</span> analysis</span>
+                          ) : (
+                            <span className="italic">"{t('placeholder.description')}"</span>
+                          )}
+                        </p>
                       </div>
 
                       {/* 3. 支持类型说明 */}
                       <div className="flex flex-col items-center gap-4 mb-10">
-                        <p className="text-slate-500 text-sm font-medium">
-                          {t.rich('placeholder.support', {
-                            tool: (chunks) => <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">{chunks}</span>,
-                            types: (chunks) => <span className="text-slate-900 font-bold underline decoration-blue-200 decoration-2 underline-offset-4">{chunks}</span>
-                          })}
-                        </p>
-                        <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full border border-green-100 text-[10px] font-black uppercase tracking-widest shadow-sm">
-                          <TrendingUp size={12} className="animate-pulse" /> {t('features.extracted')}
-                        </div>
+                        {selectedMode === 'summary' ? (
+                          <div className="flex items-center gap-2 px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full border border-slate-200 text-[10px] font-bold uppercase tracking-widest shadow-sm">
+                            <Sparkles size={12} className="text-purple-500" />
+                            <span>Powered by DeepSeek AI</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2 px-4 py-1.5 bg-green-50 text-green-700 rounded-full border border-green-100 text-[10px] font-black uppercase tracking-widest shadow-sm">
+                            <TrendingUp size={12} className="text-green-600" />
+                            <span className="font-bold">2.4M+ Subtitles Extracted</span>
+                          </div>
+                        )}
                       </div>
 
                       {/* 4. 按钮 */}
                       <div className="pointer-events-auto">
-                        <button onClick={(e) => { e.stopPropagation(); handlePasteExample(); }} className="flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-xl hover:bg-blue-600 hover:shadow-lg transition-all text-xs font-bold uppercase tracking-widest">
-                          <Clipboard size={14} /> {t('cta.secondary')}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handlePasteExample(); }}
+                          className="flex items-center gap-2 px-6 py-2.5 bg-white text-slate-600 border border-slate-200 rounded-xl hover:border-blue-400 hover:text-blue-600 hover:shadow-md transition-all text-xs font-bold uppercase tracking-widest group/btn"
+                        >
+                          <Clipboard size={14} className="text-slate-400 group-hover/btn:text-blue-500 transition-colors" />
+                          Paste Demo Link
                         </button>
                       </div>
                     </div>
@@ -320,17 +412,20 @@ export default function HeroSection() {
                       </div>
                     )}
 
-                    <div className="absolute bottom-4 right-5 z-20 pointer-events-none">
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                        <Info size={12} className="text-blue-600" />
-                        {user ? t('credits.remaining', { count: userCredits }) : t('credits.signup')}
-                      </div>
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <Info size={12} className="text-blue-600" />
+                      {user ? t('credits.remaining', { count: user.credits ?? 0 }) : t('credits.signup')}
                     </div>
                   </>
                 ) : (
-                  <div className="flex-1 overflow-y-auto max-h-[500px] p-0">
+                  <div className="flex-1 p-0">
                     {selectedMode === "download" ? (
-                      <DownloaderView videos={videoResults} selectedIds={selectedIds} onSelectionChange={setSelectedIds} />
+                      <EnhancedDownloaderView
+                        videos={videoResults}
+                        selectedIds={selectedIds}
+                        onSelectionChange={setSelectedIds}
+                        isLoading={isAnalyzing}
+                      />
                     ) : (
                       <SummaryView videos={videoResults} activeVideoId={activeSummaryId} onSelectVideo={(id: any) => setActiveSummaryId(id)} summaryData={summaryData} isLoading={isAiLoading} />
                     )}
@@ -353,7 +448,7 @@ export default function HeroSection() {
               <div className="bg-white border-t border-slate-100 px-6 py-4">
                 <ControlBar
                   mode={selectedMode}
-                  userCredits={userCredits}
+                  userCredits={user?.credits?.toString() ?? "--"}
                   format={downloadFormat}
                   setFormat={setDownloadFormat}
                   availableFormats={selectedMode === "download" ? ["srt", "vtt", "txt"] : []}
@@ -387,6 +482,23 @@ export default function HeroSection() {
       </section>
 
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+
+      {/* Playlist Processing Modal */}
+      <PlaylistProcessingModal
+        isOpen={showPlaylistModal}
+        onClose={() => {/* 处理完成后自动关闭 */ }}
+        onCancel={cancelProcessing}
+        onPause={pauseProcessing}
+        onResume={resumeProcessing}
+        state={playlistProcessing || {
+          phase: 'expanding',
+          totalVideos: 0,
+          processedVideos: 0,
+          videosWithSubtitles: 0,
+          canPause: false,
+          canCancel: true
+        }}
+      />
     </div>
   );
 }

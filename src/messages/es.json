@@ -38,7 +38,8 @@
       "videos": "Videos",
       "playlists": "Listas de reproducción",
       "channels": "Canales",
-      "extracted": "Más de 2.4M subtítulos extraídos hoy"
+      "extracted": "Más de 2.4M subtítulos extraídos hoy",
+      "playlistSupport": "¡Ahora soporta playlists y canales de YouTube!"
     },
     "placeholder": {
       "title": "Pegue URLs de videos de YouTube, enlaces de playlist o URLs de canales",
@@ -284,15 +285,65 @@
     "opening": "Abriendo",
     "pasteExample": "Probar enlaces de ejemplo",
     "complete": "¡Completado!",
-    "success": "¡Éxito!"
+    "success": "¡Éxito!",
+    "selectAllWithSubtitles": "Seleccionar Todos Con Subtítulos",
+    "deselectAll": "Deseleccionar Todos",
+    "showOnlyWithSubtitles": "Mostrar Solo Con Subtítulos",
+    "showAll": "Mostrar Todos",
+    "loadMore": "Cargar Más Videos"
   },
-  "status": {
+  "playlist": {
+    "processing": {
+      "expanding": "Analizando Playlist",
+      "checking": "Verificando Subtítulos",
+      "completed": "Análisis Completo",
+      "error": "Error de Procesamiento",
+      "paused": "Procesamiento Pausado",
+      "unknown": "Procesando"
+    },
+    "progress": {
+      "overall": "Progreso General"
+    },
+    "stats": {
+      "total": "Total",
+      "processed": "Procesados",
+      "withSubtitles": "Con Subtítulos"
+    },
+    "status": {
+      "currentVideo": "Verificando actualmente"
+    },
+    "time": {
+      "estimated": "Tiempo estimado restante"
+    },
+    "actions": {
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "cancel": "Cancelar",
+      "showDetails": "Mostrar Detalles",
+      "hideDetails": "Ocultar Detalles"
+    },
+    "details": {
+      "title": "Detalles del Procesamiento"
+    }
+  },
+  "statusMessages": {
     "syncing": "Sincronizando datos de video...",
     "checking": "Comprobando créditos...",
     "connecting": "Conectando...",
     "processing": "Procesando {current}/{total}...",
     "initializing": "Inicializando...",
-    "completed": "Extracción completada en {time} segundos"
+    "completed": "Extracción completada en {time} segundos",
+    "expandingPlaylist": "Expandiendo playlist ({count} videos encontrados)...",
+    "checkingSubtitles": "Verificando disponibilidad de subtítulos...",
+    "deduplicating": "Eliminando duplicados...",
+    "foundVideos": "Se encontraron {count} videos de {playlists} playlist(s)/canal(es)",
+    "loadingMore": "Cargando más videos...",
+    "subtitleStatus": {
+      "checking": "Verificando...",
+      "available": "Tiene Subtítulos",
+      "unavailable": "Sin Subtítulos",
+      "error": "Verificación Falló"
+    }
   },
   "errors": {
     "invalidUrl": "Se detectó una URL de YouTube no válida",

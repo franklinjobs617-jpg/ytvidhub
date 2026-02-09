@@ -40,6 +40,29 @@ export const subtitleApi = {
     return res.json();
   },
 
+  // 新增：智能混合URL解析
+  async parseMixedUrls(urls: string[]) {
+    const res = await authenticatedFetch("/api/subtitle/parse-mixed", {
+      method: "POST",
+      body: JSON.stringify({ urls }),
+    });
+    if (!res.ok) throw new Error("Mixed URL parsing failed");
+    return res.json();
+  },
+
+  // 新增：解析playlist/channel
+  async parsePlaylist(url: string, maxVideos: number = 50) {
+    const res = await authenticatedFetch("/api/subtitle/parse-playlist", {
+      method: "POST",
+      body: JSON.stringify({ url, max_videos: maxVideos }),
+    });
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.error || "Playlist parsing failed");
+    }
+    return res.json();
+  },
+
   // 2. 提交批量下载任务 (通过代理API，已包含积分检查和扣除)
   async submitBulkTask(videos: any[], lang: string, format: string) {
     const res = await authenticatedFetch("/api/subtitle/batch-submit", {
@@ -120,6 +143,7 @@ export const subtitleApi = {
       // 如果本地API失败，回退到外部API
       const fallbackRes = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
         headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
       });
 
       if (!fallbackRes.ok) return null;

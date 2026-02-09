@@ -27,6 +27,8 @@
     "title": "Batch YouTube Subtitle Downloader",
     "subtitle": "One-click {highlight} for videos, playlists, and channels. Extract SRT & TXT captions instantly without registration. Perfect for bulk processing.",
     "highlight": "playlist subtitle downloader",
+    "ready": "Ready for high efficiency YouTube subtitle extraction",
+    "bulkExtraction": "High-speed bulk subtitle extraction",
     "cta": {
       "primary": "Start Downloading Subtitles",
       "secondary": "Try Example Links",
@@ -36,7 +38,8 @@
       "videos": "Videos",
       "playlists": "Playlists",
       "channels": "Channels",
-      "extracted": "2.4M+ Subtitles Extracted Today"
+      "extracted": "2.4M+ Subtitles Extracted Today",
+      "playlistSupport": "Now supports YouTube playlists and channels!"
     },
     "placeholder": {
       "title": "Paste YouTube video URLs, playlist links, or channel URLs",
@@ -284,15 +287,65 @@
     "opening": "Opening",
     "pasteExample": "Try Example Links",
     "complete": "Complete!",
-    "success": "Success!"
+    "success": "Success!",
+    "selectAllWithSubtitles": "Select All With Subtitles",
+    "deselectAll": "Deselect All",
+    "showOnlyWithSubtitles": "Show Only With Subtitles",
+    "showAll": "Show All",
+    "loadMore": "Load More Videos"
   },
-  "status": {
+  "playlist": {
+    "processing": {
+      "expanding": "Analyzing Playlist",
+      "checking": "Checking Subtitles",
+      "completed": "Analysis Complete",
+      "error": "Processing Error",
+      "paused": "Processing Paused",
+      "unknown": "Processing"
+    },
+    "progress": {
+      "overall": "Overall Progress"
+    },
+    "stats": {
+      "total": "Total",
+      "processed": "Processed",
+      "withSubtitles": "With Subtitles"
+    },
+    "status": {
+      "currentVideo": "Currently checking"
+    },
+    "time": {
+      "estimated": "Estimated time remaining"
+    },
+    "actions": {
+      "pause": "Pause",
+      "resume": "Resume",
+      "cancel": "Cancel",
+      "showDetails": "Show Details",
+      "hideDetails": "Hide Details"
+    },
+    "details": {
+      "title": "Processing Details"
+    }
+  },
+  "statusMessages": {
     "syncing": "Syncing Video Data...",
     "checking": "Checking credits...",
     "connecting": "Connecting...",
     "processing": "Processing {current}/{total}...",
     "initializing": "Initializing...",
-    "completed": "Extraction completed in {time} seconds"
+    "completed": "Extraction completed in {time} seconds",
+    "expandingPlaylist": "Expanding playlist ({count} videos found)...",
+    "checkingSubtitles": "Checking subtitles availability...",
+    "deduplicating": "Removing duplicates...",
+    "foundVideos": "Found {count} videos from {playlists} playlist(s)/channel(s)",
+    "loadingMore": "Loading more videos...",
+    "subtitleStatus": {
+      "checking": "Checking...",
+      "available": "Has Subtitles",
+      "unavailable": "No Subtitles",
+      "error": "Check Failed"
+    }
   },
   "errors": {
     "invalidUrl": "Invalid YouTube URL detected",

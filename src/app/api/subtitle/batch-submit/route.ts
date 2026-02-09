@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         // 检查用户积分
         const userCredits = parseInt(user?.credits || "0") || 0;
         const requiredCredits = videos.length; // 每个视频需要1个积分
-        
+
         console.log('Bulk download credit check:', {
             userData: user,
             userCredits,
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             userGoogleId: user.googleUserId,
             userType: user.type
         });
-        
+
         if (!user || userCredits < requiredCredits) {
             return NextResponse.json(
                 { error: `Insufficient credits. You have ${userCredits} credits, but bulk download requires ${requiredCredits} credits (1 per video).` },
@@ -76,9 +76,9 @@ export async function POST(request: NextRequest) {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ 
-                amount: requiredCredits, 
-                reason: `Bulk Subtitle Download (${videos.length} videos)` 
+            body: JSON.stringify({
+                amount: requiredCredits,
+                reason: `Bulk Subtitle Download (${videos.length} videos)`
             })
         });
 

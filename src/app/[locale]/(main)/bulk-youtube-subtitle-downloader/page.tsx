@@ -1,6 +1,3 @@
-import React from "react";
-import { Link } from '@/i18n/routing';
-import { getTranslations } from 'next-intl/server';
 import { Metadata } from "next";
 import BulkDownloaderClient from "./BulkDownloaderClient";
 

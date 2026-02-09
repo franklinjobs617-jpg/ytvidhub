@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { VideoResult } from "./DownloaderView";
+import { VideoResult } from "./EnhancedDownloaderView";
 import { 
   Sparkles, Clock, Copy, Share2, 
   ListChecks,  MessageSquare, 

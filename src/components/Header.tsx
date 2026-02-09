@@ -12,7 +12,6 @@ import {
   ChevronDown,
   Coins,
   LogOut,
-  User as UserIcon,
   Sparkles,
 } from "lucide-react";
 
@@ -85,7 +84,6 @@ export default function Header() {
   const pathname = usePathname();
   const { user, logout, isLoading } = useAuth();
   const t = useTranslations('navigation');
-  const tAuth = useTranslations('auth');
 
   const isActive = (path: string) => pathname === path;
   const isParentActive = (items: { href: string }[]) => {
