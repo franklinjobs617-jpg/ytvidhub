@@ -9,7 +9,6 @@ export default function Footer() {
       <div className="container mx-auto px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10">
 
-          {/* Company Info - 占据 2 列宽在移动端以保证醒目 */}
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-xl font-bold text-white mb-4">
               YT<span className="text-violet-500">Vid</span>Hub
