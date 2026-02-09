@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from 'next-intl';
-import { 
-  X, 
-  Play, 
-  Pause, 
-  CheckCircle2, 
-  Clock, 
+import {
+  X,
+  Play,
+  Pause,
+  CheckCircle2,
+  Clock,
   AlertCircle,
   Music,
   Users,
@@ -51,12 +51,12 @@ export function PlaylistProcessingModal({
 }: PlaylistProcessingModalProps) {
   const t = useTranslations('playlist');
   const tStatus = useTranslations('status');
-  
+
   const [showDetails, setShowDetails] = useState(false);
 
   if (!isOpen) return null;
 
-  const progressPercentage = state.totalVideos > 0 
+  const progressPercentage = state.totalVideos > 0
     ? Math.round((state.processedVideos / state.totalVideos) * 100)
     : 0;
 
@@ -168,7 +168,7 @@ export function PlaylistProcessingModal({
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                <div 
+                <div
                   className="bg-gradient-to-r from-blue-500 to-blue-600 h-full transition-all duration-500 ease-out"
                   style={{ width: `${progressPercentage}%` }}
                 />
@@ -247,9 +247,9 @@ export function PlaylistProcessingModal({
           >
             {showDetails ? t('actions.hideDetails') : t('actions.showDetails')}
           </button>
-          
+
           <div className="flex items-center gap-3">
-            {state.phase === 'checking' && (
+            {(state.phase === 'checking' || state.phase === 'paused') && (
               <button
                 onClick={state.phase === 'paused' ? onResume : onPause}
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -267,7 +267,7 @@ export function PlaylistProcessingModal({
                 )}
               </button>
             )}
-            
+
             <button
               onClick={onCancel}
               className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
