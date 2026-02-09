@@ -30,9 +30,9 @@ export async function POST(request: NextRequest) {
         // 创建请求唯一标识符（用户token + URL的hash，确保唯一性）
         const urlHash = Buffer.from(url).toString('base64').slice(0, 10);
         const requestKey = `${token.slice(-10)}_${urlHash}`;
-        
+
         console.log('AI Summary request:', { url, requestKey, hasActiveRequest: activeRequests.has(requestKey) });
-        
+
         // 检查是否有相同的请求正在进行
         if (activeRequests.has(requestKey)) {
             console.log('Duplicate request detected, returning existing promise for:', url);
@@ -132,7 +132,7 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
     // 2. 代理请求到真实的后端API
     console.log('Proxying AI summary request for URL:', url, 'User:', user.email)
     const startTime = Date.now();
-    
+
     try {
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_summary_stream", {
             method: "POST",
@@ -151,10 +151,10 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
         if (!backendResponse.ok) {
             const errorData = await backendResponse.text().catch(() => 'Unknown error')
             console.error('Backend API error for user:', user.email, 'Error:', errorData)
-            
+
             // 如果后端失败，考虑是否需要退还积分
             // 这里暂时不退还，因为可能是临时错误
-            
+
             return NextResponse.json(
                 { error: 'Failed to generate summary' },
                 { status: backendResponse.status }
@@ -167,6 +167,8 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
             headers: {
                 'Content-Type': 'text/plain; charset=utf-8',
                 'Transfer-Encoding': 'chunked',
+                'X-Accel-Buffering': 'no',
+                'Cache-Control': 'no-cache, no-transform',
             },
         })
     } catch (backendError) {

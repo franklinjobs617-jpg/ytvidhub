@@ -352,7 +352,7 @@ export function SummaryArea({
       <div className="flex-1 overflow-hidden">
         {!data && !isLoading ? (
           <EmptyState onStartAnalysis={onStartAnalysis} />
-        ) : isLoading ? (
+        ) : (isLoading && !data) ? (
           <LoadingState />
         ) : viewMode === 'summary' ? (
           <OverviewContent
