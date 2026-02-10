@@ -1,11 +1,10 @@
-// middleware.ts
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 import { NextRequest, NextResponse } from 'next/server';
 
 const intlMiddleware = createMiddleware({
     ...routing,
-    localeDetection: false, // 禁用自动检测，优先使用 cookie 中保存的用户选择
+    localeDetection: false,
     alternateLinks: false,
     localeCookie: {
         name: 'NEXT_LOCALE',
@@ -29,14 +28,12 @@ export default function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
-    // Handle bulk-downloader redirect
     if (pathname === '/bulk-downloader' || pathname.endsWith('/bulk-downloader')) {
         const newUrl = request.nextUrl.clone();
         newUrl.pathname = pathname.replace('/bulk-downloader', '/bulk-youtube-subtitle-downloader');
-        return NextResponse.redirect(newUrl, 301); // Permanent redirect for SEO
+        return NextResponse.redirect(newUrl, 301);
     }
 
-    // Handle localized bulk-downloader redirects (e.g., /es/bulk-downloader)
     const bulkDownloaderMatch = pathname.match(/^\/([a-z]{2})\/bulk-downloader$/);
     if (bulkDownloaderMatch) {
         const locale = bulkDownloaderMatch[1];
