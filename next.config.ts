@@ -30,12 +30,27 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/index.html/",
+        destination: "/",
+        permanent: true,
+      },
+      {
         source: "/:path*.html",
-        destination: "/:path*",
+        destination: "/:path*/",
+        permanent: true,
+      },
+      {
+        source: "/:path*.html/",
+        destination: "/:path*/",
         permanent: true,
       },
       {
         source: "/index",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/index/",
         destination: "/",
         permanent: true,
       },

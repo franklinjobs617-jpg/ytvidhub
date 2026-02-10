@@ -16,6 +16,17 @@ const intlMiddleware = createMiddleware({
 });
 
 export default function middleware(request: NextRequest) {
+    const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host') ?? '';
+    const proto = request.headers.get('x-forwarded-proto') ?? request.nextUrl.protocol.replace(':', '');
+    const canonicalHost = 'ytvidhub.com';
+
+    if (host === `www.${canonicalHost}` || (proto === 'http' && (host === canonicalHost || host === `www.${canonicalHost}`))) {
+        const url = request.nextUrl.clone();
+        url.protocol = 'https:';
+        url.host = canonicalHost;
+        return NextResponse.redirect(url, 301);
+    }
+
     const { pathname } = request.nextUrl;
 
     // Handle bulk-downloader redirect
@@ -33,7 +44,6 @@ export default function middleware(request: NextRequest) {
         newUrl.pathname = `/${locale}/bulk-youtube-subtitle-downloader`;
         return NextResponse.redirect(newUrl, 301);
     }
-
 
     // Handle guide to tools redirect for playlist-subtitles-bulk (SEO optimization)
     if (pathname === '/guide/playlist-subtitles-bulk' || pathname.endsWith('/guide/playlist-subtitles-bulk')) {
@@ -74,6 +84,8 @@ export default function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\..*).*)',
+        '/:path*.html',
+        '/:path*.html/',
         '/'
     ]
 };
