@@ -34,20 +34,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             title: "How to Download YouTube Subtitles: Complete Guide 2026",
             description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide for single videos, playlists, and bulk downloads.",
             url: canonicalUrl,
-            images: [
-                {
-                    url: "/image/og-subtitle-guide.webp",
-                    width: 1200,
-                    height: 630,
-                    alt: "Complete Guide to Download YouTube Subtitles",
-                },
-            ],
+       
         },
         twitter: {
             card: "summary_large_image",
             title: "How to Download YouTube Subtitles: Complete Guide 2026",
             description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide included.",
-            images: ["/image/og-subtitle-guide.webp"],
         },
         alternates: {
             canonical: canonicalUrl,
