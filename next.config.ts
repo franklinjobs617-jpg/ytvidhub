@@ -38,6 +38,11 @@ const nextConfig: NextConfig = {
         source: "/index",
         destination: "/",
         permanent: true,
+      },
+      {
+        source: "/how-to-download-youtube-subtitles-complete-guide/",
+        destination: "/guide/how-to-download-youtube-subtitles-complete-guide/",
+        permanent: true,
       }
     ];
   },

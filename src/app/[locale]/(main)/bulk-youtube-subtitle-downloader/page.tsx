@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import BulkDownloaderClient from "./BulkDownloaderClient";
+import { buildCanonicalUrl } from "@/lib/url";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -8,10 +9,8 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
 
-  const baseUrl = "https://ytvidhub.com";
-  const path = "/bulk-youtube-subtitle-downloader/";
-  const localePath = locale === 'en' ? "" : `/${locale}`;
-  const canonicalUrl = `${baseUrl}${localePath}${path}/`;
+  const pathname = "/bulk-youtube-subtitle-downloader";
+  const canonicalUrl = buildCanonicalUrl({ locale, pathname });
 
   return {
     title: "Bulk YouTube Subtitle Downloader | Extract Captions from Playlists | YTVidHub",
@@ -19,8 +18,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        'en': `${baseUrl}${path}/`,
-        'es': `${baseUrl}/es${path}/`,
+        'en': buildCanonicalUrl({ locale: 'en', pathname }),
+        'es': buildCanonicalUrl({ locale: 'es', pathname }),
       },
     },
   };

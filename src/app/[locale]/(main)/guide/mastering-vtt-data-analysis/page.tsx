@@ -132,7 +132,7 @@ Language: en
                     </span>
                   </div>
                   <img
-                    src="../image/ytvidhub-raw-vtt-vs-clean-vtt-comparison.webp"
+                    src="/image/ytvidhub-raw-vtt-vs-clean-vtt-comparison.webp"
                     alt="Side-by-side comparison of a raw, messy WebVTT file and the clean VTT output from the YTVidHub extractor."
                     className="w-full h-auto"
                   />
@@ -218,7 +218,7 @@ Language: en
                     </span>
                   </div>
                   <img
-                    src="../image/ytvidhub-vtt-download-clean-mode-settings.webp"
+                    src="/image/ytvidhub-vtt-download-clean-mode-settings.webp"
                     alt="Screenshot showing the YTVidHub interface where users select the VTT subtitle format and activate the Clean Mode option."
                     className="w-full h-auto"
                   />
@@ -266,7 +266,7 @@ Language: en
                     </span>
                   </div>
                   <img
-                    src="../image/ytvidhub-bulk-playlist-vtt-downloader.webp"
+                    src="/image/ytvidhub-bulk-playlist-vtt-downloader.webp"
                     alt="Visual representation of the bulk subtitle downloader processing a YouTube playlist URL into multiple, clean VTT files."
                     className="w-full h-auto"
                   />
@@ -365,7 +365,7 @@ Language: en
                     </span>
                   </div>
                   <img
-                    src="../image/clean-vtt-to-json-output-structure.webp"
+                    src="/image/clean-vtt-to-json-output-structure.webp"
                     alt="Example of clean VTT data converted into a structured JSON object for data analysis."
                     className="w-full h-auto"
                   />
@@ -410,7 +410,7 @@ Language: en
       </main>
 
       {/* Floating Buttons */}
-   
+
 
       <LoginModal
         isOpen={showLoginModal}

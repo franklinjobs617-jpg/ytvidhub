@@ -57,8 +57,8 @@
     }
   },
   "comparisonSlider": {
-    "title": "Stop 100 Clicks. {br} Get 1 {highlight}.",
-    "highlight": "Clean ZIP File",
+    "title": "Stop 100 Manual Clicks. {br} Bulk Extract {highlight}.",
+    "highlight": "Subtitles in 1 ZIP",
     "description": "Drag the slider to see the difference. Transform hours of tedious manual work into a single, organized file.",
     "before": "Before: The Manual Grind",
     "after": "After: One Click, One ZIP"
@@ -80,7 +80,7 @@
     }
   },
   "featuresGrid": {
-    "title": "Optimized for Research & LLM Data",
+    "title": "Download YouTube Subtitles in Multiple Formats",
     "description": "We're not just a downloader; we're a data-prep powerhouse. Get pristine, model-ready text without the hassle.",
     "items": {
       "clean": {
@@ -106,17 +106,17 @@
   },
   "coreCapabilities": {
     "badge": "Core Capabilities",
-    "title": "Engineered for Your Workflow",
+    "title": "Bulk YouTube Subtitle Extraction Features",
     "description": "Discover a suite of features designed to handle any task, from a single video to an entire content library.",
     "action": "SEE IT IN ACTION",
-    "actionTitle": "From Complexity to Simplicity",
+    "actionTitle": "Playlist & Channel Bulk Processing",
     "actionDescription": "Whether it's an entire YouTube playlist or a text file with hundreds of links, just paste it in. Our tool intelligently parses, processes, and prepares everything for you, turning hours of manual work into seconds of waiting.",
     "adaptive": "ADAPTIVE OUTPUT",
-    "adaptiveTitle": "For Your Workflow, Not Against It",
+    "adaptiveTitle": "Export to SRT, VTT or Clean TXT",
     "adaptiveDescription": "Need timed captions for video editing? Choose SRT. Building an accessible web player? VTT is ready. Just need a transcript for analysis? Export as plain TXT. The choice is yours, for every single file."
   },
   "howItWorks": {
-    "title": "How It Works",
+    "title": "How to Download YouTube Subtitles",
     "description": "From raw link to clean data in seconds. No complex setup required.",
     "steps": {
       "1": {
@@ -224,8 +224,12 @@
     "title": "Frequently Asked Questions",
     "questions": {
       "legal": {
-        "question": "Is it legal to download YouTube subtitles?",
-        "answer": "Yes, downloading subtitles for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service."
+        "question": "Is it legal to use a YouTube subtitle downloader?",
+        "answer": "Yes, using a **YouTube subtitle downloader** for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service."
+      },
+      "transcript": {
+        "question": "Can I download the YouTube transcript as text?",
+        "answer": "Yes! Our tool functions as a powerful **YouTube transcript downloader**, allowing you to extract the full video transcript as a clean text file (TXT) for reading, content analysis, or AI processing."
       },
       "formats": {
         "question": "What subtitle formats do you support?",
@@ -260,13 +264,13 @@
         "name": "Marcus Rodriguez",
         "role": "Video Editor",
         "company": "Creative Studios",
-        "content": "Game changer for video production. The SRT files work perfectly with Premiere Pro. Clean formatting and accurate timestamps every time."
+        "content": "The best **YouTube subtitle downloader** I've used for Premiere Pro editing. The SRT files work perfectly with my timeline. Clean formatting and accurate timestamps every time."
       },
       {
         "name": "Dr. Emily Watson",
         "role": "Accessibility Consultant",
         "company": "AccessTech Solutions",
-        "content": "Essential tool for making content accessible. The VTT format works seamlessly with our web players. Reliable and fast processing."
+        "content": "Essential **caption downloader** for making content accessible. The VTT format works seamlessly with our web players. Reliable and fast processing."
       },
       {
         "name": "Alex Kim",

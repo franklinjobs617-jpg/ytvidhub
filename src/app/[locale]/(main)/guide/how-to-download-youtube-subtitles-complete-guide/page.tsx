@@ -14,6 +14,7 @@ import {
     AlertTriangle
 } from "lucide-react";
 import Image from "next/image";
+import { buildCanonicalUrl } from "@/lib/url";
 
 type Props = {
     params: Promise<{ locale: string }>;
@@ -22,16 +23,15 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params;
 
-    const baseUrl = "https://ytvidhub.com";
-    const localePath = locale === 'en' ? "" : `/${locale}`;
-    const canonicalUrl = `${baseUrl}${localePath}/how-to-download-youtube-subtitles-complete-guide/`;
+    const pathname = "/guide/how-to-download-youtube-subtitles-complete-guide";
+    const canonicalUrl = buildCanonicalUrl({ locale, pathname });
 
     return {
-        title: "How to Download YouTube Subtitles: Complete Guide 2025 | Free Methods",
+        title: "How to Download YouTube Subtitles: Complete Guide 2026 | Free Methods",
         description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide for single videos, playlists, and bulk downloads. SRT, VTT, TXT formats supported.",
         keywords: "how to download youtube subtitles, download youtube captions, extract youtube subtitles, youtube subtitle downloader, batch download youtube subtitles",
         openGraph: {
-            title: "How to Download YouTube Subtitles: Complete Guide 2025",
+            title: "How to Download YouTube Subtitles: Complete Guide 2026",
             description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide for single videos, playlists, and bulk downloads.",
             url: canonicalUrl,
             images: [
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
         twitter: {
             card: "summary_large_image",
-            title: "How to Download YouTube Subtitles: Complete Guide 2025",
+            title: "How to Download YouTube Subtitles: Complete Guide 2026",
             description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide included.",
             images: ["/image/og-subtitle-guide.webp"],
         },
@@ -152,7 +152,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
 
                     <h1 className="text-4xl md:text-6xl font-bold text-center mb-8 leading-tight">
                         How to Download YouTube Subtitles:
-                        <span className="text-blue-600"> Complete Guide 2025</span>
+                        <span className="text-blue-600"> Complete Guide 2026</span>
                     </h1>
 
                     <p className="text-xl text-center text-slate-600 mb-8 max-w-4xl mx-auto leading-relaxed">

@@ -290,7 +290,7 @@ export default function SrtFileGuidePage() {
                   {/* 图片 1 - 优化后 */}
                   <div className="mb-16 rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-2xl transition-transform hover:-translate-y-1 duration-500 group">
                     <img
-                      src="./image/A graphic breakdown of the SRT file format.webp"
+                      src="/image/A graphic breakdown of the SRT file format.webp"
                       alt="Comprehensive technical breakdown of SRT file format showing sequence numbering, timestamp syntax with comma milliseconds, and subtitle block structure for video captioning"
                       className="w-full h-auto"
                     />

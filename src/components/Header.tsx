@@ -17,7 +17,7 @@ import {
 
 const navigation = {
   guides: [
-    { name: "How to Download Subtitles", href: "/how-to-download-youtube-subtitles-complete-guide" },
+    { name: "How to Download Subtitles", href: "/guide/how-to-download-youtube-subtitles-complete-guide" },
     { name: "Data Prep Guide", href: "/data-prep-guide" },
     { name: "Subtitle Extractor", href: "/tools/subtitle-extractor-online" },
     { name: "Data Prep Toolkit", href: "/guide/data-prep-toolkit" },
@@ -25,7 +25,6 @@ const navigation = {
       name: "Clean Transcript Guide",
       href: "/guide/clean-transcript-no-timestamp",
     },
-    { name: "Bulk Playlist Download", href: "/guide/playlist-subtitles-bulk" },
     {
       name: "Mastering Vtt Data Analysis",
       href: "/guide/mastering-vtt-data-analysis",
@@ -85,9 +84,15 @@ export default function Header() {
   const { user, logout, isLoading } = useAuth();
   const t = useTranslations('navigation');
 
-  const isActive = (path: string) => pathname === path;
+  // Helper: Normalize path by removing trailing slash (unless it's root)
+  const normalizePath = (p: string) => {
+    if (!p) return "";
+    return p !== '/' && p.endsWith('/') ? p.slice(0, -1) : p;
+  };
+
+  const isActive = (path: string) => normalizePath(pathname) === normalizePath(path);
   const isParentActive = (items: { href: string }[]) => {
-    return items.some((item) => pathname === item.href);
+    return items.some((item) => normalizePath(pathname) === normalizePath(item.href));
   };
 
   useEffect(() => {

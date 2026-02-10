@@ -7,6 +7,7 @@ import Testimonials from "@/components/landing/Testimonials";
 import CoreCapabilities from "@/components/landing/CoreCapabilities";
 import FAQ from "@/components/landing/FAQ";
 import { getTranslations } from "next-intl/server";
+import { buildCanonicalUrl } from "@/lib/url";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -16,9 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
 
-  const baseUrl = "https://ytvidhub.com";
-  const localePath = locale === 'en' ? "" : `/${locale}`;
-  const canonicalUrl = `${baseUrl}${localePath}/`;
+  const canonicalUrl = buildCanonicalUrl({ locale, pathname: '' });
 
   return {
     title: t('title'),
@@ -45,8 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        'en': 'https://ytvidhub.com/',
-        'es': 'https://ytvidhub.com/es/',
+        'en': buildCanonicalUrl({ locale: 'en', pathname: '' }),
+        'es': buildCanonicalUrl({ locale: 'es', pathname: '' }),
       },
     },
   };

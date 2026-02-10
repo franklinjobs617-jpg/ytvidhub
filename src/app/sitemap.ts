@@ -1,14 +1,14 @@
 import { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
+import { buildCanonicalUrl } from '@/lib/url'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://ytvidhub.com'
     const currentDate = new Date().toISOString().split('T')[0]
-    const todayDate = new Date().toISOString() // 今天的完整时间戳，用于首页
+    const todayDate = new Date().toISOString() 
 
     const englishOnlyPages = [
         { path: '/extract-youtube-subtitles-online-tool', priority: 0.95, changeFreq: 'monthly' as const },
-        { path: '/how-to-download-youtube-subtitles-complete-guide', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/guide/how-to-download-youtube-subtitles-complete-guide', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/pricing', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/tools/subtitle-extractor-online', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/bulk-youtube-subtitle-downloader', priority: 0.9, changeFreq: 'monthly' as const },
@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/guide/clean-transcript-no-timestamp', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/data-prep-toolkit', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/mastering-vtt-data-analysis', priority: 0.7, changeFreq: 'monthly' as const },
-        { path: '/guide/playlist-subtitles-bulk', priority: 0.7, changeFreq: 'monthly' as const },
+        { path: '/tools/playlist-subtitles-bulk', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/youtube-subtitles-api-free', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/youtube-subtitles-for-llm-data', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/srt-vs-vtt', priority: 0.7, changeFreq: 'monthly' as const },
@@ -45,7 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // 添加只有英文版本的页面
     englishOnlyPages.forEach((page) => {
         sitemap.push({
-            url: `${baseUrl}${page.path}`,
+            url: buildCanonicalUrl({ pathname: page.path }),
             lastModified: currentDate,
             changeFrequency: page.changeFreq,
             priority: page.priority,
@@ -55,9 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // 添加多语言页面
     multilingualPages.forEach((page) => {
         routing.locales.forEach((locale) => {
-            const url = locale === 'en'
-                ? `${baseUrl}${page.path}`
-                : `${baseUrl}/${locale}${page.path}`
+            const url = buildCanonicalUrl({ locale, pathname: page.path })
 
             sitemap.push({
                 url,
@@ -66,9 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
                 priority: page.priority,
                 alternates: {
                     languages: routing.locales.reduce((acc, lang) => {
-                        const altUrl = lang === 'en'
-                            ? `${baseUrl}${page.path}`
-                            : `${baseUrl}/${lang}${page.path}`
+                        const altUrl = buildCanonicalUrl({ locale: lang, pathname: page.path })
                         acc[lang] = altUrl
                         return acc
                     }, {} as Record<string, string>)

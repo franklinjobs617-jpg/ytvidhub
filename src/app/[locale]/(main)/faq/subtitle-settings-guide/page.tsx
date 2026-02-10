@@ -113,7 +113,7 @@ export default function SubtitleSettingsGuidePage() {
                     <span className="ml-2 text-[10px] font-black text-slate-300 uppercase tracking-widest italic">Accessibility Options</span>
                   </div>
                   <img
-                    src="../image/youtube-player-subtitle-options-custom-style.webp"
+                    src="/image/youtube-player-subtitle-options-custom-style.webp"
                     alt="Screenshot of the YouTube accessibility menu showing controls for changing subtitle size and background color."
                     className="w-full h-auto"
                   />

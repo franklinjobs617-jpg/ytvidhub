@@ -91,7 +91,7 @@ export default function HowToUsePage() {
                       <span className="ml-4 text-[10px] font-black text-slate-300 uppercase tracking-widest italic tracking-tight">Single Extraction Demo.gif</span>
                     </div>
                     <img
-                      src="./image/5ed5628e-810f-48c8-a171-35c94fbb7e57.gif"
+                      src="/image/5ed5628e-810f-48c8-a171-35c94fbb7e57.gif"
                       alt="Single Video Download Demo"
                       className="w-full h-auto rounded-b-[1.5rem]"
                     />
@@ -118,7 +118,7 @@ export default function HowToUsePage() {
                   </p>
                   {/* 这里的图片展示区域变大 */}
                   <div className="mt-auto rounded-2xl border-4 border-white overflow-hidden shadow-xl">
-                    <img src="./image/fa96f3b2-faf1-433f-9210-e095bb8cb5a7.gif" alt="Free Bulk download" className="w-full h-auto" />
+                    <img src="/image/fa96f3b2-faf1-433f-9210-e095bb8cb5a7.gif" alt="Free Bulk download" className="w-full h-auto" />
                   </div>
                 </div>
 

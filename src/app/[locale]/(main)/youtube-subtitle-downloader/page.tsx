@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server';
 import { TestimonialSection } from "@/components/testimonials/TestimonialSection";
 import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema";
 import { Metadata } from "next";
+import { buildCanonicalUrl } from "@/lib/url";
 
 type Props = {
     params: Promise<{ locale: string }>;
@@ -13,10 +14,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'metadata' });
 
-    const baseUrl = "https://ytvidhub.com";
-    const path = "/youtube-subtitle-downloader";
-    const localePath = locale === 'en' ? "" : `/${locale}`;
-    const canonicalUrl = `${baseUrl}${localePath}${path}/`;
+    const pathname = "/youtube-subtitle-downloader";
+    const canonicalUrl = buildCanonicalUrl({ locale, pathname });
 
     return {
         title: t('title'),
@@ -24,8 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         alternates: {
             canonical: canonicalUrl,
             languages: {
-                'en': `${baseUrl}${path}/`,
-                'es': `${baseUrl}/es${path}/`,
+                'en': buildCanonicalUrl({ locale: 'en', pathname }),
+                'es': buildCanonicalUrl({ locale: 'es', pathname }),
             },
         },
     };

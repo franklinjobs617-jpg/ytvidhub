@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 export default function FAQ() {
   const t = useTranslations('faq');
 
-  const keys = ['legal', 'formats', 'bulk', 'languages', 'limits'] as const;
+  const keys = ['legal', 'transcript', 'formats', 'bulk', 'languages', 'limits'] as const;
 
   return (
     <section className="py-24 bg-white" id="faq">

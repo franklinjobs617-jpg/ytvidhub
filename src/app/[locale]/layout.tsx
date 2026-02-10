@@ -8,6 +8,7 @@ import Script from "next/script";
 import { routing } from '@/i18n/routing';
 import { Metadata } from 'next';
 import LanguagePreloader from '@/components/LanguagePreloader';
+import { buildCanonicalUrl, SITE_ORIGIN } from '@/lib/url';
 
 type Props = {
   children: React.ReactNode;
@@ -19,8 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
 
-  const baseUrl = "https://ytvidhub.com";
-  const currentUrl = locale === 'en' ? `${baseUrl}/` : `${baseUrl}/${locale}/`;
+  const currentUrl = buildCanonicalUrl({ locale, pathname: '' });
 
   const getOpenGraphLocale = (locale: string) => {
     switch (locale) {
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 
   return {
-    metadataBase: new URL(baseUrl),
+    metadataBase: new URL(SITE_ORIGIN),
     title: t('title'),
     description: t('description'),
     keywords: t('keywords').split(', '),
@@ -63,9 +63,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     alternates: {
       canonical: currentUrl,
       languages: {
-        'en': `${baseUrl}/`,
-        'es': `${baseUrl}/es/`,
-        'x-default': `${baseUrl}/`,
+        'en': buildCanonicalUrl({ locale: 'en', pathname: '' }),
+        'es': buildCanonicalUrl({ locale: 'es', pathname: '' }),
+        'x-default': buildCanonicalUrl({ locale: 'en', pathname: '' }),
       },
     },
 

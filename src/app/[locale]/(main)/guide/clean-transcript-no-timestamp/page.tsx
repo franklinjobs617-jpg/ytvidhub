@@ -23,7 +23,7 @@ export default function CleanTranscriptGuidePage() {
       <main>
         <section className="relative pt-24 pb-20 md:pt-10 md:pb-24 overflow-hidden bg-slate-50 bg-[url('data:image/svg+xml,%3Csvg_width=%2240%22_height=%2240%22_viewBox=%220_0_40_40%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg_fill=%22%23e5e7eb%22_fill-opacity=%220.5%22_fill-rule=%22evenodd%22%3E%3Cpath_d=%22M0_40L40_0H20L0_20M40_40V20L20_40%22/%3E%3C/g%3E%3C/svg%3E')]">
           <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white"></div>
-          
+
           <div className="absolute top-[-10%] left-[-10%] w-[35rem] h-[35rem] bg-blue-400/10 rounded-full blur-[120px] animate-pulse"></div>
           <div className="absolute bottom-[-10%] right-[-5%] w-[30rem] h-[30rem] bg-indigo-400/10 rounded-full blur-[120px] animate-pulse"></div>
 
@@ -33,16 +33,16 @@ export default function CleanTranscriptGuidePage() {
                 Data Science Guide
               </span>
             </div>
-            
+
             <h1 className="text-4xl md:text-7xl font-display font-black uppercase tracking-tight text-slate-900 mb-8 leading-[1.1]">
               Clean Subtitles <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">
                 Flawless Data
               </span>
             </h1>
-            
+
             <p className="text-xl text-slate-500 max-w-3xl mx-auto mb-10 leading-relaxed font-medium">
-              Data quality is non-negotiable for LLM training and academic research. 
+              Data quality is non-negotiable for LLM training and academic research.
               Learn the professional method to remove timestamps and ASR noise for truly pristine text data.
             </p>
           </div>
@@ -52,10 +52,10 @@ export default function CleanTranscriptGuidePage() {
         <section className="py-24 bg-white border-y border-slate-100">
           <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900 mb-12 text-center leading-tight">
-               The Pitfall of Raw <br/> SRT/VTT Files
+              The Pitfall of Raw <br /> SRT/VTT Files
             </h2>
             <div className="text-center max-w-3xl mx-auto text-slate-600 text-lg leading-relaxed mb-20 font-medium">
-                Standard subtitle files are poison for high-stakes projects. Feeding noisy data into your LLM or research model doesn't just lower quality—it actively compromises your results.
+              Standard subtitle files are poison for high-stakes projects. Feeding noisy data into your LLM or research model doesn't just lower quality—it actively compromises your results.
             </div>
 
             <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -65,20 +65,20 @@ export default function CleanTranscriptGuidePage() {
                 </h3>
                 <ul className="space-y-8">
                   {[
-                    { 
-                        title: "Timestamps & Tags", 
-                        desc: "Useless structural data that confuses tokenizers and requires tedious pre-processing.", 
-                        icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" 
+                    {
+                      title: "Timestamps & Tags",
+                      desc: "Useless structural data that confuses tokenizers and requires tedious pre-processing.",
+                      icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                     },
-                    { 
-                        title: "ASR Noise", 
-                        desc: "Filler words like 'um,' 'uh,' and non-speech tags like [Applause] pollute semantic meaning.", 
-                        icon: "M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" 
+                    {
+                      title: "ASR Noise",
+                      desc: "Filler words like 'um,' 'uh,' and non-speech tags like [Applause] pollute semantic meaning.",
+                      icon: "M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
                     },
-                    { 
-                        title: "Inconsistent Formatting", 
-                        desc: "Different videos produce varied outputs, creating a data-wrangling nightmare for scaling.", 
-                        icon: "M4 6h16M4 12h16m-7 6h7" 
+                    {
+                      title: "Inconsistent Formatting",
+                      desc: "Different videos produce varied outputs, creating a data-wrangling nightmare for scaling.",
+                      icon: "M4 6h16M4 12h16m-7 6h7"
                     }
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-4 group">
@@ -107,7 +107,7 @@ export default function CleanTranscriptGuidePage() {
                     <span className="ml-2 text-[10px] font-black text-slate-300 uppercase tracking-widest">Subtitle Pipeline Viewer</span>
                   </div>
                   <img
-                    src="../image/clean-transcript-no-timestamp-before-after.webp"
+                    src="/image/clean-transcript-no-timestamp-before-after.webp"
                     alt="Comparison of raw YouTube subtitles (with timestamps) vs. clean, research-ready TXT text."
                     className="w-full h-auto"
                   />
@@ -121,31 +121,31 @@ export default function CleanTranscriptGuidePage() {
         <section className="py-24 bg-slate-50/50">
           <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900 mb-12 text-center leading-tight">
-               How Our "Clean Mode" Works
+              How Our "Clean Mode" Works
             </h2>
             <div className="text-center max-w-3xl mx-auto text-slate-600 text-lg leading-relaxed mb-20 font-medium italic">
-                Our engine goes beyond simple find-and-replace. It uses a multi-stage parser to surgically remove noise and deliver pure, high-quality text.
+              Our engine goes beyond simple find-and-replace. It uses a multi-stage parser to surgically remove noise and deliver pure, high-quality text.
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
               {[
-                { 
-                    step: "01", 
-                    title: "Structural Tag Elimination", 
-                    desc: "Precisely strips away all SRT/VTT timecodes, sequence numbers, and formatting tags without affecting the core text.",
-                    icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" 
+                {
+                  step: "01",
+                  title: "Structural Tag Elimination",
+                  desc: "Precisely strips away all SRT/VTT timecodes, sequence numbers, and formatting tags without affecting the core text.",
+                  icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
                 },
-                { 
-                    step: "02", 
-                    title: "ASR Noise Filtering", 
-                    desc: "Identifies and removes common Automatic Speech Recognition artifacts like [Music] or [Applause] tags.",
-                    icon: "M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" 
+                {
+                  step: "02",
+                  title: "ASR Noise Filtering",
+                  desc: "Identifies and removes common Automatic Speech Recognition artifacts like [Music] or [Applause] tags.",
+                  icon: "M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
                 },
-                { 
-                    step: "03", 
-                    title: "Format Unification", 
-                    desc: "Consolidates all text fragments into a single, continuous paragraph, ready for any text processor or model.",
-                    icon: "M4 6h16M4 12h16M4 18h7" 
+                {
+                  step: "03",
+                  title: "Format Unification",
+                  desc: "Consolidates all text fragments into a single, continuous paragraph, ready for any text processor or model.",
+                  icon: "M4 6h16M4 12h16M4 18h7"
                 }
               ].map((item, i) => (
                 <div key={i} className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-blue-200">
@@ -162,7 +162,6 @@ export default function CleanTranscriptGuidePage() {
           </div>
         </section>
 
-        {/* === 4. CTA SECTION (对齐首页风格) === */}
         <section className="py-32 bg-slate-900 text-white relative overflow-hidden text-center">
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]"></div>
           <div className="container mx-auto px-6 max-w-4xl relative z-10">

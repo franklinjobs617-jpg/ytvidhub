@@ -172,7 +172,7 @@ export default function DataPrepToolkitPage() {
               <div className="mt-16 border border-slate-200 bg-slate-50 p-2 group shadow-2xl shadow-slate-200/50">
                 <div className="relative overflow-hidden">
                   <img
-                    src="../image/An infographic illustrating the advanced workflow.webp"
+                    src="/image/An infographic illustrating the advanced workflow.webp"
                     alt="Workflow diagram illustrating advanced YouTube data preparation from a Playlist to structured output."
                     className="w-full grayscale group-hover:grayscale-0 transition-all duration-1000"
                   />
@@ -302,7 +302,7 @@ export default function DataPrepToolkitPage() {
                 <div className="border border-slate-200 p-2 bg-slate-50">
                   <div className="relative group">
                     <img
-                      src="../image/ytvidhub-bulk-playlist-json-export-for-developers.webp"
+                      src="/image/ytvidhub-bulk-playlist-json-export-for-developers.webp"
                       alt="JSON Export feature"
                       className="w-full grayscale group-hover:grayscale-0 transition-all duration-700"
                     />

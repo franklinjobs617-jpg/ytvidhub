@@ -86,7 +86,7 @@ export default function SubtitleAccuracyBlogPage() {
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
                 </div>
                 <img
-                  src="../image/Conceptual diagram illustrating.png"
+                  src="/image/Conceptual diagram illustrating.png"
                   alt="Conceptual diagram illustrating low accuracy in auto-generated subtitles for complex languages like Chinese, compared to clean, manually prepared data."
                   className="w-full h-auto"
                 />

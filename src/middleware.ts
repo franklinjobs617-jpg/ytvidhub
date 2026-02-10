@@ -34,6 +34,39 @@ export default function middleware(request: NextRequest) {
         return NextResponse.redirect(newUrl, 301);
     }
 
+
+    // Handle guide to tools redirect for playlist-subtitles-bulk (SEO optimization)
+    if (pathname === '/guide/playlist-subtitles-bulk' || pathname.endsWith('/guide/playlist-subtitles-bulk')) {
+        const newUrl = request.nextUrl.clone();
+        newUrl.pathname = pathname.replace('/guide/playlist-subtitles-bulk', '/tools/playlist-subtitles-bulk');
+        return NextResponse.redirect(newUrl, 301);
+    }
+
+    // Handle guide to tools localized redirects
+    const guideToToolsMatch = pathname.match(/^\/([a-z]{2})\/guide\/playlist-subtitles-bulk$/);
+    if (guideToToolsMatch) {
+        const locale = guideToToolsMatch[1];
+        const newUrl = request.nextUrl.clone();
+        newUrl.pathname = `/${locale}/tools/playlist-subtitles-bulk`;
+        return NextResponse.redirect(newUrl, 301);
+    }
+
+    // Handle migration of 'how-to-download-youtube-subtitles-complete-guide' to '/guide/...'
+    if (pathname === '/how-to-download-youtube-subtitles-complete-guide' || pathname.endsWith('/how-to-download-youtube-subtitles-complete-guide')) {
+        const newUrl = request.nextUrl.clone();
+        newUrl.pathname = pathname.replace('/how-to-download-youtube-subtitles-complete-guide', '/guide/how-to-download-youtube-subtitles-complete-guide');
+        return NextResponse.redirect(newUrl, 301);
+    }
+
+    // Handle localized migration for 'how-to-download-youtube-subtitles-complete-guide'
+    const guideMigrationMatch = pathname.match(/^\/([a-z]{2})\/how-to-download-youtube-subtitles-complete-guide$/);
+    if (guideMigrationMatch) {
+        const locale = guideMigrationMatch[1];
+        const newUrl = request.nextUrl.clone();
+        newUrl.pathname = `/${locale}/guide/how-to-download-youtube-subtitles-complete-guide`;
+        return NextResponse.redirect(newUrl, 301);
+    }
+
     // Continue with internationalization middleware
     return intlMiddleware(request);
 }

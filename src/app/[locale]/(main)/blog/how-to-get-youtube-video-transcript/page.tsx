@@ -28,7 +28,7 @@ export default function HowToGetYouTubeTranscriptPage() {
           <h1 className="text-4xl md:text-7xl font-display font-black uppercase tracking-tight text-slate-900 mb-8 leading-[1.1]">
             How to Get a Transcript of a YouTube Video:
             <br />
-            <span className="text-violet-600">3 Easy Ways in 2025</span>
+            <span className="text-violet-600">3 Easy Ways in 2026</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed font-medium">
             Want to know how to get transcript from YouTube video? Whether you need transcripts for AI training, content repurposing, or language learning, this comprehensive guide covers all methods—from YouTube's built-in tools to automated solutions.
@@ -133,7 +133,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                   </div>
                 </li>
               </ol>
-              
+
               <div className="mt-12 p-6 bg-yellow-50 rounded-3xl border border-yellow-100">
                 <h4 className="text-lg font-bold text-yellow-800 mb-2 flex items-center gap-2">
                   <Clock size={20} />
@@ -155,7 +155,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                 <p className="text-xl text-slate-600 leading-relaxed mb-8">
                   If you need transcripts quickly, especially for multiple videos, YTVidHub offers the fastest and most efficient solution. Our tool is designed to handle bulk transcript extraction with just a few clicks.
                 </p>
-                
+
                 <div className="bg-violet-50 rounded-3xl border border-violet-100 p-8 mb-12">
                   <h3 className="text-2xl font-bold text-violet-800 mb-6">Why Choose YTVidHub for YouTube Transcripts</h3>
                   <ul className="space-y-4">
@@ -192,7 +192,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                   </ul>
                 </div>
               </div>
-              
+
               <ol className="space-y-8 mb-16">
                 <li className="flex gap-6">
                   <div className="flex-shrink-0 w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -250,7 +250,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                   </div>
                 </li>
               </ol>
-              
+
               {/* CTA Section */}
               <div className="text-center py-12 bg-slate-900 rounded-3xl mb-12">
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
@@ -271,7 +271,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                   }
                 </Link>
               </div>
-              
+
               <div className="mt-12 p-6 bg-green-50 rounded-3xl border border-green-100">
                 <h4 className="text-lg font-bold text-green-800 mb-2 flex items-center gap-2">
                   <Clock size={20} />
@@ -347,7 +347,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                     No, you can only get transcripts for public YouTube videos. For private videos, you would need to have access to the video and use YouTube's built-in transcript feature while logged in to your account.
                   </p>
                 </div>
-                
+
                 <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100">
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     How accurate are YouTube transcripts?
@@ -356,7 +356,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                     YouTube's automatic transcripts are generally 85-95% accurate for clear audio in English. Accuracy may vary for videos with background noise, multiple speakers, or non-English content. YTVidHub provides the same transcript data as YouTube but in cleaner formats.
                   </p>
                 </div>
-                
+
                 <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100">
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Can I get transcripts in languages other than English?
@@ -365,7 +365,7 @@ export default function HowToGetYouTubeTranscriptPage() {
                     Yes, both YouTube's built-in feature and YTVidHub support transcripts in multiple languages. YouTube automatically generates transcripts for many languages, and you can also use YouTube's translation feature to translate transcripts to other languages.
                   </p>
                 </div>
-                
+
                 <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100">
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Is there a limit to how many transcripts I can get?
