@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     switch (locale) {
       case 'en': return 'en_US';
       case 'es': return 'es_ES';
+      case 'de': return 'de_DE';
       default: return 'en_US';
     }
   };
@@ -65,6 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       languages: {
         'en': buildCanonicalUrl({ locale: 'en', pathname: '' }),
         'es': buildCanonicalUrl({ locale: 'es', pathname: '' }),
+        'de': buildCanonicalUrl({ locale: 'de', pathname: '' }),
         'x-default': buildCanonicalUrl({ locale: 'en', pathname: '' }),
       },
     },

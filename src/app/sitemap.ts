@@ -4,7 +4,7 @@ import { buildCanonicalUrl } from '@/lib/url'
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const currentDate = new Date().toISOString().split('T')[0]
-    const todayDate = new Date().toISOString() 
+    const todayDate = new Date().toISOString()
 
     const englishOnlyPages = [
         { path: '/extract-youtube-subtitles-online-tool', priority: 0.95, changeFreq: 'monthly' as const },
@@ -42,7 +42,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     const sitemap: MetadataRoute.Sitemap = []
 
-    // 添加只有英文版本的页面
     englishOnlyPages.forEach((page) => {
         sitemap.push({
             url: buildCanonicalUrl({ pathname: page.path }),
@@ -52,7 +51,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         })
     })
 
-    // 添加多语言页面
     multilingualPages.forEach((page) => {
         routing.locales.forEach((locale) => {
             const url = buildCanonicalUrl({ locale, pathname: page.path })
