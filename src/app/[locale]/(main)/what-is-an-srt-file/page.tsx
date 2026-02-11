@@ -75,14 +75,14 @@ export default function SrtFileGuidePage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      <title>What is an SRT File? (How to Open, Edit & Download Subtitles)</title>
+      <title>SRT File Format: Timestamp Rules, Syntax & Examples (2026 Guide)</title>
       <meta
         name="description"
-        content="Don't just learn what an .SRT file is—use it! 💡 The complete guide to opening, editing, and downloading subtitle files for YouTube & Video Editing. Free tools inside."
+        content="HH:MM:SS,ms --> HH:MM:SS,ms. The complete guide to SRT syntax: correct timestamp formatting (comma vs dot), sequence numbering rules, and blank line requirements."
       />
       <meta
         name="keywords"
-        content="open srt file, edit srt file, what is .srt, srt vs vtt, download youtube subtitles, subtitle converter, mac windows srt viewer"
+        content="srt timestamp format, srt syntax rules, srt comma milliseconds, srt file structure, srt timecode format, create srt file"
       />
       <link rel="canonical" href="https://ytvidhub.com/what-is-an-srt-file/" />
       <script
@@ -94,26 +94,26 @@ export default function SrtFileGuidePage() {
             mainEntity: [
               {
                 '@type': 'Question',
-                name: 'What program opens SRT files?',
+                name: 'What is the correct SRT timestamp format?',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'You can open SRT files with any text editor (Notepad, TextEdit) to edit the text, or use video players like VLC Media Player to watch the video with subtitles.'
+                  text: 'The standard format is HH:MM:SS,ms (Hours:Minutes:Seconds,Milliseconds). Note that SRT uses a COMMA (,) separator for milliseconds, not a dot. Example: 00:01:23,456'
                 }
               },
               {
                 '@type': 'Question',
-                name: 'How do I add SRT to YouTube?',
+                name: 'Does SRT use commas or dots?',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'Go to YouTube Studio, select your video, click "Subtitles", and upload your .srt file. YouTube will automatically sync it.'
+                  text: 'SRT (SubRip) files strictly use a COMMA (,) to separate seconds from milliseconds. WebVTT (.vtt) files use a DOT (.). Mixing these up is the most common cause of parsing errors.'
                 }
               },
               {
                 '@type': 'Question',
-                name: 'Is SRT better than VTT?',
+                name: 'What are the rules for SRT files?',
                 acceptedAnswer: {
                   '@type': 'Answer',
-                  text: 'SRT is more compatible with offline players and editing software. VTT is better for web players (HTML5) as it supports positioning and styling.'
+                  text: 'A valid SRT block must have 4 parts: 1. A numeric counter (1, 2, 3...) 2. Start and End time separated by "-->" 3. Subtitle text 4. A mandatory blank line after the text.'
                 }
               }
             ]
@@ -125,9 +125,9 @@ export default function SrtFileGuidePage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'https://schema.org',
-            '@type': 'Article',
-            headline: 'What is an SRT File? (How to Open, Edit & Download Subtitles)',
-            description: 'Don\'t just learn what an .SRT file is—use it! 💡 The complete guide to opening, editing, and downloading subtitle files for YouTube & Video Editing.',
+            '@type': 'TechArticle',
+            headline: 'SRT File Format: Timestamp Rules, Syntax & Examples (2026 Guide)',
+            description: 'The definitive guide to SRT structure: HH:MM:SS,ms timestamp format, sequence rules, and common formatting errors.',
             author: {
               '@type': 'Organization',
               name: 'YTVidHub',
@@ -158,19 +158,17 @@ export default function SrtFileGuidePage() {
           <div className="container mx-auto px-6 text-center relative z-10">
             <div className="mb-6">
               <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-blue-50 text-blue-600 text-xs font-black uppercase tracking-[0.2em] border border-blue-100 shadow-sm">
-                <FileText size={12} /> The Beginner's Guide
+                <FileText size={12} /> Technical Specification
               </span>
             </div>
             <h1 className="text-4xl md:text-7xl font-display font-black uppercase tracking-tight text-slate-900 mb-8 leading-[1.1]">
-              What is an <span className="text-blue-600">SRT File</span>? <br />
-              <span className="text-2xl md:text-4xl font-medium text-slate-500 normal-case tracking-normal block mt-4">
-                (And how to Open, Edit & Download them)
-              </span>
+              SRT File Format: <br />
+              <span className="text-blue-600">Timestamp Syntax & Rules</span>
             </h1>
             <p className="text-xl text-slate-500 max-w-3xl mx-auto mb-10 leading-relaxed font-medium">
-              You've found an <strong>.srt file</strong> and don't know what to do with it?
-              Don't worry. This guide explains exactly how to use subtitle files,
-              or you can simply <Link href="/" className="text-blue-600 font-bold border-b-2 border-blue-200 hover:border-blue-600 transition-all">download a ready-to-use SRT</Link> for your video right now.
+              Need the exact <strong>syntax for SRT files</strong>?
+              This reference guide covers correct timestamp formatting (<code>HH:MM:SS,ms</code>),
+              sequence numbering, and required line breaks. Or simply use our <Link href="/" className="text-blue-600 font-bold border-b-2 border-blue-200 hover:border-blue-600 transition-all">SRT Generator</Link> to create valid files automatically.
             </p>
 
             {/* 新增：SEO特性展示 */}
