@@ -305,7 +305,7 @@ export default function HeroSection() {
 
             {/* SEO关键词强化区域 */}
             <div className="text-xs text-slate-500 max-w-3xl mx-auto leading-relaxed">
-              <span className="font-medium">Download YouTube subtitles</span> • <span className="font-medium">YouTube caption downloader</span> • <span className="font-medium">YouTube transcript extractor</span> • <span className="font-medium">Bulk subtitle download</span>
+              <span className="font-medium">{t('ticker.subtitles')}</span> • <span className="font-medium">{t('ticker.caption')}</span> • <span className="font-medium">{t('ticker.transcript')}</span> • <span className="font-medium">{t('ticker.bulk')}</span>
             </div>
           </div>
 
@@ -332,7 +332,6 @@ export default function HeroSection() {
                   </div>
                 ) : videoResults.length === 0 ? (
                   <>
-                    {/* --- 优化后的空状态区域 --- */}
                     <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 pointer-events-none px-6 ${urls || isFocused ? "opacity-0 scale-95 translate-y-4" : "opacity-100 scale-100 translate-y-0"}`}>
 
                       {/* 1. 图标 */}
@@ -352,7 +351,7 @@ export default function HeroSection() {
                       <div className="space-y-3 mb-8 text-center max-w-2xl">
                         <h3 className="text-2xl font-bold text-slate-900 flex items-center justify-center gap-2">
                           {selectedMode === 'summary' ? (
-                            <span>Paste a YouTube Video Link</span>
+                            <span>{t('placeholder.summaryTitle')}</span>
                           ) : (
                             <span>{t('placeholder.title')}</span>
                           )}
@@ -361,7 +360,7 @@ export default function HeroSection() {
 
                         <p className="text-sm text-slate-400 font-medium tracking-tight">
                           {selectedMode === 'summary' ? (
-                            <span>AI Summary is optimized for <span className="text-slate-600 font-semibold">single video</span> analysis</span>
+                            <span>{t('placeholder.summaryDesc')}</span>
                           ) : (
                             <span className="italic">"{t('placeholder.description')}"</span>
                           )}
@@ -373,12 +372,12 @@ export default function HeroSection() {
                         {selectedMode === 'summary' ? (
                           <div className="flex items-center gap-2 px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full border border-slate-200 text-[10px] font-bold uppercase tracking-widest shadow-sm">
                             <Sparkles size={12} className="text-purple-500" />
-                            <span>Powered by DeepSeek AI</span>
+                            <span>{t('placeholder.poweredBy')}</span>
                           </div>
                         ) : (
                           <div className="flex items-center gap-2 px-4 py-1.5 bg-green-50 text-green-700 rounded-full border border-green-100 text-[10px] font-black uppercase tracking-widest shadow-sm">
                             <TrendingUp size={12} className="text-green-600" />
-                            <span className="font-bold">2.4M+ Subtitles Extracted</span>
+                            <span className="font-bold">{t('features.extracted')}</span>
                           </div>
                         )}
                       </div>
@@ -390,7 +389,7 @@ export default function HeroSection() {
                           className="flex items-center gap-2 px-6 py-2.5 bg-white text-slate-600 border border-slate-200 rounded-xl hover:border-blue-400 hover:text-blue-600 hover:shadow-md transition-all text-xs font-bold uppercase tracking-widest group/btn"
                         >
                           <Clipboard size={14} className="text-slate-400 group-hover/btn:text-blue-500 transition-colors" />
-                          Paste Demo Link
+                          {t('placeholder.pasteDemo')}
                         </button>
                       </div>
                     </div>

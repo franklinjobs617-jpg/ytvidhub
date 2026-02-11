@@ -43,18 +43,63 @@
     },
     "placeholder": {
       "title": "Paste YouTube video URLs, playlist links, or channel URLs",
+      "summaryTitle": "Paste a YouTube Video Link",
       "description": "Supports single videos, entire playlists, and channel bulk downloads",
+      "summaryDesc": "AI Summary is optimized for single video analysis",
       "support": "Our {tool} supports {types}",
       "tool": "batch subtitle downloader",
-      "types": "Videos, Playlists, and Channels"
+      "types": "Videos, Playlists, and Channels",
+      "poweredBy": "Powered by DeepSeek AI",
+      "pasteDemo": "Paste Demo Link"
+    },
+    "ticker": {
+      "subtitles": "Download YouTube subtitles",
+      "caption": "YouTube caption downloader",
+      "transcript": "YouTube transcript extractor",
+      "bulk": "Bulk subtitle download"
     },
     "credits": {
       "remaining": "{count} Credits Remaining",
       "signup": "Sign up for 5 free downloads",
       "info": "1 LINK = 1 DOWNLOAD CREDIT",
       "ready": "Ready for high efficiency YouTube subtitle extraction",
-      "bulkExtraction": "High-speed bulk subtitle extraction"
+      "bulkExtraction": "High-speed bulk subtitle extraction",
+      "cost": "Cost: {amount} Credits",
+      "perVid": "Credit/Vid",
+      "balance": "Balance: {amount} Credits",
+      "topUp": "Top up"
     }
+  },
+  "downloader": {
+    "batchEnabled": "Batch processing enabled",
+    "selectFormat": "Select Format",
+    "aiMode": "AI Summary Mode",
+    "analyzing": "Analyzing...",
+    "processing": "Processing..."
+  },
+  "downloaderView": {
+    "checking": "Checking",
+    "ready": "Ready",
+    "noSubs": "No Subs",
+    "allWithSubtitles": "All with subtitles",
+    "visibleOnPage": "Visible on page",
+    "deselectAll": "Deselect all",
+    "all": "All",
+    "subsShort": "Subs",
+    "noSubsShort": "No Subs",
+    "searchVideos": "Search videos...",
+    "ccAvailable": "CC Available",
+    "loadMore": "Load More ({count} remaining)",
+    "noVideosFound": "No videos found matching your filter",
+    "clearFilters": "Clear Filters",
+    "selected": "Selected",
+    "clearSelection": "Clear Selection",
+    "videoQueue": "Video Queue",
+    "summary": "Summary",
+    "mindMap": "Mind Map",
+    "transcript": "Transcript",
+    "aiIsTyping": "AI is typing...",
+    "selectVideoToSummary": "Select a video to generate summary"
   },
   "comparisonSlider": {
     "title": "Stop 100 Manual Clicks. {br} Bulk Extract {highlight}.",

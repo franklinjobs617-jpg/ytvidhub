@@ -44,15 +44,60 @@
     "placeholder": {
       "title": "YouTube Video-URLs, Playlist-Links oder Kanal-URLs einfügen",
       "description": "Unterstützt einzelne Videos, komplette Playlists und Massen-Download kompletter Kanäle",
+      "summaryTitle": "Einen YouTube-Video-Link einfügen",
+      "summaryDesc": "KI-Zusammenfassung ist für die Analyse einzelner Videos optimiert",
       "support": "Unser {tool} unterstützt {types}",
       "tool": "YouTube Untertitel Download Tool",
-      "types": "Videos, Playlists und komplette Kanäle"
+      "types": "Videos, Playlists und komplette Kanäle",
+      "poweredBy": "Unterstützt durch DeepSeek AI",
+      "pasteDemo": "Demo-Link einfügen"
+    },
+    "ticker": {
+      "subtitles": "YouTube Untertitel herunterladen",
+      "caption": "YouTube Untertitel Download",
+      "transcript": "YouTube Transkript Downloader",
+      "bulk": "Massen-Download von Untertiteln"
     },
     "credits": {
       "remaining": "{count} Credits verbleibend",
       "signup": "Registrieren für 5 kostenlose Downloads",
-      "info": "1 LINK = 1 DOWNLOAD CREDIT"
+      "info": "1 LINK = 1 DOWNLOAD CREDIT",
+      "cost": "Kosten: {amount} Credits",
+      "perVid": "Credit/Vid",
+      "balance": "Guthaben: {amount} Credits",
+      "topUp": "Aufladen"
     }
+  },
+  "downloader": {
+    "batchEnabled": "Stapelverarbeitung aktiviert",
+    "selectFormat": "Format auswählen",
+    "aiMode": "KI-Zusammenfassungsmodus",
+    "analyzing": "Analysiere...",
+    "processing": "Verarbeite..."
+  },
+  "downloaderView": {
+    "checking": "Prüfe",
+    "ready": "Bereit",
+    "noSubs": "Keine Untertitel",
+    "allWithSubtitles": "Alle mit Untertiteln",
+    "visibleOnPage": "Auf der Seite sichtbar",
+    "deselectAll": "Alle abwählen",
+    "all": "Alle",
+    "subsShort": "Subs",
+    "noSubsShort": "Ohne Subs",
+    "searchVideos": "Videos suchen...",
+    "ccAvailable": "Untertitel verfügbar",
+    "loadMore": "Mehr laden ({count} verbleibend)",
+    "noVideosFound": "Keine Videos gefunden, die Ihrem Filter entsprechen",
+    "clearFilters": "Filter löschen",
+    "selected": "Ausgewählt",
+    "clearSelection": "Auswahl aufheben",
+    "videoQueue": "Video-Warteschlange",
+    "summary": "Zusammenfassung",
+    "mindMap": "Mind-Map",
+    "transcript": "Transkript",
+    "aiIsTyping": "KI schreibt...",
+    "selectVideoToSummary": "Wählen Sie ein Video aus, um eine Zusammenfassung zu erstellen"
   },
   "comparisonSlider": {
     "title": "Schluss mit manuellem {highlight}. {br} Nutzen Sie Massen-Download.",

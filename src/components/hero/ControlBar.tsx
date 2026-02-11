@@ -20,6 +20,7 @@ export function ControlBar({
   mode = "download",
 }: any) {
   const t = useTranslations('credits');
+  const tDownloader = useTranslations('downloader');
   const [showFormatMenu, setShowFormatMenu] = useState(false);
   const formatMenuRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +69,7 @@ export function ControlBar({
               ) : (
                 mode === "summary" ? <Sparkles size={16} className={canAction ? "text-purple-400" : ""} /> : <Settings2 size={16} />
               )}
-              <span>{isDownloading ? "Analyzing..." : actionLabel}</span>
+              <span>{isDownloading ? tDownloader('analyzing') : actionLabel}</span>
             </div>
 
             {/* Subtle Shine Effect */}
@@ -104,7 +105,7 @@ export function ControlBar({
               {showFormatMenu && (
                 <div className="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in fade-in zoom-in-95 origin-bottom-left">
                   <div className="px-3 py-2 bg-slate-50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    Select Format
+                    {tDownloader('selectFormat')}
                   </div>
                   {availableFormats.map((f: string) => (
                     <button
@@ -123,14 +124,14 @@ export function ControlBar({
 
           {mode === 'summary' && (
             <div className="flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-100 rounded-lg text-xs font-bold text-purple-700 uppercase tracking-wide">
-              <Sparkles size={14} /> AI Summary Mode
+              <Sparkles size={14} /> {tDownloader('aiMode')}
             </div>
           )}
 
           {/* Credits Indicator (Small) */}
           <div className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-l border-slate-200 pl-4 h-6">
             <Coins size={12} />
-            <span>Cost: {mode === 'summary' ? '7' : '1'} Credit{mode !== 'summary' ? '/Vid' : ''}</span>
+            <span>{t('cost', { amount: mode === 'summary' ? '7' : '1' })}{mode !== 'summary' ? t('perVid') : ''}</span>
           </div>
         </div>
 
@@ -163,7 +164,7 @@ export function ControlBar({
             ) : (
               <Download size={14} />
             )}
-            <span>{isDownloading ? "Processing..." : actionLabel}</span>
+            <span>{isDownloading ? tDownloader('processing') : actionLabel}</span>
           </button>
         </div>
       </div>
@@ -172,12 +173,12 @@ export function ControlBar({
       <div className="flex justify-between items-center mt-3 px-2">
         <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide flex items-center gap-1.5">
           <div className={`w-2 h-2 rounded-full ${parseInt(userCredits) > 0 ? "bg-green-500" : "bg-red-500"}`}></div>
-          <span>Balance: {userCredits} Credits</span>
-          <Link href="/pricing" className="ml-2 text-blue-600 hover:underline">Top up</Link>
+          <span>{t('balance', { amount: userCredits })}</span>
+          <Link href="/pricing" className="ml-2 text-blue-600 hover:underline">{t('topUp')}</Link>
         </div>
         {mode === 'download' && (
           <div className="text-[9px] text-slate-300 font-mono">
-            Batch processing enabled
+            {tDownloader('batchEnabled')}
           </div>
         )}
       </div>

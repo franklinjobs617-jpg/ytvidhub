@@ -44,6 +44,7 @@ export function EnhancedDownloaderView({
 }: EnhancedDownloaderViewProps) {
   const tActions = useTranslations('actions');
   const tStatus = useTranslations('statusMessages');
+  const t = useTranslations('downloaderView');
 
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -147,7 +148,7 @@ export function EnhancedDownloaderView({
       return (
         <div className="flex items-center gap-1.5 px-2 py-0.5 bg-amber-50 rounded-full border border-amber-100">
           <Clock size={12} className="text-amber-500 animate-spin" />
-          <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wide">Checking</span>
+          <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wide">{t('checking')}</span>
         </div>
       );
     }
@@ -156,7 +157,7 @@ export function EnhancedDownloaderView({
       return (
         <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 rounded-full border border-emerald-100 group-hover:bg-emerald-100 transition-colors">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
-          <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Ready</span>
+          <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">{t('ready')}</span>
         </div>
       );
     }
@@ -164,7 +165,7 @@ export function EnhancedDownloaderView({
     return (
       <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-100 rounded-full border border-slate-200 opacity-60">
         <XCircle size={12} className="text-slate-400" />
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">No Subs</span>
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">{t('noSubs')}</span>
       </div>
     );
   };
@@ -200,20 +201,20 @@ export function EnhancedDownloaderView({
                   onClick={handleSelectAll}
                   className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
                 >
-                  <CheckSquare size={14} className="text-slate-400" /> All with subtitles
+                  <CheckSquare size={14} className="text-slate-400" /> {t('allWithSubtitles')}
                 </button>
                 <button
                   onClick={handleSelectPage}
                   className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
                 >
-                  <FileText size={14} className="text-slate-400" /> Visible on page
+                  <FileText size={14} className="text-slate-400" /> {t('visibleOnPage')}
                 </button>
                 <div className="h-px bg-slate-100 my-1"></div>
                 <button
                   onClick={handleDeselectAll}
                   className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
                 >
-                  <X size={14} /> Deselect all
+                  <X size={14} /> {t('deselectAll')}
                 </button>
               </div>
             )}
@@ -224,9 +225,9 @@ export function EnhancedDownloaderView({
           {/* Quick Filter Tabs */}
           <div className="flex bg-slate-100 p-0.5 rounded-lg">
             {[
-              { id: 'all', label: 'All', icon: null },
-              { id: 'withSubtitles', label: 'Subs', icon: <CheckCircle2 size={12} /> },
-              { id: 'withoutSubtitles', label: 'No Subs', icon: <AlertCircle size={12} /> }
+              { id: 'all', label: t('all'), icon: null },
+              { id: 'withSubtitles', label: t('subsShort'), icon: <CheckCircle2 size={12} /> },
+              { id: 'withoutSubtitles', label: t('noSubsShort'), icon: <AlertCircle size={12} /> }
             ].map((tab: any) => (
               <button
                 key={tab.id}
@@ -247,7 +248,7 @@ export function EnhancedDownloaderView({
           <Search size={14} className="text-slate-400" />
           <input
             type="text"
-            placeholder="Search videos..."
+            placeholder={t('searchVideos')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-400 text-slate-700"
@@ -323,7 +324,7 @@ export function EnhancedDownloaderView({
                       <span className="text-[10px] text-slate-300">•</span>
                     )}
                     {video.hasSubtitles && (
-                      <span className="text-[10px] text-slate-400 font-medium">CC Available</span>
+                      <span className="text-[10px] text-slate-400 font-medium">{t('ccAvailable')}</span>
                     )}
                   </div>
                 </div>
@@ -342,7 +343,7 @@ export function EnhancedDownloaderView({
                   onClick={() => setDisplayLimit(prev => prev + 20)}
                   className="text-xs font-bold text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 border border-slate-200 px-6 py-2 rounded-full transition-all uppercase tracking-wider"
                 >
-                  Load More ({filteredVideos.length - displayLimit} remaining)
+                  {t('loadMore', { count: filteredVideos.length - displayLimit })}
                 </button>
               </div>
             )}
@@ -352,12 +353,12 @@ export function EnhancedDownloaderView({
             <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
               <Search size={24} className="text-slate-300" />
             </div>
-            <p className="text-sm font-medium">No videos found matching your filter</p>
+            <p className="text-sm font-medium">{t('noVideosFound')}</p>
             <button
               onClick={() => { setSearchQuery(""); setActiveFilter('all'); }}
               className="mt-4 text-xs font-bold text-blue-600 hover:underline"
             >
-              Clear Filters
+              {t('clearFilters')}
             </button>
           </div>
         )}
@@ -370,7 +371,7 @@ export function EnhancedDownloaderView({
             <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[10px] font-bold">
               {selectedIds.size}
             </div>
-            <span className="text-sm font-medium whitespace-nowrap">Selected</span>
+            <span className="text-sm font-medium whitespace-nowrap">{t('selected')}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -378,7 +379,7 @@ export function EnhancedDownloaderView({
               onClick={handleDeselectAll}
               className="text-xs font-bold text-slate-400 hover:text-white transition-colors uppercase tracking-wider px-2"
             >
-              Clear Selection
+              {t('clearSelection')}
             </button>
           </div>
         </div>

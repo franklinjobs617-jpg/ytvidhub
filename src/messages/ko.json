@@ -43,18 +43,63 @@
         },
         "placeholder": {
             "title": "유튜브 영상 URL, 플레이리스트 링크 또는 채널 URL을 붙여넣으세요",
+            "summaryTitle": "유튜브 동영상 링크를 붙여넣으세요",
             "description": "단일 영상, 전체 플레이리스트 및 채널 대량 다운로드 지원",
+            "summaryDesc": "AI 요약은 단일 동영상 분석에 최적화되어 있습니다",
             "support": "{tool}는 {types}를 지원합니다",
             "tool": "일괄 자막 다운로더",
-            "types": "동영상, 플레이리스트 및 채널"
+            "types": "동영상, 플레이리스트 및 채널",
+            "poweredBy": "DeepSeek AI 기반",
+            "pasteDemo": "데모 링크 붙여넣기"
+        },
+        "ticker": {
+            "subtitles": "유튜브 자막 다운로드",
+            "caption": "유튜브 캡션 다운로더",
+            "transcript": "유튜브 스크립트 추출",
+            "bulk": "자막 일괄 다운로드"
         },
         "credits": {
             "remaining": "{count} 크레딧 남음",
             "signup": "5회 무료 다운로드를 위해 가입하세요",
             "info": "링크 1개 = 1 다운로드 크레딧",
             "ready": "고효율 유튜브 자막 추출 준비 완료",
-            "bulkExtraction": "고속 대량 자막 추출"
+            "bulkExtraction": "고속 대량 자막 추출",
+            "cost": "비용: {amount} 크레딧",
+            "perVid": "크레딧/영상",
+            "balance": "잔고: {amount} 크레딧",
+            "topUp": "충전하기"
         }
+    },
+    "downloader": {
+        "batchEnabled": "일괄 처리 활성화됨",
+        "selectFormat": "형식 선택",
+        "aiMode": "AI 요약 모드",
+        "analyzing": "분석 중...",
+        "processing": "처리 중..."
+    },
+    "downloaderView": {
+        "checking": "확인 중",
+        "ready": "준비 완료",
+        "noSubs": "자막 없음",
+        "allWithSubtitles": "자막 있는 것만 모두 선택",
+        "visibleOnPage": "현재 페이지 선택",
+        "deselectAll": "모두 선택 해제",
+        "all": "전체",
+        "subsShort": "자막",
+        "noSubsShort": "자막 없음",
+        "searchVideos": "동영상 검색...",
+        "ccAvailable": "자막 사용 가능",
+        "loadMore": "더 보기 ({count}개 남음)",
+        "noVideosFound": "필터에 맞는 동영상이 없습니다",
+        "clearFilters": "필터 초기화",
+        "selected": "선택됨",
+        "clearSelection": "선택 해제",
+        "videoQueue": "비디오 대기열",
+        "summary": "요약",
+        "mindMap": "마인드맵",
+        "transcript": "스크립트",
+        "aiIsTyping": "AI가 작성 중입니다...",
+        "selectVideoToSummary": "요약을 생성할 동영상을 선택하세요"
     },
     "comparisonSlider": {
         "title": "100번의 수동 클릭은 그만. {br} 자막을 {highlight}로 추출하세요.",

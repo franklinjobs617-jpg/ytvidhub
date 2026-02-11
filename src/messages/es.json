@@ -43,16 +43,61 @@
     },
     "placeholder": {
       "title": "Pegue URLs de videos de YouTube, enlaces de lista de reproducción o URLs de canales completos",
+      "summaryTitle": "Pegue un enlace de video de YouTube",
       "description": "Admite videos individuales, listas de reproducción completas y descargas masivas de canales completos",
+      "summaryDesc": "El resumen de IA está optimizado para el análisis de videos individuales",
       "support": "Nuestro {tool} admite {types}",
       "tool": "descargador de subtítulos con descarga en lote",
-      "types": "Videos, Listas de reproducción y Canales completos"
+      "types": "Videos, Listas de reproducción y Canales completos",
+      "poweredBy": "Impulsado por DeepSeek AI",
+      "pasteDemo": "Pegar enlace de demostración"
+    },
+    "ticker": {
+      "subtitles": "Descargar subtítulos de YouTube",
+      "caption": "Descargador de subtítulos de YouTube",
+      "transcript": "Extractor de transcripciones de YouTube",
+      "bulk": "Descarga masiva de subtítulos"
     },
     "credits": {
       "remaining": "{count} Créditos restantes",
       "signup": "Regístrese para 5 descargas gratuitas",
-      "info": "1 ENLACE = 1 CRÉDITO DE DESCARGA"
+      "info": "1 ENLACE = 1 CRÉDITO DE DESCARGA",
+      "cost": "Costo: {amount} Créditos",
+      "perVid": "Crédito/Vid",
+      "balance": "Saldo: {amount} Créditos",
+      "topUp": "Recargar"
     }
+  },
+  "downloader": {
+    "batchEnabled": "Procesamiento por lotes habilitado",
+    "selectFormat": "Seleccionar formato",
+    "aiMode": "Modo de resumen de IA",
+    "analyzing": "Analizando...",
+    "processing": "Procesando..."
+  },
+  "downloaderView": {
+    "checking": "Verificando",
+    "ready": "Listo",
+    "noSubs": "Sin subs",
+    "allWithSubtitles": "Todos con subtítulos",
+    "visibleOnPage": "Visibles en la página",
+    "deselectAll": "Deseleccionar todos",
+    "all": "Todos",
+    "subsShort": "Subs",
+    "noSubsShort": "Sin subs",
+    "searchVideos": "Buscar videos...",
+    "ccAvailable": "CC disponible",
+    "loadMore": "Cargar más ({count} restantes)",
+    "noVideosFound": "No se encontraron videos que coincidan con su filtro",
+    "clearFilters": "Limpiar filtros",
+    "selected": "Seleccionado",
+    "clearSelection": "Limpiar selección",
+    "videoQueue": "Cola de videos",
+    "summary": "Resumen",
+    "mindMap": "Mapa mental",
+    "transcript": "Transcripción",
+    "aiIsTyping": "IA está escribiendo...",
+    "selectVideoToSummary": "Seleccione un video para generar el resumen"
   },
   "comparisonSlider": {
     "title": "Deja de intentar {highlight} uno por uno. {br} Obtén un ZIP limpio.",
