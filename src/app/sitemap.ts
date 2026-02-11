@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     const englishOnlyPages = [
         { path: '/extract-youtube-subtitles-online-tool', priority: 0.95, changeFreq: 'monthly' as const },
+        { path: '/guide/how-to-download-youtube-studio-subtitles', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/guide/how-to-download-youtube-subtitles-complete-guide', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/pricing', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/tools/subtitle-extractor-online', priority: 0.9, changeFreq: 'monthly' as const },

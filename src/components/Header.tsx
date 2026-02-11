@@ -18,6 +18,7 @@ import {
 const navigation = {
   guides: [
     { name: "How to Download Subtitles", href: "/guide/how-to-download-youtube-subtitles-complete-guide" },
+    { name: "YouTube Studio Export", href: "/guide/how-to-download-youtube-studio-subtitles" },
     { name: "Data Prep Guide", href: "/data-prep-guide" },
     { name: "Subtitle Extractor", href: "/tools/subtitle-extractor-online" },
     { name: "Data Prep Toolkit", href: "/guide/data-prep-toolkit" },

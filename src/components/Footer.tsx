@@ -60,6 +60,9 @@ export default function Footer() {
               <li>
                 <Link href="/how-to-use" className="hover:text-violet-400 transition-colors">{t('howToUse')}</Link>
               </li>
+              <li>
+                <Link href="/guide/how-to-download-youtube-studio-subtitles" className="hover:text-violet-400 transition-colors">{t('studioGuide')}</Link>
+              </li>
             </ul>
           </div>
 
