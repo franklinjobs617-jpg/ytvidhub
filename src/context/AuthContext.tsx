@@ -6,6 +6,8 @@ import {
   useEffect,
   useState,
   ReactNode,
+  useCallback,
+  useRef,
 } from "react";
 
 // 定义用户数据类型
@@ -36,26 +38,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("auth_token");
-    const userStr = localStorage.getItem("loggedInUser");
+  // 添加防重复请求的标志
+  const isRefreshingRef = useRef(false);
+  const lastRefreshTimeRef = useRef(0);
+  const MIN_REFRESH_INTERVAL = 2000; // 最小刷新间隔 2 秒
 
-    if (token && userStr) {
-      try {
-        setUser(JSON.parse(userStr));
-        refreshUser();
-      } catch (e) {
-        console.error("User parse error", e);
-        logout();
-      }
-    }
-    setIsLoading(false);
+  // 登出函数
+  const logout = useCallback(() => {
+    localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("auth_token");
+    setUser(null);
+    window.location.reload();
   }, []);
 
   // 2. 刷新用户信息 (获取最新积分)
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     const token = localStorage.getItem("auth_token");
     if (!token) return;
+
+    // 防止重复请求
+    const now = Date.now();
+    if (isRefreshingRef.current) {
+      console.log("⏳ Already refreshing user, skipping...");
+      return;
+    }
+
+    // 检查是否距离上次刷新太近
+    if (now - lastRefreshTimeRef.current < MIN_REFRESH_INTERVAL) {
+      console.log("⏱️ Too soon to refresh again, skipping...");
+      return;
+    }
+
+    isRefreshingRef.current = true;
+    lastRefreshTimeRef.current = now;
 
     try {
       const response = await fetch(`${BASE_URL}/prod-api/g/getUser`, {
@@ -76,8 +91,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       console.error("Failed to update user:", error);
+    } finally {
+      isRefreshingRef.current = false;
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    const userStr = localStorage.getItem("loggedInUser");
+
+    if (token && userStr) {
+      try {
+        const parsedUser = JSON.parse(userStr);
+        setUser(parsedUser);
+        // 初始加载时刷新一次用户数据
+        refreshUser();
+      } catch (e) {
+        console.error("User parse error", e);
+        logout();
+      }
+    }
+    setIsLoading(false);
+  }, [refreshUser, logout]); // 添加 refreshUser 到依赖数组
 
   // 3. 处理 Google 登录弹窗逻辑
   const login = () => {
@@ -127,12 +162,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.addEventListener("message", handleMessage);
   };
 
-  const logout = () => {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("auth_token");
-    setUser(null);
-    window.location.reload();
-  };
 
   return (
     <AuthContext.Provider

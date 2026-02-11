@@ -77,11 +77,11 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        console.log('Processing credit deduction via database:', { 
-            email: user.email, 
-            amount, 
-            reason, 
-            userType: user.type 
+        console.log('Processing credit deduction via database:', {
+            email: user.email,
+            amount,
+            reason,
+            userType: user.type
         });
 
         // 直接操作数据库扣除积分
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
                 }
 
                 const currentCredits = parseInt(currentUser.credits) || 0;
-                
+
                 if (currentCredits < amount) {
                     throw new Error(`Insufficient credits. Current: ${currentCredits}, Required: ${amount}`);
                 }
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
         } catch (dbError: any) {
             console.error('Database error during credit deduction:', dbError);
             recentDeductions.delete(deductionKey);
-            
+
             return NextResponse.json(
                 { error: dbError.message || 'Database error during credit deduction' },
                 { status: 500 }
