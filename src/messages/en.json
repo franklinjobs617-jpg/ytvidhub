@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "YouTube Playlist Subtitle Downloader - Batch Download SRT/TXT",
-    "description": "Download subtitles from entire YouTube playlists and channels in one click. Bulk extract SRT, VTT, or TXT captions. Fast, free, and no login required.",
+    "description": "Download subtitles from entire YouTube playlists and channels in one click. Bulk extract SRT, VTT, or TXT captions. Fast, free, and easy to start.",
     "keywords": "youtube playlist downloader, download youtube subtitles, batch download subtitles, bulk youtube subtitle downloader, download entire youtube playlist subtitles"
   },
   "navigation": {
@@ -25,7 +25,7 @@
   },
   "hero": {
     "title": "Batch YouTube Subtitle Downloader",
-    "subtitle": "One-click {highlight} for videos, playlists, and channels. Extract SRT & TXT captions instantly without registration. Perfect for bulk processing.",
+    "subtitle": "One-click {highlight} for videos, playlists, and channels. Extract SRT & TXT captions instantly and for free. Perfect for bulk processing.",
     "highlight": "playlist subtitle downloader",
     "ready": "Ready for high efficiency YouTube subtitle extraction",
     "bulkExtraction": "High-speed bulk subtitle extraction",

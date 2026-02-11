@@ -11,11 +11,15 @@ type Locale = (typeof routing.locales)[number];
 const languages = [
   { code: "en", label: "English" },
   { code: "es", label: "Español" },
+  { code: "de", label: "Deutsch" },
+  { code: "ko", label: "한국어" },
 ];
 
 const languageFlags: Record<string, string> = {
   en: '🇺🇸',
-  es: '🇪🇸'
+  es: '🇪🇸',
+  de: '🇩🇪',
+  ko: '🇰🇷'
 };
 
 // 性能监控工具
@@ -29,11 +33,11 @@ const performanceMonitor = {
   endTiming: (targetLocale: string) => {
     const endTime = performance.now();
     const duration = endTime - performanceMonitor.startTime;
-    
+
     // 仅在开发环境中记录性能数据
     if (process.env.NODE_ENV === 'development') {
       console.log(`Language switch to ${targetLocale} took ${duration.toFixed(2)}ms`);
-      
+
       if (duration > 200) {
         console.warn(`Language switch took longer than expected: ${duration.toFixed(2)}ms`);
       }
@@ -70,20 +74,20 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
       setIsOpen(false);
       return;
     }
-    
+
     setIsOpen(false);
-    
+
     // 开始性能计时
     performanceMonitor.startTiming();
-    
+
     // 预加载目标语言消息（如果尚未加载）
     globalCacheManager.preloadMessages(nextLocale).catch(console.warn);
-    
+
     // 使用 startTransition 进行非阻塞更新
     startTransition(() => {
       // 使用 router.replace 进行路由切换
       router.replace(pathname, { locale: nextLocale });
-      
+
       // 结束性能计时
       performanceMonitor.endTiming(nextLocale);
     });
@@ -93,8 +97,8 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
     setIsOpen(prev => !prev);
   }, []);
 
-  const currentLanguage = useMemo(() => 
-    languages.find(lang => lang.code === locale), 
+  const currentLanguage = useMemo(() =>
+    languages.find(lang => lang.code === locale),
     [locale]
   );
 
@@ -140,9 +144,8 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
                 key={lang.code}
                 onClick={() => onSelectChange(lang.code)}
                 disabled={isPending}
-                className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 transition-colors disabled:opacity-50 ${
-                  locale === lang.code ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-700'
-                }`}
+                className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-slate-50 transition-colors disabled:opacity-50 ${locale === lang.code ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-700'
+                  }`}
               >
                 <span className="text-lg">{languageFlags[lang.code]}</span>
                 <span>{lang.label}</span>
