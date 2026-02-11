@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
 
         // 直接操作数据库扣除积分
         try {
-            const result = await prisma.$transaction(async (tx) => {
+            const result = await prisma.$transaction(async (tx: any) => {
                 // 先获取当前用户的积分
                 const currentUser = await tx.user.findUnique({
                     where: {
