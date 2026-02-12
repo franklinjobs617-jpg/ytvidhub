@@ -225,6 +225,16 @@ export default function Header() {
             >
               {t('pricing')}
             </Link>
+
+            <Link
+              href="/support"
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/support")
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
+                }`}
+            >
+              {t('support')}
+            </Link>
           </div>
 
           <div className="flex items-center gap-2 md:gap-4 pl-2">
@@ -436,6 +446,14 @@ export default function Header() {
                 }`}
             >
               {t('pricing')}
+            </Link>
+
+            <Link
+              href="/support"
+              className={`block text-lg font-bold ${isActive("/support") ? "text-blue-600" : "text-slate-900"
+                }`}
+            >
+              {t('support')}
             </Link>
           </div>
 

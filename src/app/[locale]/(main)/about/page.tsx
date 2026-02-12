@@ -125,7 +125,7 @@ export default function AboutPage() {
                   </span>
                 </div>
                 <img
-                  src="./image/Illustration of multiple YouTube video thumbnails flowing into a download folder, representing fast bulk subtitle downloading.webp"
+                  src="/image/Illustration of multiple YouTube video thumbnails flowing into a download folder, representing fast bulk subtitle downloading.webp"
                   alt="Fast bulk subtitle downloading visualization"
                   className="w-full h-auto"
                 />
@@ -157,7 +157,7 @@ export default function AboutPage() {
                         href="mailto:franklinjobs617@gmail.com"
                         className="text-2xl md:text-5xl font-display font-black text-slate-900 hover:text-blue-600 transition-all duration-300 border-b-4 border-slate-100 hover:border-blue-200 pb-2"
                       >
-                        franklinjobs617@gmail.com
+                        admin@ytvidhub.com
                       </a>
                     </div>
 

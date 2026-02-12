@@ -1,0 +1,309 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
+import LoginModal from "@/components/LoginModel";
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
+
+export default function SupportPage() {
+  const { user } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showScrollBtns, setShowScrollBtns] = useState(false);
+  const t = useTranslations('support');
+
+  useEffect(() => {
+    const handleScroll = () => setShowScrollBtns(window.scrollY > 300);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
+      <title>Support & Help Center | YTVidHub YouTube Subtitle Downloader</title>
+      <meta
+        name="description"
+        content="Get help with YTVidHub YouTube subtitle downloader. Contact our support team, find answers to common questions, and learn how to use our bulk download features."
+      />
+      <link rel="canonical" href="https://ytvidhub.com/support/" />
+
+      <main>
+        <section className="relative pt-24 pb-20 md:pt-10 md:pb-10 overflow-hidden bg-slate-50 bg-[url('data:image/svg+xml,%3Csvg_width=%2240%22_height=%2240%22_viewBox=%220_0_40_40%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg_fill=%22%23e5e7eb%22_fill-opacity=%220.5%22_fill-rule=%22evenodd%22%3E%3Cpath_d=%22M0_40L40_0H20L0_20M40_40V20L20_40%22/%3E%3C/g%3E%3C/svg%3E')]">
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white"></div>
+
+          {/* 背景光晕 */}
+          <div className="absolute top-[-10%] left-[-10%] w-[35rem] h-[35rem] bg-blue-400/10 rounded-full blur-[120px] animate-pulse"></div>
+
+          <div className="container mx-auto px-6 text-center relative z-10">
+            <div className="mb-6">
+              <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-[0.3em] border border-blue-100">
+                Help Center
+              </span>
+            </div>
+
+            <h1 className="text-4xl md:text-7xl font-display font-black uppercase tracking-tight text-slate-900 mb-8 leading-[1.1]">
+              {t('title').split(' ').slice(0, -2).join(' ')} <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 italic">
+                {t('title').split(' ').slice(-2).join(' ')}
+              </span>
+            </h1>
+
+            <p className="text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed font-medium">
+              {t('subtitle')}
+            </p>
+          </div>
+        </section>
+
+        {/* === CONTACT SECTION === */}
+        <article className="py-24 bg-white">
+          <div className="container mx-auto px-6 max-w-6xl">
+            
+            {/* Primary Contact */}
+            <section className="mb-32">
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-3xl md:text-5xl font-display uppercase tracking-widest text-slate-900 mb-12 leading-tight">
+                  {t('contactTitle')}
+                </h2>
+
+                <div className="relative p-12 md:p-20 rounded-[3rem] bg-white border border-slate-200 shadow-[0_30px_70px_rgba(0,0,0,0.05)] overflow-hidden">
+                  <div className="absolute -top-24 -right-24 w-64 h-64 bg-blue-50 rounded-full blur-[80px]"></div>
+                  <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-indigo-50 rounded-full blur-[80px]"></div>
+
+                  <div className="relative z-10">
+                    <p className="text-xl text-slate-500 mb-12 font-medium leading-relaxed">
+                      {t('contactDescription')}
+                    </p>
+
+                    <div className="inline-flex flex-col items-center group">
+                      <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] mb-4">
+                        {t('emailLabel')}
+                      </span>
+                      <a
+                        href="mailto:admin@ytvidhub.com"
+                        className="text-2xl md:text-5xl font-display font-black text-slate-900 hover:text-blue-600 transition-all duration-300 border-b-4 border-slate-100 hover:border-blue-200 pb-2"
+                      >
+                        admin@ytvidhub.com
+                      </a>
+                    </div>
+
+                    <div className="mt-16 flex flex-col items-center gap-6">
+                      <div className="flex items-center gap-3 bg-slate-50 px-6 py-2 rounded-full border border-slate-100">
+                        <span className="relative flex h-2.5 w-2.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                        </span>
+                        <span className="text-xs font-bold text-slate-600 uppercase tracking-widest">
+                          {t('responseTime')}
+                        </span>
+                      </div>
+                      <p className="text-slate-400 text-[13px] italic max-w-md">
+                        {t('emailNote')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Support Categories */}
+            <section className="mb-32">
+              <div className="max-w-4xl mx-auto text-center mb-16">
+                <h2 className="text-3xl md:text-5xl font-display uppercase tracking-widest text-slate-900 mb-10 border-b border-slate-100 pb-8 inline-block">
+                  {t('howWeCanHelp')}
+                </h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {[
+                  {
+                    title: t('categories.technical.title'),
+                    icon: "🔧",
+                    desc: t('categories.technical.description'),
+                    topics: [
+                      t('categories.technical.topic1'),
+                      t('categories.technical.topic2'),
+                      t('categories.technical.topic3'),
+                      t('categories.technical.topic4')
+                    ]
+                  },
+                  {
+                    title: t('categories.account.title'),
+                    icon: "💳",
+                    desc: t('categories.account.description'),
+                    topics: [
+                      t('categories.account.topic1'),
+                      t('categories.account.topic2'),
+                      t('categories.account.topic3'),
+                      t('categories.account.topic4')
+                    ]
+                  },
+                  {
+                    title: t('categories.features.title'),
+                    icon: "💡",
+                    desc: t('categories.features.description'),
+                    topics: [
+                      t('categories.features.topic1'),
+                      t('categories.features.topic2'),
+                      t('categories.features.topic3'),
+                      t('categories.features.topic4')
+                    ]
+                  },
+                  {
+                    title: t('categories.guides.title'),
+                    icon: "📚",
+                    desc: t('categories.guides.description'),
+                    topics: [
+                      t('categories.guides.topic1'),
+                      t('categories.guides.topic2'),
+                      t('categories.guides.topic3'),
+                      t('categories.guides.topic4')
+                    ]
+                  },
+                  {
+                    title: t('categories.api.title'),
+                    icon: "⚡",
+                    desc: t('categories.api.description'),
+                    topics: [
+                      t('categories.api.topic1'),
+                      t('categories.api.topic2'),
+                      t('categories.api.topic3'),
+                      t('categories.api.topic4')
+                    ]
+                  },
+                  {
+                    title: t('categories.general.title'),
+                    icon: "💬",
+                    desc: t('categories.general.description'),
+                    topics: [
+                      t('categories.general.topic1'),
+                      t('categories.general.topic2'),
+                      t('categories.general.topic3'),
+                      t('categories.general.topic4')
+                    ]
+                  }
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="p-8 rounded-[2rem] bg-white border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.08)] hover:-translate-y-2 transition-all duration-500 group"
+                  >
+                    <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-500 text-sm leading-relaxed font-medium mb-4">
+                      {item.desc}
+                    </p>
+                    <div className="space-y-1">
+                      {item.topics.map((topic: string, j: number) => (
+                        <div key={j} className="text-xs text-slate-400 flex items-center gap-2">
+                          <div className="w-1 h-1 bg-slate-300 rounded-full"></div>
+                          {topic}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Quick Tips */}
+            <section className="mb-32">
+              <div className="max-w-4xl mx-auto">
+                <h2 className="text-3xl md:text-4xl font-display uppercase tracking-widest text-slate-900 mb-12 text-center">
+                  {t('beforeContact')}
+                </h2>
+                
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[2.5rem] p-10 border border-blue-100">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="text-xl font-black text-slate-900 mb-4 flex items-center gap-3">
+                        <span className="text-2xl">⚡</span>
+                        {t('quickFixes')}
+                      </h3>
+                      <ul className="space-y-3 text-slate-600">
+                        {[
+                          t('quickFix1'),
+                          t('quickFix2'),
+                          t('quickFix3'),
+                          t('quickFix4')
+                        ].map((fix: string, i: number) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <span className="text-blue-500 mt-1">•</span>
+                            <span className="text-sm">{fix}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-xl font-black text-slate-900 mb-4 flex items-center gap-3">
+                        <span className="text-2xl">📋</span>
+                        {t('includeInfo')}
+                      </h3>
+                      <ul className="space-y-3 text-slate-600">
+                        {[
+                          t('includeInfo1'),
+                          t('includeInfo2'),
+                          t('includeInfo3'),
+                          t('includeInfo4')
+                        ].map((info: string, i: number) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <span className="text-blue-500 mt-1">•</span>
+                            <span className="text-sm">{info}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* FAQ Link */}
+            <section className="text-center">
+              <div className="max-w-2xl mx-auto">
+                <h2 className="text-2xl font-black text-slate-900 mb-6">
+                  {t('stillQuestions')}
+                </h2>
+                <p className="text-slate-500 mb-8">
+                  {t('faqDescription')}
+                </p>
+                <Link
+                  href="/faq"
+                  className="inline-flex items-center gap-3 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all duration-300 hover:scale-105"
+                >
+                  <span>{t('visitFaq')}</span>
+                  <span className="text-lg">→</span>
+                </Link>
+              </div>
+            </section>
+
+          </div>
+        </article>
+      </main>
+
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
+
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}</style>
+    </div>
+  );
+}

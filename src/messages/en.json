@@ -10,6 +10,7 @@
     "pricing": "Pricing",
     "about": "About",
     "contact": "Contact",
+    "support": "Support",
     "login": "Login",
     "signup": "Sign Up",
     "dashboard": "Dashboard",
@@ -524,6 +525,7 @@
     "bulkDownloader": "Bulk Downloader",
     "howToDownload": "How to Download Subtitles",
     "pricing": "Pricing",
+    "support": "Support",
     "dataPrepGuide": "Data Prep Guide",
     "cleanTranscript": "Clean Transcript",
     "faq": "FAQ",
@@ -532,5 +534,79 @@
     "aboutUs": "About Us",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service"
+  },
+  "support": {
+    "title": "We're Here to Help You",
+    "subtitle": "Get support for YouTube subtitle downloads, bulk processing, and account issues. Our team is ready to assist you.",
+    "contactTitle": "Contact Support",
+    "contactDescription": "Having trouble with downloads, need technical support, or have a feature request? Our support team is here to help.",
+    "emailLabel": "Official Support Email",
+    "responseTime": "Average Response: 24-48h",
+    "emailNote": "Email is the most effective way to reach our technical support team. Please include details about your issue for faster resolution.",
+    "howWeCanHelp": "How We Can Help",
+    "categories": {
+      "technical": {
+        "title": "Technical Issues",
+        "description": "Download failures, format problems, or website errors. We'll troubleshoot and fix technical issues quickly.",
+        "topic1": "Download not working",
+        "topic2": "Format conversion issues",
+        "topic3": "Browser compatibility",
+        "topic4": "Error messages"
+      },
+      "account": {
+        "title": "Account & Billing",
+        "description": "Questions about your account, credits, subscription, or billing. We handle all account-related inquiries.",
+        "topic1": "Credit balance",
+        "topic2": "Subscription management",
+        "topic3": "Payment issues",
+        "topic4": "Account settings"
+      },
+      "features": {
+        "title": "Feature Requests",
+        "description": "Have an idea for improving YTVidHub? We love hearing suggestions from our community.",
+        "topic1": "New features",
+        "topic2": "Format support",
+        "topic3": "UI improvements",
+        "topic4": "Bulk processing"
+      },
+      "guides": {
+        "title": "How-To Guides",
+        "description": "Need help using specific features? We provide step-by-step guidance for all our tools.",
+        "topic1": "Bulk downloads",
+        "topic2": "Playlist processing",
+        "topic3": "Format selection",
+        "topic4": "AI summaries"
+      },
+      "api": {
+        "title": "API & Integration",
+        "description": "Developer questions about integrating with YTVidHub or using our services programmatically.",
+        "topic1": "API access",
+        "topic2": "Rate limits",
+        "topic3": "Integration help",
+        "topic4": "Developer resources"
+      },
+      "general": {
+        "title": "General Inquiries",
+        "description": "Any other questions about YTVidHub, our policies, or how our service works.",
+        "topic1": "Service questions",
+        "topic2": "Policy clarification",
+        "topic3": "Partnership inquiries",
+        "topic4": "Media requests"
+      }
+    },
+    "beforeContact": "Before You Contact Us",
+    "quickFixes": "Quick Fixes",
+    "includeInfo": "Include This Info",
+    "quickFix1": "Try refreshing the page and clearing your browser cache",
+    "quickFix2": "Check if the YouTube video has subtitles available",
+    "quickFix3": "Verify your internet connection is stable",
+    "quickFix4": "Try using a different browser (Chrome, Firefox, Safari)",
+    "includeInfo1": "Your browser name and version",
+    "includeInfo2": "The YouTube URL you're trying to download",
+    "includeInfo3": "Any error messages you see",
+    "includeInfo4": "Screenshots if possible",
+    "stillQuestions": "Still Have Questions?",
+    "faqDescription": "Check our comprehensive FAQ section for instant answers to common questions.",
+    "visitFaq": "Visit FAQ"
   }
 }

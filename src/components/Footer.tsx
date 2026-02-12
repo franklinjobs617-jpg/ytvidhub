@@ -58,6 +58,9 @@ export default function Footer() {
                 <Link href="/faq" className="hover:text-violet-400 transition-colors">{t('faq')}</Link>
               </li>
               <li>
+                <Link href="/support" className="hover:text-violet-400 transition-colors">{t('support')}</Link>
+              </li>
+              <li>
                 <Link href="/how-to-use" className="hover:text-violet-400 transition-colors">{t('howToUse')}</Link>
               </li>
               <li>

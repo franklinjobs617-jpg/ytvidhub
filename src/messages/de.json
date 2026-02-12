@@ -10,6 +10,7 @@
     "pricing": "Preise",
     "about": "Über uns",
     "contact": "Kontakt",
+    "support": "Support",
     "login": "Anmelden",
     "signup": "Registrieren",
     "dashboard": "Dashboard",
@@ -526,6 +527,7 @@
     "bulkDownloader": "Stapel Downloader",
     "howToDownload": "Wie man Untertitel herunterlädt",
     "pricing": "Preise",
+    "support": "Support",
     "dataPrepGuide": "Datenaufbereitungs Leitfaden",
     "cleanTranscript": "Saubere Transkription",
     "faq": "FAQ",
@@ -533,5 +535,79 @@
     "aboutUs": "Über uns",
     "privacyPolicy": "Datenschutzrichtlinie",
     "termsOfService": "Nutzungsbedingungen"
+  },
+  "support": {
+    "title": "Wir sind hier, um Ihnen zu helfen",
+    "subtitle": "Erhalten Sie Unterstützung für YouTube Untertitel Downloads, Stapelverarbeitung und Kontoprobleme. Unser Team ist bereit, Ihnen zu helfen.",
+    "contactTitle": "Support kontaktieren",
+    "contactDescription": "Haben Sie Probleme mit Downloads, benötigen technischen Support oder haben eine Funktionsanfrage? Unser Support Team ist hier, um zu helfen.",
+    "emailLabel": "Offizieller Support Email",
+    "responseTime": "Durchschnittliche Antwortzeit: 24-48h",
+    "emailNote": "Email ist der effektivste Weg, unser technisches Support Team zu erreichen. Bitte fügen Sie Details zu Ihrem Problem für eine schnellere Lösung hinzu.",
+    "howWeCanHelp": "Wie wir helfen können",
+    "categories": {
+      "technical": {
+        "title": "Technische Probleme",
+        "description": "Download Fehler, Format Probleme oder Website Fehler. Wir beheben technische Probleme schnell.",
+        "topic1": "Download funktioniert nicht",
+        "topic2": "Format Konvertierung Probleme",
+        "topic3": "Browser Kompatibilität",
+        "topic4": "Fehlermeldungen"
+      },
+      "account": {
+        "title": "Konto & Abrechnung",
+        "description": "Fragen zu Ihrem Konto, Credits, Abonnement oder Abrechnung. Wir bearbeiten alle kontobezogenen Anfragen.",
+        "topic1": "Credit Guthaben",
+        "topic2": "Abonnement Verwaltung",
+        "topic3": "Zahlungsprobleme",
+        "topic4": "Konto Einstellungen"
+      },
+      "features": {
+        "title": "Funktionsanfragen",
+        "description": "Haben Sie eine Idee zur Verbesserung von YTVidHub? Wir hören gerne Vorschläge aus unserer Community.",
+        "topic1": "Neue Funktionen",
+        "topic2": "Format Unterstützung",
+        "topic3": "UI Verbesserungen",
+        "topic4": "Stapelverarbeitung"
+      },
+      "guides": {
+        "title": "Anleitungen",
+        "description": "Benötigen Sie Hilfe bei bestimmten Funktionen? Wir bieten Schritt für Schritt Anleitungen für alle unsere Tools.",
+        "topic1": "Stapel Downloads",
+        "topic2": "Playlist Verarbeitung",
+        "topic3": "Format Auswahl",
+        "topic4": "KI Zusammenfassungen"
+      },
+      "api": {
+        "title": "API & Integration",
+        "description": "Entwickler Fragen zur Integration mit YTVidHub oder zur programmatischen Nutzung unserer Services.",
+        "topic1": "API Zugang",
+        "topic2": "Rate Limits",
+        "topic3": "Integration Hilfe",
+        "topic4": "Entwickler Ressourcen"
+      },
+      "general": {
+        "title": "Allgemeine Anfragen",
+        "description": "Alle anderen Fragen zu YTVidHub, unseren Richtlinien oder wie unser Service funktioniert.",
+        "topic1": "Service Fragen",
+        "topic2": "Richtlinien Klärung",
+        "topic3": "Partnership Anfragen",
+        "topic4": "Medien Anfragen"
+      }
+    },
+    "beforeContact": "Bevor Sie uns kontaktieren",
+    "quickFixes": "Schnelle Lösungen",
+    "includeInfo": "Diese Informationen einschließen",
+    "quickFix1": "Versuchen Sie die Seite zu aktualisieren und den Browser Cache zu leeren",
+    "quickFix2": "Prüfen Sie ob das YouTube Video Untertitel verfügbar hat",
+    "quickFix3": "Überprüfen Sie Ihre Internetverbindung",
+    "quickFix4": "Versuchen Sie einen anderen Browser (Chrome, Firefox, Safari)",
+    "includeInfo1": "Ihr Browser Name und Version",
+    "includeInfo2": "Die YouTube URL die Sie herunterladen möchten",
+    "includeInfo3": "Alle Fehlermeldungen die Sie sehen",
+    "includeInfo4": "Screenshots wenn möglich",
+    "stillQuestions": "Haben Sie noch Fragen?",
+    "faqDescription": "Schauen Sie in unseren umfassenden FAQ Bereich für sofortige Antworten auf häufige Fragen.",
+    "visitFaq": "FAQ besuchen"
   }
 }
