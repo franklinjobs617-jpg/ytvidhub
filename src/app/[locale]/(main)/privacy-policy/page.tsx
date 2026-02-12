@@ -253,7 +253,7 @@ export default function PrivacyPolicyPage() {
                         href="mailto:franklinjobs617@gmail.com"
                         className="text-2xl font-black text-blue-600 hover:text-blue-800 transition-colors"
                       >
-                        franklinjobs617@gmail.com
+                        admin@ytvidhub.com
                       </a>
                     </div>
                   </section>
