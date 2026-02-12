@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Descargar Subtítulos de YouTube (Lista de Reproducción y Canal) - Gratis SRT",
-    "description": "Descargador de subtítulos para extraer subtítulos de YouTube de videos, listas de reproducción y canales completos. Descarga en lote SRT, VTT o TXT en segundos. Sin registro requerido.",
+    "title": "Descargar Subtítulos de Playlists de YouTube - Extracción Masiva SRT/TXT",
+    "description": "La mejor herramienta para descargar subtítulos de YouTube online. Extraer subtítulos (CC) y transcripciones de videos, playlists y canales en un clic. Guarda en SRT, VTT o TXT gratis.",
     "keywords": "descargar subtítulos de youtube, extraer subtítulos de youtube, descargador de subtítulos, descarga en lote, lista de reproducción, canales completos, youtube a srt, youtube a txt"
   },
   "navigation": {
@@ -24,8 +24,8 @@
     "freePlan": "Plan gratuito"
   },
   "hero": {
-    "title": "Descargar Subtítulos de YouTube",
-    "subtitle": "Herramienta de un clic para {highlight} de videos, listas de reproducción y canales completos. Extraer subtítulos SRT y TXT al instante sin registro. Perfecto para descarga en lote.",
+    "title": "Descarga Masiva de Subtítulos de YouTube",
+    "subtitle": "Extrae subtítulos de listas de reproducción y canales completos de forma masiva. Convierte YouTube a SRT o TXT en segundos.",
     "highlight": "extraer subtítulos de playlist",
     "ready": "Listo para la extracción de subtítulos de YouTube de alta eficiencia",
     "bulkExtraction": "Descarga en lote de subtítulos de alta velocidad",
@@ -149,28 +149,28 @@
   },
   "coreCapabilities": {
     "badge": "Capacidades principales",
-    "title": "Funciones de Descarga en Lote de Subtítulos de YouTube",
-    "description": "Descubra un conjunto de funciones diseñadas para manejar cualquier tarea, desde un solo video hasta una biblioteca de contenido completa.",
+    "title": "Funciones de Descarga Masiva de Subtítulos de Listas de Reproducción de YouTube",
+    "description": "Descubra un conjunto de funciones diseñadas para descarga masiva, desde listas de reproducción individuales hasta bibliotecas de contenido completas.",
     "action": "VÉALO EN ACCIÓN",
-    "actionTitle": "Procesamiento en Lote de Lista de Reproducción y Canales Completos",
-    "actionDescription": "Ya sea una lista de reproducción completa de YouTube o un archivo de texto con cientos de enlaces, simplemente péguelo. Nuestra herramienta analiza, procesa y prepara todo de manera inteligente para usted, convirtiendo horas de trabajo manual en segundos de espera.",
+    "actionTitle": "Descarga Masiva de Listas de Reproducción y Canales Completos",
+    "actionDescription": "Ya sea una lista de reproducción completa de YouTube o un archivo de texto con cientos de enlaces, simplemente péguelo. Nuestra herramienta de descarga masiva analiza, procesa y prepara todo de manera inteligente para usted, convirtiendo horas de trabajo manual en segundos de espera.",
     "adaptive": "SALIDA ADAPTATIVA",
     "adaptiveTitle": "Exportar a SRT, VTT o TXT Limpio",
     "adaptiveDescription": "¿Necesita subtítulos con tiempo para edición de video? Elija SRT. ¿Está creando un reproductor web accesible? VTT está listo. ¿Solo necesita una transcripción para análisis? Exporte como TXT plano. La elección es suya, para cada archivo."
   },
   "howItWorks": {
-    "title": "Cómo Descargar Subtítulos de YouTube",
-    "description": "De enlace sin procesar a datos limpios en segundos. No se requiere configuración compleja.",
+    "title": "Cómo Hacer Descarga Masiva de Subtítulos de Listas de Reproducción de YouTube",
+    "description": "De lista de reproducción sin procesar a datos limpios en segundos. No se requiere configuración compleja.",
     "steps": {
       "1": {
         "badge": "Paso 01",
-        "title": "Pegar enlaces",
-        "description": "Pegue URL de videos/listas de reproducción de YouTube, o cargue un archivo .txt para procesamiento por lotes."
+        "title": "Pegar enlaces de listas de reproducción",
+        "description": "Pegue URL de listas de reproducción de YouTube, o cargue un archivo .txt para descarga masiva por lotes."
       },
       "2": {
         "badge": "Paso 02",
         "title": "Análisis de IA",
-        "description": "Nuestro motor extrae subtítulos y genera resúmenes o mapas mentales al instante."
+        "description": "Nuestro motor extrae subtítulos de forma masiva y genera resúmenes o mapas mentales al instante."
       },
       "3": {
         "badge": "Paso 03",
@@ -279,16 +279,16 @@
         "answer": "Admitimos los formatos SRT (SubRip), VTT (WebVTT) y TXT limpio. SRT es perfecto para la edición de video, VTT para reproductores web y TXT para entrenamiento de IA y análisis de texto."
       },
       "bulk": {
-        "question": "¿Puedo descargar subtítulos de listas de reproducción completas de YouTube?",
-        "answer": "¡Sí! Nuestro descargador de subtítulos con descarga en lote puede extraer leyendas de listas de reproducción y canales completos. Esto es perfecto para crear grandes conjuntos de datos para entrenamiento de IA o proyectos de investigación."
+        "question": "¿Puedo hacer descarga masiva de subtítulos de listas de reproducción completas de YouTube?",
+        "answer": "¡Sí! Nuestro descargador de subtítulos con descarga masiva puede extraer subtítulos de listas de reproducción y canales completos de forma masiva. Perfecto para descarga masiva de grandes conjuntos de datos para entrenamiento de IA o proyectos de investigación a gran escala."
       },
       "languages": {
         "question": "¿Funciona esto con diferentes idiomas?",
         "answer": "¡Absolutamente! Nuestra herramienta puede descargar subtítulos en any idioma disponible en el video de YouTube, incluidos los subtítulos generados automáticamente y los cargados manualmente."
       },
       "limits": {
-        "question": "¿Hay límites de descarga?",
-        "answer": "Los usuarios gratuitos obtienen 5 créditos diarios para descargas de subtítulos. Los miembros Pro disfrutan de descargas masivas ilimitadas para proyectos a gran escala y uso comercial."
+        "question": "¿Hay límites para la descarga masiva de listas de reproducción?",
+        "answer": "Los usuarios gratuitos obtienen 5 créditos diarios para descargas de subtítulos. Los miembros Pro disfrutan de descarga masiva ilimitada de listas de reproducción para proyectos a gran escala y uso comercial."
       }
     }
   },
@@ -432,18 +432,18 @@
   },
   "schema": {
     "name": "YTVidHub - Descargador de subtítulos de YouTube",
-    "description": "Descargador profesional de subtítulos de YouTube para videos individuales y extracción masiva de listas de reproducción. Descarga subtítulos SRT, VTT, TXT para entrenamiento de IA y creación de contenido.",
+    "description": "Descargador profesional de subtítulos de YouTube para descarga masiva de listas de reproducción y extracción masiva de canales completos. Descarga subtítulos SRT, VTT, TXT para entrenamiento de IA y creación de contenido.",
     "faq": {
-      "q1": "¿Cómo descargar subtítulos de YouTube gratis?",
-      "a1": "YTVidHub es un descargador de subtítulos de YouTube gratuito que te permite extraer subtítulos de videos individuales o descargarlos de forma masiva de listas de reproducción. Simplemente pega la URL de YouTube y elige tu formato preferido (SRT, VTT o TXT).",
-      "q2": "¿Puedo descargar subtítulos de listas de reproducción de YouTube en lote?",
-      "a2": "¡Sí! Nuestro descargador de subtítulos con descarga en lote puede extraer subtítulos de listas de reproducción y canales completos. Los planes profesionales admiten descargas masivas ilimitadas para proyectos a gran escala.",
-      "q3": "¿Qué formatos de subtítulos son compatibles?",
-      "a3": "Nuestro descargador de subtítulos de YouTube admite los formatos SRT (SubRip), VTT (WebVTT) y TXT limpio. Elige el formato que mejor se adapte a tus necesidades: SRT para reproductores de video, VTT para web o TXT para entrenamiento de IA.",
-      "q4": "¿Funciona con los subtítulos generados automáticamente de YouTube?",
-      "a4": "Sí, nuestro descargador de transcripciones de YouTube puede extraer tanto los subtítulos subidos manualmente como los subtítulos generados automáticamente de YouTube en todos los idiomas disponibles.",
-      "q5": "¿Hay un límite en la cantidad de subtítulos de YouTube que puedo descargar?",
-      "a5": "Los usuarios gratuitos obtienen 5 créditos diarios para descargas de subtítulos. Los miembros Pro disfrutan de la extracción masiva ilimitada de subtítulos de YouTube para entrenamiento de IA a gran escala y proyectos de creación de contenido."
+      "q1": "¿Cómo hacer descarga masiva de subtítulos de YouTube gratis?",
+      "a1": "YTVidHub es un descargador de subtítulos de YouTube gratuito que te permite hacer descarga masiva de subtítulos de listas de reproducción completas. Simplemente pega la URL de la lista de reproducción de YouTube y elige tu formato preferido (SRT, VTT o TXT).",
+      "q2": "¿Puedo hacer descarga masiva de subtítulos de listas de reproducción de YouTube?",
+      "a2": "¡Sí! Nuestro descargador de subtítulos con descarga masiva puede extraer subtítulos de listas de reproducción y canales completos de forma masiva. Los planes profesionales admiten descarga masiva ilimitada de listas de reproducción para proyectos a gran escala.",
+      "q3": "¿Qué formatos de subtítulos son compatibles para descarga masiva?",
+      "a3": "Nuestro descargador de subtítulos de YouTube admite descarga masiva en formatos SRT (SubRip), VTT (WebVTT) y TXT limpio. Elige el formato que mejor se adapte a tus necesidades: SRT para reproductores de video, VTT para web o TXT para entrenamiento de IA.",
+      "q4": "¿Funciona la descarga masiva con los subtítulos generados automáticamente de YouTube?",
+      "a4": "Sí, nuestro descargador de transcripciones de YouTube puede hacer descarga masiva tanto de subtítulos subidos manualmente como de subtítulos generados automáticamente de listas de reproducción de YouTube en todos los idiomas disponibles.",
+      "q5": "¿Hay un límite en la descarga masiva de subtítulos de listas de reproducción de YouTube?",
+      "a5": "Los usuarios gratuitos obtienen 5 créditos diarios para descarga masiva de subtítulos. Los miembros Pro disfrutan de descarga masiva ilimitada de listas de reproducción de YouTube para entrenamiento de IA a gran escala y proyectos de creación de contenido."
     }
   },
   "singleDownloader": {
