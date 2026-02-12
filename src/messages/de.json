@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "YouTube Untertitel herunterladen - Kostenlos Massen-Download",
-    "description": "YouTube Untertitel Download für Videos & Playlists. SRT, VTT, TXT Formate. Massen-Download mit kostenlosem Account. Jetzt kostenlos extrahieren!",
-    "keywords": "youtube untertitel herunterladen, youtube untertitel download, youtube playlist untertitel massen-download, untertitel downloader, stapel-download, srt download, vtt download"
+    "title": "YouTube Untertitel herunterladen - Kostenlos Massen Download",
+    "description": "YouTube Untertitel Download für Videos & Playlists. SRT, VTT, TXT Formate. Massen Download mit kostenlosem Account. Jetzt kostenlos extrahieren!",
+    "keywords": "youtube untertitel herunterladen, youtube untertitel download, youtube playlist untertitel massen download, untertitel downloader, stapel download, srt download, vtt download"
   },
   "navigation": {
     "home": "Startseite",
@@ -13,7 +13,7 @@
     "login": "Anmelden",
     "signup": "Registrieren",
     "dashboard": "Dashboard",
-    "bulkDownloader": "Stapel-Downloader",
+    "bulkDownloader": "Stapel Downloader",
     "guide": "Anleitung",
     "blog": "Blog",
     "howToGuide": "Wie herunterladen",
@@ -25,13 +25,13 @@
   },
   "hero": {
     "title": "YouTube Untertitel herunterladen",
-    "subtitle": "Professioneller {highlight} für Videos, Playlists und komplette Kanäle. Extrahieren Sie SRT & TXT Untertitel sofort mit kostenlosem Account. Perfekt für Massen-Download.",
+    "subtitle": "Professioneller {highlight} für Videos, Playlists und komplette Kanäle. Extrahieren Sie SRT & TXT Untertitel sofort mit kostenlosem Account. Perfekt für Massen Download.",
     "highlight": "YouTube Untertitel Download",
-    "ready": "Bereit für hocheffiziente YouTube Untertitel-Extraktion",
-    "bulkExtraction": "Hochgeschwindigkeits Massen-Download von Untertiteln",
+    "ready": "Bereit für hocheffiziente YouTube Untertitel Extraktion",
+    "bulkExtraction": "Hochgeschwindigkeits Massen Download von Untertiteln",
     "cta": {
       "primary": "Untertitel herunterladen starten",
-      "secondary": "Massen-Download testen",
+      "secondary": "Massen Download testen",
       "signup": "Kostenlos registrieren - 5 YouTube Untertitel Downloads sofort erhalten"
     },
     "features": {
@@ -42,21 +42,21 @@
       "playlistSupport": "Unterstützt jetzt YouTube Playlists und Kanäle!"
     },
     "placeholder": {
-      "title": "YouTube Video-URLs, Playlist-Links oder Kanal-URLs einfügen",
-      "description": "Unterstützt einzelne Videos, komplette Playlists und Massen-Download kompletter Kanäle",
-      "summaryTitle": "Einen YouTube-Video-Link einfügen",
-      "summaryDesc": "KI-Zusammenfassung ist für die Analyse einzelner Videos optimiert",
+      "title": "YouTube Video URLs, Playlist Links oder Kanal URLs einfügen",
+      "description": "Unterstützt einzelne Videos, komplette Playlists und Massen Download kompletter Kanäle",
+      "summaryTitle": "Einen YouTube Video Link einfügen",
+      "summaryDesc": "KI Zusammenfassung ist für die Analyse einzelner Videos optimiert",
       "support": "Unser {tool} unterstützt {types}",
       "tool": "YouTube Untertitel Download Tool",
       "types": "Videos, Playlists und komplette Kanäle",
       "poweredBy": "Unterstützt durch DeepSeek AI",
-      "pasteDemo": "Demo-Link einfügen"
+      "pasteDemo": "Demo Link einfügen"
     },
     "ticker": {
       "subtitles": "YouTube Untertitel herunterladen",
       "caption": "YouTube Untertitel Download",
       "transcript": "YouTube Transkript Downloader",
-      "bulk": "Massen-Download von Untertiteln"
+      "bulk": "Massen Download von Untertiteln"
     },
     "credits": {
       "remaining": "{count} Credits verbleibend",
@@ -71,7 +71,7 @@
   "downloader": {
     "batchEnabled": "Stapelverarbeitung aktiviert",
     "selectFormat": "Format auswählen",
-    "aiMode": "KI-Zusammenfassungsmodus",
+    "aiMode": "KI Zusammenfassungsmodus",
     "analyzing": "Analysiere...",
     "processing": "Verarbeite..."
   },
@@ -92,15 +92,15 @@
     "clearFilters": "Filter löschen",
     "selected": "Ausgewählt",
     "clearSelection": "Auswahl aufheben",
-    "videoQueue": "Video-Warteschlange",
+    "videoQueue": "Video Warteschlange",
     "summary": "Zusammenfassung",
-    "mindMap": "Mind-Map",
+    "mindMap": "Mind Map",
     "transcript": "Transkript",
     "aiIsTyping": "KI schreibt...",
     "selectVideoToSummary": "Wählen Sie ein Video aus, um eine Zusammenfassung zu erstellen"
   },
   "comparisonSlider": {
-    "title": "Schluss mit manuellem {highlight}. {br} Nutzen Sie Massen-Download.",
+    "title": "Schluss mit manuellem {highlight}. {br} Nutzen Sie Massen Download.",
     "highlight": "YouTube Untertitel herunterladen",
     "description": "Ziehen Sie den Schieberegler, um den Unterschied zu sehen. Verwandeln Sie stundenlange manuelle Arbeit in einen einzigen, organisierten Download.",
     "before": "Vorher: Die manuelle Mühsal",
@@ -108,7 +108,7 @@
   },
   "demo": {
     "title": "Interaktive Demo - Echte Ergebnisse sehen",
-    "description": "Testen Sie unsere Untertitel-Extraktion mit einem Beispiel-Video",
+    "description": "Testen Sie unsere Untertitel Extraktion mit einem Beispiel Video",
     "video": {
       "title": "Wie man eine React App erstellt - Vollständiges Tutorial",
       "duration": "15:42",
@@ -124,39 +124,39 @@
   },
   "featuresGrid": {
     "title": "YouTube Untertitel extrahieren in mehreren Formaten",
-    "description": "Wir sind nicht nur ein Downloader; wir sind ein Datenaufbereitungs-Kraftpaket. Erhalten Sie saubere Transkription und modellbereiten Text ohne Aufwand.",
+    "description": "Wir sind nicht nur ein Downloader; wir sind ein Datenaufbereitungs Kraftpaket. Erhalten Sie saubere Transkription und modellbereiten Text ohne Aufwand.",
     "items": {
       "clean": {
-        "title": "Saubere TXT-Ausgabe",
-        "description": "Erhalten Sie Daten ohne Zeitstempel und Formatierungsrauschen, sofort bereit für die Modell-Eingabe.",
-        "alt": "Vorher (unordentliche SRT) vs Nachher (saubere forschungsbereite TXT) Untertitel-Bereinigung Vergleich"
+        "title": "Saubere TXT Ausgabe",
+        "description": "Erhalten Sie Daten ohne Zeitstempel und Formatierungsrauschen, sofort bereit für die Modell Eingabe.",
+        "alt": "Vorher (unordentliche SRT) vs Nachher (saubere forschungsbereite TXT) Untertitel Bereinigung Vergleich"
       },
       "llm": {
         "title": "Füttern Sie Ihr LLM",
         "description": "Speziell für Forscher entwickelt, die hochvolumige, konsistente Trainingskorpora benötigen.",
-        "alt": "Forscher verwendet YTVidHub-Interface, um ein LLM mit sauberen Daten zu füttern"
+        "alt": "Forscher verwendet YTVidHub Interface, um ein LLM mit sauberen Daten zu füttern"
       },
       "credits": {
         "title": "Tägliche kostenlose Credits",
-        "description": "Testen Sie unsere Stapel-Pipeline täglich mit 5 kostenlosen Credits. Sehen Sie die Qualität, bevor Sie abonnieren.",
-        "alt": "Stapel-Download mit 5 KOSTENLOSEN täglichen Credits Werbegrafik"
+        "description": "Testen Sie unsere Stapel Pipeline täglich mit 5 kostenlosen Credits. Sehen Sie die Qualität, bevor Sie abonnieren.",
+        "alt": "Stapel Download mit 5 KOSTENLOSEN täglichen Credits Werbegrafik"
       }
     },
     "cta": {
-      "text": "Möchten Sie tief in die Datenwissenschaft hinter der Transkript-Bereinigung eintauchen?",
-      "button": "Den Datenaufbereitungs-Leitfaden lesen"
+      "text": "Möchten Sie tief in die Datenwissenschaft hinter der Transkript Bereinigung eintauchen?",
+      "button": "Den Datenaufbereitungs Leitfaden lesen"
     }
   },
   "coreCapabilities": {
     "badge": "Kernfähigkeiten",
-    "title": "YouTube Massen-Download von Untertiteln",
-    "description": "Entdecken Sie ein komplettes Tool-Set für jede Aufgabe, vom einzelnen Video bis zur kompletten Inhaltsbibliothek.",
-    "action": "MASSEN-DOWNLOAD TESTEN",
-    "actionTitle": "Massen-Download von Playlists und kompletten Kanälen",
-    "actionDescription": "Ob komplette YouTube-Playlist oder Textdatei mit hunderten Links - fügen Sie sie einfach ein. Unser Tool analysiert, verarbeitet und bereitet alles intelligent vor.",
+    "title": "YouTube Massen Download von Untertiteln",
+    "description": "Entdecken Sie ein komplettes Tool Set für jede Aufgabe, vom einzelnen Video bis zur kompletten Inhaltsbibliothek.",
+    "action": "MASSEN DOWNLOAD TESTEN",
+    "actionTitle": "Massen Download von Playlists und kompletten Kanälen",
+    "actionDescription": "Ob komplette YouTube Playlist oder Textdatei mit hunderten Links - fügen Sie sie einfach ein. Unser Tool analysiert, verarbeitet und bereitet alles intelligent vor.",
     "adaptive": "ADAPTIVE AUSGABE",
     "adaptiveTitle": "Export zu SRT, VTT oder sauberem TXT",
-    "adaptiveDescription": "Benötigen Sie zeitgesteuerte Untertitel für Videobearbeitung? Wählen Sie SRT. Erstellen Sie einen barrierefreien Web-Player? VTT ist bereit. Nur Transkript für Analyse? TXT Export."
+    "adaptiveDescription": "Benötigen Sie zeitgesteuerte Untertitel für Videobearbeitung? Wählen Sie SRT. Erstellen Sie einen barrierefreien Web Player? VTT ist bereit. Nur Transkript für Analyse? TXT Export."
   },
   "howItWorks": {
     "title": "Wie man YouTube Untertitel herunterlädt",
@@ -165,7 +165,7 @@
       "1": {
         "badge": "Schritt 01",
         "title": "YouTube Link einfügen",
-        "description": "YouTube Video-URL oder Playlist-Link einfügen für Untertitel download."
+        "description": "YouTube Video URL oder Playlist Link einfügen für Untertitel download."
       },
       "2": {
         "badge": "Schritt 02",
@@ -181,7 +181,7 @@
   },
   "usecases": {
     "title": "Warum YouTube Untertitel herunterladen?",
-    "description": "Von Barrierefreiheit bis KI-Training, entdecken Sie die vielen Verwendungen für YouTube-Untertitel",
+    "description": "Von Barrierefreiheit bis KI Training, entdecken Sie die vielen Verwendungen für YouTube Untertitel",
     "cases": {
       "editing": {
         "title": "Videobearbeitung",
@@ -192,7 +192,7 @@
         "description": "Stellen Sie sicher, dass Inhalte für gehörlose und schwerhörige Zielgruppen mit angemessenen Untertiteln zugänglich sind."
       },
       "ai": {
-        "title": "KI-Training",
+        "title": "KI Training",
         "description": "Erstellen Sie saubere Textdatensätze für maschinelle Lernmodelle und natürliche Sprachverarbeitung."
       },
       "translation": {
@@ -204,16 +204,16 @@
         "description": "Analysieren Sie Videoinhalte für akademische Forschung, Inhaltsanalyse und Data Mining."
       },
       "content": {
-        "title": "Content-Erstellung",
-        "description": "Verwenden Sie Videoinhalte für Blog-Posts, Artikel und Social-Media-Inhalte um."
+        "title": "Content Erstellung",
+        "description": "Verwenden Sie Videoinhalte für Blog Posts, Artikel und Social Media Inhalte um."
       },
       "education": {
         "title": "Bildung",
-        "description": "Erstellen Sie Lernmaterialien und Kurs-Transkripte für Bildungszwecke."
+        "description": "Erstellen Sie Lernmaterialien und Kurs Transkripte für Bildungszwecke."
       },
       "seo": {
-        "title": "SEO-Optimierung",
-        "description": "Extrahieren Sie Textinhalte zur Verbesserung der Suchmaschinenoptimierung und Inhalts-Auffindbarkeit."
+        "title": "SEO Optimierung",
+        "description": "Extrahieren Sie Textinhalte zur Verbesserung der Suchmaschinenoptimierung und Inhalts Auffindbarkeit."
       }
     }
   },
@@ -222,21 +222,21 @@
     "others": {
       "title": "Andere Tools",
       "features": [
-        "Begrenzt auf einzelne Video-Downloads",
-        "Schlechte Format-Unterstützung und Qualität",
+        "Begrenzt auf einzelne Video Downloads",
+        "Schlechte Format Unterstützung und Qualität",
         "Werbung und Registrierung erforderlich",
         "Langsame Verarbeitung und unzuverlässig",
-        "Keine Stapel- oder Playlist-Unterstützung"
+        "Keine Stapel oder Playlist Unterstützung"
       ]
     },
     "ours": {
       "title": "Unsere Lösung",
       "features": [
         "Einzelne Videos + YouTube Playlist Downloader",
-        "Hochwertige SRT-, VTT- und TXT-Formate",
+        "Hochwertige SRT, VTT und TXT Formate",
         "Kostenlose Stufe ohne Werbung oder Registrierung",
-        "Blitzschnelle Cloud-Verarbeitung",
-        "Erweiterte Massen-Download und KI-bereite Funktionen"
+        "Blitzschnelle Cloud Verarbeitung",
+        "Erweiterte Massen Download und KI bereite Funktionen"
       ]
     }
   },
@@ -245,7 +245,7 @@
     "supported": {
       "title": "Unterstützte Videotypen",
       "types": [
-        "Öffentliche YouTube-Videos",
+        "Öffentliche YouTube Videos",
         "Nicht gelistete Videos (mit URL)",
         "Automatisch generierte Untertitel",
         "Manuell hochgeladene Untertitel",
@@ -256,9 +256,9 @@
       "title": "Ausgabeformate",
       "formats": [
         "SRT (SubRip) mit Zeitstempeln",
-        "VTT (WebVTT) für Web-Player",
+        "VTT (WebVTT) für Web Player",
         "TXT (Klartext) sauberes Format",
-        "UTF-8-Kodierung Unterstützung",
+        "UTF-8 Kodierung Unterstützung",
         "Anpassbare Formatierungsoptionen"
       ]
     }
@@ -268,7 +268,7 @@
     "questions": {
       "legal": {
         "question": "Ist es legal, einen YouTube Untertitel Downloader zu verwenden?",
-        "answer": "Ja, der Download von YouTube-Untertiteln für den privaten Gebrauch, die Forschung oder Bildungszwecke ist im Allgemeinen zulässig. Respektieren Sie jedoch immer Urheberrechtsgesetze und YouTubes Nutzungsbedingungen."
+        "answer": "Ja, der Download von YouTube Untertiteln für den privaten Gebrauch, die Forschung oder Bildungszwecke ist im Allgemeinen zulässig. Respektieren Sie jedoch immer Urheberrechtsgesetze und YouTubes Nutzungsbedingungen."
       },
       "how": {
         "question": "Wie funktioniert YouTube Untertitel Download?",
@@ -276,54 +276,54 @@
       },
       "transcript": {
         "question": "Kann ich eine saubere Transkription von YouTube als Text herunterladen?",
-        "answer": "Ja! Unser Tool funktioniert als leistungsstarker **YouTube Transkript Downloader**, mit dem Sie die vollständige Video-Transkription als saubere Textdatei (TXT) zum Lesen, zur Inhaltsanalyse oder KI-Verarbeitung extrahieren können."
+        "answer": "Ja! Unser Tool funktioniert als leistungsstarker **YouTube Transkript Downloader**, mit dem Sie die vollständige Video Transkription als saubere Textdatei (TXT) zum Lesen, zur Inhaltsanalyse oder KI Verarbeitung extrahieren können."
       },
       "formats": {
-        "question": "Welche Untertitel-Formate unterstützen Sie?",
-        "answer": "Wir unterstützen SRT (SubRip), VTT (WebVTT) und saubere TXT-Formate. SRT ist perfekt für Videobearbeitung, VTT für Web-Player und TXT für KI-Training und Textanalyse."
+        "question": "Welche Untertitel Formate unterstützen Sie?",
+        "answer": "Wir unterstützen SRT (SubRip), VTT (WebVTT) und saubere TXT Formate. SRT ist perfekt für Videobearbeitung, VTT für Web Player und TXT für KI Training und Textanalyse."
       },
       "bulk": {
-        "question": "Kann ich Untertitel von ganzen YouTube-Playlists herunterladen?",
-        "answer": "Ja! Unser YouTube Playlist Downloader kann Untertitel von ganzen Playlists und kompletten Kanälen extrahieren. Dies ist perfekt für die Erstellung großer Datensätze für KI-Training oder Forschungsprojekte."
+        "question": "Kann ich Untertitel von ganzen YouTube Playlists herunterladen?",
+        "answer": "Ja! Unser YouTube Playlist Downloader kann Untertitel von ganzen Playlists und kompletten Kanälen extrahieren. Dies ist perfekt für die Erstellung großer Datensätze für KI Training oder Forschungsprojekte."
       },
       "languages": {
         "question": "Funktioniert das mit verschiedenen Sprachen?",
-        "answer": "Absolut! Unser Tool kann Untertitel in jeder verfügbaren Sprache des YouTube-Videos herunterladen, einschließlich automatisch generierter Untertitel und manuell hochgeladener Untertitel."
+        "answer": "Unser Tool kann Untertitel in jeder verfügbaren Sprache des YouTube Videos herunterladen, einschließlich automatisch generierter Untertitel und manuell hochgeladener Untertitel."
       },
       "limits": {
-        "question": "Gibt es Download-Limits?",
-        "answer": "Kostenlose Benutzer erhalten 5 tägliche Credits für Untertitel-Downloads. Pro-Mitglieder genießen unbegrenzte Massen-Downloads für große Projekte und kommerzielle Nutzung."
+        "question": "Gibt es Download Limits?",
+        "answer": "Kostenlose Benutzer erhalten 5 tägliche Credits für Untertitel Downloads. Pro Mitglieder genießen unbegrenzte Massen Downloads für große Projekte und kommerzielle Nutzung."
       }
     }
   },
   "testimonials": {
     "title": "Vertraut von Profis weltweit",
-    "description": "Von KI-Forschern bis zu Content-Erstellern, sehen Sie, warum Tausende YTVidHub für ihre Untertitel-Extraktionsbedürfnisse wählen.",
+    "description": "Von KI Forschern bis zu Content Erstellern, sehen Sie, warum Tausende YTVidHub für ihre Untertitel Extraktionsbedürfnisse wählen.",
     "rating": "4,9/5 von über 2.400 Bewertungen",
     "reviews": [
       {
         "name": "Sarah Chen",
-        "role": "KI-Forscherin",
+        "role": "KI Forscherin",
         "company": "Stanford Universität",
-        "content": "Perfekt für die Erstellung von Trainingsdatensätzen. Habe über 10.000 YouTube-Untertitel für unsere Sprachmodell-Forschung heruntergeladen. Die Stapelverarbeitung hat uns wochenlange Arbeit erspart."
+        "content": "Perfekt für die Erstellung von Trainingsdatensätzen. Habe über 10.000 YouTube Untertitel für unsere Sprachmodell Forschung heruntergeladen. Die Stapelverarbeitung hat uns wochenlange Arbeit erspart."
       },
       {
         "name": "Marcus Rodriguez",
-        "role": "Video-Editor",
+        "role": "Video Editor",
         "company": "Creative Studios",
-        "content": "Der beste **YouTube Untertitel Downloader**, den ich für Premiere Pro-Bearbeitung verwendet habe. Die SRT-Dateien funktionieren perfekt mit meiner Timeline. Saubere Formatierung und präzise Zeitstempel jedes Mal."
+        "content": "Der beste **YouTube Untertitel Downloader**, den ich für Premiere Pro Bearbeitung verwendet habe. Die SRT Dateien funktionieren perfekt mit meiner Timeline. Saubere Formatierung und präzise Zeitstempel jedes Mal."
       },
       {
         "name": "Dr. Emily Watson",
-        "role": "Barrierefreiheits-Beraterin",
+        "role": "Barrierefreiheits Beraterin",
         "company": "AccessTech Solutions",
-        "content": "Unverzichtbarer **Untertitel Downloader** für die Zugänglichmachung von Inhalten. Das VTT-Format funktioniert nahtlos mit unseren Web-Playern. Zuverlässige und schnelle Verarbeitung."
+        "content": "Unverzichtbarer **Untertitel Downloader** für die Zugänglichmachung von Inhalten. Das VTT Format funktioniert nahtlos mit unseren Web Playern. Zuverlässige und schnelle Verarbeitung."
       },
       {
         "name": "Alex Kim",
-        "role": "Content-Ersteller",
+        "role": "Content Ersteller",
         "company": "TechTalks YouTube",
-        "content": "Spart Stunden manueller Transkriptionsarbeit. Die KI-Zusammenfassungsfunktion ist unglaublich nützlich für die Erstellung von Videobeschreibungen und Blog-Posts."
+        "content": "Spart Stunden manueller Transkriptionsarbeit. Die KI Zusammenfassungsfunktion ist unglaublich nützlich für die Erstellung von Videobeschreibungen und Blog Posts."
       }
     ]
   },
@@ -334,9 +334,9 @@
     "downloading": "Lade herunter...",
     "reset": "Zurücksetzen",
     "getMore": "Mehr erhalten",
-    "openWorkspace": "KI-Arbeitsbereich öffnen",
+    "openWorkspace": "KI Arbeitsbereich öffnen",
     "opening": "Öffne",
-    "pasteExample": "Beispiel-Links testen",
+    "pasteExample": "Beispiel Links testen",
     "complete": "Abgeschlossen!",
     "success": "Erfolg!",
     "selectAllWithSubtitles": "Alle mit Untertiteln auswählen",
@@ -380,14 +380,14 @@
     }
   },
   "statusMessages": {
-    "syncing": "Video-Daten synchronisieren...",
+    "syncing": "Video Daten synchronisieren...",
     "checking": "Credits prüfen...",
     "connecting": "Verbinde...",
     "processing": "Verarbeite {current}/{total}...",
     "initializing": "Initialisiere...",
     "completed": "Extraktion in {time} Sekunden abgeschlossen",
     "expandingPlaylist": "Playlist erweitern ({count} Videos gefunden)...",
-    "checkingSubtitles": "Untertitel-Verfügbarkeit prüfen...",
+    "checkingSubtitles": "Untertitel Verfügbarkeit prüfen...",
     "deduplicating": "Duplikate entfernen...",
     "foundVideos": "{count} Videos von {playlists} Playlist(s)/Kanal/Kanälen gefunden",
     "loadingMore": "Mehr Videos laden...",
@@ -399,8 +399,8 @@
     }
   },
   "errors": {
-    "invalidUrl": "Ungültige YouTube-URL erkannt",
-    "enterUrl": "Bitte geben Sie zuerst einen YouTube-Link ein.",
+    "invalidUrl": "Ungültige YouTube URL erkannt",
+    "enterUrl": "Bitte geben Sie zuerst einen YouTube Link ein.",
     "selectVideo": "Bitte wählen Sie mindestens ein Video aus.",
     "insufficientCredits": "Sie haben nicht genügend Credits.",
     "loginRequired": "Bitte melden Sie sich an, um Untertitel herunterzuladen.",
@@ -409,7 +409,7 @@
   "auth": {
     "signupFree": "Kostenlos registrieren",
     "loginNow": "Jetzt anmelden",
-    "signupMessage": "Registrieren Sie sich kostenlos, um sofort 5 YouTube Untertitel-Downloads zu erhalten!",
+    "signupMessage": "Registrieren Sie sich kostenlos, um sofort 5 YouTube Untertitel Downloads zu erhalten!",
     "registrationRequired": "Registrierung erforderlich",
     "registrationNote": "Sie müssen sich (kostenlos) registrieren, um Untertitel herunterzuladen. Erhalten Sie 5 sofortige Credits, um alle Funktionen zu testen.",
     "noCardRequired": "Keine Kreditkarte erforderlich"
@@ -432,56 +432,56 @@
         "description": "Intelligente Zusammenfassung & Kernpunkte"
       }
     },
-    "tooltip": "Massen-Download Funktionen mit Pro freischalten"
+    "tooltip": "Massen Download Funktionen mit Pro freischalten"
   },
   "schema": {
     "name": "YTVidHub - YouTube Untertitel Downloader",
-    "description": "Professioneller YouTube Untertitel Downloader für einzelne Videos und Massen-Extraktion von Playlists. Laden Sie SRT, VTT, TXT Untertitel für KI-Training und Content-Erstellung herunter.",
+    "description": "Professioneller YouTube Untertitel Downloader für einzelne Videos und Massen Extraktion von Playlists. Laden Sie SRT, VTT, TXT Untertitel für KI Training und Content Erstellung herunter.",
     "faq": {
       "q1": "Wie kann ich YouTube Untertitel herunterladen kostenlos?",
-      "a1": "YTVidHub ist ein kostenloser YouTube Untertitel Downloader, mit dem Sie Untertitel von einzelnen Videos extrahieren oder sie massenhaft von Playlists herunterladen können. Fügen Sie einfach die YouTube-URL ein und wählen Sie Ihr bevorzugtes Format (SRT, VTT oder TXT).",
-      "q2": "Kann ich YouTube Playlist Untertitel Massen-Download durchführen?",
-      "a2": "Ja! Unser YouTube Untertitel Download Tool kann Untertitel von ganzen Playlists und kompletten Kanälen extrahieren. Pro-Pläne unterstützen unbegrenzte Massen-Downloads für große Projekte.",
-      "q3": "Welche Untertitel-Formate werden unterstützt?",
-      "a3": "Unser YouTube Untertitel Download Tool unterstützt SRT (SubRip), VTT (WebVTT) und saubere TXT-Formate. Wählen Sie das Format, das am besten zu Ihren Bedürfnissen passt: SRT für Video-Player, VTT für Web oder TXT für KI-Training.",
+      "a1": "YTVidHub ist ein kostenloser YouTube Untertitel Downloader, mit dem Sie Untertitel von einzelnen Videos extrahieren oder sie massenhaft von Playlists herunterladen können. Fügen Sie einfach die YouTube URL ein und wählen Sie Ihr bevorzugtes Format (SRT, VTT oder TXT).",
+      "q2": "Kann ich YouTube Playlist Untertitel Massen Download durchführen?",
+      "a2": "Ja! Unser YouTube Untertitel Download Tool kann Untertitel von ganzen Playlists und kompletten Kanälen extrahieren. Pro Pläne unterstützen unbegrenzte Massen Downloads für große Projekte.",
+      "q3": "Welche Untertitel Formate werden unterstützt?",
+      "a3": "Unser YouTube Untertitel Download Tool unterstützt SRT (SubRip), VTT (WebVTT) und saubere TXT Formate. Wählen Sie das Format, das am besten zu Ihren Bedürfnissen passt: SRT für Video Player, VTT für Web oder TXT für KI Training.",
       "q4": "Funktioniert es mit YouTubes automatisch generierten Untertiteln?",
       "a4": "Ja, unser YouTube Untertitel Download Tool kann sowohl manuell hochgeladene Untertitel als auch YouTubes automatisch generierte Untertitel in allen verfügbaren Sprachen extrahieren.",
-      "q5": "Gibt es ein Limit für die Anzahl der YouTube-Untertitel, die ich herunterladen kann?",
-      "a5": "Kostenlose Benutzer erhalten 5 tägliche Credits für Untertitel-Downloads. Pro-Mitglieder genießen unbegrenzte Massen-Extraktion von YouTube-Untertiteln für großangelegte KI-Training und Content-Erstellungsprojekte."
+      "q5": "Gibt es ein Limit für die Anzahl der YouTube Untertitel, die ich herunterladen kann?",
+      "a5": "Kostenlose Benutzer erhalten 5 tägliche Credits für Untertitel Downloads. Pro Mitglieder genießen unbegrenzte Massen Extraktion von YouTube Untertiteln für großangelegte KI Training und Content Erstellungsprojekte."
     }
   },
   "singleDownloader": {
     "hero": {
       "title": "Einzelner <highlight>YouTube Untertitel</highlight> Downloader",
-      "subtitle": "Extrahieren Sie Untertitel von <strong>einzelnen YouTube-Videos</strong> in Sekunden. Perfekt für Video-Editoren, Content-Ersteller und Forscher.",
+      "subtitle": "Extrahieren Sie Untertitel von <strong>einzelnen YouTube Videos</strong> in Sekunden. Perfekt für Video Editoren, Content Ersteller und Forscher.",
       "cta": {
         "primary": "Untertitel herunterladen",
-        "secondary": "Stapel-Downloader"
+        "secondary": "Stapel Downloader"
       }
     }
   },
   "formats": {
-    "title": "Unterstützte Untertitel-Formate",
+    "title": "Unterstützte Untertitel Formate",
     "description": "Wählen Sie das perfekte Format für Ihren Workflow. Jedes Format ist für verschiedene Anwendungsfälle optimiert.",
     "srt": {
-      "title": "SRT-Format",
-      "description": "Das Industriestandard-Format für Untertitel mit präzisen Zeitstempeln. Perfekt für Videobearbeitung und Media-Player."
+      "title": "SRT Format",
+      "description": "Das Industriestandard Format für Untertitel mit präzisen Zeitstempeln. Perfekt für Videobearbeitung und Media Player."
     },
     "vtt": {
-      "title": "VTT-Format",
-      "description": "Modernes Web-Format mit Unterstützung für erweiterte Gestaltung. Ideal für Web-Player und Online-Anwendungen."
+      "title": "VTT Format",
+      "description": "Modernes Web Format mit Unterstützung für erweiterte Gestaltung. Ideal für Web Player und Online Anwendungen."
     },
     "txt": {
-      "title": "TXT-Format",
-      "description": "Sauberer Klartext ohne Zeitstempel. Perfekt für KI-Training, Textanalyse und Content-Erstellung."
+      "title": "TXT Format",
+      "description": "Sauberer Klartext ohne Zeitstempel. Perfekt für KI Training, Textanalyse und Content Erstellung."
     }
   },
   "howto": {
     "title": "Wie man YouTube Untertitel herunterlädt",
     "steps": {
       "1": {
-        "title": "Video-URL einfügen",
-        "description": "Kopieren und fügen Sie die URL des YouTube-Videos ein, von dem Sie Untertitel extrahieren möchten."
+        "title": "Video URL einfügen",
+        "description": "Kopieren und fügen Sie die URL des YouTube Videos ein, von dem Sie Untertitel extrahieren möchten."
       },
       "2": {
         "title": "Format auswählen",
@@ -513,7 +513,7 @@
     "import": "Importieren"
   },
   "footer": {
-    "description": "Das unverzichtbare Toolkit für Video-Content-Datenextraktion, entwickelt für Geschwindigkeit und Zuverlässigkeit. Optimiert für LLM- und KI-Training-Forschung.",
+    "description": "Das unverzichtbare Toolkit für Video Content Datenextraktion, entwickelt für Geschwindigkeit und Zuverlässigkeit. Optimiert für LLM und KI Training Forschung.",
     "product": "Produkt",
     "resources": "Ressourcen",
     "legal": "Rechtliches",
@@ -523,10 +523,10 @@
     "home": "Startseite",
     "downloader": "Downloader",
     "downloadSubs": "Untertitel herunterladen",
-    "bulkDownloader": "Stapel-Downloader",
+    "bulkDownloader": "Stapel Downloader",
     "howToDownload": "Wie man Untertitel herunterlädt",
     "pricing": "Preise",
-    "dataPrepGuide": "Datenaufbereitungs-Leitfaden",
+    "dataPrepGuide": "Datenaufbereitungs Leitfaden",
     "cleanTranscript": "Saubere Transkription",
     "faq": "FAQ",
     "howToUse": "Wie zu verwenden",
