@@ -414,11 +414,12 @@
     "noCardRequired": "No credit card required"
   },
   "credits": {
-    "credits": "Credits",
+      "credits": "Credits",
     "remaining": "{count} Credits Remaining",
     "freePlan": "FREE PLAN: {current}/{max}",
     "noCreditsLeft": "No Credits Left",
-    "getMore": "Get More"
+    "getMore": "Get More",
+    "topUp": "Top Up" 
   },
   "features": {
     "tabs": {
