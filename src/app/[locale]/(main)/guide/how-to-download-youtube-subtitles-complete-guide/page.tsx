@@ -27,19 +27,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const canonicalUrl = buildCanonicalUrl({ locale, pathname });
 
     return {
-        title: "How to Download YouTube Subtitles: Complete Guide 2026 | Free Methods",
-        description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide for single videos, playlists, and bulk downloads. SRT, VTT, TXT formats supported.",
+        title: "How to Download YouTube Subtitles Free in Seconds (2026) — SRT, VTT, TXT",
+        description: "Download YouTube subtitles instantly — no software, no login. Paste any YouTube URL and get SRT/VTT/TXT files in seconds. Works for single videos, playlists & bulk. 100% free.",
         keywords: "how to download youtube subtitles, download youtube captions, extract youtube subtitles, youtube subtitle downloader, batch download youtube subtitles",
         openGraph: {
-            title: "How to Download YouTube Subtitles: Complete Guide 2026",
-            description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide for single videos, playlists, and bulk downloads.",
+            title: "How to Download YouTube Subtitles Free in Seconds (2026) — SRT, VTT, TXT",
+            description: "Download YouTube subtitles instantly — no software, no login. Paste any YouTube URL and get SRT/VTT/TXT files in seconds. Works for single videos, playlists & bulk.",
             url: canonicalUrl,
-       
         },
         twitter: {
             card: "summary_large_image",
-            title: "How to Download YouTube Subtitles: Complete Guide 2026",
-            description: "Learn how to download YouTube subtitles for free using 3 proven methods. Step-by-step guide included.",
+            title: "How to Download YouTube Subtitles Free in Seconds (2026) — SRT, VTT, TXT",
+            description: "Download YouTube subtitles instantly — no software, no login. Paste any YouTube URL and get SRT/VTT/TXT files in seconds.",
         },
         alternates: {
             canonical: canonicalUrl,

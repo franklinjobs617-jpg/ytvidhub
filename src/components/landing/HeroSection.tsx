@@ -38,7 +38,11 @@ const isValidYoutubeUrl = (url: string) => {
   return patterns.some(pattern => pattern.test(url.trim()));
 };
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  heroHeader?: React.ReactNode;
+}
+
+export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const router = useRouter();
   const { user, refreshUser } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -327,21 +331,7 @@ export default function HeroSection() {
             </div>
           )}
 
-          <div className="max-w-4xl mx-auto mb-12">
-            <h1 className="text-4xl md:text-6xl font-display uppercase tracking-wide text-slate-900 leading-tight mb-4 drop-shadow-sm">
-              {t('title')}
-            </h1>
-            <h2 className="text-base md:text-lg font-medium text-slate-600 max-w-2xl mx-auto italic mb-4">
-              {t.rich('subtitle', {
-                highlight: (chunks) => <span className="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md font-semibold">{chunks}</span>
-              })}
-            </h2>
-
-            {/* SEO关键词强化区域 */}
-            <div className="text-xs text-slate-500 max-w-3xl mx-auto leading-relaxed">
-              <span className="font-medium">{t('ticker.subtitles')}</span> • <span className="font-medium">{t('ticker.caption')}</span> • <span className="font-medium">{t('ticker.transcript')}</span> • <span className="font-medium">{t('ticker.bulk')}</span>
-            </div>
-          </div>
+          {heroHeader}
 
           <div className="max-w-4xl mx-auto">
             <div className={`relative bg-white rounded-2xl border shadow-xl overflow-hidden flex flex-col transition-all duration-300 ${inputError ? "border-red-300 shadow-red-100 ring-4 ring-red-50" : "border-slate-200 shadow-blue-100/50"}`}>

@@ -1,10 +1,5 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
-import LoginModal from "@/components/LoginModel";
-import { motion } from "framer-motion";
 import {
   Check,
   ChevronRight,
@@ -30,125 +25,13 @@ import {
   BarChart3,
   ServerCog,
 } from "lucide-react";
+import SrtTocClient from "@/components/srt-page/SrtTocClient";
+import { SrtCtaHero, SrtCtaFinal, SrtCtaBulk } from "@/components/srt-page/SrtCtaButtons";
 
 export default function SrtFileGuidePage() {
-  const { user } = useAuth();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showScrollBtns, setShowScrollBtns] = useState(false);
-  const [activeSection, setActiveSection] = useState("anatomy");
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollBtns(window.scrollY > 300);
-
-      const sections = [
-        "anatomy",
-        "interactive",
-        "advanced-formatting",
-        "comparison",
-        "conversion",
-        "editing",
-        "ai-use-cases",
-        "faq",
-      ];
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top >= 0 && rect.top <= 400) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const handleAction = (e: React.MouseEvent) => {
-    if (!user) {
-      e.preventDefault();
-      setShowLoginModal(true);
-    }
-  };
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      <title>SRT File Format: Timestamp Rules, Syntax & Examples (2026 Guide)</title>
-      <meta
-        name="description"
-        content="HH:MM:SS,ms --> HH:MM:SS,ms. The complete guide to SRT syntax: correct timestamp formatting (comma vs dot), sequence numbering rules, and blank line requirements."
-      />
-      <meta
-        name="keywords"
-        content="srt timestamp format, srt syntax rules, srt comma milliseconds, srt file structure, srt timecode format, create srt file"
-      />
-      <link rel="canonical" href="https://ytvidhub.com/what-is-an-srt-file/" />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: [
-              {
-                '@type': 'Question',
-                name: 'What is the correct SRT timestamp format?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: 'The standard format is HH:MM:SS,ms (Hours:Minutes:Seconds,Milliseconds). Note that SRT uses a COMMA (,) separator for milliseconds, not a dot. Example: 00:01:23,456'
-                }
-              },
-              {
-                '@type': 'Question',
-                name: 'Does SRT use commas or dots?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: 'SRT (SubRip) files strictly use a COMMA (,) to separate seconds from milliseconds. WebVTT (.vtt) files use a DOT (.). Mixing these up is the most common cause of parsing errors.'
-                }
-              },
-              {
-                '@type': 'Question',
-                name: 'What are the rules for SRT files?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: 'A valid SRT block must have 4 parts: 1. A numeric counter (1, 2, 3...) 2. Start and End time separated by "-->" 3. Subtitle text 4. A mandatory blank line after the text.'
-                }
-              }
-            ]
-          }),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'TechArticle',
-            headline: 'SRT File Format: Timestamp Rules, Syntax & Examples (2026 Guide)',
-            description: 'The definitive guide to SRT structure: HH:MM:SS,ms timestamp format, sequence rules, and common formatting errors.',
-            author: {
-              '@type': 'Organization',
-              name: 'YTVidHub',
-            },
-            datePublished: '2026-01-01',
-            dateModified: new Date().toISOString().split('T')[0],
-            publisher: {
-              '@type': 'Organization',
-              name: 'YTVidHub',
-              logo: {
-                '@type': 'ImageObject',
-                url: 'https://ytvidhub.com/logo.png',
-              },
-            },
-            mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id': 'https://ytvidhub.com/what-is-an-srt-file',
-            },
-          }),
-        }}
-      />
       <main>
         {/* === 1. ENHANCED HERO SECTION === */}
         <section className="relative pt-24 pb-0 md:pt-10 md:pb-0 overflow-hidden bg-gradient-to-b from-slate-50 to-white">
@@ -170,47 +53,18 @@ export default function SrtFileGuidePage() {
               This reference guide covers correct timestamp formatting (<code>HH:MM:SS,ms</code>),
               sequence numbering, and required line breaks.
             </p>
-            <div className="flex flex-col items-center gap-2 mt-2 mb-4">
-              <Link
-                href="/"
-                onClick={handleAction}
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-black px-7 py-3.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 hover:-translate-y-0.5 text-sm uppercase tracking-widest"
-              >
-                <Download size={16} />
-                Extract SRT from YouTube — Free
-              </Link>
-              <span className="text-xs text-slate-400">No credit card · 5 free downloads</span>
-            </div>
+            <SrtCtaHero />
 
             {/* 新增：SEO特性展示 */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-12">
               {[
-                {
-                  value: "99.9%",
-                  label: "Video Player Support",
-                  desc: "VLC, QuickTime, Windows Media",
-                },
-                {
-                  value: "UTF-8",
-                  label: "Encoding Standard",
-                  desc: "Universal character support",
-                },
-                {
-                  value: "Zero Cost",
-                  label: "Open Format",
-                  desc: "No licensing fees",
-                },
-                {
-                  value: "1ms",
-                  label: "Timestamp Precision",
-                  desc: "Frame-accurate synchronization",
-                },
+                { value: "99.9%", label: "Video Player Support", desc: "VLC, QuickTime, Windows Media" },
+                { value: "UTF-8", label: "Encoding Standard",    desc: "Universal character support" },
+                { value: "Zero Cost", label: "Open Format",      desc: "No licensing fees" },
+                { value: "1ms", label: "Timestamp Precision",    desc: "Frame-accurate synchronization" },
               ].map((item, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-slate-200 shadow-sm"
                 >
                   <div className="text-lg font-black text-slate-900">
@@ -222,7 +76,7 @@ export default function SrtFileGuidePage() {
                   <div className="text-[10px] text-slate-400 mt-1">
                     {item.desc}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -232,92 +86,9 @@ export default function SrtFileGuidePage() {
         <section className="py-10 bg-white border-y border-slate-100">
           <div className="container mx-auto px-6 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-              {/* Enhanced Sidebar (TOC) */}
+              {/* TOC Sidebar */}
               <aside className="hidden lg:block lg:col-span-3 sticky top-32">
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 shadow-sm">
-                  <p className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6 pl-4 border-l-4 border-blue-600 flex items-center gap-2">
-                    <FileText size={12} /> Table of Contents
-                  </p>
-                  <nav className="flex flex-col space-y-2">
-                    {[
-                      {
-                        id: "anatomy",
-                        label: "1. SRT File Anatomy",
-                        icon: <Code size={12} />,
-                      },
-                      {
-                        id: "interactive",
-                        label: "2. Syntax Breakdown",
-                        icon: <Braces size={12} />,
-                      },
-                      {
-                        id: "advanced-formatting",
-                        label: "3. Advanced Formatting",
-                        icon: <Settings size={12} />,
-                      },
-                      {
-                        id: "comparison",
-                        label: "4. SRT vs VTT vs TXT",
-                        icon: <BarChart3 size={12} />,
-                      },
-                      {
-                        id: "conversion",
-                        label: "5. Format Conversion",
-                        icon: <Layers size={12} />,
-                      },
-                      {
-                        id: "editing",
-                        label: "6. Editing Tools",
-                        icon: <FileCode size={12} />,
-                      },
-                      {
-                        id: "ai-use-cases",
-                        label: "7. AI Research Use",
-                        icon: <Cpu size={12} />,
-                      },
-                      {
-                        id: "faq",
-                        label: "8. SRT FAQ",
-                        icon: <HelpCircle size={12} />,
-                      },
-                    ].map((cat) => (
-                      <a
-                        key={cat.id}
-                        href={`#${cat.id}`}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all group ${activeSection === cat.id
-                          ? "bg-blue-50 text-blue-600 translate-x-2"
-                          : "text-slate-400 hover:text-slate-900 hover:bg-slate-50"
-                          }`}
-                      >
-                        <span
-                          className={`transition-transform ${activeSection === cat.id ? "scale-110" : ""
-                            }`}
-                        >
-                          {cat.icon}
-                        </span>
-                        <span>{cat.label}</span>
-                        <ChevronRight
-                          size={12}
-                          className={`ml-auto opacity-0 group-hover:opacity-100 transition-opacity ${activeSection === cat.id ? "opacity-100" : ""
-                            }`}
-                        />
-                      </a>
-                    ))}
-                  </nav>
-
-                  <div className="mt-8 pt-6 border-t border-slate-200">
-                    <Link
-                      href="/"
-                      className="inline-flex items-center gap-2 text-xs font-black uppercase bg-blue-600 text-white px-4 py-3 rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 w-full justify-center"
-                    >
-                      <Download size={12} /> Download SRT Files
-                    </Link>
-                    <p className="text-[10px] text-slate-400 mt-3 text-center">
-                      <Sparkles size={8} className="inline mr-1" /> Extract
-                      clean subtitles in minutes
-                    </p>
-                  </div>
-                </div>
+                <SrtTocClient />
               </aside>
 
               {/* Content Area */}
@@ -354,7 +125,11 @@ export default function SrtFileGuidePage() {
                           plain-text subtitle format that stores synchronized
                           caption data with precise timing information. It's the
                           universal standard for video subtitles, supported by
-                          every major video player from VLC to YouTube.
+                          every major video player from VLC to YouTube. You can{" "}
+                          <Link href="/" className="text-blue-600 font-semibold hover:underline">
+                            download YouTube subtitles
+                          </Link>{" "}
+                          as SRT files instantly with no software required.
                         </p>
                         <div className="space-y-3">
                           <div className="flex items-start gap-2">
@@ -994,19 +769,16 @@ export default function SrtFileGuidePage() {
                               Need Bulk SRT Files for AI Research?
                             </h3>
                             <p className="text-blue-100 font-medium leading-relaxed">
-                              Our professional extraction engine provides
-                              perfectly formatted <strong>SRT files</strong>{" "}
+                              Our{" "}
+                              <Link href="/" className="text-white underline font-bold hover:text-blue-200">
+                                free YouTube subtitle downloader
+                              </Link>{" "}
+                              provides perfectly formatted <strong>SRT files</strong>{" "}
                               from any YouTube playlist or channel.
                             </p>
                           </div>
                         </div>
-                        <Link
-                          href="/"
-                          onClick={handleAction}
-                          className="bg-white text-blue-600 font-black px-8 py-4 rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-all uppercase text-xs tracking-widest whitespace-nowrap"
-                        >
-                          Start Bulk Extraction
-                        </Link>
+                        <SrtCtaBulk />
                       </div>
                     </div>
                   </section>
@@ -1219,17 +991,7 @@ export default function SrtFileGuidePage() {
                         videos, convert between formats, and prepare clean
                         datasets for AI research.
                       </p>
-                      <Link
-                        href="/"
-                        onClick={handleAction}
-                        className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-black py-5 px-14 rounded-2xl transition-all hover:-translate-y-1 shadow-xl shadow-blue-500/20 uppercase text-sm tracking-widest"
-                      >
-                        <span>Start Bulk Extraction Now</span>
-                        <ArrowRight
-                          size={20}
-                          className="group-hover:translate-x-1 transition-transform"
-                        />
-                      </Link>
+                      <SrtCtaFinal />
                       <p className="text-slate-400 text-xs mt-6">
                         No credit card required • 5 free SRT extractions •
                         Enterprise API available
@@ -1242,11 +1004,6 @@ export default function SrtFileGuidePage() {
           </div>
         </section>
       </main>
-
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
     </div>
   );
 }
