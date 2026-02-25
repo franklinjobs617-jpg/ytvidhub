@@ -25,10 +25,6 @@ export default function HowToUsePage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      {/* === SEO & Metadata (100% 保留) === */}
-      <title>How to Use Our YouTube Subtitle Downloader | YTVidHub</title>
-      <meta name="description" content="A step-by-step guide on how to download YouTube subtitles. Learn to use our tool for single videos, bulk downloads with unlimited URLs for Pro users, and choosing the right format." />
-      <link rel="canonical" href="https://ytvidhub.com/how-to-use/" />
 
       <main>
         {/* === 1. HERO SECTION (视觉氛围对齐定价页) === */}

@@ -133,12 +133,6 @@ export default function FAQPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      <title>Frequently Asked Questions (FAQ) | YTVidHub Help Center</title>
-      <meta
-        name="description"
-        content="Find answers to common questions about our YouTube subtitle downloader. Learn about formats, bulk downloading, troubleshooting, privacy, and more in our FAQ."
-      />
-      <link rel="canonical" href="https://ytvidhub.com/faq/" />
 
       {/* Schema.org FAQ-LD */}
       <script type="application/ld+json">

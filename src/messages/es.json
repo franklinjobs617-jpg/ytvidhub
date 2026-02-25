@@ -415,7 +415,8 @@
     "remaining": "{count} Créditos restantes",
     "freePlan": "PLAN GRATUITO: {current}/{max}",
     "noCreditsLeft": "No quedan créditos",
-    "getMore": "Obtener más"
+    "getMore": "Obtener más",
+    "topUp": "Recargar"
   },
   "features": {
     "tabs": {

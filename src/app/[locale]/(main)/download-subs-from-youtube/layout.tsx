@@ -1,18 +1,22 @@
 import { Metadata } from 'next';
+import { buildAlternates } from '@/lib/seo';
 
-export const metadata: Metadata = {
-    title: 'Download YouTube Subtitles | Extract SRT, VTT, TXT Free | YTVidHub',
-    description: 'The leading free online tool to download YouTube subtitles. Instantly extract high-accuracy SRT, VTT, and Text files for AI training, video editing, and content creation.',
-    keywords: ['download subs from youtube', 'YouTube subtitle downloader', 'extract SRT from YouTube', 'YouTube transcript exporter', 'free caption downloader'],
-    openGraph: {
-        title: 'Download YouTube Subtitles | Extract SRT, VTT, TXT Free',
-        description: 'Extract high-accuracy subtitles from any YouTube video instantly. Supports multiple formats and AI-ready text.',
-        type: 'website',
-    },
-    alternates: {
-        canonical: 'https://ytvidhub.com/download-subs-from-youtube/',
-    },
-};
+export async function generateMetadata(
+    { params }: { params: Promise<{ locale: string }> }
+): Promise<Metadata> {
+    const { locale } = await params;
+    return {
+        title: 'Download YouTube Subtitles | Extract SRT, VTT, TXT Free | YTVidHub',
+        description: 'The leading free online tool to download YouTube subtitles. Instantly extract high-accuracy SRT, VTT, and Text files for AI training, video editing, and content creation.',
+        keywords: ['download subs from youtube', 'YouTube subtitle downloader', 'extract SRT from YouTube', 'YouTube transcript exporter', 'free caption downloader'],
+        openGraph: {
+            title: 'Download YouTube Subtitles | Extract SRT, VTT, TXT Free',
+            description: 'Extract high-accuracy subtitles from any YouTube video instantly. Supports multiple formats and AI-ready text.',
+            type: 'website',
+        },
+        alternates: buildAlternates(locale, '/download-subs-from-youtube'),
+    };
+}
 
 export default function DownloadSubsLayout({
     children,

@@ -60,12 +60,6 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      <title>Privacy Policy | YTVidHub - Your Data Protection</title>
-      <meta
-        name="description"
-        content="Read the official Privacy Policy for YTVidHub. We explain what little data we collect, our commitment to anonymity, and how we protect your privacy."
-      />
-      <link rel="canonical" href="https://ytvidhub.com/privacy-policy/" />
 
       <main>
         {/* === 1. HERO SECTION (视觉风格与 Terms 保持高度一致) === */}

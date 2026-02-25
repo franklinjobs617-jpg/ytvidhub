@@ -46,9 +46,6 @@ export default function TermsOfServicePage() {
 
   return (
     <div className="bg-white min-h-screen font-sans selection:bg-blue-100 text-slate-800 antialiased">
-      <title>Terms of Service | YTVidHub - Usage Guidelines</title>
-      <meta name="description" content="Review the Terms of Service for using YTVidHub. This document outlines your responsibilities, our liability, and the proper use of our free subtitle downloader." />
-      <link rel="canonical" href="https://ytvidhub.com/terms-of-service/" />
 
       <main>
         <section className="relative pt-24 pb-20 md:pt-10 md:pb-0 overflow-hidden bg-slate-50 bg-[url('data:image/svg+xml,%3Csvg_width=%2240%22_height=%2240%22_viewBox=%220_0_40_40%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg_fill=%22%23e5e7eb%22_fill-opacity=%220.5%22_fill-rule=%22evenodd%22%3E%3Cpath_d=%22M0_40L40_0H20L0_20M40_40V20L20_40%22/%3E%3C/g%3E%3C/svg%3E')]">
