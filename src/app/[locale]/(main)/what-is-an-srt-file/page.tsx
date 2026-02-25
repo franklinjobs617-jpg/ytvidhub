@@ -168,8 +168,19 @@ export default function SrtFileGuidePage() {
             <p className="text-xl text-slate-500 max-w-3xl mx-auto mb-10 leading-relaxed font-medium">
               Need the exact <strong>syntax for SRT files</strong>?
               This reference guide covers correct timestamp formatting (<code>HH:MM:SS,ms</code>),
-              sequence numbering, and required line breaks. Or simply use our <Link href="/" className="text-blue-600 font-bold border-b-2 border-blue-200 hover:border-blue-600 transition-all">SRT Generator</Link> to create valid files automatically.
+              sequence numbering, and required line breaks.
             </p>
+            <div className="flex flex-col items-center gap-2 mt-2 mb-4">
+              <Link
+                href="/"
+                onClick={handleAction}
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-black px-7 py-3.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 hover:-translate-y-0.5 text-sm uppercase tracking-widest"
+              >
+                <Download size={16} />
+                Extract SRT from YouTube — Free
+              </Link>
+              <span className="text-xs text-slate-400">No credit card · 5 free downloads</span>
+            </div>
 
             {/* 新增：SEO特性展示 */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-12">

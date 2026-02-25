@@ -1,6 +1,6 @@
 "use client";
 
-import { Coins, Download, RotateCcw, Zap, Sparkles, ChevronDown, Check, FileText, Settings2 } from "lucide-react";
+import { Coins, Download, RotateCcw, Zap, Sparkles, ChevronDown, Check, FileText, Settings2, Globe } from "lucide-react";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useTranslations } from 'next-intl';
@@ -10,6 +10,9 @@ export function ControlBar({
   format,
   setFormat,
   availableFormats,
+  lang,
+  setLang,
+  availableLangs,
   onReset,
   onAction,
   canReset,
@@ -22,13 +25,26 @@ export function ControlBar({
   const t = useTranslations('credits');
   const tDownloader = useTranslations('downloader');
   const [showFormatMenu, setShowFormatMenu] = useState(false);
+  const [showLangMenu, setShowLangMenu] = useState(false);
   const formatMenuRef = useRef<HTMLDivElement>(null);
+  const langMenuRef = useRef<HTMLDivElement>(null);
+
+  const langLabels: Record<string, string> = {
+    en: "English", zh: "中文", es: "Español", fr: "Français",
+    de: "Deutsch", ja: "日本語", ko: "한국어", pt: "Português",
+    ru: "Русский", ar: "العربية", hi: "हिन्दी", it: "Italiano",
+    nl: "Nederlands", pl: "Polski", tr: "Türkçe", vi: "Tiếng Việt",
+    id: "Bahasa Indonesia", th: "ภาษาไทย",
+  };
 
   // Close menus when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (formatMenuRef.current && !formatMenuRef.current.contains(event.target as Node)) {
         setShowFormatMenu(false);
+      }
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setShowLangMenu(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -90,36 +106,71 @@ export function ControlBar({
         {/* --- Left: Configuration (Format) --- */}
         <div className="flex items-center gap-4 w-full md:w-auto pl-2">
           {mode === 'download' && (
-            <div className="relative" ref={formatMenuRef}>
-              <button
-                onClick={() => setShowFormatMenu(!showFormatMenu)}
-                className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg hover:border-slate-300 hover:shadow-sm transition-all text-xs font-bold text-slate-700 uppercase tracking-wide min-w-[140px] justify-between"
-              >
-                <span className="flex items-center gap-2">
-                  <FileText size={14} className="text-slate-400" />
-                  {format.toUpperCase()}
-                </span>
-                <ChevronDown size={14} className="text-slate-400" />
-              </button>
+            <>
+              <div className="relative" ref={formatMenuRef}>
+                <button
+                  onClick={() => setShowFormatMenu(!showFormatMenu)}
+                  className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg hover:border-slate-300 hover:shadow-sm transition-all text-xs font-bold text-slate-700 uppercase tracking-wide min-w-[140px] justify-between"
+                >
+                  <span className="flex items-center gap-2">
+                    <FileText size={14} className="text-slate-400" />
+                    {format.toUpperCase()}
+                  </span>
+                  <ChevronDown size={14} className="text-slate-400" />
+                </button>
 
-              {showFormatMenu && (
-                <div className="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in fade-in zoom-in-95 origin-bottom-left">
-                  <div className="px-3 py-2 bg-slate-50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    {tDownloader('selectFormat')}
+                {showFormatMenu && (
+                  <div className="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in fade-in zoom-in-95 origin-bottom-left">
+                    <div className="px-3 py-2 bg-slate-50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                      {tDownloader('selectFormat')}
+                    </div>
+                    {availableFormats.map((f: string) => (
+                      <button
+                        key={f}
+                        onClick={() => { setFormat(f); setShowFormatMenu(false); }}
+                        className="w-full text-left px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center justify-between group"
+                      >
+                        <span>{formatLabels[f] || f.toUpperCase()}</span>
+                        {format === f && <Check size={14} className="text-blue-600" />}
+                      </button>
+                    ))}
                   </div>
-                  {availableFormats.map((f: string) => (
-                    <button
-                      key={f}
-                      onClick={() => { setFormat(f); setShowFormatMenu(false); }}
-                      className="w-full text-left px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center justify-between group"
-                    >
-                      <span>{formatLabels[f] || f.toUpperCase()}</span>
-                      {format === f && <Check size={14} className="text-blue-600" />}
-                    </button>
-                  ))}
+                )}
+              </div>
+
+              {availableLangs?.length > 0 && (
+                <div className="relative" ref={langMenuRef}>
+                  <button
+                    onClick={() => setShowLangMenu(!showLangMenu)}
+                    className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg hover:border-slate-300 hover:shadow-sm transition-all text-xs font-bold text-slate-700 uppercase tracking-wide min-w-[120px] justify-between"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Globe size={14} className="text-slate-400" />
+                      {langLabels[lang] || lang.toUpperCase()}
+                    </span>
+                    <ChevronDown size={14} className="text-slate-400" />
+                  </button>
+
+                  {showLangMenu && (
+                    <div className="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in fade-in zoom-in-95 origin-bottom-left max-h-60 overflow-y-auto">
+                      <div className="px-3 py-2 bg-slate-50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0">
+                        {tDownloader('selectLanguage')}
+                      </div>
+                      {availableLangs.map((l: string) => (
+                        <button
+                          key={l}
+                          onClick={() => { setLang(l); setShowLangMenu(false); }}
+                          className="w-full text-left px-3 py-2.5 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center justify-between group"
+                        >
+                          <span>{langLabels[l] || l.toUpperCase()}</span>
+                          {lang === l && <Check size={14} className="text-blue-600" />}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
+            </>
           )}
 
           {mode === 'summary' && (

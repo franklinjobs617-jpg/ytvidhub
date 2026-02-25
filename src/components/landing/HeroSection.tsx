@@ -60,8 +60,10 @@ export default function HeroSection() {
   const [videoResults, setVideoResults] = useState<VideoResult[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [downloadFormat, setDownloadFormat] = useState("srt");
+  const [downloadLang, setDownloadLang] = useState("en");
   const [activeSummaryId, setActiveSummaryId] = useState<string | null>(null);
   const [isActionClicked, setIsActionClicked] = useState(false);
+  const pendingAnalysisRef = useRef(false);
 
   const refreshCredits = async () => {
     if (user) {
@@ -94,6 +96,12 @@ export default function HeroSection() {
     if (user) {
       // 初始加载时获取积分
       refreshCredits();
+
+      // 登录后自动继续之前的操作
+      if (pendingAnalysisRef.current) {
+        pendingAnalysisRef.current = false;
+        handleMainAction();
+      }
 
       // 设置定期刷新积分（每30秒检查一次）
       const interval = setInterval(() => {
@@ -197,6 +205,7 @@ export default function HeroSection() {
       }
       if (!user) {
         toast.success(tAuth('signupMessage'), { position: "top-center" });
+        pendingAnalysisRef.current = true;
         setShowLoginModal(true);
         return;
       }
@@ -230,6 +239,31 @@ export default function HeroSection() {
       if (videoResults.length === 0) {
         const uniqueUrls = Array.from(new Set(urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http"))));
         if (uniqueUrls.length === 0) return;
+
+        // 单视频直接下载快速路径
+        const isSingleVideo = uniqueUrls.length === 1 &&
+          !uniqueUrls[0].includes('playlist?list=') &&
+          !uniqueUrls[0].includes('/channel/') &&
+          !uniqueUrls[0].includes('/@') &&
+          !uniqueUrls[0].includes('/c/');
+
+        if (isSingleVideo) {
+          if (user && (user.credits || 0) <= 0) {
+            toast.error(tErrors('insufficientCredits'), {
+              description: "You need credits to download subtitles.",
+              action: { label: "Get Credits", onClick: () => router.push('/pricing') },
+              duration: 5000,
+            });
+            return;
+          }
+          const url = uniqueUrls[0];
+          const videoId = (url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?&]+)/) || [])[1] || 'subtitle';
+          await startSingleDownload({ url, title: videoId }, downloadFormat, downloadLang);
+          await refreshCredits();
+          setTimeout(() => refreshCredits(), 2000);
+          return;
+        }
+
         const results = await analyzeUrls(uniqueUrls);
         setVideoResults(results);
         setSelectedIds(new Set(results.filter((v: any) => v.hasSubtitles).map((v: any) => v.id)));
@@ -255,9 +289,9 @@ export default function HeroSection() {
 
         // 执行下载操作
         if (selectedVideos.length === 1) {
-          await startSingleDownload(selectedVideos[0], downloadFormat);
+          await startSingleDownload(selectedVideos[0], downloadFormat, downloadLang);
         } else {
-          await startBulkDownload(selectedVideos, downloadFormat);
+          await startBulkDownload(selectedVideos, downloadFormat, downloadLang);
         }
 
         // 下载完成后，立即刷新一次积分
@@ -451,6 +485,9 @@ export default function HeroSection() {
                   format={downloadFormat}
                   setFormat={setDownloadFormat}
                   availableFormats={selectedMode === "download" ? ["srt", "vtt", "txt"] : []}
+                  lang={downloadLang}
+                  setLang={setDownloadLang}
+                  availableLangs={selectedMode === "download" ? ["en", "zh", "es", "fr", "de", "ja", "ko", "pt", "ru", "ar", "hi", "it", "nl", "pl", "tr", "vi", "id", "th"] : []}
                   onReset={handleReset}
                   onAction={handleMainAction}
                   canReset={videoResults.length > 0 || !!urls}

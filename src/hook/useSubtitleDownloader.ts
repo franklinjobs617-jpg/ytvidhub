@@ -277,7 +277,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     }
   };
 
-  const startSingleDownload = async (video: any, format: string) => {
+  const startSingleDownload = async (video: any, format: string, lang: string = "en") => {
     setIsDownloading(true);
     setProgress(10);
     setStatusText("Checking credits...");
@@ -288,7 +288,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
       const blob = await subtitleApi.downloadSingle({
         url: video.url,
-        lang: "en",
+        lang,
         format,
         title: video.title,
       });
@@ -340,7 +340,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     }
   };
 
-  const startBulkDownload = async (videos: any[], format: string) => {
+  const startBulkDownload = async (videos: any[], format: string, lang: string = "en") => {
     setIsDownloading(true);
     setProgress(5);
     setStatusText("Checking credits...");
@@ -349,7 +349,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       setStatusText("Initializing...");
       startSmoothProgress(30);
 
-      const task = await subtitleApi.submitBulkTask(videos, "en", format);
+      const task = await subtitleApi.submitBulkTask(videos, lang, format);
       const timer = setInterval(async () => {
         try {
           const status = await subtitleApi.checkTaskStatus(task.task_id);

@@ -74,6 +74,7 @@
   "downloader": {
     "batchEnabled": "Batch processing enabled",
     "selectFormat": "Select Format",
+    "selectLanguage": "Select Language",
     "aiMode": "AI Summary Mode",
     "analyzing": "Analyzing...",
     "processing": "Processing..."
