@@ -107,7 +107,7 @@ function WorkspaceContent() {
 
       Promise.all([
         subtitleApi.getVideoInfo(urls[0]).catch(() => null),
-        subtitleApi.getHistoryContent(videoId).catch(() => ({})),
+        subtitleApi.getHistoryContent(videoId).catch((): { summaryContent?: string; subtitleContent?: string } => ({})),
       ]).then(([videoInfo, savedContent]) => {
         if (isCancelled) return;
 
@@ -125,7 +125,7 @@ function WorkspaceContent() {
         setCurrentVideo(enhancedVideo);
         setVideoList([enhancedVideo]);
 
-        if (savedContent.summaryContent) {
+        if (savedContent.summaryContent ) {
           setSummaryData(savedContent.summaryContent);
           analysisCache.current.set(vid, savedContent.summaryContent);
         }
