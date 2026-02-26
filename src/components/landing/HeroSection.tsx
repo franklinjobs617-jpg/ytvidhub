@@ -375,19 +375,54 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                     <h3 className="text-lg font-bold text-slate-700 animate-pulse">{tStatus('syncing')}</h3>
                   </div>
                 ) : downloadedContent ? (
-                  <div className="flex-1 flex flex-col p-5 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    {/* 视频标题 */}
-                    <div className="flex items-start gap-3">
-                      <div className="shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mt-0.5">
-                        <CheckCheck size={16} className="text-green-600" />
+                  <div className="flex-1 flex flex-col p-5 gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    {/* 顶部：标题 + 操作按钮（始终可见） */}
+                    <div className="flex items-center gap-3">
+                      <div className="shrink-0 w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center">
+                        <CheckCheck size={14} className="text-green-600" />
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-green-600 uppercase tracking-widest mb-0.5">Subtitle extracted</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest">Subtitle extracted</p>
                         <h3 className="text-sm font-semibold text-slate-800 truncate">{downloadedContent.title}</h3>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          onClick={handleCopyContent}
+                          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-black text-xs uppercase tracking-widest transition-all ${
+                            copied
+                              ? "bg-green-500 text-white"
+                              : "bg-slate-900 text-white hover:bg-black"
+                          }`}
+                        >
+                          {copied ? <CheckCheck size={13} /> : <Copy size={13} />}
+                          {copied ? "Copied!" : "Copy"}
+                        </button>
+                        <button
+                          onClick={() => {
+                            const url = downloadedContent.url;
+                            const text = downloadedContent.text;
+                            const fmt = downloadFormat;
+                            // 先导航，不阻塞用户
+                            router.push(`/workspace?urls=${encodeURIComponent(url)}&from=home&mode=summary`);
+                            // 异步写缓存，workspace 挂载前一定完成
+                            setTimeout(() => {
+                              try {
+                                sessionStorage.setItem(
+                                  `ytvidhub_transcript_${url}`,
+                                  JSON.stringify({ text, format: fmt })
+                                );
+                              } catch {}
+                            }, 0);
+                          }}
+                          className="flex items-center gap-1.5 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-black text-xs uppercase tracking-widest transition-all"
+                        >
+                          <Sparkles size={13} />
+                          AI Summary
+                        </button>
                       </div>
                     </div>
 
-                    {/* 内容预览 */}
+                    {/* 内容预览（可滚动） */}
                     <div className="flex-1 relative bg-slate-50 rounded-xl border border-slate-200 overflow-hidden">
                       <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 px-2 py-1 bg-white/80 backdrop-blur-sm rounded-md border border-slate-200 text-[10px] font-bold text-slate-400 uppercase tracking-wide">
                         <FileText size={10} />
@@ -396,28 +431,6 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                       <pre className="h-full overflow-y-auto p-4 text-xs text-slate-600 font-mono leading-relaxed whitespace-pre-wrap break-words">
                         {downloadedContent.text}
                       </pre>
-                    </div>
-
-                    {/* 操作按钮 */}
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={handleCopyContent}
-                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm uppercase tracking-widest transition-all ${
-                          copied
-                            ? "bg-green-500 text-white"
-                            : "bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5"
-                        }`}
-                      >
-                        {copied ? <CheckCheck size={16} /> : <Copy size={16} />}
-                        {copied ? "Copied!" : "Copy All Text"}
-                      </button>
-                      <button
-                        onClick={() => router.push(`/workspace?urls=${encodeURIComponent(downloadedContent.url)}&from=home&mode=summary`)}
-                        className="flex items-center gap-2 px-5 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-black text-sm uppercase tracking-widest transition-all hover:shadow-lg hover:-translate-y-0.5"
-                      >
-                        <Sparkles size={16} />
-                        AI Summary
-                      </button>
                     </div>
                   </div>
                 ) : videoResults.length === 0 ? (

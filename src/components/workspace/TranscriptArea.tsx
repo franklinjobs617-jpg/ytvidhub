@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { subtitleApi } from "@/lib/api";
-import { Search, AlignLeft, List, Copy, Check, Clock } from "lucide-react";
+import { Search, AlignLeft, List, Copy, Check } from "lucide-react";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -27,8 +27,32 @@ export function TranscriptArea({
 
   useEffect(() => {
     if (!videoUrl) return;
+
+    // 优先读 sessionStorage 缓存，避免重复请求
+    try {
+      const cached = sessionStorage.getItem(`ytvidhub_transcript_${videoUrl}`);
+      if (cached) {
+        const { text, format } = JSON.parse(cached);
+        if (format === 'vtt') {
+          setTranscriptVtt(text);
+          return;
+        }
+        if (format === 'srt') {
+          // 把 SRT 转成 VTT 格式供 parseVtt 使用
+          const vtt = 'WEBVTT\n\n' + text
+            .replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2');
+          setTranscriptVtt(vtt);
+          return;
+        }
+        if (format === 'txt') {
+          // 纯文本：包装成单条 VTT 供显示
+          setTranscriptVtt(`WEBVTT\n\n00:00:00.000 --> 99:59:59.000\n${text}`);
+          return;
+        }
+      }
+    } catch {}
+
     setLoading(true);
-    // 只下载 VTT 即可，因为它包含所有信息
     subtitleApi
       .downloadSingle({
         url: videoUrl,
@@ -43,7 +67,8 @@ export function TranscriptArea({
   }, [videoUrl]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("Please implement full copy logic");
+    const text = displayItems.map(item => item.text).join('\n\n');
+    navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -78,6 +103,24 @@ export function TranscriptArea({
 
     return finalItems;
   }, [transcriptVtt, isSmartMode, searchQuery]);
+
+  const activeItemRef = useRef<HTMLDivElement>(null);
+
+  const activeIndex = useMemo(() => {
+    if (!currentTime || searchQuery || displayItems.length === 0) return -1;
+    let idx = -1;
+    for (let i = 0; i < displayItems.length; i++) {
+      if (displayItems[i].startTime <= currentTime) idx = i;
+      else break;
+    }
+    return idx;
+  }, [currentTime, searchQuery, displayItems]);
+
+  useEffect(() => {
+    if (activeIndex >= 0 && activeItemRef.current) {
+      activeItemRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [activeIndex]);
 
   return (
     <div className="flex flex-col h-full bg-white border-r border-slate-100/50">
@@ -152,44 +195,48 @@ export function TranscriptArea({
              ${isSmartMode ? "space-y-6" : "space-y-3"} 
           `}
           >
-            {displayItems.map((item, i) => (
-              <div key={i} className="group relative">
-                {isSmartMode ? (
-                  <div className="mb-1.5">
-                    <span className="text-[11px] font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded cursor-pointer hover:bg-blue-100 transition-colors">
-                      {formatTime(item.startTime)}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-baseline gap-2 mb-0.5">
-                    <span className="shrink-0 text-[10px] font-mono text-slate-400 w-10 text-right">
-                      {formatTime(item.startTime)}
-                    </span>
-                  </div>
-                )}
-
-                {/* 文本内容 */}
+            {displayItems.map((item, i) => {
+              const isActive = i === activeIndex;
+              return (
                 <div
-                  className={`
-                    text-slate-700 transition-colors
-                    ${isSmartMode
-                      ? "text-sm leading-6 text-justify"
-                      : "text-sm leading-snug pl-12 -mt-5"
-                    }
-                `}
+                  key={i}
+                  ref={isActive ? activeItemRef : undefined}
+                  className={`group relative rounded-lg transition-colors ${isActive ? "bg-violet-50" : ""}`}
                 >
                   {isSmartMode ? (
-                    <p>{highlightText(item.text, searchQuery)}</p>
+                    <div className="mb-1.5">
+                      <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded cursor-pointer transition-colors ${isActive ? "text-violet-700 bg-violet-100" : "text-blue-600 bg-blue-50 hover:bg-blue-100"}`}>
+                        {formatTime(item.startTime)}
+                      </span>
+                    </div>
                   ) : (
-                    <div className="flex gap-3">
-                      <p className="text-slate-600 hover:text-slate-900">
-                        {highlightText(item.text, searchQuery)}
-                      </p>
+                    <div className="flex items-baseline gap-2 mb-0.5">
+                      <span className={`shrink-0 text-[10px] font-mono w-10 text-right ${isActive ? "text-violet-600 font-bold" : "text-slate-400"}`}>
+                        {formatTime(item.startTime)}
+                      </span>
                     </div>
                   )}
+
+                  <div
+                    className={`
+                      transition-colors
+                      ${isSmartMode ? "text-sm leading-6 text-justify" : "text-sm leading-snug pl-12 -mt-5"}
+                      ${isActive ? "text-slate-900 font-medium" : "text-slate-700"}
+                    `}
+                  >
+                    {isSmartMode ? (
+                      <p>{highlightText(item.text, searchQuery)}</p>
+                    ) : (
+                      <div className="flex gap-3">
+                        <p className={isActive ? "text-slate-900" : "text-slate-600 hover:text-slate-900"}>
+                          {highlightText(item.text, searchQuery)}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <div className="h-10" />
           </div>
         ) : (
