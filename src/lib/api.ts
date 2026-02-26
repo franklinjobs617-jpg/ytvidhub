@@ -213,4 +213,48 @@ export const subtitleApi = {
   async deductCreditsAfterSummary() {
     return this.deductCredits(2, "AI Summary Generation");
   },
+
+  // 11. 写入/更新历史记录
+  async upsertHistory(payload: {
+    videoId: string;
+    videoUrl: string;
+    title: string;
+    thumbnail?: string;
+    duration?: number;
+    lastAction: "subtitle_download" | "ai_summary";
+    format?: string;
+    lang?: string;
+  }) {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+    if (!token) return;
+    try {
+      await fetch("/api/history/upsert", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch {}
+  },
+
+  // 12. 获取最近历史记录
+  async getHistory(limit = 10) {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+    if (!token) return [];
+    try {
+      const res = await fetch(`/api/history?limit=${limit}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      });
+      if (!res.ok) return [];
+      const json = await res.json();
+      return json.data ?? [];
+    } catch {
+      return [];
+    }
+  },
 };

@@ -43,14 +43,18 @@
   - `TranscriptArea.tsx`：`activeIndex` 找到当前播放对应的字幕行；`activeItemRef` + `scrollIntoView` 自动滚动；高亮样式（violet 背景 + 加粗文字）；搜索时禁用自动滚动
 
 ### P2 - 留存优化
-- [ ] **历史记录 / Library 功能**
-  - 用户下载/分析过的视频保存到数据库
-  - 需要新增 Prisma model（`download_history` 表）
-  - 登录后首页展示最近分析的视频列表
+- [x] **历史记录 / Library 功能**
+  - `prisma/schema.prisma`：新增 `video_history` model，`@@unique([userId, videoId])`
+  - `api/history/upsert/route.ts`：POST，upsert 历史记录，`accessCount` 自增
+  - `api/history/route.ts`：GET，返回最近 N 条记录（最多 20）
+  - `lib/api.ts`：新增 `upsertHistory` / `getHistory` 方法
+  - `workspace/page.tsx`：AI Summary 完成后 fire-and-forget 写入历史
+  - `components/landing/RecentHistory.tsx`：历史卡片组件（缩略图 + 标题 + 时间 + 类型标签）
+  - `components/landing/HeroSection.tsx`：登录用户在空状态下展示最近历史
 
-- [ ] **登录后首页改造**
-  - 已登录用户看到个人 Dashboard（最近记录、积分状态）
-  - 未登录用户保持现有营销页面
+- [x] **登录后首页改造**
+  - 已登录用户在空状态区域看到最近分析/下载的视频列表
+  - 未登录用户保持现有营销页面（RecentHistory 仅在 `user` 存在时渲染）
 
 ### P3 - 转化优化
 - [ ] **首次 AI Summary 免费**

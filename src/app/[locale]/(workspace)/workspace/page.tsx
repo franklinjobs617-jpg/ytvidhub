@@ -278,6 +278,17 @@ function WorkspaceContent() {
     try {
       await generateAiSummary(targetUrl, () => {});
       await refreshUser();
+      // 写入历史记录（fire-and-forget，不阻塞主流程）
+      if (currentVideo) {
+        subtitleApi.upsertHistory({
+          videoId: targetId,
+          videoUrl: targetUrl,
+          title: currentVideo.title || "Unknown Video",
+          thumbnail: currentVideo.thumbnail,
+          duration: currentVideo.duration,
+          lastAction: "ai_summary",
+        });
+      }
     } catch (error) {
       // error already handled in generateAiSummary
     } finally {

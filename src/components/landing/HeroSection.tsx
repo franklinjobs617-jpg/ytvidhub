@@ -26,6 +26,7 @@ import { EnhancedDownloaderView, VideoResult } from "@/components/views/Enhanced
 import { SummaryView } from "@/components/views/SummaryView";
 import { ControlBar } from "@/components/hero/ControlBar";
 import { PlaylistProcessingModal } from "@/components/playlist/PlaylistProcessingModal";
+import { RecentHistory } from "@/components/landing/RecentHistory";
 
 // 校验工具 - 支持playlist和channel
 const isValidYoutubeUrl = (url: string) => {
@@ -495,6 +496,13 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                           {t('placeholder.pasteDemo')}
                         </button>
                       </div>
+
+                      {/* 5. 最近历史记录 */}
+                      {user && (
+                        <div className="pointer-events-auto mt-6 w-full max-w-2xl">
+                          <RecentHistory />
+                        </div>
+                      )}
                     </div>
 
                     <textarea
