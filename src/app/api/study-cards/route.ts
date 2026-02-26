@@ -55,8 +55,8 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // 代理到后端
-        const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_study_cards", {
+        // 代理到后端流式接口
+        const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_study_cards_stream", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -69,8 +69,15 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Failed to generate study cards' }, { status: backendResponse.status })
         }
 
-        const data = await backendResponse.json()
-        return NextResponse.json(data)
+        return new NextResponse(backendResponse.body, {
+            status: 200,
+            headers: {
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Transfer-Encoding': 'chunked',
+                'X-Accel-Buffering': 'no',
+                'Cache-Control': 'no-cache, no-transform',
+            },
+        })
 
     } catch (error) {
         return NextResponse.json(

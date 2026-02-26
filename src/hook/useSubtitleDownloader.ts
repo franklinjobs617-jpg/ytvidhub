@@ -304,10 +304,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       );
       trackEvent('download_success', { type: 'single', format, lang });
 
-      // 读取内容用于页面展示
+      // 读取内容用于页面展示 + 保存到历史记录
+      let subtitleText: string | undefined;
       try {
-        const text = await blob.text();
-        setDownloadedContent({ text, title: video.title, url: video.url });
+        subtitleText = await blob.text();
+        setDownloadedContent({ text: subtitleText, title: video.title, url: video.url });
       } catch {
         // 读取失败不影响下载
       }
@@ -323,6 +324,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         lastAction: "subtitle_download",
         format,
         lang,
+        subtitleContent: subtitleText,
       }).catch(() => {});
 
       // 延迟刷新积分显示，确保服务器端已更新

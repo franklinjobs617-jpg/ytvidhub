@@ -42,10 +42,12 @@ model video_history {
   title       String   @db.Text
   thumbnail   String?  @db.Text
   duration    Int?
-  lastAction  String   @map("last_action")
-  format      String?
-  lang        String?  @default("en")
-  accessCount Int      @default(1) @map("access_count")
+  lastAction      String   @map("last_action")
+  format          String?
+  lang            String?  @default("en")
+  accessCount     Int      @default(1) @map("access_count")
+  summaryContent  String?  @db.LongText @map("summary_content")
+  subtitleContent String?  @db.LongText @map("subtitle_content")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 

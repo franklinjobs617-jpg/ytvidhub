@@ -28,6 +28,7 @@ function WorkspaceContent() {
   const fromParam = searchParams.get("from");
   const modeParam = searchParams.get("mode");
   const isFromHome = fromParam === "home";
+  const isFromHistory = fromParam === "history";
   const isSummaryMode = modeParam === "summary";
 
   const initialUrls = urlsParam ? decodeURIComponent(urlsParam).split(",") : [];
@@ -100,8 +101,45 @@ function WorkspaceContent() {
       }
     };
 
+    // 如果是从历史记录来的，加载保存的内容
+    if (isFromHistory && urls.length === 1) {
+      const videoId = (urls[0].match(/[?&]v=([^&#]+)/) || [])[1] || urls[0].slice(-11);
+
+      Promise.all([
+        subtitleApi.getVideoInfo(urls[0]).catch(() => null),
+        subtitleApi.getHistoryContent(videoId).catch(() => ({})),
+      ]).then(([videoInfo, savedContent]) => {
+        if (isCancelled) return;
+
+        const vid = videoInfo?.id || videoId;
+        const enhancedVideo = {
+          id: vid,
+          url: urls[0],
+          title: videoInfo?.title || 'Loading...',
+          uploader: videoInfo?.uploader || '...',
+          hasSubtitles: videoInfo?.has_subtitles ?? true,
+          thumbnail: videoInfo?.thumbnail || `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
+          duration: videoInfo?.duration,
+        };
+
+        setCurrentVideo(enhancedVideo);
+        setVideoList([enhancedVideo]);
+
+        if (savedContent.summaryContent) {
+          setSummaryData(savedContent.summaryContent);
+          analysisCache.current.set(vid, savedContent.summaryContent);
+        }
+
+        // 清理URL参数
+        const newParams = new URLSearchParams(searchParams.toString());
+        newParams.delete("from");
+        router.replace(`/workspace?${newParams.toString()}`, { scroll: false });
+      }).catch(() => {
+        if (!isCancelled) analyzeUrls(urls).then(handleAnalysisResults);
+      });
+
     // 如果是summary模式，先快速获取视频信息，然后立即开始分析
-    if (isSummaryMode && urls.length === 1) {
+    } else if (isSummaryMode && urls.length === 1) {
       // 快速获取视频信息
       subtitleApi.getVideoInfo(urls[0]).then((videoInfo) => {
         if (isCancelled) return;
@@ -277,7 +315,7 @@ function WorkspaceContent() {
     if (window.innerWidth < 768) setActiveTab("analysis");
 
     try {
-      await generateAiSummary(targetUrl, () => {});
+      const summaryText = await generateAiSummary(targetUrl, () => {});
       await refreshUser();
       // 写入历史记录（fire-and-forget，不阻塞主流程）
       if (currentVideo) {
@@ -288,6 +326,7 @@ function WorkspaceContent() {
           thumbnail: currentVideo.thumbnail,
           duration: currentVideo.duration,
           lastAction: "ai_summary",
+          summaryContent: summaryText || undefined,
         });
       }
     } catch (error) {

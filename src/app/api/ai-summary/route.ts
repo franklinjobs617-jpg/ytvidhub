@@ -42,54 +42,27 @@ async function handleAISummaryRequest(token: string, url: string): Promise<NextR
         return NextResponse.json({ error: 'User data not found' }, { status: 400 })
     }
 
-    // 2. 一次查询同时拿到 credits + ai_summary 使用次数
-    const dbUser = await prisma.user.findUnique({
-        where: { email_type: { email: user.email, type: user.type.toString() } },
-        select: {
-            id: true,
-            credits: true,
-            _count: {
-                select: {
-                    videoHistory: { where: { lastAction: 'ai_summary' } }
-                }
-            }
-        },
-    }).catch(() => null);
-
-    const isFirstSummary = dbUser ? dbUser._count.videoHistory === 0 : false;
-    const dbCredits = dbUser ? parseInt(dbUser.credits) || 0 : parseInt(user.credits) || 0;
-
-    // 3. 积分检查（第一次免费跳过）
-    if (!isFirstSummary && dbCredits < 2) {
-        return NextResponse.json(
-            { error: `Insufficient credits. You have ${dbCredits} credits, but AI Summary requires 2 credits.` },
-            { status: 402 }
-        )
-    }
-
-    // 4. 扣除积分（内联，避免二次 getUser HTTP 调用）
-    if (!isFirstSummary) {
-        try {
-            await prisma.$transaction(async (tx: any) => {
-                const fresh = await tx.user.findUnique({
-                    where: { email_type: { email: user.email, type: user.type.toString() } },
-                    select: { credits: true },
-                });
-                if (!fresh) throw new Error('User not found in database');
-                const currentCredits = parseInt(fresh.credits) || 0;
-                if (currentCredits < 2) throw new Error('Insufficient credits');
-                await tx.user.update({
-                    where: { email_type: { email: user.email, type: user.type.toString() } },
-                    data: { credits: (currentCredits - 2).toString() },
-                });
+    // 2. 检查并扣除积分
+    try {
+        await prisma.$transaction(async (tx: any) => {
+            const fresh = await tx.user.findUnique({
+                where: { email_type: { email: user.email, type: user.type.toString() } },
+                select: { credits: true },
             });
-        } catch (e: any) {
-            const isInsufficient = e.message?.includes('Insufficient');
-            return NextResponse.json(
-                { error: isInsufficient ? 'Insufficient credits. AI Summary requires 2 credits.' : 'Failed to deduct credits' },
-                { status: isInsufficient ? 402 : 500 }
-            );
-        }
+            if (!fresh) throw new Error('User not found in database');
+            const currentCredits = parseInt(fresh.credits) || 0;
+            if (currentCredits < 2) throw new Error('Insufficient credits');
+            await tx.user.update({
+                where: { email_type: { email: user.email, type: user.type.toString() } },
+                data: { credits: (currentCredits - 2).toString() },
+            });
+        });
+    } catch (e: any) {
+        const isInsufficient = e.message?.includes('Insufficient');
+        return NextResponse.json(
+            { error: isInsufficient ? 'Insufficient credits. AI Summary requires 2 credits.' : 'Failed to deduct credits' },
+            { status: isInsufficient ? 402 : 500 }
+        );
     }
 
     // 5. 代理到后端流式 API

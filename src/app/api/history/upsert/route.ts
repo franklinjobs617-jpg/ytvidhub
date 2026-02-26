@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json()
-        const { videoId, videoUrl, title, thumbnail, duration, lastAction, format, lang } = body
+        const { videoId, videoUrl, title, thumbnail, duration, lastAction, format, lang, summaryContent, subtitleContent } = body
 
         if (!videoId || !videoUrl || !title || !lastAction) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -49,6 +49,8 @@ export async function POST(request: NextRequest) {
                 format: format ?? undefined,
                 lang: lang ?? 'en',
                 accessCount: { increment: 1 },
+                ...(summaryContent != null ? { summaryContent } : {}),
+                ...(subtitleContent != null ? { subtitleContent } : {}),
             },
             create: {
                 userId: dbUser.id,
@@ -61,6 +63,8 @@ export async function POST(request: NextRequest) {
                 format,
                 lang: lang ?? 'en',
                 accessCount: 1,
+                summaryContent: summaryContent ?? null,
+                subtitleContent: subtitleContent ?? null,
             },
         })
 

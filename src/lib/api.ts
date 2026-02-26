@@ -224,6 +224,8 @@ export const subtitleApi = {
     lastAction: "subtitle_download" | "ai_summary";
     format?: string;
     lang?: string;
+    summaryContent?: string;
+    subtitleContent?: string;
   }) {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
@@ -240,7 +242,24 @@ export const subtitleApi = {
     } catch {}
   },
 
-  // 12. 获取最近历史记录
+  // 12. 获取历史记录中保存的内容（summary / subtitle）
+  async getHistoryContent(videoId: string): Promise<{ summaryContent?: string; subtitleContent?: string }> {
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+    if (!token) return {};
+    try {
+      const res = await fetch(`/api/history/content?videoId=${encodeURIComponent(videoId)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      });
+      if (!res.ok) return {};
+      return res.json();
+    } catch {
+      return {};
+    }
+  },
+
+  // 13. 获取最近历史记录
   async getHistory(limit = 10) {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;

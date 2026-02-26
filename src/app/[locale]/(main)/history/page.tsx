@@ -156,7 +156,7 @@ export default function HistoryPage() {
               <button
                 key={item.videoId}
                 onClick={() => {
-                  const params = new URLSearchParams({ urls: item.videoUrl });
+                  const params = new URLSearchParams({ urls: item.videoUrl, from: "history" });
                   if (item.lastAction === "ai_summary")
                     params.set("mode", "summary");
                   router.push(`/workspace?${params.toString()}`);

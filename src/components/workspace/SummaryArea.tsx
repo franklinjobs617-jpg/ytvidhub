@@ -39,6 +39,8 @@ interface SummaryAreaProps {
 interface CardsViewProps {
   cards: StudyCard[];
   isLoading: boolean;
+  isCardsLoading: boolean;
+  cardsStatus: string;
   onSeek: (time: string) => void;
   videoUrl?: string;
 }
@@ -78,6 +80,35 @@ interface EnhancedCardItemProps {
   onToggleMastered: () => void;
 }
 
+// Parse complete card blocks from streamed text
+function extractCards(text: string, isFinal = false): { cards: StudyCard[]; remaining: string } {
+  const cards: StudyCard[] = [];
+  const blockRegex = /---\n([\s\S]*?)\n---/g;
+  let match;
+  let lastIndex = 0;
+
+  while ((match = blockRegex.exec(text)) !== null) {
+    const card = parseCardBlock(match[1]);
+    if (card) cards.push(card);
+    lastIndex = match.index + match[0].length;
+  }
+
+  return { cards, remaining: lastIndex > 0 ? text.substring(lastIndex) : text };
+}
+
+function parseCardBlock(block: string): StudyCard | null {
+  const card: Partial<StudyCard> = {};
+  for (const line of block.split('\n')) {
+    if (line.startsWith('Q: ')) card.question = line.substring(3).trim();
+    else if (line.startsWith('A: ')) card.answer = line.substring(3).trim();
+    else if (line.startsWith('Type: ')) card.type = line.substring(6).trim();
+    else if (line.startsWith('Category: ')) card.category = line.substring(10).trim();
+    else if (line.startsWith('T: ') && line.substring(3).trim() !== 'null') card.time = line.substring(3).trim();
+  }
+  if (!card.question || !card.answer) return null;
+  return card as StudyCard;
+}
+
 export function SummaryArea({
   data,
   isLoading,
@@ -89,8 +120,9 @@ export function SummaryArea({
 }: SummaryAreaProps) {
   const [copied, setCopied] = useState(false);
   const [viewMode, setViewMode] = useState<'summary' | 'cards'>('summary');
-  const [cardsData, setCardsData] = useState<any[]>([]);
+  const [cardsData, setCardsData] = useState<StudyCard[]>([]);
   const [isCardsLoading, setIsCardsLoading] = useState(false);
+  const [cardsStatus, setCardsStatus] = useState('');
   const { toasts, removeToast, success, error: showError, info: showInfo } = useToast();
 
   const handleCopy = () => {
@@ -103,18 +135,76 @@ export function SummaryArea({
   const generateCards = async () => {
     if (!videoUrl || isCardsLoading) return;
     setIsCardsLoading(true);
+    setCardsData([]);
+    setCardsStatus('');
+
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
       if (!token) { showError('Please login first'); return; }
+
       const res = await fetch('/api/study-cards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ url: videoUrl }),
       });
-      const json = await res.json();
-      if (!res.ok) { showError(json.error || 'Failed to generate study cards'); return; }
-      setCardsData(json.cards || []);
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        showError(json.error || 'Failed to generate study cards');
+        return;
+      }
+
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+      if (!reader) throw new Error('No response body');
+
+      let buffer = '';
+      let allParsedCards: StudyCard[] = [];
       setViewMode('cards');
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+
+        if (chunk.includes('__STATUS__:')) {
+          const parts = chunk.split('__STATUS__:');
+          for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            if (!part) continue;
+            if (i > 0) {
+              const lineEnd = part.indexOf('\n');
+              if (lineEnd !== -1) {
+                setCardsStatus(part.substring(0, lineEnd).trim());
+                buffer += part.substring(lineEnd + 1);
+              }
+            } else {
+              buffer += part;
+            }
+          }
+        } else if (chunk.includes('__ERROR__:')) {
+          showError(chunk.split('__ERROR__:')[1] || 'Failed to generate study cards');
+          return;
+        } else {
+          buffer += chunk;
+        }
+
+        // Parse any newly completed card blocks
+        const result = extractCards(buffer);
+        if (result.cards.length > 0) {
+          allParsedCards = [...allParsedCards, ...result.cards];
+          setCardsData([...allParsedCards]);
+          buffer = result.remaining;
+        }
+      }
+
+      // Final parse
+      const final = extractCards(buffer, true);
+      if (final.cards.length > 0) {
+        setCardsData(prev => [...prev, ...final.cards]);
+      }
+      setCardsStatus('');
     } catch {
       showError('Failed to generate study cards');
     } finally {
@@ -226,6 +316,8 @@ export function SummaryArea({
           <CardsView
             cards={cardsData}
             isLoading={isLoading}
+            isCardsLoading={isCardsLoading}
+            cardsStatus={cardsStatus}
             onSeek={onSeek}
             videoUrl={videoUrl}
           />
@@ -418,7 +510,7 @@ function LoadingSkeleton() {
 }
 
 // 卡片视图组件 - NotebookLM风格重设计
-function CardsView({ cards, isLoading, onSeek, videoUrl }: CardsViewProps) {
+function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, videoUrl }: CardsViewProps) {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [studyMode, setStudyMode] = useState<'browse' | 'study'>('browse');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -448,8 +540,26 @@ function CardsView({ cards, isLoading, onSeek, videoUrl }: CardsViewProps) {
     });
   };
 
-  if (isLoading && cards.length === 0) {
-    return <LoadingSkeleton />;
+  if (isCardsLoading && cards.length === 0) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-sm">
+          <div className="w-16 h-16 bg-violet-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Sparkles size={28} className="text-violet-600" />
+          </div>
+          <h2 className="text-xl font-semibold text-slate-800 mb-2">Generating Study Cards...</h2>
+          <p className="text-slate-500 text-sm mb-4">
+            {cardsStatus || 'AI is creating personalized flashcards'}
+          </p>
+          <div className="flex justify-center gap-1.5">
+            {[0, 1, 2].map(i => (
+              <div key={i} className="w-2 h-2 bg-violet-500 rounded-full animate-bounce"
+                style={{ animationDelay: `${i * 0.15}s` }} />
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
   }
 
   if (cards.length === 0) {
@@ -458,12 +568,9 @@ function CardsView({ cards, isLoading, onSeek, videoUrl }: CardsViewProps) {
         <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mb-6">
           <BookOpen size={32} className="text-white" />
         </div>
-        <h3 className="text-xl font-bold text-slate-800 mb-3">
-          Ready to Create Study Cards
-        </h3>
+        <h3 className="text-xl font-bold text-slate-800 mb-3">Ready to Create Study Cards</h3>
         <p className="text-slate-600 text-sm max-w-md leading-relaxed">
           Study cards will appear here when the AI analysis includes interactive learning content.
-          These cards are designed to help you truly understand and retain key concepts.
         </p>
       </div>
     );
@@ -487,7 +594,13 @@ function CardsView({ cards, isLoading, onSeek, videoUrl }: CardsViewProps) {
           <div>
             <h2 className="text-lg font-bold text-slate-900">Study Cards</h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              <span className="text-green-600 font-semibold">{masteredCards.size}</span> mastered · {cards.length - masteredCards.size} remaining
+              {isCardsLoading ? (
+                <span className="text-violet-600 font-medium animate-pulse">
+                  {cardsStatus || `${cards.length} cards generated...`}
+                </span>
+              ) : (
+                <><span className="text-green-600 font-semibold">{masteredCards.size}</span> mastered · {cards.length - masteredCards.size} remaining</>
+              )}
             </p>
           </div>
 
