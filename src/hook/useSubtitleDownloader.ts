@@ -32,6 +32,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const [statusText, setStatusText] = useState("");
   const [playlistProcessing, setPlaylistProcessing] = useState<PlaylistProcessingState | null>(null);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [downloadedContent, setDownloadedContent] = useState<{ text: string; title: string; url: string } | null>(null);
 
   const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const processingCancelRef = useRef<boolean>(false);
@@ -303,6 +304,14 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       );
       trackEvent('download_success', { type: 'single', format, lang });
 
+      // 读取内容用于页面展示
+      try {
+        const text = await blob.text();
+        setDownloadedContent({ text, title: video.title, url: video.url });
+      } catch {
+        // 读取失败不影响下载
+      }
+
       // 延迟刷新积分显示，确保服务器端已更新
       setTimeout(() => {
         if (onCreditsChanged) {
@@ -523,6 +532,8 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     }
   };
 
+  const clearDownloadedContent = () => setDownloadedContent(null);
+
   const pauseProcessing = () => {
     processingPausedRef.current = true;
   };
@@ -556,5 +567,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     pauseProcessing,
     resumeProcessing,
     cancelProcessing,
+    downloadedContent,
+    clearDownloadedContent,
   };
 }

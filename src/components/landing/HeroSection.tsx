@@ -15,6 +15,9 @@ import {
   Clipboard,
   TrendingUp,
   Sparkles,
+  Copy,
+  CheckCheck,
+  FileText,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
@@ -67,7 +70,15 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const [downloadLang, setDownloadLang] = useState("en");
   const [activeSummaryId, setActiveSummaryId] = useState<string | null>(null);
   const [isActionClicked, setIsActionClicked] = useState(false);
+  const [copied, setCopied] = useState(false);
   const pendingAnalysisRef = useRef(false);
+
+  const handleCopyContent = async () => {
+    if (!downloadedContent) return;
+    await navigator.clipboard.writeText(downloadedContent.text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const refreshCredits = async () => {
     if (user) {
@@ -94,6 +105,8 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     pauseProcessing,
     resumeProcessing,
     cancelProcessing,
+    downloadedContent,
+    clearDownloadedContent,
   } = useSubtitleDownloader(refreshCredits);
 
   useEffect(() => {
@@ -129,6 +142,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     setActiveSummaryId(null);
     setInputError(false);
     setIsFocused(false);
+    clearDownloadedContent();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -314,7 +328,13 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     }
   };
 
-  const actionLabel = isAnalyzing ? tActions('analyzing') : selectedMode === "summary" ? (videoResults.length > 0 ? tActions('openWorkspace') : tActions('analyze')) : (videoResults.length > 0 ? tActions('download', { count: selectedIds.size }) : tActions('analyze'));
+  const actionLabel = isAnalyzing
+    ? tActions('analyzing')
+    : downloadedContent
+    ? tActions('analyze')
+    : selectedMode === "summary"
+    ? (videoResults.length > 0 ? tActions('openWorkspace') : tActions('analyze'))
+    : (videoResults.length > 0 ? tActions('download', { count: selectedIds.size }) : tActions('analyze'));
 
   return (
     <div className="relative isolate bg-white min-h-screen">
@@ -353,6 +373,52 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                   <div className="flex-1 flex flex-col items-center justify-center p-12">
                     <div className="w-16 h-16 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin mb-6" />
                     <h3 className="text-lg font-bold text-slate-700 animate-pulse">{tStatus('syncing')}</h3>
+                  </div>
+                ) : downloadedContent ? (
+                  <div className="flex-1 flex flex-col p-5 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    {/* 视频标题 */}
+                    <div className="flex items-start gap-3">
+                      <div className="shrink-0 w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mt-0.5">
+                        <CheckCheck size={16} className="text-green-600" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-green-600 uppercase tracking-widest mb-0.5">Subtitle extracted</p>
+                        <h3 className="text-sm font-semibold text-slate-800 truncate">{downloadedContent.title}</h3>
+                      </div>
+                    </div>
+
+                    {/* 内容预览 */}
+                    <div className="flex-1 relative bg-slate-50 rounded-xl border border-slate-200 overflow-hidden">
+                      <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 px-2 py-1 bg-white/80 backdrop-blur-sm rounded-md border border-slate-200 text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                        <FileText size={10} />
+                        <span>{downloadedContent.text.split('\n').filter(l => l.trim()).length} lines</span>
+                      </div>
+                      <pre className="h-full overflow-y-auto p-4 text-xs text-slate-600 font-mono leading-relaxed whitespace-pre-wrap break-words">
+                        {downloadedContent.text}
+                      </pre>
+                    </div>
+
+                    {/* 操作按钮 */}
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={handleCopyContent}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm uppercase tracking-widest transition-all ${
+                          copied
+                            ? "bg-green-500 text-white"
+                            : "bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5"
+                        }`}
+                      >
+                        {copied ? <CheckCheck size={16} /> : <Copy size={16} />}
+                        {copied ? "Copied!" : "Copy All Text"}
+                      </button>
+                      <button
+                        onClick={() => router.push(`/workspace?urls=${encodeURIComponent(downloadedContent.url)}&from=home&mode=summary`)}
+                        className="flex items-center gap-2 px-5 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-black text-sm uppercase tracking-widest transition-all hover:shadow-lg hover:-translate-y-0.5"
+                      >
+                        <Sparkles size={16} />
+                        AI Summary
+                      </button>
+                    </div>
                   </div>
                 ) : videoResults.length === 0 ? (
                   <>
