@@ -27,7 +27,7 @@ export function FeatureTabs({ currentMode, onChange, summaryIsFree }: { currentM
         return (
           <div key={tab.id} className="relative">
             <button
-              onClick={() => !isSoon && onChange(tab.id)}
+              onClick={() => !isSoon && onChange(tab.id as FeatureMode)}
               className={`
                 relative rounded-xl border transition-all duration-200 w-full
                 px-3 py-3 md:p-5
