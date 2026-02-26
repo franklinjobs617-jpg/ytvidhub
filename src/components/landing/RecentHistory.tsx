@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { subtitleApi } from "@/lib/api";
-import { History, Sparkles, FileText, Play } from "lucide-react";
+import { History, Sparkles, FileText, Play, ArrowRight } from "lucide-react";
 
 interface HistoryItem {
   videoId: string;
@@ -85,6 +85,12 @@ export function RecentHistory() {
           </span>
         </div>
         <div className="h-px flex-1 bg-slate-100" />
+        <button
+          onClick={() => router.push("/history")}
+          className="flex items-center gap-1 text-[10px] font-bold text-slate-400 hover:text-slate-600 transition-colors shrink-0"
+        >
+          View all <ArrowRight size={10} />
+        </button>
       </div>
 
       {/* 横向滚动行 */}

@@ -13,6 +13,7 @@ import {
   Coins,
   LogOut,
   Sparkles,
+  History,
 } from "lucide-react";
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 
@@ -323,6 +324,13 @@ export default function Header() {
                           className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition-colors"
                         >
                           <Coins size={16} /> {t('buyCredits')}
+                        </Link>
+
+                        <Link
+                          href="/history"
+                          className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                        >
+                          <History size={16} /> History
                         </Link>
 
                         <div className="h-px bg-slate-100 my-1"></div>

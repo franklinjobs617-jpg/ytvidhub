@@ -312,6 +312,19 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         // 读取失败不影响下载
       }
 
+      // 写入历史记录（fire-and-forget）
+      const videoId = (video.url.match(/[?&]v=([^&#]+)/) || [])[1] || video.url.slice(-11);
+      subtitleApi.upsertHistory({
+        videoId,
+        videoUrl: video.url,
+        title: video.title,
+        thumbnail: video.thumbnail,
+        duration: video.duration,
+        lastAction: "subtitle_download",
+        format,
+        lang,
+      }).catch(() => {});
+
       // 延迟刷新积分显示，确保服务器端已更新
       setTimeout(() => {
         if (onCreditsChanged) {

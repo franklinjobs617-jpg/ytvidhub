@@ -107,29 +107,27 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
         )
     }
 
-    // 1. 扣除积分（第一次免费跳过）
+    // 1. 扣除积分（第一次免费跳过）—— 直接操作 DB，避免二次 getUser HTTP 调用
     if (!isFirstSummary) {
         try {
-            const deductResponse = await fetch(`${origin}/api/deduct-credits`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ amount: 2, reason: "AI Summary Generation" }),
+            await prisma.$transaction(async (tx: any) => {
+                const currentUser = await tx.user.findUnique({
+                    where: { email_type: { email: user.email, type: user.type.toString() } },
+                    select: { credits: true },
+                });
+                if (!currentUser) throw new Error('User not found in database');
+                const currentCredits = parseInt(currentUser.credits) || 0;
+                if (currentCredits < 2) throw new Error('Insufficient credits');
+                await tx.user.update({
+                    where: { email_type: { email: user.email, type: user.type.toString() } },
+                    data: { credits: (currentCredits - 2).toString() },
+                });
             });
-
-            if (!deductResponse.ok) {
-                const errorData = await deductResponse.json().catch(() => ({}));
-                return NextResponse.json(
-                    { error: errorData.error || 'Failed to deduct credits' },
-                    { status: deductResponse.status || 402 }
-                );
-            }
-        } catch {
+        } catch (e: any) {
+            const isInsufficient = e.message?.includes('Insufficient');
             return NextResponse.json(
-                { error: 'System error during credit deduction' },
-                { status: 500 }
+                { error: isInsufficient ? 'Insufficient credits. AI Summary requires 2 credits.' : 'Failed to deduct credits' },
+                { status: isInsufficient ? 402 : 500 }
             );
         }
     }

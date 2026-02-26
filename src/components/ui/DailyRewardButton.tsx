@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Gift, Flame, Check } from "lucide-react";
+import { Gift, Flame, Check, X } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 interface RewardStatus {
@@ -15,6 +15,7 @@ export function DailyRewardButton() {
   const [status, setStatus] = useState<RewardStatus | null>(null);
   const [claiming, setClaiming] = useState(false);
   const [justClaimed, setJustClaimed] = useState<number | null>(null);
+  const [showIntro, setShowIntro] = useState(false);
 
   const fetchStatus = useCallback(async () => {
     const token = localStorage.getItem("auth_token");
@@ -28,15 +29,33 @@ export function DailyRewardButton() {
   }, []);
 
   useEffect(() => {
-    fetchStatus();
+    fetchStatus().then(() => {});
   }, [fetchStatus]);
+
+  useEffect(() => {
+    if (status?.canClaim && !localStorage.getItem("daily_reward_intro_seen")) {
+      setShowIntro(true);
+    }
+  }, [status?.canClaim]);
+
+  const dismissIntro = () => {
+    setShowIntro(false);
+    localStorage.setItem("daily_reward_intro_seen", "1");
+  };
 
   const handleClaim = async () => {
     if (!status?.canClaim || claiming) return;
     const token = localStorage.getItem("auth_token");
     if (!token) return;
 
+    dismissIntro();
+    // Optimistic update — 立即响应，无感知延迟
+    const prevStatus = status;
     setClaiming(true);
+    setJustClaimed(3);
+    setStatus({ canClaim: false, streak: (status.streak || 0) + 1, nextClaimAt: null });
+    setTimeout(() => setJustClaimed(null), 3000);
+
     try {
       const res = await fetch("/api/daily-reward", {
         method: "POST",
@@ -44,12 +63,17 @@ export function DailyRewardButton() {
       });
       if (res.ok) {
         const data = await res.json();
+        // 用服务端真实数据同步（streak 等）
         setStatus({ canClaim: false, streak: data.streak, nextClaimAt: data.nextClaimAt });
-        setJustClaimed(data.creditsAdded);
-        await refreshUser();
-        setTimeout(() => setJustClaimed(null), 3000);
+        refreshUser(); // fire-and-forget，不阻塞
+      } else {
+        // 失败回滚
+        setJustClaimed(null);
+        setStatus(prevStatus);
       }
     } catch {
+      setJustClaimed(null);
+      setStatus(prevStatus);
     } finally {
       setClaiming(false);
     }
@@ -70,36 +94,60 @@ export function DailyRewardButton() {
   // Claimable — pulsing amber button
   if (status.canClaim) {
     return (
-      <button
-        onClick={handleClaim}
-        disabled={claiming}
-        className="relative flex items-center gap-1.5 px-3 py-1.5 bg-amber-400 hover:bg-amber-500 disabled:opacity-70 text-white text-xs font-bold rounded-full transition-all shadow-sm"
-        title="Claim your daily +3 credits"
-      >
-        <span className="absolute inset-0 rounded-full bg-amber-400 animate-ping opacity-25 pointer-events-none" />
-        <Gift size={13} className={claiming ? "animate-bounce" : ""} />
-        <span>Daily +3</span>
-      </button>
+      <div className="relative">
+        {/* First-time intro popover */}
+        {showIntro && (
+          <div className="absolute bottom-full right-0 mb-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="relative bg-slate-900 text-white text-xs rounded-xl px-3 py-2.5 shadow-xl w-52">
+              <button
+                onClick={dismissIntro}
+                className="absolute top-1.5 right-1.5 text-slate-400 hover:text-white transition-colors"
+              >
+                <X size={11} />
+              </button>
+              <p className="font-bold text-amber-400 mb-0.5">🎁 Free daily credits!</p>
+              <p className="text-slate-300 leading-snug">Claim +3 credits every day. Build a streak for bonus rewards.</p>
+              {/* Arrow */}
+              <div className="absolute -bottom-1.5 right-4 w-3 h-3 bg-slate-900 rotate-45" />
+            </div>
+          </div>
+        )}
+        <button
+          onClick={handleClaim}
+          disabled={claiming}
+          className="relative flex items-center gap-1.5 px-3 py-1.5 bg-amber-400 hover:bg-amber-500 disabled:opacity-70 text-white text-xs font-bold rounded-full transition-all shadow-sm"
+          title="Claim your daily +3 credits"
+        >
+          <span className="absolute inset-0 rounded-full bg-amber-400 animate-ping opacity-25 pointer-events-none" />
+          <Gift size={13} className={claiming ? "animate-bounce" : ""} />
+          <span>Daily +3</span>
+        </button>
+      </div>
     );
   }
 
-  // Already claimed — always show something
+  // Already claimed — show value clearly
+  const nextTime = status.nextClaimAt
+    ? new Date(status.nextClaimAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : null;
+  const tooltipText = nextTime
+    ? `+3 credits/day · Next claim at ${nextTime}`
+    : "+3 credits/day · Come back tomorrow";
+
   return (
     <div
-      className="flex items-center gap-1 px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-slate-400 text-xs font-bold cursor-default"
-      title={status.streak > 1 ? `${status.streak}-day streak! Come back tomorrow.` : "Come back tomorrow for +3 credits"}
+      className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-slate-400 text-xs font-bold cursor-default"
+      title={tooltipText}
     >
-      {status.streak > 1 ? (
+      {status.streak > 1 && (
         <>
-          <Flame size={12} className="text-orange-400" />
+          <Flame size={11} className="text-orange-400" />
           <span className="text-orange-500">{status.streak}</span>
-        </>
-      ) : (
-        <>
-          <Gift size={12} />
-          <span>Tomorrow</span>
+          <span className="text-slate-300">·</span>
         </>
       )}
+      <Check size={11} className="text-slate-400" />
+      <span>+3/day</span>
     </div>
   );
 }

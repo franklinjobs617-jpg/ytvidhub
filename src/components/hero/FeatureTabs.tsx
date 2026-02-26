@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 export type FeatureMode = "download" | "summary" | "mindmap" | "translate";
 
-export function FeatureTabs({ currentMode, onChange }: any) {
+export function FeatureTabs({ currentMode, onChange, summaryIsFree }: { currentMode: FeatureMode; onChange: (mode: FeatureMode) => void; summaryIsFree?: boolean }) {
   const [hoveredProTab, setHoveredProTab] = useState<string | null>(null);
   const t = useTranslations('features.tabs');
   const tTooltip = useTranslations('features');
@@ -37,7 +37,7 @@ export function FeatureTabs({ currentMode, onChange }: any) {
                 ${isSoon ? "cursor-not-allowed opacity-70 grayscale-[0.4]" : "cursor-pointer"}
               `}
             >
-              {/* Enhanced PRO Badge with breathing animation */}
+              {/* Badge: FREE (first-time) > SOON > PRO */}
               {(tab.pro || tab.soon) && (
                 <span
                   onMouseEnter={() => tab.pro && !tab.soon && setHoveredProTab(tab.id)}
@@ -46,15 +46,17 @@ export function FeatureTabs({ currentMode, onChange }: any) {
                     absolute top-1.5 right-1.5 md:top-2 md:right-2
                     text-[10px] md:text-[12px] font-black px-1.5 py-0.5 rounded-md
                     transition-all duration-300 cursor-help
-                    ${tab.soon 
-                      ? "bg-blue-100 text-blue-700" 
-                      : `bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-sm
-                         animate-pulse hover:animate-none hover:shadow-lg hover:shadow-amber-200
-                         hover:scale-110`
+                    ${tab.soon
+                      ? "bg-blue-100 text-blue-700"
+                      : tab.id === "summary" && summaryIsFree
+                        ? "bg-gradient-to-r from-emerald-400 to-green-500 text-white shadow-sm animate-pulse hover:animate-none hover:shadow-lg hover:shadow-green-200 hover:scale-110"
+                        : `bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-sm
+                           animate-pulse hover:animate-none hover:shadow-lg hover:shadow-amber-200
+                           hover:scale-110`
                     }
                   `}
                 >
-                  {tab.soon ? "SOON" : "PRO"}
+                  {tab.soon ? "SOON" : tab.id === "summary" && summaryIsFree ? "FREE" : "PRO"}
                 </span>
               )}
 

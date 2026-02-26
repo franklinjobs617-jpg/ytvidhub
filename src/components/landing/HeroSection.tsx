@@ -72,6 +72,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const [activeSummaryId, setActiveSummaryId] = useState<string | null>(null);
   const [isActionClicked, setIsActionClicked] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isFirstSummaryFree, setIsFirstSummaryFree] = useState(true);
   const pendingAnalysisRef = useRef(false);
 
   const handleCopyContent = async () => {
@@ -114,6 +115,12 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     if (user) {
       // 初始加载时获取积分
       refreshCredits();
+
+      // 检查是否是首次使用AI Summary（免费）
+      subtitleApi.getHistory(50).then((data) => {
+        const hasUsedSummary = data.some((h: any) => h.lastAction === "ai_summary");
+        setIsFirstSummaryFree(!hasUsedSummary);
+      }).catch(() => {});
 
       // 登录后自动继续之前的操作
       if (pendingAnalysisRef.current) {
@@ -359,7 +366,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
               <div className="bg-slate-50 border-b border-slate-200 px-3 py-3 md:px-4">
                 <div className="w-full">
-                  <FeatureTabs currentMode={selectedMode} onChange={handleModeChange} />
+                  <FeatureTabs currentMode={selectedMode} onChange={handleModeChange} summaryIsFree={isFirstSummaryFree} />
                 </div>
               </div>
 
@@ -496,13 +503,6 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                           {t('placeholder.pasteDemo')}
                         </button>
                       </div>
-
-                      {/* 5. 最近历史记录 */}
-                      {user && (
-                        <div className="pointer-events-auto mt-6 w-full max-w-2xl">
-                          <RecentHistory />
-                        </div>
-                      )}
                     </div>
 
                     <textarea
@@ -577,17 +577,19 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
               </div>
             </div>
 
-            <div className="mt-8 text-center">
+            <div className="mt-8">
               {!user ? (
-                <div className="space-y-3">
+                <div className="space-y-3 text-center">
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 max-w-md mx-auto">
                     <p className="text-sm text-amber-800 font-semibold">⚠️ <strong>{tAuth('registrationRequired')}</strong></p>
                     <p className="text-xs text-amber-700 mt-1">{tAuth('registrationNote')}</p>
                   </div>
                   <p className="text-xs text-slate-400 font-medium">{tAuth('noCardRequired')} • {t('bulkExtraction')}</p>
                 </div>
+              ) : videoResults.length === 0 ? (
+                <RecentHistory />
               ) : (
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t('ready')}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 text-center">{t('ready')}</p>
               )}
             </div>
           </div>
