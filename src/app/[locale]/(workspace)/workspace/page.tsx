@@ -9,6 +9,7 @@ import { Sidebar } from "@/components/workspace/Sidebar";
 import { VideoPlayer } from "@/components/workspace/VideoPlayer";
 import { TranscriptArea } from "@/components/workspace/TranscriptArea";
 import { SummaryArea } from "@/components/workspace/SummaryArea";
+import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 import {
   Loader2,
   ArrowLeft,
@@ -441,6 +442,8 @@ function WorkspaceContent() {
             <Sparkles size={12} className="text-amber-400 group-hover:scale-110 transition-transform" />
             <span>Upgrade</span>
           </button>
+
+          <DailyRewardButton />
         </div>
       </header>
 

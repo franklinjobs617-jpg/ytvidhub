@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { subtitleApi } from "@/lib/api";
-import { Clock, Sparkles, Download, Play } from "lucide-react";
+import { History, Sparkles, FileText, Play } from "lucide-react";
 
 interface HistoryItem {
   videoId: string;
@@ -19,8 +19,10 @@ interface HistoryItem {
 
 function formatDuration(seconds?: number) {
   if (!seconds) return "";
-  const m = Math.floor(seconds / 60);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
+  if (h > 0) return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
@@ -43,19 +45,26 @@ export function RecentHistory() {
     subtitleApi.getHistory(6).then((data) => {
       setHistory(data);
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
   }, []);
 
   if (loading) {
     return (
-      <div className="mt-8">
-        <div className="flex items-center gap-2 mb-4">
-          <Clock size={14} className="text-slate-400" />
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Recent</span>
+      <div className="w-full">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="h-px flex-1 bg-slate-100" />
+          <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Recently Analyzed</span>
+          <div className="h-px flex-1 bg-slate-100" />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 bg-slate-100 rounded-xl animate-pulse" />
+        <div className="flex gap-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="flex-shrink-0 w-44">
+              <div className="aspect-video rounded-xl bg-slate-100 animate-pulse" />
+              <div className="mt-2 space-y-1.5 px-0.5">
+                <div className="h-2.5 bg-slate-100 rounded animate-pulse" />
+                <div className="h-2 bg-slate-100 rounded w-2/3 animate-pulse" />
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -65,19 +74,36 @@ export function RecentHistory() {
   if (history.length === 0) return null;
 
   return (
-    <div className="mt-8">
-      <div className="flex items-center gap-2 mb-4">
-        <Clock size={14} className="text-slate-400" />
-        <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Recent</span>
+    <div className="w-full">
+      {/* 分隔线标题 */}
+      <div className="flex items-center gap-3 mb-3">
+        <div className="h-px flex-1 bg-slate-100" />
+        <div className="flex items-center gap-1.5">
+          <History size={11} className="text-slate-300" />
+          <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+            Recently Analyzed
+          </span>
+        </div>
+        <div className="h-px flex-1 bg-slate-100" />
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+
+      {/* 横向滚动行 */}
+      <div
+        className="flex gap-3 overflow-x-auto pb-1"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
         {history.map((item) => (
           <button
             key={item.videoId}
-            onClick={() => router.push(`/workspace?urls=${encodeURIComponent(item.videoUrl)}`)}
-            className="group text-left bg-white border border-slate-100 hover:border-violet-200 hover:shadow-md rounded-xl overflow-hidden transition-all"
+            onClick={() => {
+              const params = new URLSearchParams({ urls: item.videoUrl });
+              if (item.lastAction === "ai_summary") params.set("mode", "summary");
+              router.push(`/workspace?${params.toString()}`);
+            }}
+            className="group flex-shrink-0 w-44 text-left focus:outline-none"
           >
-            <div className="relative aspect-video bg-slate-100 overflow-hidden">
+            {/* 缩略图区域 */}
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 ring-1 ring-slate-200/60 group-hover:ring-violet-300 transition-all duration-200">
               {item.thumbnail ? (
                 <img
                   src={item.thumbnail}
@@ -89,30 +115,44 @@ export function RecentHistory() {
                   <Play size={20} className="text-slate-300" />
                 </div>
               )}
+
+              {/* 悬停遮罩 + Open 按钮 */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-all duration-200 flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1.5 shadow-sm">
+                  <Play size={9} className="text-slate-700 fill-slate-700" />
+                  <span className="text-[10px] font-bold text-slate-700">Open</span>
+                </div>
+              </div>
+
+              {/* 时长角标 */}
               {item.duration && (
-                <span className="absolute bottom-1 right-1 text-[10px] font-bold bg-black/70 text-white px-1 rounded">
+                <span className="absolute bottom-1.5 right-1.5 text-[9px] font-bold bg-black/70 text-white px-1.5 py-0.5 rounded-md">
                   {formatDuration(item.duration)}
                 </span>
               )}
-              <div className="absolute top-1 left-1">
+
+              {/* 操作类型角标 */}
+              <div className="absolute top-1.5 left-1.5">
                 {item.lastAction === "ai_summary" ? (
-                  <span className="flex items-center gap-0.5 text-[9px] font-bold bg-violet-600 text-white px-1.5 py-0.5 rounded-full">
+                  <span className="flex items-center gap-0.5 text-[9px] font-bold bg-violet-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
                     <Sparkles size={8} />
                     AI
                   </span>
                 ) : (
-                  <span className="flex items-center gap-0.5 text-[9px] font-bold bg-blue-600 text-white px-1.5 py-0.5 rounded-full">
-                    <Download size={8} />
+                  <span className="flex items-center gap-0.5 text-[9px] font-bold bg-blue-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
+                    <FileText size={8} />
                     {item.format?.toUpperCase() ?? "SUB"}
                   </span>
                 )}
               </div>
             </div>
-            <div className="px-2 py-1.5">
-              <p className="text-[11px] font-medium text-slate-700 line-clamp-2 leading-tight">
+
+            {/* 标题 + 时间 */}
+            <div className="mt-2 px-0.5">
+              <p className="text-[11px] font-semibold text-slate-500 group-hover:text-slate-800 line-clamp-2 leading-tight transition-colors duration-150">
                 {item.title}
               </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">{timeAgo(item.updatedAt)}</p>
+              <p className="text-[10px] text-slate-400 mt-1">{timeAgo(item.updatedAt)}</p>
             </div>
           </button>
         ))}

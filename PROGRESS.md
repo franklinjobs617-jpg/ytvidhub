@@ -57,10 +57,11 @@
   - 未登录用户保持现有营销页面（RecentHistory 仅在 `user` 存在时渲染）
 
 ### P3 - 转化优化
-- [ ] **首次 AI Summary 免费**
-  - 新用户第一次使用 AI Summary 不扣积分
-  - 让用户先体验价值，再引导付费
-  - 涉及文件：`api/ai-summary/route.ts`、积分逻辑
+- [x] **首次 AI Summary 免费**
+  - `api/ai-summary/route.ts`：查询 `video_history` 中 `ai_summary` 记录数，为 0 则跳过积分检查和扣除
+  - 新用户第一次体验无感知，后续正常扣 2 积分
 
-- [ ] **每日签到奖励更显眼**
-  - 当前签到入口不够突出，用户发现率低
+- [x] **每日签到奖励更显眼**
+  - `api/daily-reward/route.ts`：GET 查询状态（canClaim / streak / nextClaimAt），POST 领取（+3 积分，更新 streak）
+  - `components/ui/DailyRewardButton.tsx`：可领取时显示脉冲金色按钮，已领取显示连续天数火焰，领取后闪绿色 "+3 Credits!"
+  - `components/Header.tsx`：登录用户积分旁插入 DailyRewardButton

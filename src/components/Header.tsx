@@ -14,6 +14,7 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react";
+import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 
 const navigation = {
   guides: [
@@ -270,6 +271,8 @@ export default function Header() {
                     </span>
                   </div>
                 </Link>
+
+                <DailyRewardButton />
 
                 <div className="relative" ref={userMenuRef}>
                   <button

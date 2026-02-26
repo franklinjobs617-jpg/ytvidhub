@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 // 用于防止重复请求的缓存
 const activeRequests = new Map<string, Promise<NextResponse>>();
@@ -83,85 +86,72 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
         )
     }
 
-    // 检查用户积分
+    // 检查是否是第一次使用 AI Summary（第一次免费）
+    const dbUser = await prisma.user.findUnique({
+        where: { email_type: { email: user.email, type: user.type.toString() } },
+        select: { id: true },
+    }).catch(() => null);
+
+    const isFirstSummary = dbUser
+        ? (await prisma.video_history.count({
+            where: { userId: dbUser.id, lastAction: 'ai_summary' },
+        }).catch(() => 1)) === 0
+        : false;
+
+    // 积分检查（第一次免费跳过）
     const userCredits = parseInt(user?.credits || "0") || 0;
-
-    console.log('AI Summary credit check:', {
-        email: user.email,
-        userCredits,
-        required: 2,
-        url: url
-    });
-
-    if (!user || userCredits < 2) {
+    if (!isFirstSummary && userCredits < 2) {
         return NextResponse.json(
             { error: `Insufficient credits. You have ${userCredits} credits, but AI Summary requires 2 credits.` },
             { status: 402 }
         )
     }
 
-    // 1. 先扣除积分
-    try {
-        console.log('Deducting AI summary credits for:', user.email, 'URL:', url);
-        const deductResponse = await fetch(`${origin}/api/deduct-credits`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ amount: 2, reason: "AI Summary Generation" }),
-        });
+    // 1. 扣除积分（第一次免费跳过）
+    if (!isFirstSummary) {
+        try {
+            const deductResponse = await fetch(`${origin}/api/deduct-credits`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ amount: 2, reason: "AI Summary Generation" }),
+            });
 
-        if (!deductResponse.ok) {
-            const errorData = await deductResponse.json().catch(() => ({}));
-            console.error('Failed to deduct credits:', errorData);
+            if (!deductResponse.ok) {
+                const errorData = await deductResponse.json().catch(() => ({}));
+                return NextResponse.json(
+                    { error: errorData.error || 'Failed to deduct credits' },
+                    { status: deductResponse.status || 402 }
+                );
+            }
+        } catch {
             return NextResponse.json(
-                { error: errorData.error || 'Failed to deduct credits' },
-                { status: deductResponse.status || 402 }
+                { error: 'System error during credit deduction' },
+                { status: 500 }
             );
         }
-        console.log('Credits deducted successfully for:', user.email, 'Amount: 2');
-    } catch (deductError) {
-        console.error('Credit deduction error:', deductError);
-        return NextResponse.json(
-            { error: 'System error during credit deduction' },
-            { status: 500 }
-        );
     }
 
     // 2. 代理请求到真实的后端API
-    console.log('Proxying AI summary request for URL:', url, 'User:', user.email)
-    const startTime = Date.now();
-
     try {
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_summary_stream", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // 必须透传 Authorization Header
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({ url }),
         });
 
-        console.log('Backend response received in:', Date.now() - startTime, 'ms', {
-            status: backendResponse.status,
-            user: user.email
-        });
-
         if (!backendResponse.ok) {
-            const errorData = await backendResponse.text().catch(() => 'Unknown error')
-            console.error('Backend API error for user:', user.email, 'Error:', errorData)
-
-            // 如果后端失败，考虑是否需要退还积分
-            // 这里暂时不退还，因为可能是临时错误
-
             return NextResponse.json(
                 { error: 'Failed to generate summary' },
                 { status: backendResponse.status }
             )
         }
 
-        // 返回流式响应
         return new NextResponse(backendResponse.body, {
             status: 200,
             headers: {
@@ -171,8 +161,7 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
                 'Cache-Control': 'no-cache, no-transform',
             },
         })
-    } catch (backendError) {
-        console.error('Backend request failed for user:', user.email, 'Error:', backendError);
+    } catch {
         return NextResponse.json(
             { error: 'Backend service unavailable' },
             { status: 503 }
