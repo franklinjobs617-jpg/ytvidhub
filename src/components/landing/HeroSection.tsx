@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
+import { extractVideoId } from "@/lib/youtube";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from 'next-intl';
@@ -170,6 +171,10 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
         const match = val.match(/youtu\.be\/([^?&]+)/);
         if (match) cleanId = match[1];
       }
+      // Case C: Live/Shorts URL (/live/ or /shorts/) containing list=
+      else if ((val.includes('/live/') || val.includes('/shorts/')) && val.includes('list=')) {
+        cleanId = extractVideoId(val);
+      }
 
       if (cleanId) {
         const cleanUrl = `https://www.youtube.com/watch?v=${cleanId}`;
@@ -283,7 +288,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
             return;
           }
           const url = uniqueUrls[0];
-          const videoId = (url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?&]+)/) || [])[1] || 'subtitle';
+          const videoId = extractVideoId(url) || 'subtitle';
           await startSingleDownload({ url, title: videoId }, downloadFormat, downloadLang);
           await refreshCredits();
           setTimeout(() => refreshCredits(), 2000);

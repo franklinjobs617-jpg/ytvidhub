@@ -1,6 +1,7 @@
 // hooks/useSubtitleDownloader.ts
 import { useState, useRef } from "react";
 import { subtitleApi } from "@/lib/api";
+import { extractVideoId } from "@/lib/youtube";
 import { toast } from "sonner";
 import { useTranslations } from 'next-intl';
 import { trackEvent } from "@/lib/analytics";
@@ -237,11 +238,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         }, 2000);
 
         return allResults.map((item: any) => ({
-          id: (item.url.match(/[?&]v=([^&#]+)/) || [])[1] || item.url.slice(-11),
+          id: extractVideoId(item.url),
           url: item.url,
           title: item.video_info.title || "Untitled",
           uploader: item.video_info.uploader || "Unknown",
-          thumbnail: `https://i.ytimg.com/vi/${(item.url.match(/[?&]v=([^&#]+)/) || [])[1] || item.url.slice(-11)}/hqdefault.jpg`,
+          thumbnail: `https://i.ytimg.com/vi/${extractVideoId(item.url)}/hqdefault.jpg`,
           hasSubtitles: item.can_download,
           subtitleStatus: item.can_download ? 'available' : 'unavailable'
         }));
@@ -250,11 +251,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         setStatusText(tStatus('checkingSubtitles'));
         const data = await subtitleApi.batchCheck(urls);
         return data.results.map((item: any) => ({
-          id: (item.url.match(/[?&]v=([^&#]+)/) || [])[1] || item.url.slice(-11),
+          id: extractVideoId(item.url),
           url: item.url,
           title: item.video_info.title || "Untitled",
           uploader: item.video_info.uploader || "Unknown",
-          thumbnail: `https://i.ytimg.com/vi/${(item.url.match(/[?&]v=([^&#]+)/) || [])[1] || item.url.slice(-11)}/hqdefault.jpg`,
+          thumbnail: `https://i.ytimg.com/vi/${extractVideoId(item.url)}/hqdefault.jpg`,
           hasSubtitles: item.can_download,
           subtitleStatus: item.can_download ? 'available' : 'unavailable'
         }));
@@ -314,7 +315,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       }
 
       // 写入历史记录（fire-and-forget）
-      const videoId = (video.url.match(/[?&]v=([^&#]+)/) || [])[1] || video.url.slice(-11);
+      const videoId = extractVideoId(video.url);
       subtitleApi.upsertHistory({
         videoId,
         videoUrl: video.url,

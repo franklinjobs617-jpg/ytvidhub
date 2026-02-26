@@ -16,6 +16,7 @@ import {
   Sparkles,
   Video as VideoIcon,
 } from "lucide-react";
+import { extractVideoId } from "@/lib/youtube";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -33,7 +34,7 @@ function WorkspaceContent() {
 
   const initialUrls = urlsParam ? decodeURIComponent(urlsParam).split(",") : [];
   const placeholderVideos = initialUrls.map(url => {
-    const id = (url.match(/[?&]v=([^&#]+)/) || [])[1] || url.slice(-11);
+    const id = extractVideoId(url);
     return {
       id,
       url,
@@ -103,7 +104,7 @@ function WorkspaceContent() {
 
     // 如果是从历史记录来的，加载保存的内容
     if (isFromHistory && urls.length === 1) {
-      const videoId = (urls[0].match(/[?&]v=([^&#]+)/) || [])[1] || urls[0].slice(-11);
+      const videoId = extractVideoId(urls[0]);
 
       Promise.all([
         subtitleApi.getVideoInfo(urls[0]).catch(() => null),
@@ -145,7 +146,7 @@ function WorkspaceContent() {
         if (isCancelled) return;
 
         const enhancedVideo = {
-          id: videoInfo.id || (urls[0].match(/[?&]v=([^&#]+)/) || [])[1] || urls[0].slice(-11),
+          id: videoInfo.id || extractVideoId(urls[0]),
           url: urls[0],
           title: videoInfo.title || 'Loading...',
           uploader: videoInfo.uploader || '...',
@@ -164,12 +165,12 @@ function WorkspaceContent() {
         if (cachedResult) {
           setSummaryData(cachedResult);
         } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(enhancedVideo.id)) {
+          sessionStorage.setItem(storageKey, "true"); // 立即标记，防止组件卸载后重新挂载时重复触发
           if (autoStartTimer) clearTimeout(autoStartTimer);
 
           autoStartTimer = setTimeout(() => {
-            if (!isCancelled && !sessionStorage.getItem(storageKey)) {
-              handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id);
-              sessionStorage.setItem(storageKey, "true");
+            if (!isCancelled) {
+              handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id, false, enhancedVideo);
             }
           }, 800);
         }
@@ -209,12 +210,12 @@ function WorkspaceContent() {
         if (cachedResult) {
           setSummaryData(cachedResult);
         } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(firstVideo.id)) {
+          sessionStorage.setItem(storageKey, "true"); // 立即标记，防止重复触发
           if (autoStartTimer) clearTimeout(autoStartTimer);
 
           autoStartTimer = setTimeout(() => {
-            if (!isCancelled && !sessionStorage.getItem(storageKey)) {
-              handleRequestAnalysis(firstVideo.url, firstVideo.id);
-              sessionStorage.setItem(storageKey, "true");
+            if (!isCancelled) {
+              handleRequestAnalysis(firstVideo.url, firstVideo.id, false, firstVideo);
             }
           }, 800);
         }
@@ -289,7 +290,12 @@ function WorkspaceContent() {
 
 
 
-  const handleRequestAnalysis = async (url?: string, videoId?: string, forceRegenerate = false) => {
+  const handleRequestAnalysis = async (
+    url?: string,
+    videoId?: string,
+    forceRegenerate = false,
+    videoMeta?: { title?: string; thumbnail?: string; duration?: number }
+  ) => {
     const targetUrl = url || currentVideo?.url;
     const targetId = videoId || currentVideo?.id;
 
@@ -317,14 +323,15 @@ function WorkspaceContent() {
     try {
       const summaryText = await generateAiSummary(targetUrl, () => {});
       await refreshUser();
-      // 写入历史记录（fire-and-forget，不阻塞主流程）
-      if (currentVideo) {
+      // 使用传入的 videoMeta（避免 React 状态未更新导致保存旧标题）
+      const meta = videoMeta ?? currentVideo;
+      if (meta) {
         subtitleApi.upsertHistory({
           videoId: targetId,
           videoUrl: targetUrl,
-          title: currentVideo.title || "Unknown Video",
-          thumbnail: currentVideo.thumbnail,
-          duration: currentVideo.duration,
+          title: meta.title || "Unknown Video",
+          thumbnail: meta.thumbnail,
+          duration: meta.duration,
           lastAction: "ai_summary",
           summaryContent: summaryText || undefined,
         });
@@ -351,7 +358,7 @@ function WorkspaceContent() {
     setIsAddingVideo(true);
     try {
       const videoInfo = await subtitleApi.getVideoInfo(targetUrl);
-      const videoId = videoInfo.id || (targetUrl.match(/[?&]v=([^&#]+)/) || [])[1] || targetUrl.slice(-11);
+      const videoId = videoInfo.id || extractVideoId(targetUrl);
 
       const newVideo = {
         id: videoId,

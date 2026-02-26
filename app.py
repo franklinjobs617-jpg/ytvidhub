@@ -1495,83 +1495,93 @@ Transcript:
     res.headers['Connection'] = 'keep-alive'
     return res
 
-@app.route('/api/generate_study_cards', methods=['POST'])
-def api_generate_study_cards():
+@app.route('/api/generate_study_cards_stream', methods=['POST'])
+def api_generate_study_cards_stream():
     data = request.get_json() or {}
     video_url = data.get('url')
     if not video_url:
         return jsonify({"error": "Missing URL"}), 400
 
-    print(f"🃏 [Study Cards] Request received for: {video_url}")
+    def generate():
+        yield "__STATUS__:Fetching subtitles...\n"
+        try:
+            transcript, title_info, err = get_subtitle_content(video_url, 'en', 'txt')
+            if err:
+                yield "__STATUS__:Subtitles unavailable, using description...\n"
+                proxy = get_proxy_url()
+                with yt_dlp.YoutubeDL({'proxy': proxy, 'skip_download': True, 'quiet': True}) as ydl:
+                    info = ydl.extract_info(video_url, download=False)
+                    video_title = info.get('title', 'Unknown Video')
+                    transcript = info.get('description', '')
+                    if len(transcript) < 200:
+                        yield "__ERROR__:No subtitles available and description is too short."
+                        return
+            else:
+                video_title = title_info.rsplit('.', 1)[0] if title_info else 'Video'
 
-    try:
-        transcript, title_info, err = get_subtitle_fast(video_url, 'en')
+            yield "__STATUS__:Generating study cards...\n"
 
-        if err:
-            proxy = get_proxy_url()
-            with yt_dlp.YoutubeDL({'proxy': proxy, 'skip_download': True, 'quiet': True}) as ydl:
-                info = ydl.extract_info(video_url, download=False)
-                transcript = info.get('description', '')
-                title_info = info.get('title', 'Unknown Video')
-                if len(transcript) < 200:
-                    return jsonify({"error": "No subtitles available"}), 422
+            headers = {"Content-Type": "application/json", "Authorization": f"Bearer {ARK_API_KEY}"}
+            system_prompt = """You are a study card generator. Create high-quality flashcards from video transcripts.
 
-        video_title = title_info.rsplit('.', 1)[0] if title_info else 'Video'
-
-        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {ARK_API_KEY}"}
-
-        system_prompt = """Generate study cards from a video transcript. Return ONLY a valid JSON array, no other text.
-
-Each card object:
-{
-  "question": "A question that tests understanding, not just recall",
-  "answer": "A clear, educational answer (50-150 words)",
-  "timestamp": "MM:SS if identifiable from transcript, otherwise null",
-  "type": "concept | definition | insight | action"
-}
+Output ONLY cards in this exact format, one after another with no other text:
+---
+Q: [question that tests understanding]
+A: [comprehensive answer, 50-150 words]
+T: [timestamp MM:SS or null]
+Type: concept|definition|insight|action
+Category: technical|business|design|general
+---
 
 Rules:
-- Generate 6-8 cards covering different aspects
-- Questions must require understanding, not just memory
-- Answers must be genuinely educational
-- Return ONLY the JSON array, nothing else"""
+- Generate 6-8 cards
+- Questions must require understanding, not just recall
+- Answers must be educational and specific
+- No intro text, no summary, ONLY the card blocks"""
 
-        user_prompt = f"""Create study cards from this video.
+            user_prompt = f"""Create 6-8 study cards from this transcript.
 
-Title: {video_title}
+Video: {video_title}
+Transcript: {transcript[:35000]}
 
-Transcript:
-{transcript[:30000]}"""
+Output ONLY the card blocks in the specified format."""
 
-        payload = {
-            "model": ARK_MODEL,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            "stream": False,
-            "temperature": 0.5,
-            "max_tokens": 3000
-        }
+            payload = {
+                "model": ARK_MODEL,
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                "stream": True,
+                "temperature": 0.7,
+                "max_tokens": 4000
+            }
 
-        response = requests.post(ARK_URL, headers=headers, json=payload, timeout=120)
-        result = response.json()
-        content = result['choices'][0]['message']['content'].strip()
+            response = requests.post(ARK_URL, headers=headers, json=payload, stream=True, timeout=120)
+            for line in response.iter_lines():
+                if line:
+                    chunk = line.decode('utf-8').strip()
+                    if chunk.startswith("data: "):
+                        data_str = chunk[6:]
+                        if data_str == "[DONE]":
+                            break
+                        try:
+                            resp_json = json.loads(data_str)
+                            content = resp_json['choices'][0]['delta'].get('content', '')
+                            if content:
+                                yield content
+                        except:
+                            continue
 
-        # 清理可能的 markdown 代码块包裹
-        if content.startswith('```'):
-            content = content.split('\n', 1)[1]
-            content = content.rsplit('```', 1)[0].strip()
+        except Exception as e:
+            print(f"❌ [Study Cards] Error: {str(e)}")
+            yield f"__ERROR__:Server Error: {str(e)}"
 
-        cards = json.loads(content)
-        return jsonify({"cards": cards})
-
-    except json.JSONDecodeError as e:
-        print(f"❌ [Study Cards] JSON parse error: {e}")
-        return jsonify({"error": "AI returned invalid JSON"}), 500
-    except Exception as e:
-        print(f"❌ [Study Cards] Error: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+    res = Response(stream_with_context(generate()), mimetype='text/plain')
+    res.headers['X-Accel-Buffering'] = 'no'
+    res.headers['Cache-Control'] = 'no-cache'
+    res.headers['Connection'] = 'keep-alive'
+    return res
 
 @app.route('/parse', methods=['POST', 'OPTIONS'])
 def parse_video_legacy():
