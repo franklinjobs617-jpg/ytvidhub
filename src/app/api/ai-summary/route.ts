@@ -3,59 +3,23 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-// 用于防止重复请求的缓存
-const activeRequests = new Map<string, Promise<NextResponse>>();
-
 export async function POST(request: NextRequest) {
     try {
-        // 获取Authorization header
         const authHeader = request.headers.get('authorization')
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return NextResponse.json(
-                { error: 'Authentication required' },
-                { status: 401 }
-            )
+        if (!authHeader?.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
         }
 
         const token = authHeader.split(' ')[1]
-
-        // 获取请求体
         const body = await request.json()
         const { url } = body
 
         if (!url) {
-            return NextResponse.json(
-                { error: 'Video URL is required' },
-                { status: 400 }
-            )
+            return NextResponse.json({ error: 'Video URL is required' }, { status: 400 })
         }
 
-        // 创建请求唯一标识符（用户token + URL的hash，确保唯一性）
-        const urlHash = Buffer.from(url).toString('base64').slice(0, 10);
-        const requestKey = `${token.slice(-10)}_${urlHash}`;
-
-        console.log('AI Summary request:', { url, requestKey, hasActiveRequest: activeRequests.has(requestKey) });
-
-        // 检查是否有相同的请求正在进行
-        if (activeRequests.has(requestKey)) {
-            console.log('Duplicate request detected, returning existing promise for:', url);
-            return activeRequests.get(requestKey)!;
-        }
-
-        // 创建新的请求处理Promise
-        const requestPromise = handleAISummaryRequest(token, url, request.nextUrl.origin);
-        activeRequests.set(requestKey, requestPromise);
-
-        try {
-            const result = await requestPromise;
-            return result;
-        } finally {
-            // 请求完成后清理缓存
-            activeRequests.delete(requestKey);
-        }
-
+        return handleAISummaryRequest(token, url)
     } catch (error) {
-        console.error('AI Summary proxy error:', error)
         return NextResponse.json(
             { error: `Internal server error: ${error instanceof Error ? error.message : 'Unknown error'}` },
             { status: 500 }
@@ -63,60 +27,56 @@ export async function POST(request: NextRequest) {
     }
 }
 
-async function handleAISummaryRequest(token: string, url: string, origin: string): Promise<NextResponse> {
-    // 通过现有的API获取用户信息来验证token
+async function handleAISummaryRequest(token: string, url: string): Promise<NextResponse> {
+    // 1. 验证 token，获取用户信息
     const userResponse = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
         headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!userResponse.ok) {
-        return NextResponse.json(
-            { error: 'Invalid token' },
-            { status: 401 }
-        )
+        return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
     }
 
-    const userData = await userResponse.json()
-    const user = userData.data
-
-    if (!user || !user.email) {
-        return NextResponse.json(
-            { error: 'User data not found' },
-            { status: 400 }
-        )
+    const { data: user } = await userResponse.json()
+    if (!user?.email) {
+        return NextResponse.json({ error: 'User data not found' }, { status: 400 })
     }
 
-    // 检查是否是第一次使用 AI Summary（第一次免费）
+    // 2. 一次查询同时拿到 credits + ai_summary 使用次数
     const dbUser = await prisma.user.findUnique({
         where: { email_type: { email: user.email, type: user.type.toString() } },
-        select: { id: true },
+        select: {
+            id: true,
+            credits: true,
+            _count: {
+                select: {
+                    videoHistory: { where: { lastAction: 'ai_summary' } }
+                }
+            }
+        },
     }).catch(() => null);
 
-    const isFirstSummary = dbUser
-        ? (await prisma.video_history.count({
-            where: { userId: dbUser.id, lastAction: 'ai_summary' },
-        }).catch(() => 1)) === 0
-        : false;
+    const isFirstSummary = dbUser ? dbUser._count.videoHistory === 0 : false;
+    const dbCredits = dbUser ? parseInt(dbUser.credits) || 0 : parseInt(user.credits) || 0;
 
-    // 积分检查（第一次免费跳过）
-    const userCredits = parseInt(user?.credits || "0") || 0;
-    if (!isFirstSummary && userCredits < 2) {
+    // 3. 积分检查（第一次免费跳过）
+    if (!isFirstSummary && dbCredits < 2) {
         return NextResponse.json(
-            { error: `Insufficient credits. You have ${userCredits} credits, but AI Summary requires 2 credits.` },
+            { error: `Insufficient credits. You have ${dbCredits} credits, but AI Summary requires 2 credits.` },
             { status: 402 }
         )
     }
 
-    // 1. 扣除积分（第一次免费跳过）—— 直接操作 DB，避免二次 getUser HTTP 调用
+    // 4. 扣除积分（内联，避免二次 getUser HTTP 调用）
     if (!isFirstSummary) {
         try {
             await prisma.$transaction(async (tx: any) => {
-                const currentUser = await tx.user.findUnique({
+                const fresh = await tx.user.findUnique({
                     where: { email_type: { email: user.email, type: user.type.toString() } },
                     select: { credits: true },
                 });
-                if (!currentUser) throw new Error('User not found in database');
-                const currentCredits = parseInt(currentUser.credits) || 0;
+                if (!fresh) throw new Error('User not found in database');
+                const currentCredits = parseInt(fresh.credits) || 0;
                 if (currentCredits < 2) throw new Error('Insufficient credits');
                 await tx.user.update({
                     where: { email_type: { email: user.email, type: user.type.toString() } },
@@ -132,7 +92,7 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
         }
     }
 
-    // 2. 代理请求到真实的后端API
+    // 5. 代理到后端流式 API
     try {
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_summary_stream", {
             method: "POST",
@@ -144,10 +104,7 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
         });
 
         if (!backendResponse.ok) {
-            return NextResponse.json(
-                { error: 'Failed to generate summary' },
-                { status: backendResponse.status }
-            )
+            return NextResponse.json({ error: 'Failed to generate summary' }, { status: backendResponse.status })
         }
 
         return new NextResponse(backendResponse.body, {
@@ -160,9 +117,8 @@ async function handleAISummaryRequest(token: string, url: string, origin: string
             },
         })
     } catch {
-        return NextResponse.json(
-            { error: 'Backend service unavailable' },
-            { status: 503 }
-        );
+        return NextResponse.json({ error: 'Backend service unavailable' }, { status: 503 });
+    } finally {
+        await prisma.$disconnect()
     }
 }

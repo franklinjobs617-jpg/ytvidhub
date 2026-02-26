@@ -1,20 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import {
   Sparkles,
   Copy,
   Check,
-  Target,
-  Lightbulb,
   BookOpen,
   Download,
   ChevronRight,
-  MessageSquare,
-  Zap,
   ArrowRight,
   ArrowLeft,
   ChevronDown,
@@ -23,16 +18,79 @@ import {
 } from "lucide-react";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 
+interface StudyCard {
+  question: string;
+  answer: string;
+  type: 'concept' | 'definition' | 'insight' | 'action' | string;
+  category?: string;
+  time?: string;
+}
+
+interface SummaryAreaProps {
+  data: string;
+  isLoading: boolean;
+  onSeek: (time: string) => void;
+  onStartAnalysis: () => void;
+  onRegenerate: () => void;
+  mobileSubTab?: string;
+  videoUrl?: string;
+}
+
+interface CardsViewProps {
+  cards: StudyCard[];
+  isLoading: boolean;
+  onSeek: (time: string) => void;
+  videoUrl?: string;
+}
+
+interface BrowseCardsProps {
+  cards: StudyCard[];
+  onSeek: (time: string) => void;
+  toast: { success: (msg: string) => void; error: (msg: string) => void; info: (msg: string) => void };
+  masteredCards: Set<number>;
+  onToggleMastered: (index: number) => void;
+}
+
+interface StudyCardsProps {
+  cards: StudyCard[];
+  currentIndex: number;
+  setCurrentIndex: (i: number) => void;
+  onSeek: (time: string) => void;
+  masteredCards: Set<number>;
+  onToggleMastered: (index: number) => void;
+}
+
+interface StudyCardItemProps {
+  card: StudyCard;
+  isFlipped: boolean;
+  onFlip: () => void;
+  onMastered: () => void;
+  onStillLearning: () => void;
+  isMastered: boolean;
+}
+
+interface EnhancedCardItemProps {
+  card: StudyCard;
+  index: number;
+  onSeek: (time: string) => void;
+  toast: { success: (msg: string) => void; error: (msg: string) => void; info: (msg: string) => void };
+  isMastered: boolean;
+  onToggleMastered: () => void;
+}
+
 export function SummaryArea({
   data,
   isLoading,
   onSeek,
   onStartAnalysis,
   onRegenerate,
-  mobileSubTab,
-}: any) {
+  mobileSubTab: _mobileSubTab,
+  videoUrl,
+}: SummaryAreaProps) {
   const [copied, setCopied] = useState(false);
   const [viewMode, setViewMode] = useState<'summary' | 'cards'>('summary');
+  const [cardsData, setCardsData] = useState<any[]>([]);
+  const [isCardsLoading, setIsCardsLoading] = useState(false);
   const { toasts, removeToast, success, error: showError, info: showInfo } = useToast();
 
   const handleCopy = () => {
@@ -42,226 +100,27 @@ export function SummaryArea({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // 解析卡片数据
-  const cards = useMemo(() => {
-    if (!data) return [];
-
-    // 查找 ---START_CARDS--- 标记
-    const startMarker = '---START_CARDS---';
-    const startIndex = data.indexOf(startMarker);
-
-    if (startIndex === -1) {
-      return parseSimpleQA(data);
+  const generateCards = async () => {
+    if (!videoUrl || isCardsLoading) return;
+    setIsCardsLoading(true);
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      if (!token) { showError('Please login first'); return; }
+      const res = await fetch('/api/study-cards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ url: videoUrl }),
+      });
+      const json = await res.json();
+      if (!res.ok) { showError(json.error || 'Failed to generate study cards'); return; }
+      setCardsData(json.cards || []);
+      setViewMode('cards');
+    } catch {
+      showError('Failed to generate study cards');
+    } finally {
+      setIsCardsLoading(false);
     }
-
-    // 提取卡片部分的内容
-    const cardsSection = data.substring(startIndex + startMarker.length);
-    const cards: any[] = [];
-
-    // 按 --- 分割卡片
-    const cardBlocks = cardsSection.split(/\n---\n/).filter((block: string) => block.trim());
-
-    for (const block of cardBlocks) {
-      const lines = block.split('\n').map((line: string) => line.trim()).filter((line: string) => line);
-
-      let question = '';
-      let answer = '';
-      let timeStamp = '';
-      let type = '';
-      let category = '';
-
-      for (const line of lines) {
-        if (line.startsWith('Q: ')) {
-          question = line.substring(3).trim();
-        } else if (line.startsWith('A: ')) {
-          answer = line.substring(3).trim();
-        } else if (line.startsWith('T: ')) {
-          timeStamp = line.substring(3).trim();
-        } else if (line.startsWith('Type: ')) {
-          type = line.substring(6).trim();
-        } else if (line.startsWith('Category: ')) {
-          category = line.substring(10).trim();
-        }
-      }
-
-      if (question && answer) {
-        cards.push({
-          question,
-          answer,
-          time: timeStamp || null,
-          type: type || 'general',
-          category: category || 'general'
-        });
-      }
-    }
-
-    return cards;
-  }, [data]);
-
-  // 简单Q&A格式解析（备用）
-  function parseSimpleQA(text: string) {
-    const lines = text.split('\n');
-    const cards: any[] = [];
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-
-      // 检测问题行 (Q: 或 问: 开头)
-      if (line.match(/^(Q|问)\s*[:：]/)) {
-        const question = line.replace(/^(Q|问)\s*[:：]\s*/, '');
-
-        // 查找对应的答案
-        let answer = '';
-        let timeStamp = '';
-
-        for (let j = i + 1; j < lines.length; j++) {
-          const nextLine = lines[j].trim();
-
-          // 如果遇到下一个问题，停止
-          if (nextLine.match(/^(Q|问)\s*[:：]/)) {
-            break;
-          }
-
-          // 如果是答案行
-          if (nextLine.match(/^(A|答)\s*[:：]/)) {
-            answer = nextLine.replace(/^(A|答)\s*[:：]\s*/, '');
-
-            // 提取时间戳
-            const timeMatch = answer.match(/\(Timestamp:\s*(\d{1,2}:\d{2}(?::\d{2})?)\)/);
-            if (timeMatch) {
-              timeStamp = timeMatch[1];
-              answer = answer.replace(/\s*\(Timestamp:.*?\)/, '');
-            }
-            break;
-          }
-        }
-
-        if (question && answer) {
-          cards.push({
-            question,
-            answer,
-            time: timeStamp || null,
-            type: 'general',
-            category: 'general'
-          });
-        }
-      }
-    }
-
-    return cards;
-  }
-  // 智能解析AI返回的内容 - 只解析sections，不解析卡片
-  const sections = useMemo(() => {
-    if (!data) return [];
-
-    console.log("Raw AI data:", data);
-
-    // 尝试解析结构化内容
-    const lines = data.split('\n').filter((line: string) => line.trim());
-    const sections: any[] = [];
-
-    let currentSection: any = null;
-    let currentContent: string[] = [];
-
-    for (const line of lines) {
-      // 检测标题（## 或 # 开头）
-      if (line.match(/^#{1,3}\s+/)) {
-        // 保存上一个section
-        if (currentSection && currentContent.length > 0) {
-          const filteredContent = currentContent.join('\n').trim();
-          if (filteredContent) {
-            currentSection.content = filteredContent;
-            sections.push(currentSection);
-          }
-        }
-
-        // 开始新section
-        const title = line.replace(/^#{1,3}\s+/, '').trim();
-        const level = (line.match(/^#+/) || [''])[0].length;
-
-        // 跳过不需要的section
-        if (title.toLowerCase().includes('deprecated') ||
-          title.toLowerCase().includes('unused')) {
-          currentSection = null;
-          currentContent = [];
-          continue;
-        }
-
-        currentSection = {
-          id: title.toLowerCase().replace(/\s+/g, '-'),
-          title,
-          level,
-          content: '',
-          type: getContentType(title)
-        };
-        currentContent = [];
-      }
-      // 普通内容行
-      else if (line.trim() && currentSection) {
-        // 过滤掉问答格式的内容行和卡片标记
-        if (!line.match(/^(Q|问|A|答|T|时间|Timestamp|Type|Category)\s*[:：]/) &&
-          !line.match(/^\s*(Q|问)\s*[:：].*?\s*(A|答)\s*[:：]/) &&
-          !line.trim().startsWith('---START_CARDS---') &&
-          !line.trim().startsWith('---END_CARDS---') &&
-          !line.trim().startsWith('---') &&
-          !line.match(/^Type:\s*(concept|definition|insight|action)/) &&
-          !line.match(/^Category:\s*(technical|business|design|general)/)) {
-          currentContent.push(line);
-        }
-      }
-    }
-
-    // 保存最后一个section
-    if (currentSection && currentContent.length > 0) {
-      const filteredContent = currentContent.join('\n').trim();
-      if (filteredContent) {
-        currentSection.content = filteredContent;
-        sections.push(currentSection);
-      }
-    }
-
-    // 如果没有检测到sections，创建一个默认的
-    if (sections.length === 0 && data.trim()) {
-      // 过滤掉问答格式的内容和卡片标记
-      const filteredContent = data
-        .split('\n')
-        .filter((line: any) =>
-          !line.match(/^(Q|问|A|答|T|时间|Timestamp|Type|Category)\s*[:：]/) &&
-          !line.match(/^\s*(Q|问)\s*[:：].*?\s*(A|答)\s*[:：]/) &&
-          !line.trim().startsWith('---START_CARDS---') &&
-          !line.trim().startsWith('---END_CARDS---') &&
-          !line.trim().startsWith('---') &&
-          !line.match(/^Type:\s*(concept|definition|insight|action)/) &&
-          !line.match(/^Category:\s*(technical|business|design|general)/) &&
-          line.trim() !== ''
-        )
-        .join('\n')
-        .trim();
-
-      if (filteredContent) {
-        sections.push({
-          id: 'summary',
-          title: 'AI Analysis',
-          level: 1,
-          content: filteredContent,
-          type: 'summary'
-        });
-      }
-    }
-
-    console.log("Parsed sections:", sections);
-
-    return sections;
-  }, [data]);
-
-  function getContentType(title: string) {
-    const lower = title.toLowerCase();
-    if (lower.includes('summary') || lower.includes('总结')) return 'summary';
-    if (lower.includes('key') || lower.includes('重点') || lower.includes('要点')) return 'keypoints';
-    if (lower.includes('insight') || lower.includes('洞察')) return 'insights';
-    if (lower.includes('takeaway') || lower.includes('收获')) return 'takeaways';
-    return 'content';
-  }
+  };
 
   return (
     <div className="h-full flex flex-col bg-slate-50">
@@ -281,13 +140,13 @@ export function SummaryArea({
               </h2>
               <p className="text-xs text-slate-500">
                 {isLoading ? 'AI is processing content' :
-                  viewMode === 'summary' ? `${sections.length} sections` : `${cards.length} study cards`}
+                  viewMode === 'summary' ? 'AI Summary' : `${cardsData.length} study cards`}
               </p>
             </div>
           </div>
 
           {/* View Mode Toggle */}
-          {data && (
+          {data && cardsData.length > 0 && (
             <div className="flex items-center bg-slate-100 rounded-lg p-1">
               <button
                 onClick={() => setViewMode('summary')}
@@ -305,7 +164,7 @@ export function SummaryArea({
                   : 'text-slate-600 hover:text-slate-800'
                   }`}
               >
-                Study Cards ({cards.length})
+                Study Cards ({cardsData.length})
               </button>
             </div>
           )}
@@ -355,17 +214,20 @@ export function SummaryArea({
         ) : (isLoading && !data) ? (
           <LoadingState />
         ) : viewMode === 'summary' ? (
-          <OverviewContent
-            sections={sections}
+          <SummaryContent
+            data={data}
             isLoading={isLoading}
-            onSeek={onSeek}
-            toast={{ success, error: showError, info: showInfo }}
+            onGenerateCards={generateCards}
+            isCardsLoading={isCardsLoading}
+            hasCards={cardsData.length > 0}
+            onViewCards={() => setViewMode('cards')}
           />
         ) : (
           <CardsView
-            cards={cards}
+            cards={cardsData}
             isLoading={isLoading}
             onSeek={onSeek}
+            videoUrl={videoUrl}
           />
         )}
       </div>
@@ -375,62 +237,30 @@ export function SummaryArea({
   );
 }
 
-// 加载状态组件 - 显示AI正在工作
+// 加载状态组件
 function LoadingState() {
   return (
     <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md"
+        className="max-w-sm"
       >
-        {/* Animated Icon */}
-        <div className="relative mb-6">
-          <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto">
-            <BookOpen size={28} className="text-blue-600" />
-          </div>
-          <div className="absolute -top-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-          </div>
+        <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <BookOpen size={28} className="text-blue-600" />
         </div>
 
-        {/* Status */}
-        <h2 className="text-xl font-semibold text-slate-800 mb-3">
+        <h2 className="text-xl font-semibold text-slate-800 mb-2">
           AI is Analyzing...
         </h2>
-        <p className="text-slate-600 mb-6 leading-relaxed">
-          Processing video content and generating study materials. This may take 30-60 seconds.
+        <p className="text-slate-500 text-sm mb-6">
+          This may take 30–60 seconds.
         </p>
 
-        {/* Progress Animation */}
-        <div className="flex items-center justify-center gap-2 mb-6">
+        <div className="flex items-center justify-center gap-1.5">
           <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
           <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
           <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-        </div>
-
-        {/* What's happening */}
-        <div className="text-left space-y-3 bg-white rounded-xl p-4 border border-slate-200">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <p className="text-sm text-slate-700">Extracting key concepts</p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-            <p className="text-sm text-slate-700">Generating study cards</p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-slate-300 rounded-full"></div>
-            <p className="text-sm text-slate-500">Creating summary</p>
-          </div>
-        </div>
-
-        <div className="mt-6 pt-4 border-t border-slate-200">
-          <p className="text-xs text-slate-500">
-            Content will appear as it's generated
-          </p>
         </div>
       </motion.div>
     </div>
@@ -511,78 +341,59 @@ function EmptyState({ onStartAnalysis }: any) {
   );
 }
 
-// 概览内容组件 - 支持流式显示
-function OverviewContent({ sections, isLoading, onSeek, toast }: any) {
+// 摘要内容组件 - 用 MarkdownContent 渲染，流式友好
+function SummaryContent({ data, isLoading, onGenerateCards, isCardsLoading, hasCards, onViewCards }: any) {
   return (
     <div className="h-full overflow-y-auto bg-slate-50">
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
-        {sections.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm"
-          >
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
-                <BookOpen size={24} className="text-slate-600" />
-              </div>
-              <div className="flex-1">
-                <h1 className="text-xl font-bold text-slate-900 mb-2">
-                  {sections[0]?.title?.replace(/^#+ /, '') || 'Video Analysis'}
-                </h1>
-                <p className="text-slate-600 text-sm">
-                  {isLoading ? 'Analysis in progress...' : 'Analysis complete'}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                {isLoading ? (
-                  <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                    Generating...
-                  </div>
-                ) : (
-                  <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                    ✓ Complete
-                  </span>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        )}
+      <div className="max-w-3xl mx-auto p-6">
+        <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+          {/* Markdown 内容 */}
+          <MarkdownContent content={data || ''} />
 
-        {/* 内容区块 */}
-        <div className="grid gap-4">
-          {sections.map((section: any, index: number) => (
-            <SectionCard
-              key={section.id || index}
-              section={section}
-              index={index}
-              onSeek={onSeek}
-              toast={toast}
-            />
-          ))}
+          {/* 流式打字光标 */}
+          {isLoading && (
+            <div className="flex items-center gap-2 mt-4 text-blue-500">
+              <span className="w-2 h-5 bg-blue-500 animate-pulse rounded-full" />
+              <span className="text-xs font-medium animate-pulse">Generating...</span>
+            </div>
+          )}
+
+          {/* Generate Study Cards 按钮 - 仅在摘要完成后显示 */}
+          {!isLoading && data && (
+            <div className="mt-8 pt-6 border-t border-slate-100">
+              {hasCards ? (
+                <button
+                  onClick={onViewCards}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-slate-700 text-white text-sm font-medium rounded-xl transition-all"
+                >
+                  <BookOpen size={16} />
+                  View Study Cards
+                </button>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={onGenerateCards}
+                    disabled={isCardsLoading}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-medium rounded-xl transition-all"
+                  >
+                    {isCardsLoading ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Generating Cards...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles size={16} />
+                        Generate Study Cards
+                      </>
+                    )}
+                  </button>
+                  <p className="text-xs text-slate-400">Uses 1 credit</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-
-        {/* 加载指示器 - 只在有内容且还在加载时显示 */}
-        {isLoading && sections.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm"
-          >
-            <div className="flex items-center gap-3 text-blue-600">
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" />
-              </div>
-              <span className="font-medium">Generating more content...</span>
-            </div>
-          </motion.div>
-        )}
-
-        {/* 如果没有sections且在加载，显示骨架屏 */}
-        {isLoading && sections.length === 0 && <LoadingSkeleton />}
       </div>
     </div>
   );
@@ -606,159 +417,36 @@ function LoadingSkeleton() {
   );
 }
 
-// 内容区块组件 - 重新设计为更美观的卡片
-function SectionCard({ section, index, onSeek, toast }: any) {
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const getIcon = (type: string) => {
-    switch (type) {
-      case 'summary': return Sparkles;
-      case 'keypoints': return Target;
-      case 'insights': return Lightbulb;
-      case 'takeaways': return BookOpen;
-      default: return BookOpen;
-    }
-  };
-
-  const getColor = (type: string) => {
-    switch (type) {
-      case 'summary': return 'blue';
-      case 'keypoints': return 'green';
-      case 'insights': return 'purple';
-      case 'takeaways': return 'orange';
-      default: return 'slate';
-    }
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(section.content);
-    setCopied(true);
-    if (toast) toast.success("Copied to clipboard");
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const IconComponent = getIcon(section.type);
-  const color = getColor(section.type);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden"
-    >
-      {/* 卡片头部 */}
-      <div
-        className="flex items-center justify-between p-4 border-b border-slate-100 cursor-pointer hover:bg-slate-50/50 transition-colors"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <div className="flex items-center gap-3">
-          <div className={`
-            w-10 h-10 rounded-lg flex items-center justify-center
-            ${color === 'blue' ? 'bg-blue-100 text-blue-600' : ''}
-            ${color === 'green' ? 'bg-green-100 text-green-600' : ''}
-            ${color === 'purple' ? 'bg-purple-100 text-purple-600' : ''}
-            ${color === 'orange' ? 'bg-orange-100 text-orange-600' : ''}
-            ${color === 'slate' ? 'bg-slate-100 text-slate-600' : ''}
-          `}>
-            <IconComponent size={20} />
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-900">
-              {section.title}
-            </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {section.content.length > 100 ? `${section.content.substring(0, 100)}...` : section.content.substring(0, 50)}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-          <button
-            onClick={() => {
-              setIsBookmarked(!isBookmarked);
-              if (!isBookmarked && toast) toast.success("Saved to bookmarks");
-            }}
-            className={`p-2.5 rounded-lg transition-all ${isBookmarked
-              ? 'text-yellow-600 bg-yellow-50 hover:bg-yellow-100'
-              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-              }`}
-            title="Save insight"
-          >
-            <BookOpen size={18} />
-          </button>
-
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="p-2.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
-            title={isExpanded ? "Collapse" : "Expand"}
-          >
-            <ChevronRight
-              size={18}
-              className={`transform transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-            />
-          </button>
-        </div>
-      </div>
-
-      {/* 卡片内容 */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <div className="p-4 pt-2">
-              <div className="prose prose-slate max-w-none prose-sm">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {section.content}
-                </ReactMarkdown>
-              </div>
-
-              {/* 操作按钮 */}
-              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-100">
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all"
-                >
-                  {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
-                  {copied ? "Copied" : "Copy"}
-                </button>
-
-                <button
-                  onClick={() => toast?.info("AI feature coming soon!")}
-                  className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all"
-                >
-                  <MessageSquare size={12} />
-                  Ask AI
-                </button>
-
-                <button
-                  onClick={() => toast?.info("Flashcard creation coming soon!")}
-                  className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all"
-                >
-                  <Zap size={12} />
-                  Create Card
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-}
 // 卡片视图组件 - NotebookLM风格重设计
-function CardsView({ cards, isLoading, onSeek }: any) {
+function CardsView({ cards, isLoading, onSeek, videoUrl }: CardsViewProps) {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [studyMode, setStudyMode] = useState<'browse' | 'study'>('browse');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const { success, error: showError, info: showInfo } = useToast();
+
+  const [masteredCards, setMasteredCards] = useState<Set<number>>(() => {
+    if (typeof window === 'undefined' || !videoUrl) return new Set();
+    try {
+      const saved = localStorage.getItem(`study-progress-${videoUrl}`);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+
+  const toggleMastered = (index: number) => {
+    setMasteredCards(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      if (videoUrl) {
+        try {
+          localStorage.setItem(`study-progress-${videoUrl}`, JSON.stringify([...next]));
+        } catch {}
+      }
+      return next;
+    });
+  };
 
   if (isLoading && cards.length === 0) {
     return <LoadingSkeleton />;
@@ -768,7 +456,7 @@ function CardsView({ cards, isLoading, onSeek }: any) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
         <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mb-6">
-          <Target size={32} className="text-white" />
+          <BookOpen size={32} className="text-white" />
         </div>
         <h3 className="text-xl font-bold text-slate-800 mb-3">
           Ready to Create Study Cards
@@ -793,18 +481,16 @@ function CardsView({ cards, isLoading, onSeek }: any) {
 
   return (
     <div className="h-full flex flex-col bg-slate-50">
-      {/* Enhanced Header */}
-      <div className="bg-white border-b border-slate-200 p-6 space-y-4">
-        {/* Title and Stats */}
+      {/* Header */}
+      <div className="bg-white border-b border-slate-200 px-6 py-4 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-slate-900">Study Cards</h2>
-            <p className="text-sm text-slate-600 mt-1">
-              Interactive learning materials designed for deep understanding
+            <h2 className="text-lg font-bold text-slate-900">Study Cards</h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              <span className="text-green-600 font-semibold">{masteredCards.size}</span> mastered · {cards.length - masteredCards.size} remaining
             </p>
           </div>
 
-          {/* Study Mode Toggle */}
           <div className="flex items-center bg-slate-100 rounded-lg p-1">
             <button
               onClick={() => setStudyMode('browse')}
@@ -813,41 +499,50 @@ function CardsView({ cards, isLoading, onSeek }: any) {
                 : 'text-slate-600 hover:text-slate-800'
                 }`}
             >
-              Browse All
+              Browse
             </button>
             <button
-              onClick={() => setStudyMode('study')}
+              onClick={() => { setStudyMode('study'); setCurrentCardIndex(0); }}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${studyMode === 'study'
                 ? 'bg-white text-slate-900 shadow-sm'
                 : 'text-slate-600 hover:text-slate-800'
                 }`}
             >
-              Study Mode
+              Study
             </button>
           </div>
+        </div>
+
+        {/* Mastery progress bar */}
+        <div className="flex gap-0.5">
+          {cards.map((_: StudyCard, i: number) => (
+            <div
+              key={i}
+              className={`h-1 flex-1 rounded-full transition-colors duration-300 ${masteredCards.has(i) ? 'bg-green-500' : 'bg-slate-200'}`}
+            />
+          ))}
         </div>
 
         {/* Type Filters */}
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => setSelectedType('all')}
-            className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${selectedType === 'all'
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedType === 'all'
               ? 'bg-slate-900 text-white'
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
           >
-            All Cards ({cards.length})
+            All ({cards.length})
           </button>
-
           {Object.entries(cardsByType).map(([type, typeCards]: [string, any]) => {
             const typeInfo = getTypeInfo(type);
             return (
               <button
                 key={type}
                 onClick={() => setSelectedType(type)}
-                className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-all ${selectedType === type
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedType === type
                   ? `${typeInfo.bgActive} ${typeInfo.textActive}`
-                  : `${typeInfo.bg} ${typeInfo.text} hover:${typeInfo.bgHover}`
+                  : `${typeInfo.bg} ${typeInfo.text}`
                   }`}
               >
                 <span>{typeInfo.icon}</span>
@@ -861,13 +556,21 @@ function CardsView({ cards, isLoading, onSeek }: any) {
       {/* Content Area */}
       <div className="flex-1 overflow-hidden">
         {studyMode === 'browse' ? (
-          <BrowseCards cards={filteredCards} onSeek={onSeek} toast={{ success, error: showError, info: showInfo }} />
+          <BrowseCards
+            cards={filteredCards}
+            onSeek={onSeek}
+            toast={{ success, error: showError, info: showInfo }}
+            masteredCards={masteredCards}
+            onToggleMastered={toggleMastered}
+          />
         ) : (
           <StudyCards
             cards={filteredCards}
             currentIndex={currentCardIndex}
             setCurrentIndex={setCurrentCardIndex}
             onSeek={onSeek}
+            masteredCards={masteredCards}
+            onToggleMastered={toggleMastered}
           />
         )}
       </div>
@@ -876,17 +579,19 @@ function CardsView({ cards, isLoading, onSeek }: any) {
 }
 
 // 浏览模式 - 显示所有卡片
-function BrowseCards({ cards, onSeek, toast }: any) {
+function BrowseCards({ cards, onSeek, toast, masteredCards, onToggleMastered }: BrowseCardsProps) {
   return (
     <div className="h-full overflow-y-auto">
-      <div className="max-w-5xl mx-auto p-6 space-y-4">
-        {cards.map((card: any, index: number) => (
+      <div className="max-w-3xl mx-auto p-6 space-y-3">
+        {cards.map((card: StudyCard, index: number) => (
           <EnhancedCardItem
             key={index}
             card={card}
             index={index}
             onSeek={onSeek}
             toast={toast}
+            isMastered={masteredCards.has(index)}
+            onToggleMastered={() => onToggleMastered(index)}
           />
         ))}
       </div>
@@ -894,120 +599,145 @@ function BrowseCards({ cards, onSeek, toast }: any) {
   );
 }
 
-// 学习模式 - 专注单卡片学习
-function StudyCards({ cards, currentIndex, setCurrentIndex, onSeek }: any) {
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [confidence, setConfidence] = useState<number | null>(null);
+// 学习模式 - 专注单卡片学习，支持3D翻牌 + 掌握标记
+function StudyCards({ cards, currentIndex, setCurrentIndex, onSeek, masteredCards, onToggleMastered }: StudyCardsProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  // 切换卡片时重置翻转状态
+  const goTo = (index: number) => {
+    setIsFlipped(false);
+    setTimeout(() => setCurrentIndex(index), 50);
+  };
+
+  // 完成屏：所有卡片都过完了
+  if (currentIndex >= cards.length) {
+    return (
+      <CompletionScreen
+        cards={cards}
+        masteredCards={masteredCards}
+        onRestart={() => goTo(0)}
+      />
+    );
+  }
 
   const currentCard = cards[currentIndex];
 
-  const nextCard = () => {
-    if (currentIndex < cards.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setShowAnswer(false);
-      setConfidence(null);
-    }
+  const handleMastered = () => {
+    onToggleMastered(currentIndex);
+    setTimeout(() => goTo(currentIndex + 1), 350);
   };
 
-  const prevCard = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-      setShowAnswer(false);
-      setConfidence(null);
-    }
+  const handleStillLearning = () => {
+    setTimeout(() => goTo(currentIndex + 1), 200);
   };
-
-  if (!currentCard) return null;
 
   return (
-    <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-50 to-blue-50/30">
-      <div className="w-full max-w-3xl">
+    <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-50 to-blue-50/20">
+      <div className="w-full max-w-2xl">
         {/* Progress */}
-        <div className="mb-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="text-lg font-semibold text-slate-700">
-              Card {currentIndex + 1} of {cards.length}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-slate-500">
+              {currentIndex + 1} / {cards.length}
             </span>
-            <div className="flex items-center gap-1">
-              {getTypeInfo(currentCard.type).icon}
-              <span className="text-sm font-medium text-slate-600">
-                {getTypeInfo(currentCard.type).label}
-              </span>
-            </div>
+            <span className="text-sm font-semibold text-green-600">
+              {masteredCards.size} mastered
+            </span>
           </div>
-          <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500"
-              style={{ width: `${((currentIndex + 1) / cards.length) * 100}%` }}
-            />
+          <div className="flex gap-0.5">
+            {cards.map((_: StudyCard, i: number) => (
+              <div
+                key={i}
+                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
+                  masteredCards.has(i)
+                    ? 'bg-green-500'
+                    : i < currentIndex
+                    ? 'bg-slate-300'
+                    : i === currentIndex
+                    ? 'bg-blue-400'
+                    : 'bg-slate-200'
+                }`}
+              />
+            ))}
           </div>
         </div>
 
-        {/* Card */}
+        {/* 3D Flip Card */}
         <StudyCardItem
           card={currentCard}
-          showAnswer={showAnswer}
-          onToggleAnswer={() => setShowAnswer(!showAnswer)}
-          confidence={confidence}
-          onSetConfidence={setConfidence}
-          onSeek={onSeek}
+          isFlipped={isFlipped}
+          onFlip={() => setIsFlipped(true)}
+          onMastered={handleMastered}
+          onStillLearning={handleStillLearning}
+          isMastered={masteredCards.has(currentIndex)}
         />
 
-        {/* Controls */}
-        <div className="flex items-center justify-between mt-8">
+        {/* Navigation */}
+        <div className="flex items-center justify-between mt-5">
           <button
-            onClick={prevCard}
+            onClick={() => goTo(Math.max(0, currentIndex - 1))}
             disabled={currentIndex === 0}
-            className="flex items-center gap-2 px-6 py-3 text-slate-600 hover:text-slate-800 disabled:opacity-50 disabled:cursor-not-allowed border border-slate-200 rounded-xl hover:bg-white transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 text-sm text-slate-600 hover:text-slate-800 disabled:opacity-40 disabled:cursor-not-allowed border border-slate-200 rounded-xl hover:bg-white transition-all"
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size={16} />
             Previous
           </button>
-
-          <div className="flex items-center gap-3">
-            {!showAnswer ? (
-              <button
-                onClick={() => setShowAnswer(true)}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
-              >
-                Reveal Answer
-              </button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-slate-600">How confident are you?</span>
-                {[1, 2, 3, 4, 5].map((level) => (
-                  <button
-                    key={level}
-                    onClick={() => {
-                      setConfidence(level);
-                      setTimeout(nextCard, 500);
-                    }}
-                    className={`w-10 h-10 rounded-lg font-semibold transition-all ${confidence === level
-                      ? 'bg-green-500 text-white'
-                      : level <= 2
-                        ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                        : level === 3
-                          ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
-                          : 'bg-green-100 text-green-700 hover:bg-green-200'
-                      }`}
-                  >
-                    {level}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
           <button
-            onClick={nextCard}
-            disabled={currentIndex === cards.length - 1}
-            className="flex items-center gap-2 px-6 py-3 text-slate-600 hover:text-slate-800 disabled:opacity-50 disabled:cursor-not-allowed border border-slate-200 rounded-xl hover:bg-white transition-all"
+            onClick={() => goTo(currentIndex + 1)}
+            className="flex items-center gap-2 px-5 py-2.5 text-sm text-slate-500 hover:text-slate-700 border border-slate-200 rounded-xl hover:bg-white transition-all"
           >
-            Next
-            <ArrowRight size={18} />
+            Skip
+            <ArrowRight size={16} />
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+// 完成屏
+function CompletionScreen({ cards, masteredCards, onRestart }: { cards: StudyCard[]; masteredCards: Set<number>; onRestart: () => void }) {
+  const total = cards.length;
+  const mastered = masteredCards.size;
+  const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+
+  return (
+    <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-50 to-green-50/30">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="text-center max-w-sm"
+      >
+        <div className="w-20 h-20 bg-green-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
+          <Check size={36} className="text-green-600" />
+        </div>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">Session Complete</h2>
+        <p className="text-slate-500 mb-2">
+          You mastered{' '}
+          <span className="font-bold text-green-600">{mastered}</span>
+          {' '}of{' '}
+          <span className="font-bold text-slate-700">{total}</span>
+          {' '}cards
+        </p>
+        <p className="text-4xl font-black text-slate-900 mb-8">{pct}%</p>
+
+        <div className="flex gap-0.5 mb-8">
+          {cards.map((_: StudyCard, i: number) => (
+            <div
+              key={i}
+              className={`h-2 flex-1 rounded-full ${masteredCards.has(i) ? 'bg-green-500' : 'bg-slate-200'}`}
+            />
+          ))}
+        </div>
+
+        <button
+          onClick={onRestart}
+          className="px-8 py-3 bg-slate-900 hover:bg-slate-700 text-white rounded-xl font-semibold transition-all"
+        >
+          Study Again
+        </button>
+      </motion.div>
     </div>
   );
 }
@@ -1068,173 +798,91 @@ function getTypeInfo(type: string) {
   }
 }
 
-// 增强版卡片组件 - NotebookLM风格
-function EnhancedCardItem({ card, index, onSeek, toast }: any) {
+// 增强版卡片组件 - 浏览模式
+function EnhancedCardItem({ card, index, onSeek, toast, isMastered, onToggleMastered }: EnhancedCardItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const typeInfo = getTypeInfo(card.type);
+  const questionPreview = card.question.length > 80 ? card.question.slice(0, 80) + '…' : card.question;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-      className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all overflow-hidden group"
+      transition={{ delay: index * 0.04 }}
+      className={`bg-white rounded-xl border shadow-sm hover:shadow-md transition-all overflow-hidden ${isMastered ? 'border-green-200' : 'border-slate-200'}`}
     >
-      {/* Card Header */}
-      <div className="p-6 pb-4">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-lg ${typeInfo.bg}`}>
+      <div className="p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3 flex-1 min-w-0">
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5 ${typeInfo.bg}`}>
               {typeInfo.icon}
             </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className={`px-3 py-1 text-xs font-semibold rounded-full ${typeInfo.bg} ${typeInfo.text}`}>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${typeInfo.bg} ${typeInfo.text}`}>
                   {typeInfo.label}
                 </span>
-                {card.category && (
-                  <span className="px-3 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-600">
-                    {card.category}
+                {isMastered && (
+                  <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-green-50 text-green-600 border border-green-200">
+                    <Check size={10} />
+                    Mastered
                   </span>
                 )}
               </div>
-              <h3 className="font-semibold text-slate-900 text-lg leading-tight">
-                Study Card {index + 1}
-              </h3>
+              <p className="text-sm font-medium text-slate-800 leading-relaxed">{questionPreview}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 flex-shrink-0">
             {card.time && (
               <button
-                onClick={() => onSeek(card.time)}
-                className="flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-blue-100 text-slate-600 hover:text-blue-600 rounded-lg text-sm font-medium transition-all"
+                onClick={() => onSeek(card.time!)}
+                className="px-2.5 py-1.5 bg-slate-100 hover:bg-blue-50 text-slate-500 hover:text-blue-600 rounded-lg text-xs font-medium transition-all"
               >
-                <Sparkles size={14} />
                 {card.time}
               </button>
             )}
-
             <button
-              onClick={() => setIsBookmarked(!isBookmarked)}
-              className={`p-2 rounded-lg transition-all ${isBookmarked
-                ? 'text-yellow-600 bg-yellow-50'
-                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-                }`}
+              onClick={onToggleMastered}
+              className={`p-1.5 rounded-lg transition-all ${isMastered ? 'text-green-600 bg-green-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}
+              title={isMastered ? 'Mark as not mastered' : 'Mark as mastered'}
             >
-              <BookOpen size={16} />
+              <Check size={15} />
+            </button>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
+            >
+              <ChevronRight size={15} className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
             </button>
           </div>
         </div>
-
-        {/* Question Preview */}
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-            <span className="text-xs font-semibold text-blue-700 uppercase tracking-wide">Question</span>
-          </div>
-          <p className="text-slate-800 font-medium leading-relaxed">
-            {card.question}
-          </p>
-        </div>
-
-        {/* Expand Button */}
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-800 transition-all"
-        >
-          <ChevronRight
-            size={16}
-            className={`transform transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-          />
-          {isExpanded ? 'Hide Answer' : 'Show Answer & Details'}
-        </button>
       </div>
 
-      {/* Expandable Answer Section */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="overflow-hidden border-t border-slate-100"
           >
-            <div className="p-6 pt-4 bg-slate-50/50">
-              {/* Answer */}
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-xs font-semibold text-green-700 uppercase tracking-wide">Answer</span>
-                </div>
-                <div className="prose prose-slate max-w-none">
-                  <p className="text-slate-700 leading-relaxed">
-                    {card.answer}
-                  </p>
-                </div>
+            <div className="p-5 pt-4 bg-slate-50/60">
+              <div className="mb-4">
+                <span className="text-xs font-semibold text-green-700 uppercase tracking-wide">Answer</span>
+                <p className="mt-2 text-slate-700 leading-relaxed text-sm">{card.answer}</p>
               </div>
-
-              {/* Learning Insights */}
-              <div className="grid md:grid-cols-2 gap-4 mb-6">
-                <div className="p-4 bg-blue-50 rounded-xl">
-                  <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
-                    <Target size={16} />
-                    Learning Focus
-                  </h4>
-                  <p className="text-blue-700 text-sm">
-                    {getCardInsight(card.type, 'focus')}
-                  </p>
-                </div>
-
-                <div className="p-4 bg-purple-50 rounded-xl">
-                  <h4 className="font-semibold text-purple-900 mb-2 flex items-center gap-2">
-                    <Lightbulb size={16} />
-                    Why This Matters
-                  </h4>
-                  <p className="text-purple-700 text-sm">
-                    {getCardInsight(card.type, 'importance')}
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => {
-                    const cardText = `Q: ${card.question}\n\nA: ${card.answer}`;
-                    navigator.clipboard.writeText(cardText);
-                    toast.success("Card copied to clipboard");
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg text-sm font-medium transition-all"
-                >
-                  <Copy size={14} />
-                  Copy Card
-                </button>
-
-                <button
-                  onClick={() => {
-                    // 这里可以实现AI对话功能
-                    alert('Ask Follow-up feature coming soon!');
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg text-sm font-medium transition-all"
-                >
-                  <MessageSquare size={14} />
-                  Ask Follow-up
-                </button>
-
-                <button
-                  onClick={() => {
-                    // 这里可以生成更多相关练习
-                    alert('Practice More feature coming soon!');
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 rounded-lg text-sm font-medium transition-all"
-                >
-                  <Zap size={14} />
-                  Practice More
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(`Q: ${card.question}\n\nA: ${card.answer}`);
+                  toast.success('Card copied to clipboard');
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg text-xs font-medium transition-all"
+              >
+                <Copy size={12} />
+                Copy Card
+              </button>
             </div>
           </motion.div>
         )}
@@ -1243,122 +891,76 @@ function EnhancedCardItem({ card, index, onSeek, toast }: any) {
   );
 }
 
-// 学习模式专用卡片组件 - NotebookLM简洁风格
-function StudyCardItem({ card, showAnswer, onToggleAnswer, confidence, onSetConfidence, onSeek }: any) {
+// 学习模式专用卡片组件 - CSS 3D 翻牌
+function StudyCardItem({ card, isFlipped, onFlip, onMastered, onStillLearning, isMastered }: StudyCardItemProps) {
   const typeInfo = getTypeInfo(card.type);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
-      <div className="p-8">
-        {/* Card Type Header */}
-        <div className="flex items-center justify-center mb-8">
-          <div className={`flex items-center gap-3 px-4 py-2 rounded-full ${typeInfo.bg} border border-slate-200`}>
-            <span className={`text-lg font-bold ${typeInfo.text}`}>{typeInfo.icon}</span>
-            <span className={`font-medium ${typeInfo.text}`}>{typeInfo.label}</span>
+    <div style={{ perspective: '1200px' }} className="w-full">
+      <motion.div
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
+        style={{ transformStyle: 'preserve-3d', position: 'relative', minHeight: '300px' }}
+        className="w-full"
+      >
+        {/* Front - Question */}
+        <div
+          style={{ backfaceVisibility: 'hidden' }}
+          className="absolute inset-0 bg-white rounded-2xl border border-slate-200 shadow-lg p-8 flex flex-col items-center justify-center cursor-pointer group"
+          onClick={onFlip}
+        >
+          {isMastered && (
+            <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 bg-green-50 border border-green-200 rounded-full">
+              <Check size={12} className="text-green-600" />
+              <span className="text-xs font-semibold text-green-600">Mastered</span>
+            </div>
+          )}
+          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${typeInfo.bg} mb-6`}>
+            <span className={`text-sm font-bold ${typeInfo.text}`}>{typeInfo.icon}</span>
+            <span className={`text-xs font-semibold ${typeInfo.text}`}>{typeInfo.label}</span>
+          </div>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Question</p>
+          <h2 className="text-xl font-semibold text-slate-900 text-center leading-relaxed max-w-lg">
+            {card.question}
+          </h2>
+          <div className="mt-8 flex items-center gap-2 text-slate-400 text-sm group-hover:text-slate-600 transition-colors">
+            <div className="w-4 h-4 border border-current rounded-full flex items-center justify-center">
+              <div className="w-1.5 h-1.5 bg-current rounded-full" />
+            </div>
+            Tap to reveal answer
           </div>
         </div>
 
-        <AnimatePresence mode="wait">
-          {!showAnswer ? (
-            <motion.div
-              key="question"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="text-center min-h-[200px] flex flex-col justify-center"
+        {/* Back - Answer */}
+        <div
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+          className="absolute inset-0 bg-white rounded-2xl border border-green-200 shadow-lg p-8 flex flex-col"
+        >
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <p className="text-xs font-semibold text-green-600 uppercase tracking-widest mb-5">Answer</p>
+            <p className="text-lg text-slate-700 leading-relaxed text-center max-w-lg">
+              {card.answer}
+            </p>
+          </div>
+          <div className="flex gap-3 mt-6 pt-6 border-t border-slate-100">
+            <button
+              onClick={onStillLearning}
+              className="flex-1 py-3 border-2 border-orange-200 text-orange-600 rounded-xl font-semibold hover:bg-orange-50 transition-all text-sm"
             >
-              <div className="mb-6">
-                <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <MessageSquare size={24} className="text-slate-600" />
-                </div>
-                <span className="inline-block px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full mb-4">
-                  Think about this
-                </span>
-              </div>
-
-              <h2 className="text-2xl font-semibold text-slate-900 mb-6 leading-relaxed max-w-2xl mx-auto">
-                {card.question}
-              </h2>
-
-              {card.time && (
-                <button
-                  onClick={() => onSeek(card.time)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-all mx-auto"
-                >
-                  <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-                  {card.time}
-                </button>
-              )}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="answer"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="min-h-[200px]"
+              Still Learning
+            </button>
+            <button
+              onClick={onMastered}
+              className="flex-1 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold transition-all shadow-sm text-sm"
             >
-              <div className="text-center mb-6">
-                <div className="w-12 h-12 bg-green-50 border border-green-200 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Check size={24} className="text-green-600" />
-                </div>
-                <span className="inline-block px-3 py-1 bg-green-50 text-green-700 text-sm font-medium rounded-full">
-                  Answer
-                </span>
-              </div>
-
-              <div className="prose prose-lg prose-slate max-w-none text-center">
-                <p className="text-slate-700 leading-relaxed text-lg">
-                  {card.answer}
-                </p>
-              </div>
-
-              {/* Learning Enhancement */}
-              <div className="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-xl">
-                <h4 className="font-medium text-slate-900 mb-3 flex items-center gap-2 justify-center">
-                  <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-                  Key Learning Point
-                </h4>
-                <p className="text-slate-700 text-center text-sm">
-                  {getCardInsight(card.type, 'learning')}
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+              Got it ✓
+            </button>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
-
-// 获取卡片学习洞察的辅助函数
-function getCardInsight(type: string, aspect: 'focus' | 'importance' | 'learning') {
-  const insights = {
-    concept: {
-      focus: 'Understanding the fundamental idea and how it connects to other concepts',
-      importance: 'Concepts form the building blocks of deeper knowledge and critical thinking',
-      learning: 'This concept helps you build a mental framework for understanding related topics'
-    },
-    definition: {
-      focus: 'Memorizing the precise meaning and being able to explain it clearly',
-      importance: 'Definitions provide the vocabulary needed for advanced discussions',
-      learning: 'Understanding this definition will help you communicate more precisely about this topic'
-    },
-    insight: {
-      focus: 'Grasping the deeper implications and real-world applications',
-      importance: 'Insights reveal the "why" behind information and drive innovation',
-      learning: 'This insight can change how you approach similar situations in the future'
-    },
-    action: {
-      focus: 'Learning the specific steps and when to apply them',
-      importance: 'Actionable knowledge transforms understanding into practical results',
-      learning: 'Practice this action to build competence and confidence in real scenarios'
-    }
-  };
-
-  return insights[type as keyof typeof insights]?.[aspect] || 'This card helps deepen your understanding of the topic';
-}
-
 // 导出下拉组件
 function ExportDropdown({ data, toast }: any) {
   const [isOpen, setIsOpen] = useState(false);

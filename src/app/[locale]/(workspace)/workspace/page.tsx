@@ -512,6 +512,7 @@ function WorkspaceContent() {
                 onStartAnalysis={() => handleRequestAnalysis()}
                 onRegenerate={() => handleRequestAnalysis(undefined, undefined, true)}
                 mobileSubTab={activeTab}
+                videoUrl={currentVideo.url}
               />
             </div>
           </div>

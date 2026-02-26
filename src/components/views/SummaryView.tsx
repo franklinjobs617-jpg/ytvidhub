@@ -1,15 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { VideoResult } from "./EnhancedDownloaderView";
-import {
-  Sparkles, Clock, Copy, Share2,
-  ListChecks, MessageSquare,
-  Languages, FileJson, Check
-} from "lucide-react";
+import { Check, Copy, Sparkles } from "lucide-react";
 import { useTranslations } from 'next-intl';
+import { MarkdownContent } from "@/components/ui/MarkdownContent";
 
 interface SummaryViewProps {
   videos: VideoResult[];
@@ -40,48 +35,6 @@ export function SummaryView({
     navigator.clipboard.writeText(summaryData);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const MarkdownComponents = {
-    h1: ({ children }: any) => (
-      <h1 className="text-2xl font-black text-slate-900 mb-6 mt-2 tracking-tighter border-b pb-4">
-        {children}
-      </h1>
-    ),
-    h2: ({ children }: any) => (
-      <h2 className="flex items-center gap-2 text-slate-800 text-lg font-bold mt-10 mb-4 uppercase tracking-tight">
-        <div className="w-1.5 h-5 bg-violet-500 rounded-full" />
-        {children}
-      </h2>
-    ),
-    // 将引用块处理为精美的 TL;DR 卡片
-    blockquote: ({ children }: any) => (
-      <div className="relative my-8 p-6 bg-gradient-to-br from-violet-50 to-indigo-50 border-l-4 border-violet-500 rounded-r-2xl shadow-sm">
-        <div className="absolute top-2 right-4 text-4xl text-violet-200 font-serif opacity-30">“</div>
-        <div className="text-slate-700 leading-relaxed italic font-medium">
-          {children}
-        </div>
-      </div>
-    ),
-    // 极致美化表格
-    table: ({ children }: any) => (
-      <div className="my-6 overflow-hidden border border-slate-200 rounded-2xl shadow-sm bg-white">
-        <table className="w-full text-sm text-left border-collapse">{children}</table>
-      </div>
-    ),
-    thead: ({ children }: any) => <thead className="bg-slate-50 font-bold text-slate-600 border-b">{children}</thead>,
-    th: ({ children }: any) => <th className="px-4 py-3">{children}</th>,
-    td: ({ children }: any) => <td className="px-4 py-3 border-t border-slate-50 text-slate-600">{children}</td>,
-    // 优化列表和时间戳识别
-    li: ({ children }: any) => {
-      // 尝试识别 [00:00] 格式
-      return (
-        <li className="flex items-start gap-3 mb-3 text-slate-600 leading-relaxed group">
-          <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-violet-400 group-hover:scale-125 transition-transform flex-shrink-0" />
-          <div className="flex-1">{children}</div>
-        </li>
-      );
-    }
   };
 
   return (
@@ -131,17 +84,12 @@ export function SummaryView({
                 <div className="h-4 w-px bg-slate-200" />
                 <nav className="flex items-center gap-4">
                   <button className="text-[10px] font-black text-violet-600 uppercase border-b-2 border-violet-600 pb-1">{t('summary')}</button>
-                  <button className="text-[10px] font-black text-slate-400 uppercase hover:text-slate-600 pb-1 border-b-2 border-transparent">{t('mindMap')}</button>
-                  <button className="text-[10px] font-black text-slate-400 uppercase hover:text-slate-600 pb-1 border-b-2 border-transparent">{t('transcript')}</button>
                 </nav>
               </div>
 
               <div className="flex items-center gap-2">
                 <button onClick={handleCopy} className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 transition-colors">
                   {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
-                </button>
-                <button className="p-2 hover:bg-slate-100 rounded-lg text-slate-400">
-                  <Share2 className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -159,11 +107,7 @@ export function SummaryView({
                     </div>
                   ) : (
                     <>
-                      <article className="prose prose-slate max-w-none">
-                        <ReactMarkdown components={MarkdownComponents} remarkPlugins={[remarkGfm]}>
-                          {summaryData}
-                        </ReactMarkdown>
-                      </article>
+                      <MarkdownContent content={summaryData} />
                       {isLoading && (
                         <div className="flex items-center gap-2 mt-4 text-violet-500">
                           <span className="w-2 h-5 bg-violet-500 animate-pulse rounded-full" />
