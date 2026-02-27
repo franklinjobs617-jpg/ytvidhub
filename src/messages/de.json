@@ -53,6 +53,16 @@
       "poweredBy": "Unterstützt durch DeepSeek AI",
       "pasteDemo": "Demo Link einfügen"
     },
+    "input": {
+      "placeholder": "YouTube Video-, Playlist- oder Kanal-URL einfügen...",
+      "placeholderSummary": "YouTube Video-URL für KI-Zusammenfassung einfügen...",
+      "heading": "Link unten einfügen, um zu starten",
+      "headingSummary": "Video-Link für KI-Analyse einfügen",
+      "supports": "Unterstützt: Video · Playlist · Kanal",
+      "supportsSummary": "Unterstützt: Einzelvideo-Analyse",
+      "tryDemo": "Demo-Link ausprobieren",
+      "tryExample": "Beispiel ausprobieren"
+    },
     "ticker": {
       "subtitles": "YouTube Untertitel herunterladen",
       "caption": "YouTube Untertitel Download",

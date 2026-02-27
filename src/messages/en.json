@@ -53,6 +53,16 @@
       "poweredBy": "Powered by DeepSeek AI",
       "pasteDemo": "Paste Demo Link"
     },
+    "input": {
+      "placeholder": "Paste YouTube video, playlist, or channel URL...",
+      "placeholderSummary": "Paste a YouTube video URL for AI summary...",
+      "heading": "Paste a link below to get started",
+      "headingSummary": "Paste a video link for AI analysis",
+      "supports": "Supports: video · playlist · channel",
+      "supportsSummary": "Supports: single video analysis",
+      "tryDemo": "Try a demo link",
+      "tryExample": "Try an example"
+    },
     "ticker": {
       "subtitles": "Download YouTube subtitles",
       "caption": "YouTube caption downloader",

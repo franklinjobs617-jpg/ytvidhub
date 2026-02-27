@@ -52,6 +52,16 @@
       "poweredBy": "Impulsado por DeepSeek AI",
       "pasteDemo": "Pegar enlace de demostración"
     },
+    "input": {
+      "placeholder": "Pega la URL de un video, playlist o canal de YouTube...",
+      "placeholderSummary": "Pega la URL de un video de YouTube para resumen IA...",
+      "heading": "Pega un enlace abajo para comenzar",
+      "headingSummary": "Pega un enlace de video para análisis IA",
+      "supports": "Soporta: video · playlist · canal",
+      "supportsSummary": "Soporta: análisis de video individual",
+      "tryDemo": "Probar un enlace de demo",
+      "tryExample": "Prueba un ejemplo"
+    },
     "ticker": {
       "subtitles": "Descargar subtítulos de YouTube",
       "caption": "Descargador de subtítulos de YouTube",

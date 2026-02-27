@@ -53,6 +53,16 @@
             "poweredBy": "DeepSeek AI 기반",
             "pasteDemo": "데모 링크 붙여넣기"
         },
+        "input": {
+            "placeholder": "YouTube 동영상, 플레이리스트 또는 채널 URL을 붙여넣으세요...",
+            "placeholderSummary": "AI 요약을 위한 YouTube 동영상 URL을 붙여넣으세요...",
+            "heading": "아래에 링크를 붙여넣어 시작하세요",
+            "headingSummary": "AI 분석을 위한 동영상 링크를 붙여넣으세요",
+            "supports": "지원: 동영상 · 플레이리스트 · 채널",
+            "supportsSummary": "지원: 단일 동영상 분석",
+            "tryDemo": "데모 링크 시도",
+            "tryExample": "예시 사용해보기"
+        },
         "ticker": {
             "subtitles": "유튜브 자막 다운로드",
             "caption": "유튜브 자막 다운로더",

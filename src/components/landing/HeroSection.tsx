@@ -13,12 +13,14 @@ import {
   Info,
   AlertCircle,
   Youtube,
-  Clipboard,
-  TrendingUp,
   Sparkles,
   Copy,
   CheckCheck,
   FileText,
+  ArrowRight,
+  Play,
+  ListVideo,
+  Radio,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
@@ -75,6 +77,44 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const [copied, setCopied] = useState(false);
   const [isFirstSummaryFree, setIsFirstSummaryFree] = useState(true);
   const pendingAnalysisRef = useRef(false);
+
+  // 动态 placeholder 打字效果
+  const placeholderExamples = selectedMode === 'summary'
+    ? [
+        'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        'https://youtu.be/jNQXAC9IVRw',
+      ]
+    : [
+        'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        'https://www.youtube.com/playlist?list=PLrAXtmRdnEQy...',
+        'https://www.youtube.com/@ChannelName',
+      ];
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [typedPlaceholder, setTypedPlaceholder] = useState('');
+
+  useEffect(() => {
+    if (isFocused || urls) return;
+    const target = placeholderExamples[placeholderIndex];
+    let charIndex = 0;
+    let pauseTimer: ReturnType<typeof setTimeout>;
+    setTypedPlaceholder('');
+
+    const typeInterval = setInterval(() => {
+      charIndex++;
+      setTypedPlaceholder(target.slice(0, charIndex));
+      if (charIndex >= target.length) {
+        clearInterval(typeInterval);
+        pauseTimer = setTimeout(() => {
+          setPlaceholderIndex((prev) => (prev + 1) % placeholderExamples.length);
+        }, 2000);
+      }
+    }, 35);
+
+    return () => {
+      clearInterval(typeInterval);
+      clearTimeout(pauseTimer);
+    };
+  }, [placeholderIndex, isFocused, urls, selectedMode]);
 
   const handleCopyContent = async () => {
     if (!downloadedContent) return;
@@ -191,29 +231,6 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
     setUrls(val);
     if (inputError) setInputError(false);
-  };
-
-  const handlePasteExample = () => {
-    const examples = [
-      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME"
-    ];
-    const randomExample = examples[Math.floor(Math.random() * examples.length)];
-    setUrls(randomExample);
-    setInputError(false);
-    setIsFocused(true);
-    const exampleType = randomExample.includes('playlist') ? 'playlist example' : 'video example';
-    toast.success(`${exampleType} pasted!`);
-    if (textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  };
-
-  const handleAreaClick = () => {
-    if (textareaRef.current && videoResults.length === 0) {
-      textareaRef.current.focus();
-      setIsFocused(true);
-    }
   };
 
   const handleMainAction = async () => {
@@ -369,18 +386,16 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
           <div className="max-w-4xl mx-auto">
             <div className={`relative bg-white rounded-2xl border shadow-xl overflow-hidden flex flex-col transition-all duration-300 ${inputError ? "border-red-300 shadow-red-100 ring-4 ring-red-50" : "border-slate-200 shadow-blue-100/50"}`}>
 
-              <div className="bg-slate-50 border-b border-slate-200 px-3 py-3 md:px-4">
-                <div className="w-full">
-                  <FeatureTabs currentMode={selectedMode} onChange={handleModeChange} summaryIsFree={isFirstSummaryFree} />
-                </div>
+              <div className="bg-slate-50/80 border-b border-slate-200 px-3 py-2 md:px-4">
+                <FeatureTabs currentMode={selectedMode} onChange={handleModeChange} summaryIsFree={isFirstSummaryFree} />
               </div>
 
               <div
-                className={`relative min-h-[400px] flex flex-col bg-white group cursor-text transition-all duration-300 ${!isAnalyzing && videoResults.length === 0
-                  ? "border-2 border-dashed border-slate-200 hover:border-blue-300 hover:bg-slate-50/30"
-                  : ""
-                  }`}
-                onClick={handleAreaClick}
+                className={`relative flex flex-col bg-white transition-all duration-300 ${
+                  !isAnalyzing && videoResults.length === 0 && !downloadedContent
+                    ? ""
+                    : "min-h-[400px]"
+                }`}
               >
                 {isAnalyzing ? (
                   <div className="flex-1 flex flex-col items-center justify-center p-12">
@@ -447,91 +462,154 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                     </div>
                   </div>
                 ) : videoResults.length === 0 ? (
-                  <>
-                    <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 pointer-events-none px-6 ${urls || isFocused ? "opacity-0 scale-95 translate-y-4" : "opacity-100 scale-100 translate-y-0"}`}>
+                  <div className="flex-1 flex flex-col items-center justify-center px-4 py-6 md:px-8 md:py-10 bg-gradient-to-b from-slate-50/80 to-white">
+                    <div className="w-full max-w-2xl mx-auto">
 
-                      {/* 1. 图标 */}
-                      <div className="relative mb-6">
-                        <div className="absolute inset-0 rounded-[2rem] blur-2xl opacity-70 bg-red-50"></div>
-                        <div className="relative w-16 h-16 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <Youtube size={32} className="text-red-500" strokeWidth={1.5} />
-                          {selectedMode === 'summary' && (
-                            <div className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-sm border border-slate-100">
-                              <Sparkles size={14} className="text-purple-600 fill-purple-100" />
-                            </div>
-                          )}
+                      {/* 引导小标题 */}
+                      <p className="text-center text-sm font-bold text-slate-500 mb-4 tracking-wide">
+                        {selectedMode === 'summary'
+                          ? t('input.headingSummary')
+                          : t('input.heading')}
+                      </p>
+
+                      {/* 搜索栏 — 带发光动画边框 */}
+                      <div className="relative group/input">
+                        {/* 发光背景层 */}
+                        <div className={`absolute -inset-0.5 rounded-2xl transition-all duration-500 ${
+                          isFocused
+                            ? selectedMode === 'summary'
+                              ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500 opacity-100'
+                              : 'bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 opacity-100'
+                            : inputError
+                              ? 'bg-red-400 opacity-100'
+                              : 'bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400 opacity-40 group-hover/input:opacity-70'
+                        } blur-sm`} />
+
+                        {/* 搜索栏主体 */}
+                        <div className={`relative flex items-center rounded-2xl border bg-white transition-all duration-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)] ${
+                          isFocused
+                            ? selectedMode === 'summary'
+                              ? 'border-purple-400 shadow-xl shadow-purple-100/50'
+                              : 'border-blue-400 shadow-xl shadow-blue-100/50'
+                            : inputError
+                              ? 'border-red-400'
+                              : 'border-slate-200 hover:border-slate-300'
+                        }`}>
+                        {/* 左侧图标 */}
+                        <div className="pl-4 md:pl-5 flex-shrink-0">
+                          <Youtube size={24} className="text-red-500" />
+                        </div>
+
+                        {/* 输入区域 */}
+                        <textarea
+                          ref={textareaRef}
+                          value={urls}
+                          onChange={(e) => {
+                            handleInputChange(e);
+                            const el = e.target;
+                            el.style.height = 'auto';
+                            el.style.height = Math.min(el.scrollHeight, 200) + 'px';
+                          }}
+                          onFocus={() => setIsFocused(true)}
+                          onBlur={() => !urls && setIsFocused(false)}
+                          rows={1}
+                          className={`flex-1 py-3.5 md:py-4 px-3 bg-transparent text-base md:text-lg text-slate-800 outline-none resize-none placeholder:text-slate-400 placeholder:text-sm md:placeholder:text-base leading-relaxed ${
+                            inputError ? 'caret-red-500' : 'caret-blue-600'
+                          }`}
+                          placeholder={isFocused || urls ? (selectedMode === 'summary'
+                            ? t('input.placeholderSummary')
+                            : t('input.placeholder')) : typedPlaceholder || '|'}
+                          spellCheck={false}
+                        />
+
+                        {/* 右侧操作按钮 */}
+                        <div className="pr-2.5 md:pr-3 pt-2.5 md:pt-3 pb-2.5 md:pb-3 flex-shrink-0">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleMainAction(); }}
+                            disabled={!urls.trim() || isAnalyzing || isDownloading}
+                            className={`flex items-center gap-2 px-5 md:px-7 py-3 md:py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all whitespace-nowrap ${
+                              urls.trim() && !isAnalyzing
+                                ? selectedMode === 'summary'
+                                  ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-lg hover:shadow-purple-500/20 hover:-translate-y-0.5'
+                                  : 'bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5'
+                                : selectedMode === 'summary'
+                                  ? 'bg-purple-100 text-purple-300 cursor-not-allowed'
+                                  : 'bg-blue-50 text-blue-300 cursor-not-allowed'
+                            }`}
+                          >
+                            {isAnalyzing ? (
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : selectedMode === 'summary' ? (
+                              <Sparkles size={15} />
+                            ) : (
+                              <ArrowRight size={15} />
+                            )}
+                            <span className="hidden sm:inline">{actionLabel}</span>
+                          </button>
+                        </div>
                         </div>
                       </div>
 
-                      {/* 2. 标题与价值主张 */}
-                      <div className="space-y-3 mb-8 text-center max-w-2xl">
-                        <h3 className="text-2xl font-bold text-slate-900 flex items-center justify-center gap-2">
-                          {selectedMode === 'summary' ? (
-                            <span>{t('placeholder.summaryTitle')}</span>
-                          ) : (
-                            <span>{t('placeholder.title')}</span>
-                          )}
-                          <span className={`inline-block w-0.5 h-6 animate-pulse rounded-full ${selectedMode === 'summary' ? 'bg-purple-500' : 'bg-blue-500'}`}></span>
-                        </h3>
+                      {/* 错误提示 */}
+                      {inputError && (
+                        <div className="flex items-center gap-2 mt-3 text-xs font-bold text-red-600 bg-red-50 px-3 py-2 rounded-lg border border-red-100 animate-in fade-in slide-in-from-top-2">
+                          <AlertCircle size={14} /> {tErrors('invalidUrl')}
+                        </div>
+                      )}
 
-                        <p className="text-sm text-slate-400 font-medium tracking-tight">
-                          {selectedMode === 'summary' ? (
-                            <span>{t('placeholder.summaryDesc')}</span>
-                          ) : (
-                            <span className="italic">"{t('placeholder.description')}"</span>
-                          )}
+                      {/* 可点击示例卡片 */}
+                      <div className="flex flex-col items-center gap-3 mt-5">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                          {selectedMode === 'summary' ? t('input.supportsSummary') : t('input.tryExample')}
                         </p>
-                      </div>
+                        <div className="flex flex-wrap justify-center gap-2">
+                          {selectedMode === 'download' ? (
+                            <>
+                              <button
+                                onClick={() => { setUrls('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); setIsFocused(true); textareaRef.current?.focus(); }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
+                              >
+                                <Play size={12} /> Single Video
+                              </button>
+                              <button
+                                onClick={() => { setUrls('https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME'); setIsFocused(true); textareaRef.current?.focus(); }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
+                              >
+                                <ListVideo size={12} /> Playlist
+                              </button>
+                              <button
+                                onClick={() => { setUrls('https://www.youtube.com/@Google'); setIsFocused(true); textareaRef.current?.focus(); }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
+                              >
+                                <Radio size={12} /> Channel
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() => { setUrls('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); setIsFocused(true); textareaRef.current?.focus(); }}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-xs font-semibold text-purple-500 hover:border-purple-300 hover:bg-purple-100 hover:text-purple-700 transition-all cursor-pointer"
+                            >
+                              <Play size={12} /> Try a demo video
+                            </button>
+                          )}
+                        </div>
 
-                      {/* 3. 支持类型说明 */}
-                      <div className="flex flex-col items-center gap-4 mb-10">
-                        {selectedMode === 'summary' ? (
-                          <div className="flex items-center gap-2 px-4 py-1.5 bg-slate-50 text-slate-600 rounded-full border border-slate-200 text-[10px] font-bold uppercase tracking-widest shadow-sm">
-                            <Sparkles size={12} className="text-purple-500" />
-                            <span>{t('placeholder.poweredBy')}</span>
+                        {/* 快捷键提示 + 积分 */}
+                        <div className="flex items-center gap-3 mt-1">
+                          <div className="flex items-center gap-1.5 text-[10px] text-slate-300 font-medium">
+                            <kbd className="px-1.5 py-0.5 bg-slate-100 border border-slate-200 rounded text-[10px] font-mono text-slate-400">⌘V</kbd>
+                            <span>to paste</span>
                           </div>
-                        ) : (
-                          <div className="flex items-center gap-2 px-4 py-1.5 bg-green-50 text-green-700 rounded-full border border-green-100 text-[10px] font-black uppercase tracking-widest shadow-sm">
-                            <TrendingUp size={12} className="text-green-600" />
-                            <span className="font-bold">{t('features.extracted')}</span>
+                          <span className="text-slate-200">·</span>
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            <Info size={11} className="text-blue-500" />
+                            {user ? t('credits.remaining', { count: user.credits ?? 0 }) : t('credits.signup')}
                           </div>
-                        )}
+                        </div>
                       </div>
 
-                      {/* 4. 按钮 */}
-                      <div className="pointer-events-auto">
-                        <button
-                          onClick={(e) => { e.stopPropagation(); handlePasteExample(); }}
-                          className="flex items-center gap-2 px-6 py-2.5 bg-white text-slate-600 border border-slate-200 rounded-xl hover:border-blue-400 hover:text-blue-600 hover:shadow-md transition-all text-xs font-bold uppercase tracking-widest group/btn"
-                        >
-                          <Clipboard size={14} className="text-slate-400 group-hover/btn:text-blue-500 transition-colors" />
-                          {t('placeholder.pasteDemo')}
-                        </button>
-                      </div>
                     </div>
-
-                    <textarea
-                      ref={textareaRef}
-                      value={urls}
-                      onChange={handleInputChange}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => !urls && setIsFocused(false)}
-                      className={`relative z-0 flex-1 w-full p-10 bg-transparent text-lg font-mono text-slate-800 outline-none resize-none leading-relaxed transition-opacity duration-300 ${inputError ? "caret-red-500" : "caret-blue-600"} ${urls || isFocused ? "opacity-100" : "opacity-0"}`}
-                      placeholder=""
-                      spellCheck={false}
-                    />
-
-                    {inputError && (
-                      <div className="absolute top-4 right-6 z-20 flex items-center gap-2 text-xs font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 animate-in fade-in slide-in-from-top-2">
-                        <AlertCircle size={14} /> {tErrors('invalidUrl')}
-                      </div>
-                    )}
-
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                      <Info size={12} className="text-blue-600" />
-                      {user ? t('credits.remaining', { count: user.credits ?? 0 }) : t('credits.signup')}
-                    </div>
-                  </>
+                  </div>
                 ) : (
                   <div className="flex-1 p-0">
                     {selectedMode === "download" ? (
@@ -560,6 +638,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                 )}
               </div>
 
+              {(videoResults.length > 0 || downloadedContent) && (
               <div className="bg-white border-t border-slate-100 px-6 py-4">
                 <ControlBar
                   mode={selectedMode}
@@ -580,6 +659,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                   actionLabel={actionLabel}
                 />
               </div>
+              )}
             </div>
 
             <div className="mt-8">
