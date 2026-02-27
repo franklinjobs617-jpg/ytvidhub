@@ -38,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/guide/srt-vs-vtt', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/pricing', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/how-to-use', priority: 0.8, changeFreq: 'monthly' as const },
+        { path: '/youtube-transcript-for-chatgpt', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/what-is-an-srt-file', priority: 0.7, changeFreq: 'yearly' as const },
         { path: '/faq', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/about', priority: 0.5, changeFreq: 'yearly' as const },
