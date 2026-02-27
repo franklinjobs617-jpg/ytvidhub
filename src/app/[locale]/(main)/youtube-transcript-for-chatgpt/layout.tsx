@@ -1,23 +1,22 @@
 import { Metadata } from 'next';
+import { buildAlternates } from '@/lib/seo';
 
-export const metadata: Metadata = {
-    title: 'YouTube Transcript for ChatGPT: Copy Any Video in Seconds | YTVidHub',
-    description: 'Get the full transcript of any YouTube video to use with ChatGPT, Claude, or Gemini. Summarize, translate, or analyze video content with AI — free, no login required.',
-    alternates: {
-        canonical: 'https://ytvidhub.com/youtube-transcript-for-chatgpt/',
-    },
-    openGraph: {
-        title: 'YouTube Transcript for ChatGPT: Copy Any Video in Seconds',
-        description: 'Get the full transcript of any YouTube video to use with ChatGPT, Claude, or Gemini. Free, instant, no login required.',
-        type: 'article',
-        url: 'https://ytvidhub.com/youtube-transcript-for-chatgpt/',
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'YouTube Transcript for ChatGPT: Copy Any Video in Seconds',
-        description: 'Get the full transcript of any YouTube video to use with ChatGPT, Claude, or Gemini. Free, instant, no login required.',
-    },
-};
+export async function generateMetadata(
+    { params }: { params: Promise<{ locale: string }> }
+): Promise<Metadata> {
+    const { locale } = await params;
+    return {
+        title: 'YouTube Transcript for ChatGPT - Extract & Summarize Videos with AI | YTVidHub',
+        description: 'Get YouTube video transcripts ready for ChatGPT, Claude, and Gemini. Extract, copy, and paste any YouTube transcript into AI chatbots for summarization, translation, and analysis.',
+        keywords: ['youtube transcript for chatgpt', 'youtube transcript to chatgpt', 'youtube video summarizer', 'extract youtube transcript for ai', 'youtube to chatgpt'],
+        openGraph: {
+            title: 'YouTube Transcript for ChatGPT - Extract & Summarize Videos with AI',
+            description: 'Get YouTube video transcripts ready for ChatGPT, Claude, and Gemini. Extract and summarize any video in seconds.',
+            type: 'website',
+        },
+        alternates: buildAlternates(locale, '/youtube-transcript-for-chatgpt'),
+    };
+}
 
 const faqSchema = {
     '@context': 'https://schema.org',

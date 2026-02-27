@@ -12,7 +12,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params;
-    const t = await getTranslations({ locale, namespace: 'metadata' });
+    const t = await getTranslations({ locale, namespace: 'subtitleDownloaderPage' });
 
     const pathname = "/youtube-subtitle-downloader";
     const canonicalUrl = buildCanonicalUrl({ locale, pathname });
@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
         title: t('title'),
         description: t('description'),
+        keywords: t('keywords'),
         alternates: {
             canonical: canonicalUrl,
             languages: {

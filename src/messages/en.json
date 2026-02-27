@@ -1,8 +1,13 @@
 {
   "metadata": {
-    "title": "Bulk YouTube Subtitle Downloader - Download Entire Playlists & Channels",
-    "description": "Professional bulk YouTube subtitle downloader. Extract subtitles from entire playlists and channels in one click. Download thousands of SRT, VTT, TXT files instantly.",
-    "keywords": "bulk youtube subtitle downloader, download youtube playlist subtitles, batch download youtube captions, youtube channel subtitle extractor, bulk subtitle extraction"
+    "title": "Bulk YouTube Subtitle Downloader & AI Summarizer (Free & Fast)",
+    "description": "Free bulk YouTube subtitle downloader. Extract SRT, VTT, TXT captions from entire playlists & channels in one click. AI-powered video summarizer included.",
+    "keywords": "bulk youtube subtitle downloader, batch youtube subtitle downloader, download youtube playlist subtitles, youtube channel subtitle extractor, AI video summarizer, youtube subtitle extraction free"
+  },
+  "subtitleDownloaderPage": {
+    "title": "Free YouTube Subtitle Downloader - Download SRT, VTT, TXT Online | YTVidHub",
+    "description": "Download YouTube subtitles for free in SRT, VTT, and TXT formats. Extract captions from any YouTube video instantly. No registration required.",
+    "keywords": "youtube subtitle downloader, download youtube subtitles, free subtitle downloader, youtube caption downloader, download youtube captions, youtube cc download"
   },
   "navigation": {
     "home": "Home",
@@ -114,7 +119,7 @@
     "selectVideoToSummary": "Select a video to generate summary"
   },
   "comparisonSlider": {
-    "title": "Stop 100 Manual Clicks. {br} Bulk Extract {highlight}.",
+    "title": "How to Convert YouTube Video to Text in Bulk",
     "highlight": "Subtitles in 1 ZIP",
     "description": "Drag the slider to see the difference. Transform hours of tedious manual work into a single, organized file.",
     "before": "Before: The Manual Grind",
@@ -137,7 +142,7 @@
     }
   },
   "featuresGrid": {
-    "title": "Download YouTube Subtitles in Multiple Formats",
+    "title": "Download Subtitles from Entire YouTube Playlists & Channels",
     "description": "We're not just a downloader; we're a data-prep powerhouse. Get pristine, model-ready text without the hassle.",
     "items": {
       "clean": {
@@ -163,7 +168,7 @@
   },
   "coreCapabilities": {
     "badge": "Core Capabilities",
-    "title": "Bulk YouTube Subtitle Extraction Features",
+    "title": "Extract YouTube Transcripts for LLM Training (ChatGPT/Claude)",
     "description": "Discover a suite of features designed to handle any task, from a single video to an entire content library.",
     "action": "SEE IT IN ACTION",
     "actionTitle": "Playlist & Channel Bulk Processing",
@@ -289,20 +294,20 @@
         "answer": "Yes! Our tool functions as a powerful **YouTube transcript downloader**, allowing you to extract the full video transcript as a clean text file (TXT) for reading, content analysis, or AI processing."
       },
       "formats": {
-        "question": "What subtitle formats do you support?",
-        "answer": "We support SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis."
+        "question": "Can I download subtitles as plain text (TXT) instead of SRT?",
+        "answer": "Yes! We support SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis."
       },
       "bulk": {
-        "question": "Can I download subtitles from entire YouTube playlists?",
-        "answer": "Yes! Our bulk YouTube subtitle downloader can extract captions from entire playlists and channels. This is perfect for creating large datasets for AI training or research projects."
+        "question": "How do I download subtitles from a YouTube playlist at once?",
+        "answer": "Simply paste the YouTube playlist URL into YTVidHub and click download. Our bulk YouTube subtitle downloader extracts captions from entire playlists and channels in one click — perfect for creating large datasets for AI training or research projects."
       },
       "languages": {
         "question": "Does this work with different languages?",
         "answer": "Absolutely! Our tool can download subtitles in any language available on the YouTube video, including auto-generated captions and manually uploaded subtitles."
       },
       "limits": {
-        "question": "Are there any download limits?",
-        "answer": "Free users get 5 daily credits for subtitle downloads. Pro members enjoy unlimited bulk downloads for large-scale projects and commercial use."
+        "question": "Is this bulk subtitle downloader free?",
+        "answer": "Yes! Free users get 5 daily credits for subtitle downloads. Pro members enjoy unlimited bulk downloads for large-scale projects and commercial use."
       }
     }
   },

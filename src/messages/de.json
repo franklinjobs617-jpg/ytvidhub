@@ -1,8 +1,13 @@
 {
   "metadata": {
-    "title": "YouTube Untertitel herunterladen - Kostenlos Massen Download",
-    "description": "YouTube Untertitel Download für Videos & Playlists. SRT, VTT, TXT Formate. Massen Download mit kostenlosem Account. Jetzt kostenlos extrahieren!",
-    "keywords": "youtube untertitel herunterladen, youtube untertitel download, youtube playlist untertitel massen download, untertitel downloader, stapel download, srt download, vtt download"
+    "title": "YouTube Untertitel Massen Downloader & KI Zusammenfasser (Kostenlos & Schnell)",
+    "description": "Kostenloser YouTube Untertitel Massen Downloader. SRT, VTT, TXT Untertitel von ganzen Playlists & Kanälen mit einem Klick extrahieren. KI Video Zusammenfasser inklusive.",
+    "keywords": "youtube untertitel massen downloader, youtube playlist untertitel herunterladen, youtube kanal untertitel extrahieren, KI video zusammenfasser, youtube untertitel kostenlos"
+  },
+  "subtitleDownloaderPage": {
+    "title": "Kostenloser YouTube Untertitel Downloader - SRT, VTT, TXT Online | YTVidHub",
+    "description": "YouTube Untertitel kostenlos in SRT, VTT und TXT herunterladen. Untertitel von jedem YouTube Video sofort extrahieren. Keine Registrierung erforderlich.",
+    "keywords": "youtube untertitel downloader, youtube untertitel herunterladen, kostenloser untertitel downloader, youtube untertitel download kostenlos"
   },
   "navigation": {
     "home": "Startseite",
@@ -26,7 +31,7 @@
   },
   "hero": {
     "title": "YouTube Untertitel herunterladen",
-    "subtitle": "Professioneller {highlight} für Videos, Playlists und komplette Kanäle. Extrahieren Sie SRT & TXT Untertitel sofort mit kostenlosem Account. Perfekt für Massen Download.",
+    "subtitle": "Professioneller <highlight>YouTube Untertitel Downloader</highlight> für Videos, Playlists und komplette Kanäle. Extrahieren Sie SRT & TXT Untertitel sofort mit kostenlosem Account. Perfekt für Massen Download.",
     "highlight": "YouTube Untertitel Download",
     "ready": "Bereit für hocheffiziente YouTube Untertitel Extraktion",
     "bulkExtraction": "Hochgeschwindigkeits Massen Download von Untertiteln",
@@ -111,7 +116,7 @@
     "selectVideoToSummary": "Wählen Sie ein Video aus, um eine Zusammenfassung zu erstellen"
   },
   "comparisonSlider": {
-    "title": "Schluss mit manuellem {highlight}. {br} Nutzen Sie Massen Download.",
+    "title": "So Konvertieren Sie YouTube Videos in Text im Stapel",
     "highlight": "YouTube Untertitel herunterladen",
     "description": "Ziehen Sie den Schieberegler, um den Unterschied zu sehen. Verwandeln Sie stundenlange manuelle Arbeit in einen einzigen, organisierten Download.",
     "before": "Vorher: Die manuelle Mühsal",
@@ -134,7 +139,7 @@
     }
   },
   "featuresGrid": {
-    "title": "YouTube Untertitel extrahieren in mehreren Formaten",
+    "title": "Untertitel von ganzen YouTube Playlists & Kanälen herunterladen",
     "description": "Wir sind nicht nur ein Downloader; wir sind ein Datenaufbereitungs Kraftpaket. Erhalten Sie saubere Transkription und modellbereiten Text ohne Aufwand.",
     "items": {
       "clean": {
@@ -160,7 +165,7 @@
   },
   "coreCapabilities": {
     "badge": "Kernfähigkeiten",
-    "title": "YouTube Massen Download von Untertiteln",
+    "title": "YouTube Transkripte für LLM Training extrahieren (ChatGPT/Claude)",
     "description": "Entdecken Sie ein komplettes Tool Set für jede Aufgabe, vom einzelnen Video bis zur kompletten Inhaltsbibliothek.",
     "action": "MASSEN DOWNLOAD TESTEN",
     "actionTitle": "Massen Download von Playlists und kompletten Kanälen",
@@ -290,11 +295,11 @@
         "answer": "Ja! Unser Tool funktioniert als leistungsstarker **YouTube Transkript Downloader**, mit dem Sie die vollständige Video Transkription als saubere Textdatei (TXT) zum Lesen, zur Inhaltsanalyse oder KI Verarbeitung extrahieren können."
       },
       "formats": {
-        "question": "Welche Untertitel Formate unterstützen Sie?",
+        "question": "Kann ich Untertitel als reinen Text (TXT) statt SRT herunterladen?",
         "answer": "Wir unterstützen SRT (SubRip), VTT (WebVTT) und saubere TXT Formate. SRT ist perfekt für Videobearbeitung, VTT für Web Player und TXT für KI Training und Textanalyse."
       },
       "bulk": {
-        "question": "Kann ich Untertitel von ganzen YouTube Playlists herunterladen?",
+        "question": "Wie lade ich Untertitel einer YouTube Playlist auf einmal herunter?",
         "answer": "Ja! Unser YouTube Playlist Downloader kann Untertitel von ganzen Playlists und kompletten Kanälen extrahieren. Dies ist perfekt für die Erstellung großer Datensätze für KI Training oder Forschungsprojekte."
       },
       "languages": {
@@ -302,7 +307,7 @@
         "answer": "Unser Tool kann Untertitel in jeder verfügbaren Sprache des YouTube Videos herunterladen, einschließlich automatisch generierter Untertitel und manuell hochgeladener Untertitel."
       },
       "limits": {
-        "question": "Gibt es Download Limits?",
+        "question": "Ist dieser Massen Untertitel Downloader kostenlos?",
         "answer": "Kostenlose Benutzer erhalten 5 tägliche Credits für Untertitel Downloads. Pro Mitglieder genießen unbegrenzte Massen Downloads für große Projekte und kommerzielle Nutzung."
       }
     }
@@ -541,6 +546,7 @@
     "dataPrepGuide": "Datenaufbereitungs Leitfaden",
     "cleanTranscript": "Saubere Transkription",
     "faq": "FAQ",
+    "studioGuide": "YouTube Studio Export Anleitung",
     "howToUse": "Wie zu verwenden",
     "aboutUs": "Über uns",
     "privacyPolicy": "Datenschutzrichtlinie",
