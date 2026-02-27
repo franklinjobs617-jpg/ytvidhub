@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { trackEvent } from "@/lib/analytics";
 import LoginModal from "@/components/LoginModel";
 import PaymentChoiceModal from "@/components/pricing/PaymentChoiceModal";
 import FAQ from "@/components/landing/FAQ";
@@ -96,8 +97,21 @@ export default function PricingPage() {
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { user } = useAuth();
 
+  // 页面曝光埋点
+  useEffect(() => {
+    trackEvent('pricing_page_view', { logged_in: !!user });
+  }, []);
+
   const handlePurchase = (planId: string | null) => {
-    if (!planId) return; // Free plan
+    if (!planId) return;
+
+    const plan = plans.find(p => p.id === planId);
+    trackEvent('plan_click', {
+      plan_name: plan?.name,
+      plan_price: plan?.price,
+      plan_id: planId,
+      logged_in: !!user,
+    });
 
     if (!user) {
       setShowLoginModal(true);
