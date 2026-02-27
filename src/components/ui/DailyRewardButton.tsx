@@ -97,7 +97,7 @@ export function DailyRewardButton() {
       <div className="relative">
         {/* First-time intro popover */}
         {showIntro && (
-          <div className="absolute bottom-full right-0 mb-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="absolute top-full right-0 mt-2 z-50 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="relative bg-slate-900 text-white text-xs rounded-xl px-3 py-2.5 shadow-xl w-52">
               <button
                 onClick={dismissIntro}
@@ -108,7 +108,7 @@ export function DailyRewardButton() {
               <p className="font-bold text-amber-400 mb-0.5">🎁 Free daily credits!</p>
               <p className="text-slate-300 leading-snug">Claim +3 credits every day. Build a streak for bonus rewards.</p>
               {/* Arrow */}
-              <div className="absolute -bottom-1.5 right-4 w-3 h-3 bg-slate-900 rotate-45" />
+              <div className="absolute -top-1.5 right-4 w-3 h-3 bg-slate-900 rotate-45" />
             </div>
           </div>
         )}
