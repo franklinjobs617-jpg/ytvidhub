@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { trackEvent } from "@/lib/analytics";
+import { trackEvent, trackConversion } from "@/lib/analytics";
 import LoginModal from "@/components/LoginModel";
 import PaymentChoiceModal from "@/components/pricing/PaymentChoiceModal";
 import FAQ from "@/components/landing/FAQ";
@@ -106,7 +106,7 @@ export default function PricingPage() {
     if (!planId) return;
 
     const plan = plans.find(p => p.id === planId);
-    trackEvent('plan_click', {
+    trackConversion('plan_click', {
       plan_name: plan?.name,
       plan_price: plan?.price,
       plan_id: planId,

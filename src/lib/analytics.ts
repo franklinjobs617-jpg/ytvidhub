@@ -81,3 +81,70 @@ export function clarityIdentify(userId: string, sessionId?: string) {
   if (typeof window === 'undefined' || !window.clarity) return;
   window.clarity('identify', userId, sessionId);
 }
+
+// ---- 用户来源归因 ----
+
+const SOURCE_KEY = 'ytvidhub_user_source';
+
+interface UserSource {
+  referrer: string;
+  landing_page: string;
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_term: string | null;
+  utm_content: string | null;
+  timestamp: string;
+}
+
+/** 首次落地时捕获来源信息，存入 sessionStorage */
+export function captureUserSource() {
+  if (typeof window === 'undefined') return;
+  // 已经捕获过就不覆盖（保留首次来源）
+  if (sessionStorage.getItem(SOURCE_KEY)) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const source: UserSource = {
+    referrer: document.referrer || '(direct)',
+    landing_page: window.location.pathname,
+    utm_source: params.get('utm_source'),
+    utm_medium: params.get('utm_medium'),
+    utm_campaign: params.get('utm_campaign'),
+    utm_term: params.get('utm_term'),
+    utm_content: params.get('utm_content'),
+    timestamp: new Date().toISOString(),
+  };
+
+  sessionStorage.setItem(SOURCE_KEY, JSON.stringify(source));
+
+  // 同时发一个 GA 事件记录首次落地
+  trackEvent('user_landed', {
+    referrer: source.referrer,
+    landing_page: source.landing_page,
+    utm_source: source.utm_source || '(none)',
+    utm_medium: source.utm_medium || '(none)',
+    utm_campaign: source.utm_campaign || '(none)',
+  });
+}
+
+/** 获取当前会话的来源信息 */
+export function getUserSource(): UserSource | null {
+  if (typeof window === 'undefined') return null;
+  const raw = sessionStorage.getItem(SOURCE_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+/** 发送转化事件，自动附带来源归因数据 */
+export function trackConversion(eventName: string, params?: Record<string, unknown>) {
+  const source = getUserSource();
+  trackEvent(eventName, {
+    ...params,
+    source_referrer: source?.referrer || '(unknown)',
+    source_landing: source?.landing_page || '(unknown)',
+    source_utm_source: source?.utm_source || '(none)',
+    source_utm_medium: source?.utm_medium || '(none)',
+    source_utm_campaign: source?.utm_campaign || '(none)',
+    source_utm_term: source?.utm_term || '(none)',
+  });
+}

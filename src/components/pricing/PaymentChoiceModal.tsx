@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { trackEvent } from "@/lib/analytics";
+import { trackConversion } from "@/lib/analytics";
 
 interface PaymentChoiceModalProps {
   isOpen: boolean;
@@ -27,7 +27,7 @@ export default function PaymentChoiceModal({
     }
 
     setLoading(true);
-    trackEvent('payment_initiated', { provider, plan_id: selectedPlanId });
+    trackConversion('payment_initiated', { provider, plan_id: selectedPlanId });
     const endpoint =
       provider === "stripe"
         ? "/prod-api/stripe/getPayUrl"

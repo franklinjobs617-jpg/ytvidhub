@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { trackEvent } from "@/lib/analytics";
+import { trackConversion } from "@/lib/analytics";
 
 interface CustomCreditSliderProps {
     onRequestLogin?: () => void;
@@ -42,7 +42,7 @@ export default function CustomCreditSlider({
         }
 
         setLoading(true);
-    trackEvent('credit_purchase_click', { quantity, price: Number(price) });
+    trackConversion('credit_purchase_click', { quantity, price: Number(price) });
         const BASE_URL = "https://api.ytvidhub.com";
 
         try {

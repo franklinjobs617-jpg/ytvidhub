@@ -8,6 +8,7 @@ import Script from "next/script";
 import { routing } from '@/i18n/routing';
 import { Metadata } from 'next';
 import LanguagePreloader from '@/components/LanguagePreloader';
+import SourceCapture from '@/components/SourceCapture';
 import { buildCanonicalUrl, SITE_ORIGIN } from '@/lib/url';
 
 type Props = {
@@ -190,6 +191,7 @@ export default async function LocaleLayout({
           <AuthProvider>
             <NextTopLoader color="#7c3aed" showSpinner={false} />
             <LanguagePreloader />
+            <SourceCapture />
             {children}
             <Toaster richColors closeButton position="top-center" offset="90px" />
           </AuthProvider>

@@ -4,7 +4,7 @@ import { subtitleApi } from "@/lib/api";
 import { extractVideoId } from "@/lib/youtube";
 import { toast } from "sonner";
 import { useTranslations } from 'next-intl';
-import { trackEvent } from "@/lib/analytics";
+import { trackConversion } from "@/lib/analytics";
 
 interface PlaylistProcessingState {
   phase: 'expanding' | 'checking' | 'completed' | 'error' | 'paused';
@@ -284,7 +284,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     setIsDownloading(true);
     setProgress(10);
     setStatusText("Checking credits...");
-    trackEvent('download_start', { type: 'single', format, lang });
+    trackConversion('download_start', { type: 'single', format, lang });
 
     try {
       setStatusText("Connecting...");
@@ -303,7 +303,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         blob,
         `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`
       );
-      trackEvent('download_success', { type: 'single', format, lang });
+      trackConversion('download_success', { type: 'single', format, lang });
 
       // 读取内容用于页面展示 + 保存到历史记录
       let subtitleText: string | undefined;
@@ -341,7 +341,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
       // 特殊处理积分不足的错误
       if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
-        trackEvent('download_error', { type: 'single', reason: 'insufficient_credits' });
+        trackConversion('download_error', { type: 'single', reason: 'insufficient_credits' });
         toast.error("Download Failed", {
           id: 'credits-error',
           description: "Subtitle download requires 1 credit. You don't have enough credits.",
@@ -373,7 +373,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     setIsDownloading(true);
     setProgress(5);
     setStatusText("Checking credits...");
-    trackEvent('download_start', { type: 'bulk', format, lang, count: videos.length });
+    trackConversion('download_start', { type: 'bulk', format, lang, count: videos.length });
 
     try {
       setStatusText("Initializing...");
@@ -389,7 +389,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
             setStatusText("Success!");
             const blob = await subtitleApi.downloadZip(task.task_id);
             triggerDownload(blob, `bulk_subs_${Date.now()}.zip`);
-            trackEvent('download_success', { type: 'bulk', format, lang, count: videos.length });
+            trackConversion('download_success', { type: 'bulk', format, lang, count: videos.length });
 
             // 延迟刷新积分显示，确保服务器端已更新
             setTimeout(() => {

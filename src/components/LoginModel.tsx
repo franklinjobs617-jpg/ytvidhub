@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { trackEvent } from "@/lib/analytics";
+import { trackConversion } from "@/lib/analytics";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -87,7 +87,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         <div className="px-8 pb-8">
           <button
             onClick={() => {
-              trackEvent('login_click', { method: 'google' });
+              trackConversion('login_click', { method: 'google' });
               login();
             }}
             className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 hover:bg-slate-50 font-medium py-2.5 px-4 rounded-xl transition-all duration-200 shadow-sm group"
