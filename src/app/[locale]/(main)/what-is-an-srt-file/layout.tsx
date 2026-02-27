@@ -1,14 +1,14 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'SRT File Format Guide 2026: Complete Tutorial for Subtitles & AI Applications',
-    description: 'SRT timestamp format: HH:MM:SS,ms (comma, not dot). Complete syntax rules, sequence numbering & examples. Plus: free tool to extract SRT files from any YouTube video instantly.',
+    title: 'What Is an SRT File? How to Open, Edit & Download SRT Subtitles',
+    description: 'An SRT (SubRip Text) file is the most popular subtitle format for videos. Learn what SRT files are, how to open and edit them, and download SRT subtitles from any YouTube video for free.',
     alternates: {
         canonical: 'https://ytvidhub.com/what-is-an-srt-file/',
     },
     openGraph: {
-        title: 'SRT File Format Guide 2026: Complete Tutorial for Subtitles & AI Applications',
-        description: 'SRT timestamp format: HH:MM:SS,ms (comma, not dot). Complete syntax rules, sequence numbering & examples. Plus: free tool to extract SRT files from any YouTube video instantly.',
+        title: 'What Is an SRT File? How to Open, Edit & Download SRT Subtitles',
+        description: 'An SRT (SubRip Text) file is the most popular subtitle format for videos. Learn what SRT files are, how to open and edit them, and download SRT subtitles from any YouTube video for free.',
         type: 'article',
         publishedTime: '2026-01-01',
         modifiedTime: '2026-01-01',
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'SRT File Format Guide 2026: Complete Tutorial for Subtitles & AI Applications',
-        description: 'SRT timestamp format: HH:MM:SS,ms (comma, not dot). Complete syntax rules, sequence numbering & examples. Plus: free tool to extract SRT files from any YouTube video instantly.',
+        title: 'What Is an SRT File? How to Open, Edit & Download SRT Subtitles',
+        description: 'An SRT (SubRip Text) file is the most popular subtitle format for videos. Learn what SRT files are, how to open and edit them, and download SRT subtitles from any YouTube video for free.',
     },
 };
 
@@ -79,8 +79,8 @@ const faqSchema = {
 const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
-    headline: 'SRT File Format Guide: Timestamp Syntax & Complete Rules',
-    description: 'Complete reference for SRT subtitle format including timestamp syntax (HH:MM:SS,ms), sequence numbering, and file structure rules.',
+    headline: 'What Is an SRT File? How to Open, Edit & Download SRT Subtitles',
+    description: 'An SRT (SubRip Text) file is the most popular subtitle format for videos. Learn what SRT files are, how to open and edit them, and download SRT subtitles from any YouTube video for free.',
     url: 'https://ytvidhub.com/what-is-an-srt-file/',
     datePublished: '2026-01-01',
     dateModified: '2026-02-01',

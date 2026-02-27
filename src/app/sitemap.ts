@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/blog/engineering-decisions-ytvidhub', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/blog/spanish-yt-channels-subtitles', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/blog/ai-youtube-video-summarizer', priority: 0.7, changeFreq: 'monthly' as const },
+        { path: '/add-on', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/faq/subtitle-settings-guide', priority: 0.6, changeFreq: 'monthly' as const },
         { path: '/privacy-policy', priority: 0.3, changeFreq: 'yearly' as const },
         { path: '/terms-of-service', priority: 0.3, changeFreq: 'yearly' as const },

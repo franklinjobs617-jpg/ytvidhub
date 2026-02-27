@@ -150,6 +150,26 @@ export default function Header() {
               {t('bulkDownloader')}
             </Link>
 
+            <Link
+              href="/pricing"
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/pricing")
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
+                }`}
+            >
+              {t('pricing')}
+            </Link>
+
+            <Link
+              href="/add-on"
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/add-on")
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
+                }`}
+            >
+              Add-On
+            </Link>
+
             <div className="relative group h-20 flex items-center">
               <button
                 className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.guides)
@@ -219,16 +239,6 @@ export default function Header() {
             </div>
 
             <Link
-              href="/pricing"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/pricing")
-                ? "text-blue-600"
-                : "text-slate-500 hover:text-slate-900"
-                }`}
-            >
-              {t('pricing')}
-            </Link>
-
-            <Link
               href="/support"
               className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/support")
                 ? "text-blue-600"
@@ -239,7 +249,7 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-4 pl-2">
+          <div className="flex items-center gap-1.5 md:gap-4 pl-1 md:pl-2">
             {isLoading ? (
               // Loading Skeleton
               <div className="flex items-center gap-2">
@@ -250,7 +260,7 @@ export default function Header() {
               <>
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="bg-slate-900 hover:bg-blue-600 text-white text-xs md:text-sm font-bold px-4 md:px-6 py-2 md:py-2.5 rounded-lg transition-all duration-200 shadow-md uppercase tracking-wide"
+                  className="bg-slate-900 hover:bg-blue-600 text-white text-xs md:text-sm font-bold px-3 md:px-6 py-2 md:py-2.5 rounded-lg transition-all duration-200 shadow-md uppercase tracking-wide"
                 >
                   {t('login')}
                 </button>
@@ -258,7 +268,7 @@ export default function Header() {
             ) : (
               <>
                 <Link href="/pricing" className="group">
-                  <div className="flex items-center gap-1.5 px-2 py-1.5 md:px-3 md:py-1.5 bg-amber-50 border border-amber-100 rounded-full hover:border-amber-300 transition-all cursor-pointer">
+                  <div className="flex items-center gap-1 px-2 py-1 md:gap-1.5 md:px-3 md:py-1.5 bg-amber-50 border border-amber-100 rounded-full hover:border-amber-300 transition-all cursor-pointer">
                     <Coins
                       size={14}
                       className="text-amber-600"
@@ -273,7 +283,9 @@ export default function Header() {
                   </div>
                 </Link>
 
-                <DailyRewardButton />
+                <div className="hidden md:block">
+                  <DailyRewardButton />
+                </div>
 
                 <div className="relative" ref={userMenuRef}>
                   <button
@@ -407,6 +419,20 @@ export default function Header() {
             >
               {t('bulkDownloader')}
             </Link>
+            <Link
+              href="/pricing"
+              className={`block text-lg font-bold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"
+                }`}
+            >
+              {t('pricing')}
+            </Link>
+            <Link
+              href="/add-on"
+              className={`block text-lg font-bold ${isActive("/add-on") ? "text-blue-600" : "text-slate-900"
+                }`}
+            >
+              Add-On
+            </Link>
 
             {/* Guides Group */}
             <div className="space-y-3">
@@ -452,14 +478,6 @@ export default function Header() {
             </div>
 
             <Link
-              href="/pricing"
-              className={`block text-lg font-bold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"
-                }`}
-            >
-              {t('pricing')}
-            </Link>
-
-            <Link
               href="/support"
               className={`block text-lg font-bold ${isActive("/support") ? "text-blue-600" : "text-slate-900"
                 }`}
@@ -469,7 +487,12 @@ export default function Header() {
           </div>
 
           {/* Mobile Drawer Footer (Login/Logout) */}
-          <div className="p-6 border-t border-slate-100 bg-slate-50 shrink-0">
+          <div className="p-6 border-t border-slate-100 bg-slate-50 shrink-0 space-y-3">
+            {user && (
+              <div className="flex justify-center">
+                <DailyRewardButton />
+              </div>
+            )}
             {user ? (
               <button
                 onClick={() => {
