@@ -366,44 +366,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     setStatusText("Checking credits...");
     trackConversion('download_start', { type: 'bulk', format, lang, count: videos.length });
 
-    try {
-      setStatusText("Initializing...");
-      startSmoothProgress(30);
-
-      const task = await subtitleApi.submitBulkTask(videos, lang, format);
-      const timer = setInterval(async () => {
-        try {
-          const status = await subtitleApi.checkTaskStatus(task.task_id);
-          if (status.status === "completed") {
-            clearInterval(timer);
-            setProgress(100);
-            setStatusText("Success!");
-            const blob = await subtitleApi.downloadZip(task.task_id);
-            triggerDownload(blob, `bulk_subs_${Date.now()}.zip`);
-            trackConversion('download_success', { type: 'bulk', format, lang, count: videos.length });
-
-            // 延迟刷新积分显示，确保服务器端已更新
-            setTimeout(() => {
-              if (onCreditsChanged) {
-                onCreditsChanged();
-              }
-            }, 1000);
-
-            setTimeout(() => setIsDownloading(false), 1000);
-          } else {
-            const [c, t] = (status.progress || "0/0").split("/").map(Number);
-            setProgress(t > 0 ? (c / t) * 100 : 15);
-            setStatusText(`Processing ${c}/${t}...`);
-          }
-        } catch (e) {
-          clearInterval(timer);
-          throw e;
-        }
-      }, 3000);
-    } catch (err: any) {
+    const handleBulkError = (err: any) => {
       setIsDownloading(false);
+      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
 
-      if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
+      if (err.message?.includes("Insufficient credits") || err.message?.includes("credit")) {
         toast.error("Bulk Download Failed", {
           id: 'credits-error',
           description: `Bulk download requires ${videos.length} credits. You don't have enough.`,
@@ -413,7 +380,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           },
           duration: 5000,
         });
-      } else if (err.message.includes("login")) {
+      } else if (err.message?.includes("login")) {
         toast.error("Authentication Required", {
           id: 'auth-error',
           description: "Please login to download subtitles.",
@@ -424,8 +391,54 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           duration: 5000,
         });
       } else {
-        toast.error(err.message);
+        toast.error(err.message || "Bulk download failed");
       }
+    };
+
+    try {
+      setStatusText("Initializing...");
+      startSmoothProgress(30);
+
+      const task = await subtitleApi.submitBulkTask(videos, lang, format);
+
+      // Use polling with Promise instead of setInterval to properly handle errors
+      const pollTaskStatus = async (): Promise<void> => {
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          const status = await subtitleApi.checkTaskStatus(task.task_id);
+
+          if (status.status === "completed") {
+            if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+            setProgress(100);
+            setStatusText("Downloading ZIP...");
+
+            const blob = await subtitleApi.downloadZip(task.task_id);
+            if (blob.size === 0) throw new Error("Downloaded ZIP is empty");
+
+            triggerDownload(blob, `bulk_subs_${Date.now()}.zip`);
+            setStatusText("Success!");
+            trackConversion('download_success', { type: 'bulk', format, lang, count: videos.length });
+
+            setTimeout(() => {
+              if (onCreditsChanged) onCreditsChanged();
+            }, 1000);
+
+            setTimeout(() => setIsDownloading(false), 1000);
+            return;
+          } else if (status.status === "failed") {
+            throw new Error(status.error || "Batch task failed on server");
+          } else {
+            const [c, t] = (status.progress || "0/0").split("/").map(Number);
+            setProgress(t > 0 ? (c / t) * 100 : 15);
+            setStatusText(`Processing ${c}/${t}...`);
+          }
+        }
+      };
+
+      await pollTaskStatus();
+    } catch (err: any) {
+      handleBulkError(err);
     } finally {
       if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     }
