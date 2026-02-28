@@ -145,7 +145,7 @@ export function SummaryArea({
       const res = await fetch('/api/study-cards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ url: videoUrl }),
+        body: JSON.stringify({ url: videoUrl, transcript: data }),
       });
 
       if (!res.ok) {
