@@ -69,28 +69,7 @@ export async function POST(request: NextRequest) {
 
         console.log('Proxying bulk submit request for videos:', videos.length)
 
-        // 先扣除积分
-        const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                amount: requiredCredits,
-                reason: `Bulk Subtitle Download (${videos.length} videos)`
-            })
-        });
-
-        if (!deductResponse.ok) {
-            const errorData = await deductResponse.json().catch(() => ({}));
-            return NextResponse.json(
-                { error: errorData.error || "Failed to deduct credits" },
-                { status: deductResponse.status }
-            )
-        }
-
-        // 代理请求到真实的后端API
+        // 先请求后端API，成功后再扣积分
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/batch_submit", {
             method: "POST",
             headers: {
@@ -107,6 +86,23 @@ export async function POST(request: NextRequest) {
                 { error: 'Failed to submit bulk task' },
                 { status: backendResponse.status }
             )
+        }
+
+        // 后端成功后再扣除积分
+        const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                amount: requiredCredits,
+                reason: `Bulk Subtitle Download (${videos.length} videos)`
+            })
+        });
+
+        if (!deductResponse.ok) {
+            console.error('Credit deduction failed after successful bulk submit')
         }
 
         const result = await backendResponse.json()

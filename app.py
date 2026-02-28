@@ -30,7 +30,7 @@ BATCH_TEMP_FOLDER = os.path.join(BASE_DIR, "batch_temp")
 SUBTITLE_TEMP_FOLDER = os.path.join(BASE_DIR, "subtitle_temp")
 
 ARK_API_KEY = "3a4b60e4-f692-4210-b26e-a03c636fc804"
-ARK_MODEL = "doubao-seed-1-8-251228" 
+ARK_MODEL = "glm-4-7-251222"
 ARK_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
 
 # 确保文件夹存在
@@ -1468,22 +1468,34 @@ Transcript:
                 "max_tokens": 4000
             }
             
-            response = requests.post(ARK_URL, headers=headers, json=payload, stream=True, timeout=120)
+            response = requests.post(ARK_URL, headers=headers, json=payload, stream=True, timeout=180)
+            thinking_notified = False
+            content_started = False
             for line in response.iter_lines():
                 if line:
                     chunk = line.decode('utf-8').strip()
                     if chunk.startswith("data: "):
                         data_str = chunk[6:]
-                        if data_str == "[DONE]": 
+                        if data_str == "[DONE]":
                             break
                         try:
                             resp_json = json.loads(data_str)
-                            content = resp_json['choices'][0]['delta'].get('content', '')
-                            if content: 
+                            delta = resp_json['choices'][0]['delta']
+                            # thinking阶段：模型在思考，发送状态提示
+                            reasoning = delta.get('reasoning_content', '')
+                            if reasoning and not thinking_notified:
+                                yield "__STATUS__:AI is thinking deeply...\n"
+                                thinking_notified = True
+                            # content阶段：实际输出内容
+                            content = delta.get('content', '')
+                            if content:
+                                if not content_started:
+                                    content_started = True
+                                    print(f"📝 [AI Summary] Content streaming started")
                                 yield content
-                        except: 
+                        except:
                             continue
-                            
+
         except Exception as e:
             print(f"❌ [AI Summary] Error: {str(e)}")
             yield f"__ERROR__:Server Error: {str(e)}"
@@ -1557,7 +1569,9 @@ Output ONLY the card blocks in the specified format."""
                 "max_tokens": 4000
             }
 
-            response = requests.post(ARK_URL, headers=headers, json=payload, stream=True, timeout=120)
+            response = requests.post(ARK_URL, headers=headers, json=payload, stream=True, timeout=180)
+            thinking_notified = False
+            content_started = False
             for line in response.iter_lines():
                 if line:
                     chunk = line.decode('utf-8').strip()
@@ -1567,8 +1581,18 @@ Output ONLY the card blocks in the specified format."""
                             break
                         try:
                             resp_json = json.loads(data_str)
-                            content = resp_json['choices'][0]['delta'].get('content', '')
+                            delta = resp_json['choices'][0]['delta']
+                            # thinking阶段：模型在思考，发送状态提示
+                            reasoning = delta.get('reasoning_content', '')
+                            if reasoning and not thinking_notified:
+                                yield "__STATUS__:AI is thinking deeply...\n"
+                                thinking_notified = True
+                            # content阶段：实际输出内容
+                            content = delta.get('content', '')
                             if content:
+                                if not content_started:
+                                    content_started = True
+                                    print(f"📝 [Study Cards] Content streaming started")
                                 yield content
                         except:
                             continue

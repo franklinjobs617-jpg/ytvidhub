@@ -42,30 +42,24 @@ async function handleAISummaryRequest(token: string, url: string): Promise<NextR
         return NextResponse.json({ error: 'User data not found' }, { status: 400 })
     }
 
-    // 2. 检查并扣除积分
+    // 2. 先检查积分是否足够（不扣除）
     try {
-        await prisma.$transaction(async (tx: any) => {
-            const fresh = await tx.user.findUnique({
-                where: { email_type: { email: user.email, type: user.type.toString() } },
-                select: { credits: true },
-            });
-            if (!fresh) throw new Error('User not found in database');
-            const currentCredits = parseInt(fresh.credits) || 0;
-            if (currentCredits < 2) throw new Error('Insufficient credits');
-            await tx.user.update({
-                where: { email_type: { email: user.email, type: user.type.toString() } },
-                data: { credits: (currentCredits - 2).toString() },
-            });
+        const dbUser = await prisma.user.findUnique({
+            where: { email_type: { email: user.email, type: user.type.toString() } },
+            select: { credits: true },
         });
+        if (!dbUser) throw new Error('User not found in database');
+        const currentCredits = parseInt(dbUser.credits) || 0;
+        if (currentCredits < 2) throw new Error('Insufficient credits');
     } catch (e: any) {
         const isInsufficient = e.message?.includes('Insufficient');
         return NextResponse.json(
-            { error: isInsufficient ? 'Insufficient credits. AI Summary requires 2 credits.' : 'Failed to deduct credits' },
+            { error: isInsufficient ? 'Insufficient credits. AI Summary requires 2 credits.' : 'Failed to check credits' },
             { status: isInsufficient ? 402 : 500 }
         );
     }
 
-    // 5. 代理到后端流式 API
+    // 3. 先请求后端API，成功后再扣积分
     try {
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/generate_summary_stream", {
             method: "POST",
@@ -78,6 +72,24 @@ async function handleAISummaryRequest(token: string, url: string): Promise<NextR
 
         if (!backendResponse.ok) {
             return NextResponse.json({ error: 'Failed to generate summary' }, { status: backendResponse.status })
+        }
+
+        // 后端成功后再扣除积分
+        try {
+            await prisma.$transaction(async (tx: any) => {
+                const fresh = await tx.user.findUnique({
+                    where: { email_type: { email: user.email, type: user.type.toString() } },
+                    select: { credits: true },
+                });
+                if (!fresh) throw new Error('User not found in database');
+                const currentCredits = parseInt(fresh.credits) || 0;
+                await tx.user.update({
+                    where: { email_type: { email: user.email, type: user.type.toString() } },
+                    data: { credits: (Math.max(0, currentCredits - 2)).toString() },
+                });
+            });
+        } catch (deductErr) {
+            console.error('Credit deduction failed after successful summary:', deductErr);
         }
 
         return new NextResponse(backendResponse.body, {

@@ -46,10 +46,8 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // 这里的逻辑修改：如果是预览(isPreview=true)，则不扣除积分，也不强求有积分
-        // 只有下载文件时才检查积分和扣费
+        // 预览模式不扣积分，下载模式先检查积分是否足够（但不扣除）
         if (!isPreview) {
-            // 检查用户积分
             const userCredits = parseInt(user?.credits || "0") || 0;
 
             console.log('Single download credit check:', {
@@ -66,30 +64,11 @@ export async function POST(request: NextRequest) {
             }
 
             console.log('Proxying single download request for URL:', url)
-
-            // 先扣除积分
-
-            const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ amount: 1, reason: "Subtitle Download" })
-            });
-
-            if (!deductResponse.ok) {
-                const errorData = await deductResponse.json().catch(() => ({}));
-                return NextResponse.json(
-                    { error: errorData.error || "Failed to deduct credits" },
-                    { status: deductResponse.status }
-                )
-            }
         } else {
             console.log('Proxying PREVIEW request (no credit deduction) for URL:', url)
         }
 
-        // 代理请求到真实的后端API
+        // 先请求后端API，成功后再扣积分
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/download", {
             method: "POST",
             headers: {
@@ -106,6 +85,22 @@ export async function POST(request: NextRequest) {
                 { error: 'Failed to download subtitle' },
                 { status: backendResponse.status }
             )
+        }
+
+        // 后端成功后再扣除积分
+        if (!isPreview) {
+            const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ amount: 1, reason: "Subtitle Download" })
+            });
+
+            if (!deductResponse.ok) {
+                console.error('Credit deduction failed after successful download')
+            }
         }
 
         // 返回文件流
