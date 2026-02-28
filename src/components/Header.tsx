@@ -19,61 +19,12 @@ import {
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 
 const navigation = {
-  guides: [
+  resources: [
     { name: "How to Download Subtitles", href: "/guide/how-to-download-youtube-subtitles-complete-guide" },
-    { name: "YouTube Studio Export", href: "/guide/how-to-download-youtube-studio-subtitles" },
-    { name: "Data Prep Guide", href: "/data-prep-guide" },
-    { name: "Subtitle Extractor", href: "/tools/subtitle-extractor-online" },
-    { name: "Data Prep Toolkit", href: "/guide/data-prep-toolkit" },
-    {
-      name: "Clean Transcript Guide",
-      href: "/guide/clean-transcript-no-timestamp",
-    },
-    {
-      name: "Mastering Vtt Data Analysis",
-      href: "/guide/mastering-vtt-data-analysis",
-    },
-    { name: "YouTube API Alt", href: "/guide/youtube-subtitles-api-free" },
-    { name: "Youtube Subtitles For Llm Data", href: "/guide/youtube-subtitles-for-llm-data" },
-    {
-      name: "Srt Vs Vtt Format",
-      href: "/guide/srt-vs-vtt"
-    }
-  ],
-  blog: [
-    {
-      name: "YouTube Subtitle Downloader",
-      href: "/youtube-subtitle-downloader",
-    },
-    {
-      name: "Download Subs",
-      href: "/download-subs-from-youtube",
-    },
-    {
-      name: "How to Get YouTube Transcript",
-      href: "/blog/how-to-get-youtube-video-transcript",
-    },
-    {
-      name: 'ai Youtube Video Summarizer',
-      href: "/blog/ai-youtube-video-summarizer",
-    },
-    {
-      name: "Subtitle Accuracy Problem",
-      href: "/blog/subtitle-accuracy-problem",
-    },
-    { name: "Creator Tutorials", href: "/blog/creator-tutorials" },
-    { name: "Subtitle Settings", href: "/faq/subtitle-settings-guide" },
-    {
-      name: "Engineering Decisions",
-      href: "/blog/engineering-decisions-ytvidhub",
-    },
-    {
-      name: "Spanish Learning Guide",
-      href: "/blog/spanish-yt-channels-subtitles",
-    },
-    { name: "How to Use", href: "/how-to-use" },
-    { name: "FAQ", href: "/faq" },
-    { name: "what-is-an-srt-file", href: "/what-is-an-srt-file" },
+    { name: "Subtitles for LLM Training", href: "/guide/youtube-subtitles-for-llm-data" },
+    { name: "Clean Transcript (No Timestamps)", href: "/guide/clean-transcript-no-timestamp" },
+    { name: "SRT vs VTT Format", href: "/guide/srt-vs-vtt" },
+    { name: "AI Video Summarizer Guide", href: "/blog/ai-youtube-video-summarizer" },
   ],
 };
 
@@ -171,20 +122,20 @@ export default function Header() {
                 : "text-slate-500 hover:text-slate-900"
                 }`}
             >
-              Add-On
+              Extension
             </Link>
 
             <div className="relative group h-20 flex items-center">
               <button
-                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.guides)
+                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.resources)
                   ? "text-blue-600"
                   : "text-slate-500 group-hover:text-blue-600"
                   }`}
               >
-                <span>{t('guide')}</span>
+                <span>Resources</span>
                 <ChevronDown
                   size={14}
-                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.guides)
+                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.resources)
                     ? "text-blue-600"
                     : "text-slate-400"
                     }`}
@@ -192,41 +143,7 @@ export default function Header() {
               </button>
               <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
                 <div className="bg-white rounded-xl shadow-xl border border-slate-100 ring-1 ring-black/5 p-2 overflow-hidden text-left">
-                  {navigation.guides.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                        ? "bg-blue-50 text-blue-600 font-bold"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
-                        }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="relative group h-20 flex items-center">
-              <button
-                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.blog)
-                  ? "text-blue-600"
-                  : "text-slate-500 group-hover:text-blue-600"
-                  }`}
-              >
-                <span>{t('blog')}</span>
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.blog)
-                    ? "text-blue-600"
-                    : "text-slate-400"
-                    }`}
-                />
-              </button>
-              <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-56 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
-                <div className="bg-white rounded-xl shadow-xl border border-slate-100 ring-1 ring-black/5 p-2 overflow-hidden text-left">
-                  {navigation.blog.map((item) => (
+                  {navigation.resources.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
@@ -437,41 +354,20 @@ export default function Header() {
               className={`block text-lg font-bold ${isActive("/add-on") ? "text-blue-600" : "text-slate-900"
                 }`}
             >
-              Add-On
+              Extension
             </Link>
 
-            {/* Guides Group */}
+            {/* Resources Group */}
             <div className="space-y-3">
               <p
-                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.guides)
+                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.resources)
                   ? "text-blue-600"
                   : "text-slate-400"
                   }`}
               >
-                {t('guide')}
+                Resources
               </p>
-              {navigation.guides.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`block pl-4 py-1 text-base font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"
-                    }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-
-            <div className="space-y-3">
-              <p
-                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.blog)
-                  ? "text-blue-600"
-                  : "text-slate-400"
-                  }`}
-              >
-                {t('blog')}
-              </p>
-              {navigation.blog.map((item) => (
+              {navigation.resources.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}

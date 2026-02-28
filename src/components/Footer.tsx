@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
       <div className="container mx-auto px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-x-8 gap-y-10">
 
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-xl font-bold text-white mb-4">
@@ -42,31 +42,40 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Resources Column */}
+          {/* Guides Column */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">{t('resources')}</h3>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Guides</h3>
             <ul className="space-y-3 text-sm">
-              <li>
-                <Link href="/how-to-download-youtube-subtitles-complete-guide" className="hover:text-violet-400 transition-colors">{t('howToDownload')}</Link>
-              </li>
-              <li>
-                <Link href="/data-prep-guide" className="hover:text-violet-400 transition-colors">{t('dataPrepGuide')}</Link>
-              </li>
-              <li>
-                <Link href="/guide/clean-transcript-no-timestamp" className="hover:text-violet-400 transition-colors">{t('cleanTranscript')}</Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-violet-400 transition-colors">{t('faq')}</Link>
-              </li>
-              <li>
-                <Link href="/support" className="hover:text-violet-400 transition-colors">{t('support')}</Link>
-              </li>
-              <li>
-                <Link href="/how-to-use" className="hover:text-violet-400 transition-colors">{t('howToUse')}</Link>
-              </li>
-              <li>
-                <Link href="/guide/how-to-download-youtube-studio-subtitles" className="hover:text-violet-400 transition-colors">{t('studioGuide')}</Link>
-              </li>
+              <li><Link href="/guide/how-to-download-youtube-subtitles-complete-guide" className="hover:text-violet-400 transition-colors">How to Download Subtitles</Link></li>
+              <li><Link href="/guide/how-to-download-youtube-studio-subtitles" className="hover:text-violet-400 transition-colors">Export from YouTube Studio</Link></li>
+              <li><Link href="/guide/youtube-subtitles-for-llm-data" className="hover:text-violet-400 transition-colors">Subtitles for AI Training Data</Link></li>
+              <li><Link href="/guide/clean-transcript-no-timestamp" className="hover:text-violet-400 transition-colors">Get Clean Text (No Timestamps)</Link></li>
+              <li><Link href="/guide/srt-vs-vtt" className="hover:text-violet-400 transition-colors">SRT vs VTT — Which Format to Use</Link></li>
+              <li><Link href="/guide/mastering-vtt-data-analysis" className="hover:text-violet-400 transition-colors">Analyze Subtitle Data</Link></li>
+              <li><Link href="/guide/youtube-subtitles-api-free" className="hover:text-violet-400 transition-colors">Free YouTube Subtitles API</Link></li>
+              <li><Link href="/guide/data-prep-toolkit" className="hover:text-violet-400 transition-colors">Prepare Data for AI Models</Link></li>
+              <li><Link href="/guide/playlist-subtitles-bulk" className="hover:text-violet-400 transition-colors">Download Entire Playlist Subtitles</Link></li>
+              <li><Link href="/data-prep-guide" className="hover:text-violet-400 transition-colors">AI Data Preparation Guide</Link></li>
+              <li><Link href="/faq" className="hover:text-violet-400 transition-colors">FAQ</Link></li>
+              <li><Link href="/how-to-use" className="hover:text-violet-400 transition-colors">How to Use YTVidHub</Link></li>
+            </ul>
+          </div>
+
+          {/* Blog Column */}
+          <div>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Blog</h3>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/blog/how-to-get-youtube-video-transcript" className="hover:text-violet-400 transition-colors">How to Get a YouTube Transcript</Link></li>
+              <li><Link href="/blog/ai-youtube-video-summarizer" className="hover:text-violet-400 transition-colors">AI YouTube Video Summarizer</Link></li>
+              <li><Link href="/blog/subtitle-accuracy-problem" className="hover:text-violet-400 transition-colors">Why Subtitles Are Sometimes Wrong</Link></li>
+              <li><Link href="/blog/creator-tutorials" className="hover:text-violet-400 transition-colors">Tutorials for Content Creators</Link></li>
+              <li><Link href="/blog/spanish-yt-channels-subtitles" className="hover:text-violet-400 transition-colors">Learn Spanish with YouTube</Link></li>
+              <li><Link href="/youtube-subtitle-downloader" className="hover:text-violet-400 transition-colors">YouTube Subtitle Downloader</Link></li>
+              <li><Link href="/youtube-transcript-for-chatgpt" className="hover:text-violet-400 transition-colors">Use YouTube Transcripts in ChatGPT</Link></li>
+              <li><Link href="/what-is-an-srt-file" className="hover:text-violet-400 transition-colors">What is an SRT File?</Link></li>
+              <li><Link href="/faq/subtitle-settings-guide" className="hover:text-violet-400 transition-colors">Subtitle Settings Guide</Link></li>
+              <li><Link href="/tools/subtitle-extractor-online" className="hover:text-violet-400 transition-colors">Online Subtitle Extractor</Link></li>
+              <li><Link href="/support" className="hover:text-violet-400 transition-colors">Support</Link></li>
             </ul>
           </div>
 

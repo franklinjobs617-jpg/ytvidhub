@@ -76,6 +76,8 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const [isActionClicked, setIsActionClicked] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isFirstSummaryFree, setIsFirstSummaryFree] = useState(true);
+  const [intentSurveyDone, setIntentSurveyDone] = useState(false);
+  const [intentFading, setIntentFading] = useState(false);
   const pendingAnalysisRef = useRef(false);
 
   // 动态 placeholder 打字效果
@@ -449,6 +451,41 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                         </button>
                       </div>
                     </div>
+
+                    {/* 用户意图调研 — 标题下方，预览上方，用户第一眼就能看到 */}
+                    {!intentSurveyDone && (
+                      <div className={`flex items-center gap-3 px-3 py-2 bg-slate-50 rounded-lg border border-slate-100 transition-all duration-500 ${intentFading ? 'opacity-0 -translate-y-1' : 'opacity-100'}`}>
+                        <span className="text-[11px] font-semibold text-slate-400 whitespace-nowrap shrink-0">What&apos;s this for?</span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {[
+                            { label: 'AI / ChatGPT', icon: '✨' },
+                            { label: 'Video Editing', icon: '🎬' },
+                            { label: 'Translation', icon: '🌐' },
+                            { label: 'Research', icon: '📊' },
+                            { label: 'Other', icon: '💬' },
+                          ].map((item) => (
+                            <button
+                              key={item.label}
+                              onClick={() => {
+                                fetch('/api/feedback', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({
+                                    message: `[Intent Survey] "${item.label}" | Format: ${downloadFormat} | Lang: ${downloadLang} | Video: ${downloadedContent?.title || 'unknown'}`,
+                                    contact: user?.email || 'anonymous',
+                                  }),
+                                }).catch(() => {});
+                                setIntentFading(true);
+                                setTimeout(() => setIntentSurveyDone(true), 500);
+                              }}
+                              className="flex items-center gap-1 px-2 py-1 rounded-full bg-white border border-slate-200 text-[10px] font-medium text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all"
+                            >
+                              <span>{item.icon}</span> {item.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* 内容预览（可滚动） */}
                     <div className="flex-1 relative bg-slate-50 rounded-xl border border-slate-200 overflow-hidden">
