@@ -16,7 +16,7 @@ import {
   Sparkles,
   Video as VideoIcon,
 } from "lucide-react";
-import { extractVideoId } from "@/lib/youtube";
+import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/lib/youtube";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -347,11 +347,26 @@ function WorkspaceContent() {
   const handleAnalyzeNewUrl = async () => {
     if (!inputUrl.trim() || isAddingVideo) return;
 
-    const targetUrl = inputUrl.trim();
+    const rawUrl = inputUrl.trim();
 
     // 简单的 Youtube URL 验证
-    if (!targetUrl.includes("youtube.com") && !targetUrl.includes("youtu.be")) {
+    if (!rawUrl.includes("youtube.com") && !rawUrl.includes("youtu.be")) {
       alert("Please enter a valid YouTube URL");
+      return;
+    }
+
+    // 标准化 URL：watch?v=xxx&list=PLxxx → playlist?list=PLxxx
+    const targetUrl = normalizeYoutubeUrl(rawUrl);
+
+    // 如果是 playlist/channel，走批量流程
+    if (isPlaylistOrChannelUrl(targetUrl)) {
+      setInputUrl("");
+      const results = await analyzeUrls([targetUrl]);
+      if (results && results.length > 0) {
+        setVideoList(results);
+        setCurrentVideo(results[0]);
+        setSummaryData("");
+      }
       return;
     }
 
@@ -369,6 +384,16 @@ function WorkspaceContent() {
         thumbnail: videoInfo.thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
         duration: videoInfo.duration
       };
+
+      // 记录到数据库（成功获取视频信息）
+      subtitleApi.upsertHistory({
+        videoId,
+        videoUrl: targetUrl,
+        title: newVideo.title,
+        thumbnail: newVideo.thumbnail,
+        duration: newVideo.duration,
+        lastAction: "video_analyze",
+      }).catch(() => {});
 
       // 添加到列表并切换
       setVideoList(prev => {
@@ -395,6 +420,16 @@ function WorkspaceContent() {
       }
 
     } catch (error) {
+      // 失败也记录到数据库
+      const failedVideoId = extractVideoId(targetUrl);
+      if (failedVideoId) {
+        subtitleApi.upsertHistory({
+          videoId: failedVideoId,
+          videoUrl: targetUrl,
+          title: "Failed to load",
+          lastAction: "video_analyze",
+        }).catch(() => {});
+      }
       alert("Failed to fetch video info. Please check the URL and try again.");
     } finally {
       setIsAddingVideo(false);
@@ -427,7 +462,7 @@ function WorkspaceContent() {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-white overflow-hidden font-sans">
-      <header className="h-14 border-b border-slate-100 flex items-center justify-between px-4 shrink-0 z-[60] bg-white gap-4">
+      <header className="h-14 border-b border-slate-100 flex items-center justify-between px-2 sm:px-4 shrink-0 z-[60] bg-white gap-2 sm:gap-4">
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={() => window.location.href = "/"}
@@ -441,8 +476,8 @@ function WorkspaceContent() {
         </div>
 
         {/* 新增：URL 输入区域 */}
-        <div className="flex-1 max-w-2xl flex items-center gap-2">
-          <div className="relative flex-1">
+        <div className="flex-1 min-w-0 max-w-2xl flex items-center gap-2">
+          <div className="relative flex-1 min-w-0">
             <input
               type="text"
               placeholder="Paste YouTube URL to analyze..."
@@ -460,7 +495,7 @@ function WorkspaceContent() {
           <button
             onClick={handleAnalyzeNewUrl}
             disabled={!inputUrl.trim() || isAddingVideo}
-            className="h-9 px-4 bg-violet-600 hover:bg-violet-700 disabled:bg-slate-200 text-white text-sm font-bold rounded-lg transition-colors shrink-0 flex items-center gap-1.5"
+            className="h-9 px-2.5 sm:px-4 bg-violet-600 hover:bg-violet-700 disabled:bg-slate-200 text-white text-sm font-bold rounded-lg transition-colors shrink-0 flex items-center gap-1.5"
           >
             <Sparkles size={14} />
             <span className="hidden md:inline">Analyze</span>
@@ -468,7 +503,7 @@ function WorkspaceContent() {
         </div>
 
         {/* 新增：积分显示和购买按钮 */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-100 rounded-full">
             <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center">
               <span className="text-[10px] font-black text-amber-900">C</span>
@@ -483,10 +518,10 @@ function WorkspaceContent() {
 
           <button
             onClick={() => router.push("/pricing")}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold rounded-full transition-all shadow-sm group"
+            className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold rounded-full transition-all shadow-sm group"
           >
             <Sparkles size={12} className="text-amber-400 group-hover:scale-110 transition-transform" />
-            <span>Upgrade</span>
+            <span className="hidden sm:inline">Upgrade</span>
           </button>
 
           <DailyRewardButton />

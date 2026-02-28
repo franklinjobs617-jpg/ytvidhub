@@ -1,7 +1,7 @@
 // hooks/useSubtitleDownloader.ts
 import { useState, useRef } from "react";
 import { subtitleApi } from "@/lib/api";
-import { extractVideoId } from "@/lib/youtube";
+import { extractVideoId, isPlaylistOrChannelUrl } from "@/lib/youtube";
 import { toast } from "sonner";
 import { useTranslations } from 'next-intl';
 import { trackConversion } from "@/lib/analytics";
@@ -67,12 +67,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
     try {
       // 智能识别URL类型：单个视频、playlist、channel
-      const hasPlaylistOrChannel = urls.some(url =>
-        url.includes('playlist?list=') ||
-        url.includes('/channel/') ||
-        url.includes('/@') ||
-        url.includes('/c/')
-      );
+      const hasPlaylistOrChannel = urls.some(url => isPlaylistOrChannelUrl(url));
 
       if (hasPlaylistOrChannel) {
         // 显示处理模态框
@@ -124,7 +119,6 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           if (duplicates_removed > 0) {
             setStatusText(tStatus('deduplicating'));
             setProgress(30);
-            await new Promise(resolve => setTimeout(resolve, 800)); // 给用户看到去重过程
           }
 
           // 显示成功消息
@@ -152,7 +146,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         }
 
         // 分批检查字幕（避免超时）- 增强用户体验版本
-        const batchSize = 10; // 减小批次大小，更频繁更新
+        const batchSize = 30;
         const allResults: any[] = [];
         const startTime = Date.now();
 
@@ -216,10 +210,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
             });
           }
 
-          // 小延迟避免过快请求，同时给用户更好的视觉反馈
-          if (i + batchSize < uniqueVideoUrls.length) {
-            await new Promise(resolve => setTimeout(resolve, 300));
-          }
+          // 继续下一批
         }
 
         // 完成处理
@@ -231,11 +222,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           estimatedTimeRemaining: 0
         } : null);
 
-        // 延迟关闭模态框，让用户看到完成状态
+        // 关闭模态框
         setTimeout(() => {
           setShowPlaylistModal(false);
           setPlaylistProcessing(null);
-        }, 2000);
+        }, 800);
 
         return allResults.map((item: any) => ({
           id: extractVideoId(item.url),

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
-import { extractVideoId } from "@/lib/youtube";
+import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/lib/youtube";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from 'next-intl';
@@ -31,18 +31,12 @@ import { ControlBar } from "@/components/hero/ControlBar";
 import { PlaylistProcessingModal } from "@/components/playlist/PlaylistProcessingModal";
 import { RecentHistory } from "@/components/landing/RecentHistory";
 
-// 校验工具 - 支持playlist和channel
+// 校验工具 - 支持所有YouTube URL格式
 const isValidYoutubeUrl = (url: string) => {
   if (!url) return false;
-  const patterns = [
-    /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/,  // 基本YouTube URL
-    /^(https?:\/\/)?(www\.)?youtube\.com\/playlist\?list=.+$/, // Playlist
-    /^(https?:\/\/)?(www\.)?youtube\.com\/channel\/.+$/,      // Channel
-    /^(https?:\/\/)?(www\.)?youtube\.com\/@.+$/,              // New channel format
-    /^(https?:\/\/)?(www\.)?youtube\.com\/c\/.+$/,            // Custom channel
-    /^(https?:\/\/)?(www\.)?youtube\.com\/user\/.+$/          // User channel
-  ];
-  return patterns.some(pattern => pattern.test(url.trim()));
+  const trimmed = url.trim();
+  // 统一匹配：youtube.com / m.youtube.com / www.youtube.com / youtu.be
+  return /^(https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be)\/.+$/.test(trimmed);
 };
 
 interface HeroSectionProps {
@@ -273,7 +267,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
         }
 
         let targetUrls = videoResults.length === 0
-          ? urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http")).join(",")
+          ? urls.split("\n").map((u) => normalizeYoutubeUrl(u.trim())).filter((u) => u.startsWith("http")).join(",")
           : videoResults.filter((v) => selectedIds.has(v.id)).map((v?: any) => v.url).join(",");
         if (!targetUrls) return;
 
@@ -287,15 +281,11 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
         return;
       }
       if (videoResults.length === 0) {
-        const uniqueUrls = Array.from(new Set(urls.split("\n").map((u) => u.trim()).filter((u) => u.startsWith("http"))));
+        const uniqueUrls = Array.from(new Set(urls.split("\n").map((u) => normalizeYoutubeUrl(u.trim())).filter((u) => u.startsWith("http"))));
         if (uniqueUrls.length === 0) return;
 
         // 单视频直接下载快速路径
-        const isSingleVideo = uniqueUrls.length === 1 &&
-          !uniqueUrls[0].includes('playlist?list=') &&
-          !uniqueUrls[0].includes('/channel/') &&
-          !uniqueUrls[0].includes('/@') &&
-          !uniqueUrls[0].includes('/c/');
+        const isSingleVideo = uniqueUrls.length === 1 && !isPlaylistOrChannelUrl(uniqueUrls[0]);
 
         if (isSingleVideo) {
           if (user && (user.credits || 0) <= 0) {

@@ -221,7 +221,7 @@ export const subtitleApi = {
     title: string;
     thumbnail?: string;
     duration?: number;
-    lastAction: "subtitle_download" | "ai_summary";
+    lastAction: "subtitle_download" | "ai_summary" | "video_analyze";
     format?: string;
     lang?: string;
     summaryContent?: string;
