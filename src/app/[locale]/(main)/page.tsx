@@ -1,13 +1,16 @@
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/landing/HeroSection";
-import HowItWorks from "@/components/landing/HowItWorks";
-import ComparisonSlider from "@/components/landing/ComparisonSlider";
-import FeaturesGrid from "@/components/landing/FeaturesGrid";
-import Testimonials from "@/components/landing/Testimonials";
-import CoreCapabilities from "@/components/landing/CoreCapabilities";
-import FAQ from "@/components/landing/FAQ";
+import ExtensionBanner from "@/components/landing/ExtensionBanner";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
+
+const ComparisonSlider = dynamic(() => import("@/components/landing/ComparisonSlider"));
+const FeaturesGrid = dynamic(() => import("@/components/landing/FeaturesGrid"));
+const HowItWorks = dynamic(() => import("@/components/landing/HowItWorks"));
+const Testimonials = dynamic(() => import("@/components/landing/Testimonials"));
+const CoreCapabilities = dynamic(() => import("@/components/landing/CoreCapabilities"));
+const FAQ = dynamic(() => import("@/components/landing/FAQ"));
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -77,6 +80,7 @@ export default async function Home({ params }: Props) {
   return (
     <>
       <HeroSection heroHeader={heroHeader} />
+      <ExtensionBanner />
       <ComparisonSlider />
       <FeaturesGrid />
       <HowItWorks />

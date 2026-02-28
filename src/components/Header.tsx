@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Link, usePathname } from '@/i18n/routing';
+import Image from "next/image";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import LoginModal from "@/components/LoginModel";
 import { useAuth } from "@/context/AuthContext";
@@ -122,9 +123,12 @@ export default function Header() {
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
           {/* === Logo === */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <img
+            <Image
               src="/image/icon.webp"
               alt="YTVidHub Logo"
+              width={36}
+              height={36}
+              priority
               className="h-8 w-auto md:h-9 transition-transform duration-300 group-hover:rotate-[-5deg]"
             />
           </Link>
@@ -292,12 +296,14 @@ export default function Header() {
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                     className="flex items-center gap-2 group p-0.5 rounded-full hover:bg-slate-50 border border-transparent transition-all focus:outline-none"
                   >
-                    <img
+                    <Image
                       src={
                         user.picture ||
                         "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
                       }
                       alt={user.name}
+                      width={36}
+                      height={36}
                       className="h-8 w-8 md:h-9 md:w-9 rounded-full object-cover bg-slate-100 border border-slate-200 group-hover:border-blue-300 transition-colors"
                     />
                     <div className="text-left hidden lg:block pr-2">

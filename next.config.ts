@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
 
   images: {
     formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'api.dicebear.com' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'https', hostname: 'media.theresanaiforthat.com' },
+      { protocol: 'https', hostname: 'i.ytimg.com' },
+    ],
   },
 
   compress: true,

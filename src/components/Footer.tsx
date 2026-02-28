@@ -1,4 +1,5 @@
 import { Link } from '@/i18n/routing';
+import Image from "next/image";
 import Share from "./share";
 import { useTranslations } from 'next-intl';
 
@@ -16,7 +17,7 @@ export default function Footer() {
             <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
               {t('description')}
             </p>
-            <a href="https://theresanaiforthat.com/ai/ytvidhub/?ref=featured&v=7340698" target="_blank" rel="nofollow"><img width="300" src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600"></img></a>
+            <a href="https://theresanaiforthat.com/ai/ytvidhub/?ref=featured&v=7340698" target="_blank" rel="nofollow"><Image width={300} height={54} src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600" alt="Featured on TAAFT" /></a>
           </div>
 
           {/* Product Column */}

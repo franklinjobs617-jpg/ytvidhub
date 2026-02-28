@@ -69,7 +69,8 @@ export function VideoPlayer({ videoId, seekTime, onTimeUpdate }: VideoPlayerProp
         src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
         title="Video Player"
         frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         onLoad={handleIframeLoad}
       />

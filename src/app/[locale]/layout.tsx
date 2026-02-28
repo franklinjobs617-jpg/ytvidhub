@@ -10,6 +10,26 @@ import { Metadata } from 'next';
 import LanguagePreloader from '@/components/LanguagePreloader';
 import SourceCapture from '@/components/SourceCapture';
 import { buildCanonicalUrl, SITE_ORIGIN } from '@/lib/url';
+import { Inter, Space_Grotesk, Arvo } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const arvo = Arvo({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 type Props = {
   children: React.ReactNode;
@@ -141,12 +161,15 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${inter.variable} ${spaceGrotesk.variable} ${arvo.variable}`}>
       <head>
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Google AdSense 广告代码 */}
         <Script
           id="adsbygoogle-init"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
           crossOrigin="anonymous"
         />
@@ -156,9 +179,9 @@ export default async function LocaleLayout({
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
