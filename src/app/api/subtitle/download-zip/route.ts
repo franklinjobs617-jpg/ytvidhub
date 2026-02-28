@@ -57,12 +57,21 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // 返回文件流
-        return new NextResponse(backendResponse.body, {
+        // 完整读取后端响应再返回（避免流式传输中后端删除文件导致数据不完整）
+        const zipBuffer = await backendResponse.arrayBuffer()
+        if (zipBuffer.byteLength === 0) {
+            return NextResponse.json(
+                { error: 'Downloaded ZIP is empty' },
+                { status: 500 }
+            )
+        }
+
+        return new NextResponse(zipBuffer, {
             status: 200,
             headers: {
-                'Content-Type': backendResponse.headers.get('Content-Type') || 'application/zip',
+                'Content-Type': 'application/zip',
                 'Content-Disposition': backendResponse.headers.get('Content-Disposition') || 'attachment; filename="subtitles.zip"',
+                'Content-Length': zipBuffer.byteLength.toString(),
             },
         })
 
