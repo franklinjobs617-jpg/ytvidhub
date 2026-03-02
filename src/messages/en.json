@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Bulk YouTube Subtitle Downloader & AI Summarizer (Free & Fast)",
-    "description": "Free bulk YouTube subtitle downloader. Extract SRT, VTT, TXT captions from entire playlists & channels in one click. AI-powered video summarizer included.",
-    "keywords": "bulk youtube subtitle downloader, batch youtube subtitle downloader, download youtube playlist subtitles, youtube channel subtitle extractor, AI video summarizer, youtube subtitle extraction free"
+    "title": "YouTube Subtitle Downloader - Download SRT, VTT, TXT Captions Free | YTVidHub",
+    "description": "Free YouTube subtitle downloader. Download SRT, VTT, TXT captions from any video, playlist or channel. Supports bulk extraction and AI-powered video summarizer.",
+    "keywords": "youtube subtitle downloader, download youtube subtitles, youtube caption downloader, free subtitle downloader, youtube transcript downloader, bulk youtube subtitle downloader"
   },
   "subtitleDownloaderPage": {
     "title": "Free YouTube Subtitle Downloader - Download SRT, VTT, TXT Online | YTVidHub",
@@ -30,8 +30,8 @@
     "freePlan": "Free Plan"
   },
   "hero": {
-    "title": "Bulk YouTube Subtitle Downloader",
-    "subtitle": "Download subtitles from entire YouTube playlists and channels in one click. Extract thousands of SRT, VTT, or TXT files instantly. Perfect for bulk processing and data collection.",
+    "title": "YouTube Subtitle Downloader",
+    "subtitle": "Download subtitles from any YouTube video, playlist or channel. Extract SRT, VTT, TXT captions instantly. Supports <highlight>bulk download</highlight> and AI-powered video summary.",
     "highlight": "playlist subtitle downloader",
     "ready": "Ready for high efficiency YouTube subtitle extraction",
     "bulkExtraction": "High-speed bulk subtitle extraction",
@@ -287,11 +287,11 @@
     "questions": {
       "legal": {
         "question": "Is it legal to use a YouTube subtitle downloader?",
-        "answer": "Yes, using a **YouTube subtitle downloader** for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service."
+        "answer": "Yes, using a YouTube subtitle downloader for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service."
       },
       "transcript": {
         "question": "Can I download the YouTube transcript as text?",
-        "answer": "Yes! Our tool functions as a powerful **YouTube transcript downloader**, allowing you to extract the full video transcript as a clean text file (TXT) for reading, content analysis, or AI processing."
+        "answer": "Yes! Our tool functions as a powerful YouTube transcript downloader, allowing you to extract the full video transcript as a clean text file (TXT) for reading, content analysis, or AI processing."
       },
       "formats": {
         "question": "Can I download subtitles as plain text (TXT) instead of SRT?",

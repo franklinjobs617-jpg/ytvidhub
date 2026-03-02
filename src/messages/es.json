@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Descargador Masivo de Subtítulos de YouTube y Resumidor IA (Gratis y Rápido)",
-    "description": "Descargador masivo gratuito de subtítulos de YouTube. Extrae subtítulos SRT, VTT, TXT de playlists y canales completos en un clic. Incluye resumidor de video con IA.",
-    "keywords": "descargador masivo de subtítulos de youtube, descargar subtítulos de playlist de youtube, extractor de subtítulos de canal de youtube, resumidor de video IA, descarga masiva de subtítulos gratis"
+    "title": "Descargador de Subtítulos de YouTube - Descarga SRT, VTT, TXT Gratis | YTVidHub",
+    "description": "Descargador gratuito de subtítulos de YouTube. Descarga subtítulos SRT, VTT, TXT de cualquier video, playlist o canal. Soporta descarga masiva y resumidor de video con IA.",
+    "keywords": "descargador de subtítulos de youtube, descargar subtítulos de youtube, descargador de subtítulos gratis, descarga masiva de subtítulos de youtube"
   },
   "subtitleDownloaderPage": {
     "title": "Descargador Gratuito de Subtítulos de YouTube - Descargar SRT, VTT, TXT Online | YTVidHub",
@@ -30,8 +30,8 @@
     "freePlan": "Plan gratuito"
   },
   "hero": {
-    "title": "Descarga Masiva de Subtítulos de YouTube",
-    "subtitle": "Extrae subtítulos de listas de reproducción y canales completos de forma masiva. Convierte YouTube a SRT o TXT en segundos.",
+    "title": "Descargador de Subtítulos de YouTube",
+    "subtitle": "Descarga subtítulos de cualquier video, playlist o canal de YouTube. Extrae SRT, VTT, TXT al instante. Soporta <highlight>descarga masiva</highlight> y resumen con IA.",
     "highlight": "extraer subtítulos de playlist",
     "ready": "Listo para la extracción de subtítulos de YouTube de alta eficiencia",
     "bulkExtraction": "Descarga en lote de subtítulos de alta velocidad",
@@ -288,7 +288,7 @@
       },
       "transcript": {
         "question": "¿Puedo obtener una transcripción limpia de YouTube como texto?",
-        "answer": "¡Sí! Nuestra herramienta funciona como un potente **descargador de transcripciones de YouTube**, permitiéndote extraer la transcripción completa del video como un archivo de texto limpio (TXT) para lectura, análisis de contenido o procesamiento de IA."
+        "answer": "¡Sí! Nuestra herramienta funciona como un potente descargador de transcripciones de YouTube, permitiéndote extraer la transcripción completa del video como un archivo de texto limpio (TXT) para lectura, análisis de contenido o procesamiento de IA."
       },
       "formats": {
         "question": "¿Puedo descargar subtítulos como texto plano (TXT) en vez de SRT?",

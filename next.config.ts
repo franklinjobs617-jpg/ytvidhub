@@ -65,17 +65,6 @@ const nextConfig: NextConfig = {
         destination: "/guide/how-to-download-youtube-subtitles-complete-guide/",
         permanent: true,
       },
-      // Consolidate bulk page authority to homepage
-      {
-        source: "/:locale/bulk-youtube-subtitle-downloader/",
-        destination: "/:locale/",
-        permanent: true,
-      },
-      {
-        source: "/bulk-youtube-subtitle-downloader/",
-        destination: "/",
-        permanent: true,
-      },
     ];
   },
 

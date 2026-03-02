@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { buildCanonicalUrl } from '@/lib/url';
 
 export const metadata: Metadata = {
     title: 'Bulk YouTube Subtitle Downloader | Extract SRT, VTT & TXT Captions from Playlists | YTVidHub',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Bulk YouTube Subtitle Downloader | Extract Captions from Playlists & Channels',
         description: 'Download subtitles from thousands of YouTube videos at once. Professional bulk extraction tool for SRT, VTT, and TXT formats. Perfect for AI training and content creation.',
-        url: 'https://ytvidhub.com/bulk-youtube-subtitle-downloader',
+        url: 'https://ytvidhub.com/bulk-youtube-subtitle-downloader/',
         type: 'website',
         images: [
             {
@@ -46,6 +47,13 @@ export const metadata: Metadata = {
 
     alternates: {
         canonical: 'https://ytvidhub.com/bulk-youtube-subtitle-downloader/',
+        languages: {
+            'en': buildCanonicalUrl({ locale: 'en', pathname: '/bulk-youtube-subtitle-downloader' }),
+            'es': buildCanonicalUrl({ locale: 'es', pathname: '/bulk-youtube-subtitle-downloader' }),
+            'de': buildCanonicalUrl({ locale: 'de', pathname: '/bulk-youtube-subtitle-downloader' }),
+            'ko': buildCanonicalUrl({ locale: 'ko', pathname: '/bulk-youtube-subtitle-downloader' }),
+            'x-default': buildCanonicalUrl({ locale: 'en', pathname: '/bulk-youtube-subtitle-downloader' }),
+        },
     },
 
     robots: {
@@ -58,12 +66,6 @@ export const metadata: Metadata = {
             'max-image-preview': 'large',
             'max-snippet': -1,
         },
-    },
-
-    other: {
-        'article:author': 'YTVidHub Team',
-        'article:section': 'Tools',
-        'article:tag': 'YouTube, Subtitles, Bulk Download, SRT, VTT, Captions, AI Training',
     },
 };
 

@@ -335,11 +335,25 @@ def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
         if not sub_url:
             return None, None, "No subtitles found"
 
-        # 直接 HTTP 下载原始字幕
+        # 直接 HTTP 下载原始字幕（带 UA + 重试）
         proxies = {'http': proxy, 'https': proxy} if proxy else None
-        resp = requests.get(sub_url, timeout=30, proxies=proxies)
-        resp.raise_for_status()
-        raw_content = resp.text
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept-Language': 'en-US,en;q=0.9',
+        }
+        raw_content = None
+        for attempt in range(3):
+            try:
+                resp = requests.get(sub_url, timeout=30, proxies=proxies, headers=headers)
+                resp.raise_for_status()
+                raw_content = resp.text
+                break
+            except Exception:
+                if attempt == 2:
+                    raise
+                proxies = {'http': get_proxy_url(), 'https': get_proxy_url()} if proxy else None
+        if not raw_content:
+            return None, None, "Failed to download subtitle content"
 
         # 内存中格式转换
         if output_format == 'txt':
@@ -631,10 +645,20 @@ def batch_subtitle_worker(task_id, videos, lang, fmt):
     completed = [0]  # 用列表以便在闭包中修改
     lock = threading.Lock()
 
+    errors = []
+
     def download_one(video):
         url = video.get('url')
-        # 快速路径：直接 HTTP 拿字幕，无 FFmpeg 无磁盘IO
+        # 快速路径：直接 HTTP 拿字幕
         content, filename, err = get_subtitle_content_fast(url, lang, fmt)
+
+        # 快速路径失败 → 回退到原始方式（FFmpeg + 磁盘IO）
+        if not content or err:
+            print(f"⚠️ Fast path failed for {url}: {err}, trying fallback...")
+            try:
+                content, filename, err = get_subtitle_content(url, lang, fmt)
+            except Exception as e:
+                err = str(e)
 
         if content and not err:
             with lock:
@@ -648,8 +672,12 @@ def batch_subtitle_worker(task_id, videos, lang, fmt):
                     with open(file_path, 'w', encoding='utf-8') as f:
                         f.write(content)
                     success_files.append(file_path)
-                except:
-                    pass
+                except Exception as e:
+                    print(f"❌ File write failed for {url}: {e}")
+        else:
+            print(f"❌ Both paths failed for {url}: {err}")
+            with lock:
+                errors.append(f"{url}: {err}")
 
         with lock:
             completed[0] += 1
@@ -670,7 +698,10 @@ def batch_subtitle_worker(task_id, videos, lang, fmt):
         tasks[task_id]['zip_name'] = zip_name
         tasks[task_id]['status'] = "completed"
     else:
+        first_errors = errors[:3]
         tasks[task_id]['status'] = "failed"
+        tasks[task_id]['error'] = f"All {total} downloads failed. Samples: {'; '.join(first_errors)}" if first_errors else "All downloads failed (no details)"
+        print(f"❌ Batch task {task_id} failed: {tasks[task_id]['error']}")
 
     shutil.rmtree(task_dir, ignore_errors=True)
 

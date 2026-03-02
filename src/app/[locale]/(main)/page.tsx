@@ -60,6 +60,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Home({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'hero' });
+  const faqT = await getTranslations({ locale, namespace: 'faq' });
+
+  const faqKeys = ['legal', 'transcript', 'formats', 'bulk', 'languages', 'limits'] as const;
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqKeys.map(key => ({
+      "@type": "Question",
+      "name": faqT(`questions.${key}.question`),
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faqT(`questions.${key}.answer`)
+      }
+    }))
+  };
 
   const heroHeader = (
     <div className="max-w-4xl mx-auto mb-12">
@@ -79,6 +94,10 @@ export default async function Home({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <HeroSection heroHeader={heroHeader} />
       <ExtensionBanner />
       <ComparisonSlider />
