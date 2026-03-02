@@ -28,6 +28,13 @@ export default function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
+    // Normalize double slashes: /path// → /path/
+    if (/\/{2,}/.test(pathname)) {
+        const newUrl = request.nextUrl.clone();
+        newUrl.pathname = pathname.replace(/\/{2,}/g, '/');
+        return NextResponse.redirect(newUrl, 301);
+    }
+
     if (pathname === '/bulk-downloader' || pathname.endsWith('/bulk-downloader')) {
         const newUrl = request.nextUrl.clone();
         newUrl.pathname = pathname.replace('/bulk-downloader', '/bulk-youtube-subtitle-downloader');
