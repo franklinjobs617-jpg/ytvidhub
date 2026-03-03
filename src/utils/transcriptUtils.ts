@@ -115,9 +115,13 @@ export const groupTranscriptByTime = (
   return groups;
 };
 
-export const highlightText = (text: string, query: string) => {
-  if (!query) return text;
+export const highlightText = (text: string, query: string): { part: string; isMatch: boolean }[] => {
+  if (!query) return [{ part: text, isMatch: false }];
   const parts = text.split(new RegExp(`(${query})`, "gi"));
+  return parts.map((part) => ({
+    part,
+    isMatch: part.toLowerCase() === query.toLowerCase(),
+  }));
 };
 
 export function formatDuration(seconds: number): string {

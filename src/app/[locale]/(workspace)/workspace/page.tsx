@@ -569,6 +569,7 @@ function WorkspaceContent() {
               <TranscriptArea
                 videoUrl={currentVideo.url}
                 currentTime={currentTime}
+                onSeek={setSeekTime}
               />
             </div>
           </div>

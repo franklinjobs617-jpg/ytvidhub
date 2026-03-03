@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import { subtitleApi } from "@/lib/api";
-import { Search, AlignLeft, List, Copy, Check } from "lucide-react";
+import { Search, Copy, Check, ClipboardCopy } from "lucide-react";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -13,94 +13,59 @@ import {
 export function TranscriptArea({
   videoUrl,
   currentTime,
+  onSeek,
 }: {
   videoUrl: string;
   currentTime: number;
+  onSeek?: (time: number) => void;
 }) {
   const [transcriptVtt, setTranscriptVtt] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [copied, setCopied] = useState(false);
-
-  // 模式状态：true = 智能聚合(NoteGPT), false = 原始列表
   const [isSmartMode, setIsSmartMode] = useState(true);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!videoUrl) return;
-
-    // 优先读 sessionStorage 缓存，避免重复请求
     try {
       const cached = sessionStorage.getItem(`ytvidhub_transcript_${videoUrl}`);
       if (cached) {
         const { text, format } = JSON.parse(cached);
-        if (format === 'vtt') {
-          setTranscriptVtt(text);
-          return;
-        }
+        if (format === 'vtt') { setTranscriptVtt(text); return; }
         if (format === 'srt') {
-          // 把 SRT 转成 VTT 格式供 parseVtt 使用
-          const vtt = 'WEBVTT\n\n' + text
-            .replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2');
-          setTranscriptVtt(vtt);
+          setTranscriptVtt('WEBVTT\n\n' + text.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2'));
           return;
         }
         if (format === 'txt') {
-          // 纯文本：包装成单条 VTT 供显示
           setTranscriptVtt(`WEBVTT\n\n00:00:00.000 --> 99:59:59.000\n${text}`);
           return;
         }
       }
     } catch {}
-
     setLoading(true);
     subtitleApi
-      .downloadSingle({
-        url: videoUrl,
-        lang: "en",
-        format: "vtt",
-        title: "transcript",
-        isPreview: true,
-      })
+      .downloadSingle({ url: videoUrl, lang: "en", format: "vtt", title: "transcript", isPreview: true })
       .then(async (blob) => setTranscriptVtt(await blob.text()))
       .catch(() => setTranscriptVtt(""))
       .finally(() => setLoading(false));
   }, [videoUrl]);
 
   const handleCopy = () => {
-    const text = displayItems.map(item => item.text).join('\n\n');
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(displayItems.map(item => item.text).join('\n\n'));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // 🔥 核心逻辑：根据模式计算显示内容
   const displayItems = useMemo(() => {
     if (!transcriptVtt) return [];
-
-    // 1. 基础解析 (得到带时间戳的每一行)
     const rawItems = parseVtt(transcriptVtt);
-
-    let finalItems;
-
-    // 2. 根据模式决定数据结构
-    if (isSmartMode) {
-      // 智能模式：聚合
-      finalItems = groupTranscriptByTime(rawItems);
-    } else {
-      // 列表模式：直接使用原始行
-      finalItems = rawItems.map((item) => ({
-        startTime: item.start,
-        text: item.text,
-      }));
-    }
-
-    // 3. 搜索过滤
+    const finalItems = isSmartMode
+      ? groupTranscriptByTime(rawItems)
+      : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
     if (searchQuery) {
-      return finalItems.filter((i) =>
-        i.text.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      return finalItems.filter((i) => i.text.toLowerCase().includes(searchQuery.toLowerCase()));
     }
-
     return finalItems;
   }, [transcriptVtt, isSmartMode, searchQuery]);
 
@@ -118,129 +83,115 @@ export function TranscriptArea({
 
   useEffect(() => {
     if (activeIndex >= 0 && activeItemRef.current) {
-      activeItemRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      activeItemRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [activeIndex]);
 
   return (
-    <div className="flex flex-col h-full bg-white border-r border-slate-100/50">
-      <div className="px-4 py-3 flex items-center gap-3 border-b border-slate-100 shrink-0 bg-white z-10">
-        <div className="flex bg-slate-100 p-0.5 rounded-lg shrink-0 border border-slate-200/50">
-          <button
-            onClick={() => setIsSmartMode(true)}
-            className={`p-1.5 rounded-md transition-all ${isSmartMode
-                ? "bg-white shadow-sm text-violet-600"
-                : "text-slate-400 hover:text-slate-600"
-              }`}
-            title="Smart View (Grouped)"
-          >
-            <AlignLeft size={14} />
-          </button>
-          <button
-            onClick={() => setIsSmartMode(false)}
-            className={`p-1.5 rounded-md transition-all ${!isSmartMode
-                ? "bg-white shadow-sm text-violet-600"
-                : "text-slate-400 hover:text-slate-600"
-              }`}
-            title="List View (Raw)"
-          >
-            <List size={14} />
-          </button>
-        </div>
-
-        <div className="relative flex-1 group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-          <input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search..."
-            className="w-full pl-9 pr-8 py-1.5 bg-slate-50 border border-transparent rounded-lg text-xs outline-none focus:bg-white focus:border-violet-200 focus:ring-2 focus:ring-violet-50 transition-all"
-          />
-          {searchQuery && (
+    <div className="flex flex-col h-full bg-white border-r border-slate-100">
+      {/* Tab Header — YouMind style */}
+      <div className="flex items-center justify-between px-4 border-b border-slate-100 shrink-0 bg-white">
+        <div className="flex">
+          {[{ label: "Smart", value: true }, { label: "Line by Line", value: false }].map(({ label, value }) => (
             <button
-              onClick={() => setSearchQuery("")}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500"
+              key={label}
+              onClick={() => setIsSmartMode(value)}
+              className={`px-3 py-3 text-xs font-medium border-b-2 transition-colors ${
+                isSmartMode === value
+                  ? "border-violet-500 text-violet-600"
+                  : "border-transparent text-slate-400 hover:text-slate-600"
+              }`}
             >
-              ×
+              {label}
             </button>
-          )}
+          ))}
         </div>
-        <button
-          onClick={handleCopy}
-          className="p-2 hover:bg-slate-50 rounded-lg text-slate-400"
-        >
-          {copied ? (
-            <Check size={16} className="text-green-500" />
-          ) : (
-            <Copy size={16} />
-          )}
+        <button onClick={handleCopy} className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors">
+          {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
         </button>
       </div>
 
-      {/* Content Area */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar scroll-smooth bg-white">
+      {/* Search Bar */}
+      <div className="px-4 py-2 border-b border-slate-100 shrink-0">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+          <input
+            ref={searchRef}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search transcript..."
+            className="w-full pl-9 pr-16 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
+          />
+          {searchQuery && (
+            <>
+              <span className="absolute right-7 top-1/2 -translate-y-1/2 text-[10px] text-slate-400">{displayItems.length}</span>
+              <button onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-sm">×</button>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar">
         {loading ? (
-          <div className="space-y-6 pt-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="space-y-2">
-                <div className="h-4 w-12 bg-slate-100 rounded" />
-                <div className="h-3 bg-slate-50 rounded w-full" />
-                <div className="h-3 bg-slate-50 rounded w-[80%]" />
+          <div className="px-4 py-4 space-y-4 animate-pulse">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex gap-4">
+                <div className="h-3 w-10 bg-slate-200 rounded shrink-0 mt-1" />
+                <div className="flex-1 space-y-1.5">
+                  <div className="h-3 bg-slate-200 rounded w-full" />
+                  <div className="h-3 bg-slate-200 rounded w-3/4" />
+                </div>
               </div>
             ))}
           </div>
         ) : displayItems.length > 0 ? (
-          <div
-            className={`
-             ${isSmartMode ? "space-y-6" : "space-y-3"} 
-          `}
-          >
+          <div className="py-2">
             {displayItems.map((item, i) => {
               const isActive = i === activeIndex;
               return (
                 <div
                   key={i}
                   ref={isActive ? activeItemRef : undefined}
-                  className={`group relative rounded-lg transition-colors ${isActive ? "bg-violet-50" : ""}`}
+                  className={`group relative flex gap-3 px-4 py-2.5 transition-all cursor-default ${
+                    isActive
+                      ? "bg-violet-50 border-l-2 border-violet-500"
+                      : `border-l-2 border-transparent ${activeIndex >= 0 ? "opacity-55 hover:opacity-100" : "hover:bg-slate-50"}`
+                  }`}
                 >
-                  {isSmartMode ? (
-                    <div className="mb-1.5">
-                      <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded cursor-pointer transition-colors ${isActive ? "text-violet-700 bg-violet-100" : "text-blue-600 bg-blue-50 hover:bg-blue-100"}`}>
-                        {formatTime(item.startTime)}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="flex items-baseline gap-2 mb-0.5">
-                      <span className={`shrink-0 text-[10px] font-mono w-10 text-right ${isActive ? "text-violet-600 font-bold" : "text-slate-400"}`}>
-                        {formatTime(item.startTime)}
-                      </span>
-                    </div>
-                  )}
-
-                  <div
-                    className={`
-                      transition-colors
-                      ${isSmartMode ? "text-sm leading-6 text-justify" : "text-sm leading-snug pl-12 -mt-5"}
-                      ${isActive ? "text-slate-900 font-medium" : "text-slate-700"}
-                    `}
+                  {/* Timestamp */}
+                  <span
+                    onClick={() => onSeek?.(item.startTime)}
+                    className={`shrink-0 text-[11px] font-mono mt-0.5 cursor-pointer transition-colors ${
+                      isActive ? "text-violet-500 font-semibold" : "text-slate-400 hover:text-violet-500"
+                    }`}
                   >
-                    {isSmartMode ? (
-                      <p>{highlightText(item.text, searchQuery)}</p>
-                    ) : (
-                      <div className="flex gap-3">
-                        <p className={isActive ? "text-slate-900" : "text-slate-600 hover:text-slate-900"}>
-                          {highlightText(item.text, searchQuery)}
-                        </p>
-                      </div>
+                    {formatTime(item.startTime)}
+                  </span>
+
+                  {/* Text */}
+                  <p className={`text-sm leading-6 flex-1 ${isActive ? "text-slate-900 font-medium" : "text-slate-600"}`}>
+                    {highlightText(item.text, searchQuery).map((seg, j) =>
+                      seg.isMatch
+                        ? <mark key={j} className="bg-yellow-200 text-yellow-900 rounded px-0.5">{seg.part}</mark>
+                        : seg.part
                     )}
-                  </div>
+                  </p>
+
+                  {/* Hover copy */}
+                  <button
+                    onClick={() => navigator.clipboard.writeText(`[${formatTime(item.startTime)}] ${item.text}`)}
+                    className="absolute right-3 top-2.5 opacity-0 group-hover:opacity-100 flex items-center gap-1 px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-400 hover:text-violet-600 hover:border-violet-300 transition-all shadow-sm"
+                  >
+                    <ClipboardCopy size={10} /> Copy
+                  </button>
                 </div>
               );
             })}
             <div className="h-10" />
           </div>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-center text-slate-400">
+          <div className="h-full flex items-center justify-center text-slate-400">
             <p className="text-sm">No transcript available</p>
           </div>
         )}
