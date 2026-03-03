@@ -20,6 +20,7 @@
     "signup": "Sign Up",
     "dashboard": "Dashboard",
     "bulkDownloader": "Bulk Downloader",
+    "extension": "Extension",
     "guide": "Guide",
     "blog": "Blog",
     "howToGuide": "How to Download",
@@ -27,7 +28,8 @@
     "credits": "Credits",
     "buyCredits": "Buy Credits",
     "currentPlan": "Current Plan",
-    "freePlan": "Free Plan"
+    "freePlan": "Free Plan",
+    "resources": "Resources"
   },
   "hero": {
     "title": "YouTube Subtitle Downloader",
@@ -430,12 +432,12 @@
     "noCardRequired": "No credit card required"
   },
   "credits": {
-      "credits": "Credits",
+    "credits": "Credits",
     "remaining": "{count} Credits Remaining",
     "freePlan": "FREE PLAN: {current}/{max}",
     "noCreditsLeft": "No Credits Left",
     "getMore": "Get More",
-    "topUp": "Top Up" 
+    "topUp": "Top Up"
   },
   "features": {
     "tabs": {
@@ -550,7 +552,28 @@
     "howToUse": "How to Use",
     "aboutUs": "About Us",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "guides": "Guides",
+    "blog": "Blog",
+    "exportStudio": "Export from YouTube Studio",
+    "subsForAi": "Subtitles for AI Training Data",
+    "cleanText": "Get Clean Text (No Timestamps)",
+    "srtVsVtt": "SRT vs VTT — Which Format to Use",
+    "analyzeData": "Analyze Subtitle Data",
+    "freeApi": "Free YouTube Subtitles API",
+    "prepareData": "Prepare Data for AI Models",
+    "playlistBulk": "Download Entire Playlist Subtitles",
+    "aiDataPrep": "AI Data Preparation Guide",
+    "getTranscript": "How to Get a YouTube Transcript",
+    "aiSummarizer": "AI YouTube Video Summarizer",
+    "whySubsWrong": "Why Subtitles Are Sometimes Wrong",
+    "creatorTutorials": "Tutorials for Content Creators",
+    "learnSpanish": "Learn Spanish with YouTube",
+    "ytDownloader": "YouTube Subtitle Downloader",
+    "chatgptTranscripts": "Use YouTube Transcripts in ChatGPT",
+    "whatIsSrt": "What is an SRT File?",
+    "settingsGuide": "Subtitle Settings Guide",
+    "onlineExtractor": "Online Subtitle Extractor"
   },
   "support": {
     "title": "We're Here to Help You",

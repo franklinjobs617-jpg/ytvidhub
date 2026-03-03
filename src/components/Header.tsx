@@ -18,15 +18,13 @@ import {
 } from "lucide-react";
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 
-const navigation = {
-  resources: [
-    { name: "How to Download Subtitles", href: "/guide/how-to-download-youtube-subtitles-complete-guide" },
-    { name: "Subtitles for LLM Training", href: "/guide/youtube-subtitles-for-llm-data" },
-    { name: "Clean Transcript (No Timestamps)", href: "/guide/clean-transcript-no-timestamp" },
-    { name: "SRT vs VTT Format", href: "/guide/srt-vs-vtt" },
-    { name: "AI Video Summarizer Guide", href: "/blog/ai-youtube-video-summarizer" },
-  ],
-};
+const resourceLinks = [
+  { key: "howToDownload", href: "/guide/how-to-download-youtube-subtitles-complete-guide" },
+  { key: "subsForAi", href: "/guide/youtube-subtitles-for-llm-data" },
+  { key: "cleanText", href: "/guide/clean-transcript-no-timestamp" },
+  { key: "srtVsVtt", href: "/guide/srt-vs-vtt" },
+  { key: "aiSummarizer", href: "/blog/ai-youtube-video-summarizer" },
+];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -38,6 +36,7 @@ export default function Header() {
   const pathname = usePathname();
   const { user, logout, isLoading } = useAuth();
   const t = useTranslations('navigation');
+  const footerT = useTranslations('footer');
 
   // Helper: Normalize path by removing trailing slash (unless it's root)
   const normalizePath = (p: string) => {
@@ -122,20 +121,20 @@ export default function Header() {
                 : "text-slate-500 hover:text-slate-900"
                 }`}
             >
-              Extension
+              {t('extension')}
             </Link>
 
             <div className="relative group h-20 flex items-center">
               <button
-                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(navigation.resources)
+                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(resourceLinks)
                   ? "text-blue-600"
                   : "text-slate-500 group-hover:text-blue-600"
                   }`}
               >
-                <span>Resources</span>
+                <span>{t('resources')}</span>
                 <ChevronDown
                   size={14}
-                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(navigation.resources)
+                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(resourceLinks)
                     ? "text-blue-600"
                     : "text-slate-400"
                     }`}
@@ -143,16 +142,16 @@ export default function Header() {
               </button>
               <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
                 <div className="bg-white rounded-xl shadow-xl border border-slate-100 ring-1 ring-black/5 p-2 overflow-hidden text-left">
-                  {navigation.resources.map((item) => (
+                  {resourceLinks.map((item) => (
                     <Link
-                      key={item.name}
+                      key={item.key}
                       href={item.href}
                       className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
                         ? "bg-blue-50 text-blue-600 font-bold"
                         : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
                         }`}
                     >
-                      {item.name}
+                      {footerT(item.key)}
                     </Link>
                   ))}
                 </div>
@@ -354,27 +353,27 @@ export default function Header() {
               className={`block text-lg font-bold ${isActive("/add-on") ? "text-blue-600" : "text-slate-900"
                 }`}
             >
-              Extension
+              {t('extension')}
             </Link>
 
             {/* Resources Group */}
             <div className="space-y-3">
               <p
-                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(navigation.resources)
+                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(resourceLinks)
                   ? "text-blue-600"
                   : "text-slate-400"
                   }`}
               >
-                Resources
+                {t('resources')}
               </p>
-              {navigation.resources.map((item) => (
+              {resourceLinks.map((item) => (
                 <Link
-                  key={item.name}
+                  key={item.key}
                   href={item.href}
                   className={`block pl-4 py-1 text-base font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"
                     }`}
                 >
-                  {item.name}
+                  {footerT(item.key)}
                 </Link>
               ))}
             </div>

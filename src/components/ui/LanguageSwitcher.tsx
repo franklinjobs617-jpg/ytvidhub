@@ -13,13 +13,15 @@ const languages = [
   { code: "es", label: "Español" },
   { code: "de", label: "Deutsch" },
   { code: "ko", label: "한국어" },
+  { code: "ja", label: "日本語" },
 ];
 
 const languageFlags: Record<string, string> = {
   en: '🇺🇸',
   es: '🇪🇸',
   de: '🇩🇪',
-  ko: '🇰🇷'
+  ko: '🇰🇷',
+  ja: '🇯🇵'
 };
 
 // 性能监控工具

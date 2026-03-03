@@ -90,6 +90,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         'es': buildCanonicalUrl({ locale: 'es', pathname: '' }),
         'de': buildCanonicalUrl({ locale: 'de', pathname: '' }),
         'ko': buildCanonicalUrl({ locale: 'ko', pathname: '' }),
+        'ja': buildCanonicalUrl({ locale: 'ja', pathname: '' }),
         'x-default': buildCanonicalUrl({ locale: 'en', pathname: '' }),
       },
     },

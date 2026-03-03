@@ -1,0 +1,653 @@
+{
+  "metadata": {
+    "title": "YouTube字幕ダウンロードツール - youtube 字幕 ダウンロード & 文字起こし | YTVidHub",
+    "description": "YouTube字幕をSRT・VTT・TXT形式で一括ダウンロードできる無料ツール。youtube 字幕 ダウンロード と youtube 文字起こし をブラウザだけで簡単に。プレイリスト対応・クリーンテキスト出力対応。",
+    "keywords": "youtube 字幕 ダウンロード, youtube 文字起こし, youtube 字幕 コピー, youtube 字幕 日本語, YouTube字幕ダウンロード, YouTube字幕 文字起こし"
+  },
+  "subtitleDownloaderPage": {
+    "title": "無料YouTube字幕ダウンローダー - SRT、VTT、TXTオンラインダウンロード | YTVidHub",
+    "description": "YouTube字幕をSRT、VTT、TXT形式で無料ダウンロード。任意のYouTube動画から字幕を即座に抽出。登録不要。",
+    "keywords": "youtube字幕ダウンローダー, youtube字幕ダウンロード, 無料字幕ダウンローダー, youtube字幕抽出器"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "features": "機能",
+    "pricing": "料金プラン",
+    "about": "サービス概要",
+    "contact": "お問い合わせ",
+    "support": "サポート",
+    "login": "ログイン",
+    "signup": "無料登録",
+    "dashboard": "ダッシュボード",
+    "bulkDownloader": "一括ダウンロード",
+    "extension": "拡張機能",
+    "guide": "使い方ガイド",
+    "blog": "ブログ",
+    "howToGuide": "ダウンロード方法",
+    "logout": "ログアウト",
+    "credits": "クレジット",
+    "buyCredits": "クレジット購入",
+    "currentPlan": "現在のプラン",
+    "freePlan": "無料プラン",
+    "resources": "リソース"
+  },
+  "hero": {
+    "title": "YouTube字幕ダウンロード & 文字起こしツール",
+    "subtitle": "リンクを貼るだけで、youtube 字幕 ダウンロード と youtube 文字起こし が完了。動画・プレイリスト・チャンネルからSRT・VTT・TXT字幕を数秒で取得できます。",
+    "highlight": "youtube 字幕 ダウンロード",
+    "ready": "高精度なYouTube字幕をすぐに取得",
+    "bulkExtraction": "プレイリスト一括ダウンロード対応",
+    "cta": {
+      "primary": "YouTube字幕をダウンロードする",
+      "secondary": "サンプルURLで試す",
+      "signup": "無料登録して YouTube字幕ダウンロード 5回分を獲得"
+    },
+    "features": {
+      "videos": "動画",
+      "playlists": "プレイリスト",
+      "channels": "チャンネル",
+      "extracted": "本日 2.4M+ 字幕を抽出済み",
+      "playlistSupport": "YouTubeプレイリスト・チャンネルにも対応！"
+    },
+    "placeholder": {
+      "title": "YouTube動画URL・プレイリストURL・チャンネルURLを貼り付けてください",
+      "summaryTitle": "YouTube動画リンクを貼り付け",
+      "description": "単体動画・プレイリスト・チャンネル単位の一括ダウンロードに対応",
+      "summaryDesc": "AI要約は単体動画の分析に最適化されています",
+      "support": "本ツールは {types} の {tool} をサポートしています",
+      "tool": "YouTube字幕 ダウンロード & 文字起こし ツール",
+      "types": "動画・プレイリスト・チャンネル",
+      "poweredBy": "DeepSeek AI 搭載",
+      "pasteDemo": "デモURLを貼り付け"
+    },
+    "input": {
+      "placeholder": "YouTube動画・プレイリスト・チャンネルのURLを貼り付け...",
+      "placeholderSummary": "AI要約用のYouTube動画URLを貼り付け...",
+      "heading": "まずはリンクを1つ貼り付けて始めましょう",
+      "headingSummary": "AI分析したい動画のリンクを貼り付けてください",
+      "supports": "対応: 動画・プレイリスト・チャンネル",
+      "supportsSummary": "対応: 単体動画の分析",
+      "tryDemo": "デモリンクで試す",
+      "tryExample": "サンプルを使う"
+    },
+    "ticker": {
+      "subtitles": "YouTube字幕をダウンロード",
+      "caption": "YouTube字幕コピー・抽出",
+      "transcript": "YouTube文字起こし（テキスト化）",
+      "bulk": "プレイリスト一括字幕ダウンロード"
+    },
+    "credits": {
+      "remaining": "残りクレジット: {count}",
+      "signup": "無料登録で5クレジットを獲得",
+      "info": "1リンク = 1ダウンロードクレジット",
+      "ready": "大量のYouTube字幕取得にも対応",
+      "bulkExtraction": "プレイリスト・チャンネルから一括抽出",
+      "cost": "消費クレジット: {amount}",
+      "perVid": "クレジット/動画",
+      "balance": "残高: {amount} クレジット",
+      "topUp": "チャージする"
+    }
+  },
+  "faq": {
+    "title": "よくある質問",
+    "questions": {
+      "legal": {
+        "question": "YouTube字幕ダウンローダーを使うのは合法ですか？",
+        "answer": "個人利用・学習・研究・アクセシビリティなどの目的で youtube 字幕 ダウンロード や youtube 文字起こし を行うこと自体は多くの国で認められています。ただし、必ず著作権法とYouTube利用規約を守ってご利用ください。"
+      },
+      "transcript": {
+        "question": "YouTube動画の文字起こしテキストをダウンロードできますか？",
+        "answer": "はい。YTVidHub は YouTube字幕をテキスト化する youtube 文字起こし ツールとしても使えます。動画の字幕をクリーンなTXTファイルとしてダウンロードし、読書・分析・AI学習用コーパスとして活用できます。"
+      },
+      "formats": {
+        "question": "SRTではなくTXT形式で字幕を保存できますか？",
+        "answer": "可能です。SRT（タイムスタンプ付き）、VTT（Webプレーヤー向け）、TXT（タイムスタンプなしのプレーンテキスト）の3形式に対応しており、用途に合わせて選択できます。"
+      },
+      "bulk": {
+        "question": "YouTubeプレイリストの字幕を一括でダウンロードするには？",
+        "answer": "プレイリストURLを貼り付けるだけで、動画単位ではなく一覧からまとめて字幕を取得できます。大量の youtube 字幕 ダウンロード やAI学習データ作成に最適です。"
+      },
+      "languages": {
+        "question": "日本語以外の字幕にも対応していますか？",
+        "answer": "はい。動画に用意されている言語であれば、日本語字幕はもちろん、英語・韓国語など複数言語の字幕をダウンロードできます。自動生成字幕にも対応しています。"
+      },
+      "limits": {
+        "question": "無料プランには制限がありますか？",
+        "answer": "無料ユーザーには1日に5クレジットの上限があります。より多くの YouTube字幕 ダウンロード やプレイリスト一括処理を行いたい場合は、有料プランにアップグレードすることで制限なくご利用いただけます。"
+      }
+    }
+  },
+  "schema": {
+    "name": "YTVidHub - YouTube字幕ダウンロードツール",
+    "description": "単体動画からプレイリストまで対応した YouTube字幕ダウンロード & 文字起こし ツール。SRT・VTT・TXT形式で字幕を取得し、AI学習データやコンテンツ制作に活用できます。",
+    "faq": {
+      "q1": "YouTube字幕を無料でダウンロードするには？",
+      "a1": "YTVidHub はブラウザだけで使える無料の YouTube字幕ダウンロードツールです。動画またはプレイリストのURLを貼り付け、SRT / VTT / TXT から形式を選ぶだけで字幕ファイルを取得できます。",
+      "q2": "YouTubeプレイリストの字幕を一括でダウンロードできますか？",
+      "a2": "はい、プレイリストURLを貼り付けることで、複数動画の字幕をまとめてダウンロードできます。大量の youtube 字幕 ダウンロード やAI学習用コーパス作成に最適です。",
+      "q3": "どの字幕形式に対応していますか？",
+      "a3": "SRT（動画編集向け）、VTT（Webプレーヤー向け）、TXT（タイムスタンプなしのプレーンテキスト）の3形式に対応しています。用途に応じて最適な形式を選択できます。",
+      "q4": "自動生成字幕や日本語字幕にも対応していますか？",
+      "a4": "はい。手動アップロード字幕・自動生成字幕の両方に対応しており、日本語・英語など複数言語の字幕をダウンロードできます。",
+      "q5": "ダウンロードできる字幕数に制限はありますか？",
+      "a5": "無料プランでは1日5クレジットまで利用できます。より多くの YouTube字幕 ダウンロード やプレイリスト一括処理が必要な場合は、有料プランにアップグレードすることで制限なくご利用いただけます。"
+    }
+  },
+  "actions": {
+    "analyze": "リンクを解析する",
+    "analyzing": "解析中...",
+    "download": "ダウンロード ({count})",
+    "downloading": "ダウンロード中...",
+    "reset": "リセット",
+    "getMore": "クレジットを追加",
+    "openWorkspace": "AIワークスペースを開く",
+    "opening": "ワークスペースを起動中",
+    "pasteExample": "サンプルリンクを試す",
+    "complete": "完了",
+    "success": "成功しました",
+    "selectAllWithSubtitles": "字幕あり動画をすべて選択",
+    "deselectAll": "すべて選択解除",
+    "showOnlyWithSubtitles": "字幕ありのみ表示",
+    "showAll": "すべて表示",
+    "loadMore": "動画をさらに読み込む"
+  },
+  "statusMessages": {
+    "syncing": "動画データを同期中...",
+    "checking": "クレジットを確認中...",
+    "connecting": "接続中...",
+    "processing": "{current}/{total} を処理中...",
+    "initializing": "初期化中...",
+    "completed": "{time}秒で抽出が完了しました",
+    "expandingPlaylist": "プレイリストを展開中（{count}本の動画を検出）...",
+    "checkingSubtitles": "字幕の有無を確認中...",
+    "deduplicating": "重複リンクを削除中...",
+    "foundVideos": "{playlists}件のプレイリスト/チャンネルから {count} 本の動画を検出しました",
+    "loadingMore": "さらに動画を読み込み中...",
+    "subtitleStatus": {
+      "checking": "確認中...",
+      "available": "字幕あり",
+      "unavailable": "字幕なし",
+      "error": "確認に失敗しました"
+    }
+  },
+  "errors": {
+    "invalidUrl": "無効なYouTube URLです",
+    "enterUrl": "まずはYouTubeリンクを入力してください。",
+    "selectVideo": "少なくとも1本の動画を選択してください。",
+    "insufficientCredits": "クレジットが不足しています。",
+    "loginRequired": "字幕をダウンロードするにはログインが必要です。",
+    "generic": "エラーが発生しました。もう一度お試しください。"
+  },
+  "auth": {
+    "signupFree": "無料登録する",
+    "loginNow": "今すぐログイン",
+    "signupMessage": "無料登録で YouTube字幕ダウンロード 5回分のクレジットをすぐに獲得できます！",
+    "registrationRequired": "登録が必要です",
+    "registrationNote": "字幕をダウンロードするには（無料の）アカウント登録が必要です。すべての機能を試せるクレジットが付与されます。",
+    "noCardRequired": "クレジットカード登録は不要です"
+  },
+  "downloader": {
+    "batchEnabled": "一括処理が有効になりました",
+    "selectFormat": "形式を選択",
+    "selectLanguage": "言語を選択",
+    "aiMode": "AI要約モード",
+    "analyzing": "解析中...",
+    "processing": "処理中..."
+  },
+  "downloaderView": {
+    "checking": "確認中",
+    "ready": "準備完了",
+    "noSubs": "字幕なし",
+    "allWithSubtitles": "字幕ありをすべて選択",
+    "visibleOnPage": "ページに表示中",
+    "deselectAll": "すべて選択解除",
+    "all": "すべて",
+    "subsShort": "字幕",
+    "noSubsShort": "字幕なし",
+    "searchVideos": "動画を検索...",
+    "ccAvailable": "字幕利用可能",
+    "loadMore": "さらに読み込む（残り{count}件）",
+    "noVideosFound": "フィルターに一致する動画が見つかりません",
+    "clearFilters": "フィルターをクリア",
+    "selected": "選択済み",
+    "clearSelection": "選択をクリア",
+    "videoQueue": "動画キュー",
+    "summary": "要約",
+    "mindMap": "マインドマップ",
+    "transcript": "文字起こし",
+    "aiIsTyping": "AIが入力中...",
+    "selectVideoToSummary": "要約を生成する動画を選択してください"
+  },
+  "comparisonSlider": {
+    "title": "YouTube動画を一括でテキストに変換する方法",
+    "highlight": "1つのZIPファイルに字幕をまとめて",
+    "description": "スライダーをドラッグして違いを確認してください。何時間もの面倒な手作業を、整理された1つのファイルに変換します。",
+    "before": "変換前：手作業での処理",
+    "after": "変換後：ワンクリックでZIPファイル完成"
+  },
+  "demo": {
+    "title": "インタラクティブデモ - 実際の結果を確認",
+    "description": "サンプル動画で字幕抽出を試してみてください",
+    "video": {
+      "title": "Reactアプリの作り方 - 完全チュートリアル",
+      "duration": "15:42",
+      "subtitles": "英語字幕利用可能"
+    },
+    "button": "字幕を抽出（{format}）",
+    "result": {
+      "title": "抽出された字幕（{format}）",
+      "tryAnother": "他の形式を試す",
+      "completed": "2.3秒で抽出完了",
+      "ready": "ダウンロード準備完了"
+    }
+  },
+  "featuresGrid": {
+    "title": "YouTubeプレイリスト・チャンネル全体の字幕を一括ダウンロード",
+    "description": "単なるダウンローダーではありません。データ準備のパワーハウスです。面倒な作業なしに、モデル学習に適したクリーンなテキストを取得できます。",
+    "items": {
+      "clean": {
+        "title": "クリーンなTXT出力",
+        "description": "タイムスタンプや書式ノイズを除去したデータを受け取り、モデルへの入力に即座に対応できます。",
+        "alt": "変換前（乱雑なSRT）vs 変換後（研究用クリーンTXT）字幕クリーニング比較"
+      },
+      "llm": {
+        "title": "LLMに燃料を供給",
+        "description": "大量で一貫した学習コーパスが必要な研究者向けに特別に設計されています。",
+        "alt": "YTVidHubインターフェースを使用してLLMにクリーンデータを供給する研究者"
+      },
+      "credits": {
+        "title": "毎日無料クレジット",
+        "description": "毎日5つの無料クレジットで一括パイプラインをテストできます。購読前に品質を確認してください。",
+        "alt": "毎日5回無料の一括ダウンロードプロモーショングラフィック"
+      }
+    },
+    "cta": {
+      "text": "文字起こしクリーニングの背後にあるデータサイエンスを深く掘り下げたいですか？",
+      "button": "データ準備ガイドを読む"
+    }
+  },
+  "usecases": {
+    "title": "なぜYouTube字幕をダウンロードするのか？",
+    "description": "アクセシビリティからAI学習まで、YouTubeキャプションの多様な用途を発見してください",
+    "cases": {
+      "editing": {
+        "title": "動画編集",
+        "description": "プロフェッショナルな動画制作と後処理のために、字幕を編集ソフトウェアにインポートします。"
+      },
+      "accessibility": {
+        "title": "アクセシビリティ",
+        "description": "適切なキャプションで聴覚障害者や難聴者がコンテンツにアクセスできるようにします。"
+      },
+      "ai": {
+        "title": "AI学習",
+        "description": "機械学習モデルと自然言語処理用のクリーンなテキストデータセットを作成します。"
+      },
+      "translation": {
+        "title": "翻訳",
+        "description": "コンテンツを複数の言語に翻訳するためのソース素材として文字起こしを使用します。"
+      },
+      "research": {
+        "title": "研究",
+        "description": "学術研究、コンテンツ分析、データマイニングのために動画コンテンツを分析します。"
+      },
+      "content": {
+        "title": "コンテンツ制作",
+        "description": "動画コンテンツをブログ投稿、記事、ソーシャルメディアコンテンツに再利用します。"
+      },
+      "education": {
+        "title": "教育",
+        "description": "教育目的の学習資料やコース文字起こしを作成します。"
+      },
+      "seo": {
+        "title": "SEO最適化",
+        "description": "検索エンジン最適化とコンテンツの発見可能性を向上させるためにテキストコンテンツを抽出します。"
+      }
+    }
+  },
+  "coreCapabilities": {
+    "badge": "コア機能",
+    "title": "LLM学習用YouTube文字起こし抽出（ChatGPT/Claude）",
+    "description": "単一動画から完全なコンテンツライブラリまで、あらゆるタスクに対応するよう設計された機能スイートをご覧ください。",
+    "action": "実際の動作を確認",
+    "actionTitle": "プレイリスト・チャンネル一括処理",
+    "actionDescription": "YouTube プレイリスト全体でも、数百のリンクを含むテキストファイルでも、貼り付けるだけです。私たちのツールが知的に解析、処理、準備を行い、何時間もの手作業を数秒の待機時間に変換します。",
+    "adaptive": "適応的出力",
+    "adaptiveTitle": "SRT、VTT、またはクリーンTXTにエクスポート",
+    "adaptiveDescription": "動画編集用のタイム付きキャプションが必要ですか？SRTを選択してください。アクセシブルなWebプレーヤーを構築していますか？VTTが準備されています。分析用の文字起こしだけが必要ですか？プレーンTXTとしてエクスポートしてください。選択はあなた次第です、すべてのファイルに対して。"
+  },
+  "howItWorks": {
+    "title": "YouTube字幕のダウンロード方法",
+    "description": "生のリンクから数秒でクリーンなデータへ。複雑な設定は不要です。",
+    "steps": {
+      "1": {
+        "badge": "ステップ01",
+        "title": "リンクを貼り付け",
+        "description": "YouTube動画/プレイリストURLを貼り付けるか、一括処理用の.txtファイルをアップロードしてください。"
+      },
+      "2": {
+        "badge": "ステップ02",
+        "title": "AI分析",
+        "description": "私たちのエンジンが字幕を抽出し、要約やマインドマップを即座に生成します。"
+      },
+      "3": {
+        "badge": "ステップ03",
+        "title": "データをエクスポート",
+        "description": "SRT/VTT/TXTとしてダウンロードするか、AI要約を直接ノートにコピーしてください。"
+      }
+    }
+  },
+  "comparison": {
+    "title": "なぜYouTube字幕ダウンロードにYTVidHubを選ぶのか？",
+    "others": {
+      "title": "他のツール",
+      "features": [
+        "単一動画ダウンロードに制限",
+        "形式サポートと品質が劣る",
+        "広告と登録が必要",
+        "処理が遅く信頼性が低い",
+        "一括またはプレイリストサポートなし"
+      ]
+    },
+    "ours": {
+      "title": "私たちのソリューション",
+      "features": [
+        "単一動画 + 一括プレイリストダウンロード",
+        "高品質なSRT、VTT、TXT形式",
+        "広告や登録なしの無料ティア",
+        "超高速クラウド処理",
+        "高度な一括およびAI対応機能"
+      ]
+    }
+  },
+  "technical": {
+    "title": "技術仕様",
+    "supported": {
+      "title": "サポートされる動画タイプ",
+      "types": [
+        "公開YouTube動画",
+        "非公開動画（URLあり）",
+        "自動生成キャプション",
+        "手動アップロード字幕",
+        "複数言語トラック"
+      ]
+    },
+    "output": {
+      "title": "出力形式",
+      "formats": [
+        "タイムスタンプ付きSRT（SubRip）",
+        "WebプレーヤーのVTT（WebVTT）",
+        "TXT（プレーンテキスト）クリーン形式",
+        "UTF-8エンコーディングサポート",
+        "カスタマイズ可能な書式オプション"
+      ]
+    }
+  },
+  "testimonials": {
+    "title": "世界中の専門家に信頼されています",
+    "description": "AI研究者からコンテンツクリエイターまで、何千人もの人々が字幕抽出のニーズにYTVidHubを選ぶ理由をご覧ください。",
+    "rating": "2,400以上のレビューで4.9/5",
+    "reviews": [
+      {
+        "name": "Sarah Chen",
+        "role": "AI研究者",
+        "company": "スタンフォード大学",
+        "content": "学習データセットの作成に最適です。言語モデル研究のために10,000以上のYouTube字幕をダウンロードしました。一括処理により数週間の作業を節約できました。"
+      },
+      {
+        "name": "Marcus Rodriguez",
+        "role": "動画編集者",
+        "company": "Creative Studios",
+        "content": "Premiere Pro編集に使用した最高の**YouTube字幕ダウンローダー**です。SRTファイルがタイムラインと完璧に連携します。毎回クリーンな書式と正確なタイムスタンプを提供します。"
+      },
+      {
+        "name": "Dr. Emily Watson",
+        "role": "アクセシビリティコンサルタント",
+        "company": "AccessTech Solutions",
+        "content": "コンテンツをアクセシブルにするために不可欠な**キャプションダウンローダー**です。VTT形式がWebプレーヤーとシームレスに連携します。信頼性が高く高速な処理です。"
+      },
+      {
+        "name": "Alex Kim",
+        "role": "コンテンツクリエイター",
+        "company": "TechTalks YouTube",
+        "content": "手動文字起こし作業の時間を節約します。AI要約機能は動画説明やブログ投稿の作成に非常に便利です。"
+      }
+    ]
+  },
+  "playlist": {
+    "processing": {
+      "expanding": "プレイリストを分析中",
+      "checking": "字幕を確認中",
+      "completed": "分析完了",
+      "error": "処理エラー",
+      "paused": "処理一時停止",
+      "unknown": "処理中"
+    },
+    "progress": {
+      "overall": "全体の進行状況"
+    },
+    "stats": {
+      "total": "合計",
+      "processed": "処理済み",
+      "withSubtitles": "字幕あり"
+    },
+    "status": {
+      "currentVideo": "現在確認中"
+    },
+    "time": {
+      "estimated": "推定残り時間"
+    },
+    "actions": {
+      "pause": "一時停止",
+      "resume": "再開",
+      "cancel": "キャンセル",
+      "showDetails": "詳細を表示",
+      "hideDetails": "詳細を非表示"
+    },
+    "details": {
+      "title": "処理詳細"
+    }
+  },
+  "credits": {
+    "credits": "クレジット",
+    "remaining": "残りクレジット: {count}",
+    "freePlan": "無料プラン: {current}/{max}",
+    "noCreditsLeft": "クレジットが残っていません",
+    "getMore": "クレジットを追加購入",
+    "topUp": "チャージする"
+  },
+  "features": {
+    "tabs": {
+      "download": {
+        "label": "字幕をダウンロード",
+        "description": "SRT・VTT・TXT 形式に対応"
+      },
+      "summary": {
+        "label": "AI YouTube要約",
+        "description": "文字起こし + 要約・重要ポイント"
+      }
+    },
+    "tooltip": "Proプランでプレイリスト一括ダウンロード機能を解放"
+  },
+  "singleDownloader": {
+    "hero": {
+      "title": "個別 <highlight>YouTube字幕</highlight> ダウンローダー",
+      "subtitle": "<strong>単一YouTube動画</strong>から数秒で字幕を抽出。動画編集者、コンテンツクリエイター、研究者に最適。",
+      "cta": {
+        "primary": "字幕をダウンロード",
+        "secondary": "一括ダウンローダー"
+      }
+    }
+  },
+  "formats": {
+    "title": "サポートされる字幕形式",
+    "description": "ワークフローに最適な形式を選択してください。各形式は異なる用途に最適化されています。",
+    "srt": {
+      "title": "SRT形式",
+      "description": "正確なタイムスタンプを持つ業界標準の字幕形式。動画編集とメディアプレーヤーに最適。"
+    },
+    "vtt": {
+      "title": "VTT形式",
+      "description": "高度なスタイリングをサポートする現代的なWeb形式。Webプレーヤーとオンラインアプリケーションに最適。"
+    },
+    "txt": {
+      "title": "TXT形式",
+      "description": "タイムスタンプなしのクリーンなプレーンテキスト。AI学習、テキスト分析、コンテンツ制作に最適。"
+    }
+  },
+  "howto": {
+    "title": "YouTube字幕のダウンロード方法",
+    "steps": {
+      "1": {
+        "title": "動画URLを貼り付け",
+        "description": "字幕を抽出したいYouTube動画のURLをコピーして貼り付けます。"
+      },
+      "2": {
+        "title": "形式を選択",
+        "description": "特定のプロジェクトニーズに基づいてSRT、VTT、またはTXTを選択します。"
+      },
+      "3": {
+        "title": "即座にダウンロード",
+        "description": "ダウンロードをクリックして、数秒で処理された字幕を使用準備完了で取得します。"
+      }
+    }
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "close": "閉じる",
+    "save": "保存",
+    "edit": "編集",
+    "delete": "削除",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "search": "検索",
+    "filter": "フィルター",
+    "sort": "並び替え",
+    "export": "エクスポート",
+    "import": "インポート"
+  },
+  "support": {
+    "title": "サポートいたします",
+    "subtitle": "YouTube字幕ダウンロード、一括処理、アカウント問題のサポートを受けてください。私たちのチームがお手伝いします。",
+    "contactTitle": "サポートに連絡",
+    "contactDescription": "ダウンロードの問題、技術サポートが必要、または機能リクエストがありますか？私たちのサポートチームがお手伝いします。",
+    "emailLabel": "公式サポートメール",
+    "responseTime": "平均応答時間：24-48時間",
+    "emailNote": "メールは私たちの技術サポートチームに連絡する最も効果的な方法です。迅速な解決のために問題の詳細を含めてください。",
+    "howWeCanHelp": "私たちがお手伝いできること",
+    "categories": {
+      "technical": {
+        "title": "技術的問題",
+        "description": "ダウンロード失敗、形式の問題、またはウェブサイトエラー。技術的問題を迅速にトラブルシューティングして修正します。",
+        "topic1": "ダウンロードが動作しない",
+        "topic2": "形式変換の問題",
+        "topic3": "ブラウザ互換性",
+        "topic4": "エラーメッセージ"
+      },
+      "account": {
+        "title": "アカウントと請求",
+        "description": "アカウント、クレジット、サブスクリプション、または請求に関する質問。すべてのアカウント関連のお問い合わせを処理します。",
+        "topic1": "クレジット残高",
+        "topic2": "サブスクリプション管理",
+        "topic3": "支払いの問題",
+        "topic4": "アカウント設定"
+      },
+      "features": {
+        "title": "機能リクエスト",
+        "description": "YTVidHubを改善するアイデアがありますか？コミュニティからの提案を聞くのが大好きです。",
+        "topic1": "新機能",
+        "topic2": "形式サポート",
+        "topic3": "UI改善",
+        "topic4": "一括処理"
+      },
+      "guides": {
+        "title": "ハウツーガイド",
+        "description": "特定の機能の使用にヘルプが必要ですか？すべてのツールに対してステップバイステップのガイダンスを提供します。",
+        "topic1": "一括ダウンロード",
+        "topic2": "プレイリスト処理",
+        "topic3": "形式選択",
+        "topic4": "AI要約"
+      },
+      "api": {
+        "title": "APIと統合",
+        "description": "YTVidHubとの統合またはプログラム的にサービスを使用することに関する開発者の質問。",
+        "topic1": "APIアクセス",
+        "topic2": "レート制限",
+        "topic3": "統合ヘルプ",
+        "topic4": "開発者リソース"
+      },
+      "general": {
+        "title": "一般的なお問い合わせ",
+        "description": "YTVidHub、私たちのポリシー、またはサービスの動作に関するその他の質問。",
+        "topic1": "サービスの質問",
+        "topic2": "ポリシーの明確化",
+        "topic3": "パートナーシップのお問い合わせ",
+        "topic4": "メディアリクエスト"
+      }
+    },
+    "beforeContact": "お問い合わせ前に",
+    "quickFixes": "クイックフィックス",
+    "includeInfo": "この情報を含める",
+    "quickFix1": "ページを更新してブラウザキャッシュをクリアしてみてください",
+    "quickFix2": "YouTube動画に字幕が利用可能かどうか確認してください",
+    "quickFix3": "インターネット接続が安定していることを確認してください",
+    "quickFix4": "別のブラウザを使用してみてください（Chrome、Firefox、Safari）",
+    "includeInfo1": "ブラウザ名とバージョン",
+    "includeInfo2": "ダウンロードしようとしているYouTube URL",
+    "includeInfo3": "表示されるエラーメッセージ",
+    "includeInfo4": "可能であればスクリーンショット",
+    "stillQuestions": "まだ質問がありますか？",
+    "faqDescription": "よくある質問への即座の回答については、包括的なFAQセクションをチェックしてください。",
+    "visitFaq": "FAQを訪問"
+  },
+  "footer": {
+    "description": "動画コンテンツのテキストデータ抽出に特化した高速・安定のツールキット。LLMやAI学習用データセット作成に最適化されています。",
+    "product": "製品",
+    "resources": "リソース",
+    "legal": "法的情報",
+    "share": "このツールをチームと共有する",
+    "rights": "All Rights Reserved",
+    "disclaimer": "本サービスはGoogleおよびYouTubeとは提携していません。",
+    "home": "ホーム",
+    "downloader": "ダウンローダー",
+    "downloadSubs": "字幕ダウンロード",
+    "bulkDownloader": "一括ダウンローダー",
+    "howToDownload": "字幕のダウンロード方法",
+    "pricing": "料金プラン",
+    "support": "サポート",
+    "dataPrepGuide": "データ準備ガイド",
+    "cleanTranscript": "クリーンテキスト（タイムスタンプなし）",
+    "faq": "よくある質問",
+    "studioGuide": "YouTube Studioエクスポートガイド",
+    "howToUse": "YTVidHubの使い方",
+    "aboutUs": "会社情報",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsOfService": "利用規約",
+    "guides": "ガイド",
+    "blog": "ブログ",
+    "exportStudio": "YouTube Studioからエクスポート",
+    "subsForAi": "AI学習用字幕データ",
+    "cleanText": "クリーンテキストを取得（タイムスタンプなし）",
+    "srtVsVtt": "SRT と VTT — どちらの形式を使うべき？",
+    "analyzeData": "字幕データの分析",
+    "freeApi": "無料 YouTube字幕 API",
+    "prepareData": "AIモデル用データを準備",
+    "playlistBulk": "プレイリスト字幕を一括ダウンロード",
+    "aiDataPrep": "AIデータ準備ガイド",
+    "getTranscript": "YouTubeトランスクリプトの取得方法",
+    "aiSummarizer": "AI YouTube動画要約ツール",
+    "whySubsWrong": "字幕が間違ってしまう理由",
+    "creatorTutorials": "クリエイター向けチュートリアル",
+    "learnSpanish": "YouTubeでスペイン語を学ぶ",
+    "ytDownloader": "YouTube字幕ダウンローダー",
+    "chatgptTranscripts": "ChatGPTでYouTubeトランスクリプトを使う",
+    "whatIsSrt": "SRTファイルとは？",
+    "settingsGuide": "字幕設定ガイド",
+    "onlineExtractor": "オンライン字幕抽出ツール"
+  }
+}
+

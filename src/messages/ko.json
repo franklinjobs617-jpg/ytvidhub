@@ -20,6 +20,7 @@
         "signup": "회원가입",
         "dashboard": "대시보드",
         "bulkDownloader": "일괄 다운로더",
+        "extension": "플러그인",
         "guide": "가이드",
         "blog": "블로그",
         "howToGuide": "사용 방법",
@@ -27,7 +28,8 @@
         "credits": "크레딧",
         "buyCredits": "크레딧 구매",
         "currentPlan": "현재 요금제",
-        "freePlan": "무료 플랜"
+        "freePlan": "무료 플랜",
+        "resources": "리소스"
     },
     "hero": {
         "title": "유튜브 자막 다운로드",
@@ -548,7 +550,28 @@
         "howToUse": "사용 방법",
         "aboutUs": "회사 소개",
         "privacyPolicy": "개인정보 처리방침",
-        "termsOfService": "이용약관"
+        "termsOfService": "이용약관",
+        "guides": "가이드",
+        "blog": "블로그",
+        "exportStudio": "YouTube 스튜디오에서 내보내기",
+        "subsForAi": "AI 학습 데이터용 자막",
+        "cleanText": "깨끗한 텍스트 가져오기 (타임스탬프 없음)",
+        "srtVsVtt": "SRT vs VTT — 어떤 형식을 사용해야 할까요?",
+        "analyzeData": "자막 데이터 분석",
+        "freeApi": "무료 YouTube 자막 API",
+        "prepareData": "AI 모델용 데이터 준비",
+        "playlistBulk": "전체 재생목록 자막 다운로드",
+        "aiDataPrep": "AI 데이터 준비 가이드",
+        "getTranscript": "YouTube 트랜스크립트 가져오는 방법",
+        "aiSummarizer": "AI YouTube 비디오 요약기",
+        "whySubsWrong": "자막이 가끔 틀리는 이유",
+        "creatorTutorials": "콘텐츠 크리에이터를 위한 튜토리얼",
+        "learnSpanish": "YouTube로 스페인어 배우기",
+        "ytDownloader": "YouTube 자막 다운로더",
+        "chatgptTranscripts": "ChatGPT에서 YouTube 트랜스크립트 사용하기",
+        "whatIsSrt": "SRT 파일이란 무엇인가요?",
+        "settingsGuide": "자막 설정 가이드",
+        "onlineExtractor": "온라인 자막 추출기"
     },
     "support": {
         "title": "도움이 필요하시면 언제든지 연락하세요",

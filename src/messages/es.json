@@ -20,6 +20,7 @@
     "signup": "Registrarse",
     "dashboard": "Tablero",
     "bulkDownloader": "Descargador masivo",
+    "extension": "Extensión",
     "guide": "Guía",
     "blog": "Blog",
     "howToGuide": "Cómo Descargar",
@@ -27,7 +28,8 @@
     "credits": "Créditos",
     "buyCredits": "Comprar créditos",
     "currentPlan": "Plan actual",
-    "freePlan": "Plan gratuito"
+    "freePlan": "Plan gratuito",
+    "resources": "Recursos"
   },
   "hero": {
     "title": "Descargador de Subtítulos de YouTube",
@@ -547,6 +549,27 @@
     "howToUse": "Cómo usar",
     "aboutUs": "Sobre nosotros",
     "privacyPolicy": "Política de privacidad",
-    "termsOfService": "Términos de servicio"
+    "termsOfService": "Términos de servicio",
+    "guides": "Guías",
+    "blog": "Blog",
+    "exportStudio": "Exportar desde YouTube Studio",
+    "subsForAi": "Subtítulos para datos de entrenamiento de IA",
+    "cleanText": "Obtener texto limpio (sin marcas de tiempo)",
+    "srtVsVtt": "SRT vs VTT — ¿Qué formato usar?",
+    "analyzeData": "Analizar datos de subtítulos",
+    "freeApi": "API gratuita de subtítulos de YouTube",
+    "prepareData": "Preparar datos para modelos de IA",
+    "playlistBulk": "Descargar subtítulos de toda la lista de reproducción",
+    "aiDataPrep": "Guía de preparación de datos de IA",
+    "getTranscript": "Cómo obtener una transcripción de YouTube",
+    "aiSummarizer": "Resumidor de video de YouTube con IA",
+    "whySubsWrong": "Por qué los subtítulos a veces son incorrectos",
+    "creatorTutorials": "Tutoriales para creadores de contenido",
+    "learnSpanish": "Aprende español con YouTube",
+    "ytDownloader": "Descargador de subtítulos de YouTube",
+    "chatgptTranscripts": "Usar transcripciones de YouTube en ChatGPT",
+    "whatIsSrt": "¿Qué es un archivo SRT?",
+    "settingsGuide": "Guía de configuración de subtítulos",
+    "onlineExtractor": "Extractor de subtítulos en línea"
   }
 }

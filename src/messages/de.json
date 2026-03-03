@@ -20,6 +20,7 @@
     "signup": "Registrieren",
     "dashboard": "Dashboard",
     "bulkDownloader": "Stapel Downloader",
+    "extension": "Erweiterung",
     "guide": "Anleitung",
     "blog": "Blog",
     "howToGuide": "Wie herunterladen",
@@ -27,7 +28,8 @@
     "credits": "Credits",
     "buyCredits": "Credits kaufen",
     "currentPlan": "Aktueller Plan",
-    "freePlan": "Kostenloser Plan"
+    "freePlan": "Kostenloser Plan",
+    "resources": "Ressourcen"
   },
   "hero": {
     "title": "YouTube Untertitel herunterladen",
@@ -550,7 +552,28 @@
     "howToUse": "Wie zu verwenden",
     "aboutUs": "Über uns",
     "privacyPolicy": "Datenschutzrichtlinie",
-    "termsOfService": "Nutzungsbedingungen"
+    "termsOfService": "Nutzungsbedingungen",
+    "guides": "Leitfäden",
+    "blog": "Blog",
+    "exportStudio": "Aus YouTube Studio exportieren",
+    "subsForAi": "Untertitel für KI-Trainingsdaten",
+    "cleanText": "Sauberen Text erhalten (ohne Zeitstempel)",
+    "srtVsVtt": "SRT vs VTT — Welches Format man verwenden sollte",
+    "analyzeData": "Untertiteldaten analysieren",
+    "freeApi": "Kostenlose YouTube-Untertitel-API",
+    "prepareData": "Daten für KI-Modelle vorbereiten",
+    "playlistBulk": "Untertitel der gesamten Playlist herunterladen",
+    "aiDataPrep": "Leitfaden zur KI-Datenvorbereitung",
+    "getTranscript": "Wie man ein YouTube-Transkript erhält",
+    "aiSummarizer": "KI-YouTube-Video-Zusammenfasser",
+    "whySubsWrong": "Warum Untertitel manchmal falsch sind",
+    "creatorTutorials": "Tutorials für Inhaltsersteller",
+    "learnSpanish": "Spanisch lernen mit YouTube",
+    "ytDownloader": "YouTube-Untertitel-Downloader",
+    "chatgptTranscripts": "YouTube-Transkripte in ChatGPT verwenden",
+    "whatIsSrt": "Was ist eine SRT-Datei?",
+    "settingsGuide": "Leitfaden für Untertitel-Einstellungen",
+    "onlineExtractor": "Online-Untertitel-Extraktor"
   },
   "support": {
     "title": "Wir sind hier, um Ihnen zu helfen",
