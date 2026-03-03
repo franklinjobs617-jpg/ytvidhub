@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import React from "react";
 
 interface VideoPlayerProps {
   videoId: string;
@@ -8,9 +9,37 @@ interface VideoPlayerProps {
   onTimeUpdate?: (time: number) => void;
 }
 
-export function VideoPlayer({ videoId, seekTime, onTimeUpdate }: VideoPlayerProps) {
+export const VideoPlayer = React.forwardRef<any, VideoPlayerProps>(({ videoId, seekTime, onTimeUpdate }, ref) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const lastUpdateRef = useRef<number>(0);
+
+  // 暴露播放控制方法给父组件
+  React.useImperativeHandle(ref, () => ({
+    togglePlayPause: () => {
+      if (iframeRef.current?.contentWindow) {
+        // 先尝试暂停，如果已经暂停则播放
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+          "*"
+        );
+        // 延迟一点再尝试播放（如果视频已经暂停）
+        setTimeout(() => {
+          iframeRef.current?.contentWindow?.postMessage(
+            JSON.stringify({ event: "command", func: "playVideo", args: [] }),
+            "*"
+          );
+        }, 100);
+      }
+    },
+    seekTo: (time: number) => {
+      if (iframeRef.current?.contentWindow) {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: "command", func: "seekTo", args: [Math.floor(time), true] }),
+          "*"
+        );
+      }
+    }
+  }));
 
   // Subscribe to YouTube infoDelivery events for current time
   useEffect(() => {
@@ -76,4 +105,6 @@ export function VideoPlayer({ videoId, seekTime, onTimeUpdate }: VideoPlayerProp
       />
     </div>
   );
-}
+});
+
+VideoPlayer.displayName = 'VideoPlayer';

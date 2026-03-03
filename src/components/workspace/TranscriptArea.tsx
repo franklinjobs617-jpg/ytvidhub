@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import { subtitleApi } from "@/lib/api";
-import { Search, Copy, Check, ClipboardCopy } from "lucide-react";
+import { Search, Copy, Check, ClipboardCopy, Download, ChevronUp, ChevronDown } from "lucide-react";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -14,17 +14,21 @@ export function TranscriptArea({
   videoUrl,
   currentTime,
   onSeek,
+  searchInputRef,
 }: {
   videoUrl: string;
   currentTime: number;
   onSeek?: (time: number) => void;
+  searchInputRef?: React.RefObject<HTMLInputElement>;
 }) {
   const [transcriptVtt, setTranscriptVtt] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [copied, setCopied] = useState(false);
   const [isSmartMode, setIsSmartMode] = useState(true);
-  const searchRef = useRef<HTMLInputElement>(null);
+  const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
+  const internalSearchRef = useRef<HTMLInputElement>(null);
+  const searchRef = searchInputRef || internalSearchRef;
 
   useEffect(() => {
     if (!videoUrl) return;
@@ -57,6 +61,22 @@ export function TranscriptArea({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // P2: 增强的导出功能
+  const handleExportWithTimestamps = () => {
+    const videoTitle = document.title || 'YouTube Video';
+    const exportContent = [
+      `# ${videoTitle}`,
+      `Source: ${videoUrl}`,
+      `Exported: ${new Date().toLocaleString()}`,
+      '',
+      ...displayItems.map(item => `[${formatTime(item.startTime)}] ${item.text}`)
+    ].join('\n');
+    
+    navigator.clipboard.writeText(exportContent);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const displayItems = useMemo(() => {
     if (!transcriptVtt) return [];
     const rawItems = parseVtt(transcriptVtt);
@@ -68,6 +88,37 @@ export function TranscriptArea({
     }
     return finalItems;
   }, [transcriptVtt, isSmartMode, searchQuery]);
+
+  // P1: 搜索结果统计和导航
+  const searchResults = useMemo(() => {
+    if (!searchQuery || !transcriptVtt) return { total: 0, matches: [] };
+    const rawItems = parseVtt(transcriptVtt);
+    const finalItems = isSmartMode
+      ? groupTranscriptByTime(rawItems)
+      : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
+    
+    const matches = finalItems
+      .map((item, index) => ({ ...item, originalIndex: index }))
+      .filter((i) => i.text.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    return { total: matches.length, matches };
+  }, [transcriptVtt, isSmartMode, searchQuery]);
+
+  // P1: 搜索导航功能
+  const navigateSearch = (direction: 'prev' | 'next') => {
+    if (searchResults.total === 0) return;
+    
+    if (direction === 'next') {
+      setCurrentSearchIndex((prev) => (prev + 1) % searchResults.total);
+    } else {
+      setCurrentSearchIndex((prev) => (prev - 1 + searchResults.total) % searchResults.total);
+    }
+  };
+
+  // 重置搜索索引当搜索词改变时
+  useEffect(() => {
+    setCurrentSearchIndex(0);
+  }, [searchQuery]);
 
   const activeItemRef = useRef<HTMLDivElement>(null);
 
@@ -106,12 +157,25 @@ export function TranscriptArea({
             </button>
           ))}
         </div>
-        <button onClick={handleCopy} className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors">
-          {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={handleCopy} 
+            className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors"
+            title="Copy all text"
+          >
+            {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
+          </button>
+          <button 
+            onClick={handleExportWithTimestamps} 
+            className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors"
+            title="Export with timestamps"
+          >
+            <Download size={14} />
+          </button>
+        </div>
       </div>
 
-      {/* Search Bar */}
+      {/* Search Bar - P1 优化 */}
       <div className="px-4 py-2 border-b border-slate-100 shrink-0">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
@@ -120,13 +184,47 @@ export function TranscriptArea({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search transcript..."
-            className="w-full pl-9 pr-16 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
+            className="w-full pl-9 pr-20 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
           />
+          
+          {searchQuery && searchResults.total > 0 && (
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              {/* 匹配计数 */}
+              <span className="text-[10px] text-slate-500 font-medium px-1.5 py-0.5 bg-white border border-slate-200 rounded">
+                {currentSearchIndex + 1} / {searchResults.total}
+              </span>
+              
+              {/* 导航按钮 */}
+              <div className="flex">
+                <button
+                  onClick={() => navigateSearch('prev')}
+                  className="p-0.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded transition-colors"
+                  title="Previous match"
+                >
+                  <ChevronUp size={12} />
+                </button>
+                <button
+                  onClick={() => navigateSearch('next')}
+                  className="p-0.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded transition-colors"
+                  title="Next match"
+                >
+                  <ChevronDown size={12} />
+                </button>
+              </div>
+            </div>
+          )}
+          
+          {searchQuery && searchResults.total === 0 && (
+            <span className="absolute right-7 top-1/2 -translate-y-1/2 text-[10px] text-slate-400">No matches</span>
+          )}
+          
           {searchQuery && (
-            <>
-              <span className="absolute right-7 top-1/2 -translate-y-1/2 text-[10px] text-slate-400">{displayItems.length}</span>
-              <button onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-sm">×</button>
-            </>
+            <button 
+              onClick={() => setSearchQuery("")} 
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-sm"
+            >
+              ×
+            </button>
           )}
         </div>
       </div>
@@ -149,12 +247,17 @@ export function TranscriptArea({
           <div className="py-2">
             {displayItems.map((item, i) => {
               const isActive = i === activeIndex;
+              const isCurrentSearchResult = searchQuery && searchResults.total > 0 && 
+                searchResults.matches[currentSearchIndex]?.startTime === item.startTime;
+              
               return (
                 <div
                   key={i}
                   ref={isActive ? activeItemRef : undefined}
                   className={`group relative flex gap-3 px-4 py-2.5 transition-all cursor-default ${
-                    isActive
+                    isCurrentSearchResult
+                      ? "bg-yellow-50 border-l-2 border-yellow-500 ring-1 ring-yellow-200"
+                      : isActive
                       ? "bg-violet-50 border-l-2 border-violet-500"
                       : `border-l-2 border-transparent ${activeIndex >= 0 ? "opacity-55 hover:opacity-100" : "hover:bg-slate-50"}`
                   }`}
@@ -163,24 +266,49 @@ export function TranscriptArea({
                   <span
                     onClick={() => onSeek?.(item.startTime)}
                     className={`shrink-0 text-[11px] font-mono mt-0.5 cursor-pointer transition-colors ${
-                      isActive ? "text-violet-500 font-semibold" : "text-slate-400 hover:text-violet-500"
+                      isCurrentSearchResult
+                        ? "text-yellow-600 font-semibold"
+                        : isActive 
+                        ? "text-violet-500 font-semibold" 
+                        : "text-slate-400 hover:text-violet-500"
                     }`}
                   >
                     {formatTime(item.startTime)}
                   </span>
 
                   {/* Text */}
-                  <p className={`text-sm leading-6 flex-1 ${isActive ? "text-slate-900 font-medium" : "text-slate-600"}`}>
+                  <p className={`text-sm leading-6 flex-1 ${
+                    isCurrentSearchResult
+                      ? "text-slate-900 font-medium"
+                      : isActive 
+                      ? "text-slate-900 font-medium" 
+                      : "text-slate-600"
+                  }`}>
                     {highlightText(item.text, searchQuery).map((seg, j) =>
                       seg.isMatch
-                        ? <mark key={j} className="bg-yellow-200 text-yellow-900 rounded px-0.5">{seg.part}</mark>
+                        ? <mark key={j} className={`rounded px-0.5 ${
+                            isCurrentSearchResult 
+                              ? "bg-yellow-300 text-yellow-900 font-semibold" 
+                              : "bg-yellow-200 text-yellow-900"
+                          }`}>{seg.part}</mark>
                         : seg.part
                     )}
                   </p>
 
-                  {/* Hover copy */}
+                  {/* P1: 增强的悬浮复制按钮 */}
                   <button
-                    onClick={() => navigator.clipboard.writeText(`[${formatTime(item.startTime)}] ${item.text}`)}
+                    onClick={() => {
+                      navigator.clipboard.writeText(`[${formatTime(item.startTime)}] ${item.text}`);
+                      // 简单的复制反馈
+                      const btn = document.activeElement as HTMLButtonElement;
+                      if (btn) {
+                        const originalText = btn.innerHTML;
+                        btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"></polyline></svg> Copied!';
+                        setTimeout(() => {
+                          btn.innerHTML = originalText;
+                        }, 1000);
+                      }
+                    }}
                     className="absolute right-3 top-2.5 opacity-0 group-hover:opacity-100 flex items-center gap-1 px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-400 hover:text-violet-600 hover:border-violet-300 transition-all shadow-sm"
                   >
                     <ClipboardCopy size={10} /> Copy

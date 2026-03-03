@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import {
@@ -433,22 +433,98 @@ function EmptyState({ onStartAnalysis }: any) {
   );
 }
 
-// 摘要内容组件 - 用 MarkdownContent 渲染，流式友好
+// P1: 流式显示优化组件
+function StreamingText({ content, isLoading }: { content: string; isLoading: boolean }) {
+  const [displayedContent, setDisplayedContent] = useState('');
+  const [wordCount, setWordCount] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
+
+  useEffect(() => {
+    if (!content) {
+      setDisplayedContent('');
+      setWordCount(0);
+      setIsComplete(false);
+      return;
+    }
+
+    // 如果内容没有变化，直接显示
+    if (content === displayedContent) return;
+
+    // 打字机效果
+    let currentIndex = displayedContent.length;
+    const targetLength = content.length;
+    
+    if (currentIndex >= targetLength) {
+      setIsComplete(true);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      if (currentIndex < targetLength) {
+        // 每次显示1-3个字符，模拟真实的流式效果
+        const charsToAdd = Math.min(Math.floor(Math.random() * 3) + 1, targetLength - currentIndex);
+        const newContent = content.slice(0, currentIndex + charsToAdd);
+        setDisplayedContent(newContent);
+        setWordCount(newContent.split(/\s+/).filter(word => word.length > 0).length);
+        currentIndex += charsToAdd;
+      } else {
+        setIsComplete(true);
+        clearInterval(interval);
+      }
+    }, 30); // 30ms 间隔，比较流畅
+
+    return () => clearInterval(interval);
+  }, [content, displayedContent]);
+
+  return (
+    <div className="relative">
+      {/* 字数统计 - 生成中显示 */}
+      {isLoading && displayedContent && (
+        <div className="absolute -top-8 right-0 flex items-center gap-2 px-2 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium">
+          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
+          <span>{wordCount} words</span>
+        </div>
+      )}
+
+      {/* 内容 */}
+      <div className="prose prose-slate max-w-none">
+        <MarkdownContent content={displayedContent} />
+      </div>
+
+      {/* 打字机光标 */}
+      {isLoading && !isComplete && (
+        <span className="inline-block w-0.5 h-5 bg-blue-500 animate-pulse ml-1 align-text-bottom"></span>
+      )}
+
+      {/* 完成动画 */}
+      {isComplete && !isLoading && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mt-4 flex items-center gap-2 text-green-600 text-sm font-medium"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          >
+            <Check size={16} />
+          </motion.div>
+          <span>Analysis complete • {wordCount} words</span>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+// 摘要内容组件 - P1 优化：使用流式显示
 function SummaryContent({ data, isLoading, onGenerateCards, isCardsLoading, hasCards, onViewCards }: any) {
   return (
     <div className="h-full overflow-y-auto bg-slate-50">
       <div className="max-w-3xl mx-auto p-6">
         <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-          {/* Markdown 内容 */}
-          <MarkdownContent content={data || ''} />
-
-          {/* 流式打字光标 */}
-          {isLoading && (
-            <div className="flex items-center gap-2 mt-4 text-blue-500">
-              <span className="w-2 h-5 bg-blue-500 animate-pulse rounded-full" />
-              <span className="text-xs font-medium animate-pulse">Generating...</span>
-            </div>
-          )}
+          {/* P1: 使用流式显示组件 */}
+          <StreamingText content={data || ''} isLoading={isLoading} />
 
           {/* Generate Study Cards 按钮 - 仅在摘要完成后显示 */}
           {!isLoading && data && (
