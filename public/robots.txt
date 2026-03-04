@@ -1,8 +1,27 @@
+# Allow AI search bots (ChatGPT Search, etc.)
+User-agent: OAI-SearchBot
+Allow: /
+
+# Allow major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Block AI training crawlers (protect content)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+# Block all other bots from low-value paths
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /workspace/
+Disallow: /_next/static/
 
 # Sitemap location
 Sitemap: https://ytvidhub.com/sitemap.xml
-
-# Disallow specific paths if needed
-Disallow: /api/

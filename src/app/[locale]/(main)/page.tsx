@@ -2,15 +2,15 @@ import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import HeroSection from "@/components/landing/HeroSection";
 import ExtensionBanner from "@/components/landing/ExtensionBanner";
+import FeaturesGrid from "@/components/landing/FeaturesGrid";
+import HowItWorks from "@/components/landing/HowItWorks";
+import CoreCapabilities from "@/components/landing/CoreCapabilities";
+import FAQ from "@/components/landing/FAQ";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 
 const ComparisonSlider = dynamic(() => import("@/components/landing/ComparisonSlider"));
-const FeaturesGrid = dynamic(() => import("@/components/landing/FeaturesGrid"));
-const HowItWorks = dynamic(() => import("@/components/landing/HowItWorks"));
 const Testimonials = dynamic(() => import("@/components/landing/Testimonials"));
-const CoreCapabilities = dynamic(() => import("@/components/landing/CoreCapabilities"));
-const FAQ = dynamic(() => import("@/components/landing/FAQ"));
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -51,6 +51,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         'es': buildCanonicalUrl({ locale: 'es', pathname: '' }),
         'de': buildCanonicalUrl({ locale: 'de', pathname: '' }),
         'ko': buildCanonicalUrl({ locale: 'ko', pathname: '' }),
+        'ja': buildCanonicalUrl({ locale: 'ja', pathname: '' }),
+        'ru': buildCanonicalUrl({ locale: 'ru', pathname: '' }),
         'x-default': buildCanonicalUrl({ locale: 'en', pathname: '' }),
       },
     },

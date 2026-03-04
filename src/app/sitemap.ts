@@ -3,7 +3,7 @@ import { routing } from '@/i18n/routing'
 import { buildCanonicalUrl } from '@/lib/url'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const currentDate = '2026-03-02'
+    const currentDate = new Date().toISOString().split('T')[0]
 
     // 仅英文的页面（低优先级或内容未翻译）
     const englishOnlyPages = [
