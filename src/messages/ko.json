@@ -1,13 +1,13 @@
 {
     "metadata": {
-        "title": "유튜브 자막 다운로더 - SRT, VTT, TXT 무료 다운로드 | YTVidHub",
-        "description": "무료 유튜브 자막 다운로더. 모든 영상, 플레이리스트, 채널에서 SRT, VTT, TXT 자막을 다운로드하세요. 일괄 다운로드 및 AI 영상 요약 지원.",
-        "keywords": "유튜브 자막 다운로더, 유튜브 자막 다운로드, 유튜브 자막 무료 다운로드, 유튜브 자막 일괄 다운로더"
+        "title": "유튜브 자막 추출 도구 - 무료 SRT, VTT, TXT 다운로드 | YTVidHub",
+        "description": "유튜브 자막 추출 사이트 - 유튜브 영상에서 자막을 SRT, VTT, TXT 형식으로 무료 다운로드. 재생목록 일괄 다운로드 지원. 로그인 불필요.",
+        "keywords": "유튜브 자막 추출, 유튜브 자막 추출 사이트, 유튜브 영상 자막 추출, 유튜브 자막 다운로드, 유튜브 자막 추출 프로그램"
     },
     "subtitleDownloaderPage": {
-        "title": "무료 유튜브 자막 다운로더 - SRT, VTT, TXT 온라인 다운로드 | YTVidHub",
-        "description": "유튜브 자막을 SRT, VTT, TXT 형식으로 무료 다운로드하세요. 모든 유튜브 영상의 자막을 즉시 추출. 회원가입 불필요.",
-        "keywords": "유튜브 자막 다운로더, 유튜브 자막 다운로드, 무료 자막 다운로더, 유튜브 자막 추출기"
+        "title": "무료 유튜브 자막 추출 도구 - SRT, VTT, TXT 온라인 다운로드 | YTVidHub",
+        "description": "유튜브 자막 추출 사이트 - 유튜브 영상에서 자막을 SRT, VTT, TXT 형식으로 무료 다운로드. 모든 유튜브 동영상의 자막을 즉시 추출. 회원가입 불필요.",
+        "keywords": "유튜브 자막 추출, 유튜브 자막 추출 사이트, 무료 자막 추출 도구, 유튜브 영상 자막 추출"
     },
     "navigation": {
         "home": "홈",
@@ -32,11 +32,11 @@
         "resources": "리소스"
     },
     "hero": {
-        "title": "유튜브 자막 다운로드",
-        "subtitle": "영상, 플레이리스트, 채널을 위한 원클릭 <highlight>유튜브 자막 다운로드</highlight>. SRT 및 TXT 자막을 무료로 즉시 추출하세요. 대량 처리에 최적화되어 있습니다.",
-        "highlight": "유튜브 자막 다운로드",
-        "ready": "고효율 유튜브 자막 추출 준비 완료",
-        "bulkExtraction": "고속 대량 자막 추출",
+        "title": "유튜브 자막 추출 & 다운로드 도구",
+        "subtitle": "링크만 붙여넣으면 <highlight>유튜브 자막 추출</highlight>이 완료됩니다. 동영상, 재생목록, 채널에서 SRT, VTT, TXT 자막을 몇 초 만에 다운로드하세요.",
+        "highlight": "유튜브 자막 추출",
+        "ready": "고정밀 유튜브 자막을 즉시 추출",
+        "bulkExtraction": "재생목록 일괄 다운로드 지원",
         "cta": {
             "primary": "자막 다운로드 시작",
             "secondary": "예시 링크 시도",
