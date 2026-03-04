@@ -15,6 +15,7 @@ const languages = [
   { code: "ko", label: "한국어" },
   { code: "ja", label: "日本語" },
   { code: "ru", label: "Русский" },
+  { code: "tr", label: "Türkçe" },
 ];
 
 const languageFlags: Record<string, string> = {
@@ -23,7 +24,8 @@ const languageFlags: Record<string, string> = {
   de: '🇩🇪',
   ko: '🇰🇷',
   ja: '🇯🇵',
-  ru: '🇷🇺'
+  ru: '🇷🇺',
+  tr: '🇹🇷'
 };
 
 // 性能监控工具

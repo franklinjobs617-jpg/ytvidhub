@@ -24,6 +24,14 @@ interface PlaylistProcessingState {
   canCancel: boolean;
 }
 
+interface BulkDownloadState {
+  phase: 'processing' | 'completed' | 'error';
+  totalVideos: number;
+  processedVideos: number;
+  currentVideoTitle?: string;
+  error?: string;
+}
+
 export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -33,11 +41,14 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const [statusText, setStatusText] = useState("");
   const [playlistProcessing, setPlaylistProcessing] = useState<PlaylistProcessingState | null>(null);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
-  const [downloadedContent, setDownloadedContent] = useState<{ text: string; title: string; url: string } | null>(null);
+  const [bulkDownloadState, setBulkDownloadState] = useState<BulkDownloadState | null>(null);
+  const [showBulkDownloadModal, setShowBulkDownloadModal] = useState(false);
+  const [downloadedContent, setDownloadedContent] = useState<{ text: string; title: string; url: string; format?: string } | null>(null);
 
   const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const processingCancelRef = useRef<boolean>(false);
   const processingPausedRef = useRef<boolean>(false);
+  const bulkDownloadCancelRef = useRef<boolean>(false);
 
   // 多语言支持
   const tStatus = useTranslations('statusMessages');
@@ -274,10 +285,19 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const startSingleDownload = async (video: any, format: string, lang: string = "en") => {
     setIsDownloading(true);
     setProgress(10);
-    setStatusText("Checking credits...");
     trackConversion('download_start', { type: 'single', format, lang });
 
     try {
+      // 如果已有相同 URL 和格式的内容，直接下载
+      if (downloadedContent && downloadedContent.url === video.url && downloadedContent.format === format) {
+        setProgress(100);
+        const blob = new Blob([downloadedContent.text], { type: 'text/plain' });
+        triggerDownload(blob, `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`);
+        trackConversion('download_success', { type: 'single', format, lang, cached: true });
+        setTimeout(() => setIsDownloading(false), 500);
+        return;
+      }
+
       setStatusText("Connecting...");
       startSmoothProgress(98);
 
@@ -290,17 +310,13 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
       setProgress(100);
       setStatusText("Complete!");
-      triggerDownload(
-        blob,
-        `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`
-      );
+      triggerDownload(blob, `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`);
       trackConversion('download_success', { type: 'single', format, lang });
 
-      // 读取内容用于页面展示 + 保存到历史记录
       let subtitleText: string | undefined;
       try {
         subtitleText = await blob.text();
-        setDownloadedContent({ text: subtitleText, title: video.title, url: video.url });
+        setDownloadedContent({ text: subtitleText, title: video.title, url: video.url, format });
       } catch {
         // 读取失败不影响下载
       }
@@ -363,12 +379,12 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const startBulkDownload = async (videos: any[], format: string, lang: string = "en") => {
     setIsDownloading(true);
     setProgress(5);
-    setStatusText("Checking credits...");
+    bulkDownloadCancelRef.current = false;
     trackConversion('download_start', { type: 'bulk', format, lang, count: videos.length });
 
     const handleBulkError = (err: any) => {
       setIsDownloading(false);
-      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+      setBulkDownloadState(prev => prev ? { ...prev, phase: 'error', error: err.message } : null);
 
       if (err.message?.includes("Insufficient credits") || err.message?.includes("credit")) {
         toast.error("Bulk Download Failed", {
@@ -390,48 +406,69 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           },
           duration: 5000,
         });
-      } else {
+      } else if (!err.message?.includes("cancelled")) {
         toast.error(err.message || "Bulk download failed");
       }
+
+      setTimeout(() => {
+        setShowBulkDownloadModal(false);
+        setBulkDownloadState(null);
+      }, 3000);
     };
 
     try {
-      setStatusText("Initializing...");
-      startSmoothProgress(30);
+      setShowBulkDownloadModal(true);
+      setBulkDownloadState({
+        phase: 'processing',
+        totalVideos: videos.length,
+        processedVideos: 0
+      });
 
       const task = await subtitleApi.submitBulkTask(videos, lang, format);
 
-      // Use polling with Promise instead of setInterval to properly handle errors
       const pollTaskStatus = async (): Promise<void> => {
         // eslint-disable-next-line no-constant-condition
         while (true) {
-          await new Promise(resolve => setTimeout(resolve, 3000));
+          if (bulkDownloadCancelRef.current) {
+            throw new Error('Download cancelled by user');
+          }
+
+          await new Promise(resolve => setTimeout(resolve, 2000));
           const status = await subtitleApi.checkTaskStatus(task.task_id);
 
           if (status.status === "completed") {
-            if (progressTimerRef.current) clearInterval(progressTimerRef.current);
             setProgress(100);
-            setStatusText("Downloading ZIP...");
+            setBulkDownloadState(prev => prev ? { ...prev, processedVideos: videos.length } : null);
 
             const blob = await subtitleApi.downloadZip(task.task_id);
             if (blob.size === 0) throw new Error("Downloaded ZIP is empty");
 
             triggerDownload(blob, `bulk_subs_${Date.now()}.zip`);
-            setStatusText("Success!");
             trackConversion('download_success', { type: 'bulk', format, lang, count: videos.length });
+
+            setBulkDownloadState(prev => prev ? { ...prev, phase: 'completed' } : null);
 
             setTimeout(() => {
               if (onCreditsChanged) onCreditsChanged();
             }, 1000);
 
-            setTimeout(() => setIsDownloading(false), 1000);
+            setTimeout(() => {
+              setIsDownloading(false);
+              setShowBulkDownloadModal(false);
+              setBulkDownloadState(null);
+            }, 2000);
             return;
           } else if (status.status === "failed") {
             throw new Error(status.error || "Batch task failed on server");
           } else {
             const [c, t] = (status.progress || "0/0").split("/").map(Number);
             setProgress(t > 0 ? (c / t) * 100 : 15);
-            setStatusText(`Processing ${c}/${t}...`);
+
+            setBulkDownloadState(prev => prev ? {
+              ...prev,
+              processedVideos: c,
+              currentVideoTitle: videos[c]?.title
+            } : null);
           }
         }
       };
@@ -439,8 +476,6 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       await pollTaskStatus();
     } catch (err: any) {
       handleBulkError(err);
-    } finally {
-      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     }
   };
 
@@ -569,6 +604,13 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     setIsAnalyzing(false);
   };
 
+  const cancelBulkDownload = () => {
+    bulkDownloadCancelRef.current = true;
+    setShowBulkDownloadModal(false);
+    setBulkDownloadState(null);
+    setIsDownloading(false);
+  };
+
   return {
     isAiLoading,
     summaryData,
@@ -581,12 +623,14 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     isDownloading,
     progress,
     statusText,
-    // 新增的playlist处理功能
     playlistProcessing,
     showPlaylistModal,
     pauseProcessing,
     resumeProcessing,
     cancelProcessing,
+    bulkDownloadState,
+    showBulkDownloadModal,
+    cancelBulkDownload,
     downloadedContent,
     clearDownloadedContent,
   };
