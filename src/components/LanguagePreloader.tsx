@@ -8,11 +8,10 @@ import { globalCacheManager } from '@/lib/globalCacheManager';
  */
 export default function LanguagePreloader() {
   useEffect(() => {
-    // 在组件挂载时预加载所有语言包
-    globalCacheManager.preloadMultiple(['en', 'es', 'de', 'ko', 'ja']).catch(error => {
+    globalCacheManager.preloadMultiple(['en', 'es', 'de', 'ko', 'ja', 'ru']).catch(error => {
       console.warn('Failed to preload all messages:', error);
     });
   }, []);
 
-  return null; // 不渲染任何内容
+  return null; 
 }
