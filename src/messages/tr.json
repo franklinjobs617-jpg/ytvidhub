@@ -1,0 +1,578 @@
+{
+  "metadata": {
+    "title": "YouTube Altyazı İndir - Ücretsiz SRT, VTT, TXT | YTVidHub",
+    "description": "YouTube altyazı indir - Ücretsiz SRT, VTT, TXT formatlarında. Herhangi bir YouTube videosundan, oynatma listesinden veya kanaldan altyazı indir. Kayıt gerekmez.",
+    "keywords": "youtube altyazı indir, altyazı indir, türkçe altyazı indir, youtube altyazı dosyası indir, ücretsiz altyazı indir"
+  },
+  "subtitleDownloaderPage": {
+    "title": "Ücretsiz YouTube Altyazı İndirici - SRT, VTT, TXT Online Altyazı İndir | YTVidHub",
+    "description": "SRT, VTT ve TXT formatlarında YouTube altyazılarını ücretsiz indir. Herhangi bir YouTube videosundan anında altyazı çıkar. Kayıt gerektirmez.",
+    "keywords": "altyazı indir, youtube altyazı indir, ücretsiz altyazı indirici, youtube altyazı indir, altyazı dosyası indir"
+  },
+  "navigation": {
+    "home": "Anasayfa",
+    "features": "Özellikler",
+    "pricing": "Fiyatlandırma",
+    "about": "Hakkında",
+    "contact": "İletişim",
+    "support": "Destek",
+    "login": "Giriş Yap",
+    "signup": "Kayıt Ol",
+    "dashboard": "Panel",
+    "bulkDownloader": "Toplu İndirici",
+    "extension": "Eklenti",
+    "guide": "Rehber",
+    "blog": "Blog",
+    "howToGuide": "Nasıl İndirilir",
+    "logout": "Çıkış Yap",
+    "credits": "Kredi",
+    "buyCredits": "Kredi Satın Al",
+    "currentPlan": "Mevcut Plan",
+    "freePlan": "Ücretsiz Plan",
+    "resources": "Kaynaklar"
+  },
+  "hero": {
+    "title": "YouTube Altyazı İndirici",
+    "subtitle": "Herhangi bir YouTube video, oynatma listesi veya kanaldan altyazı indir. SRT, VTT, TXT altyazı dosyalarını anında çıkar. <highlight>Toplu altyazı indir</highlight> ve yapay zeka destekli video özeti desteği.",
+    "highlight": "youtube altyazı indir",
+    "ready": "Yüksek verimlilikte YouTube altyazı çıkarımına hazır",
+    "bulkExtraction": "Yüksek hızlı toplu altyazı çıkarımı",
+    "cta": {
+      "primary": "Altyazı İndirmeye Başla",
+      "secondary": "Örnek Linkleri Deneyin",
+      "signup": "Ücretsiz Kayıt Ol - Anında 5 YouTube Altyazı İndir"
+    },
+    "features": {
+      "videos": "Videolar",
+      "playlists": "Oynatma Listeleri",
+      "channels": "Kanallar",
+      "extracted": "Bugün 2.4M+ Altyazı İndirildi",
+      "playlistSupport": "Artık YouTube oynatma listeleri ve kanalları destekleniyor!"
+    },
+    "placeholder": {
+      "title": "YouTube video URL’lerini, oynatma listesi linklerini veya kanal URL’lerini yapıştırın",
+      "summaryTitle": "Bir YouTube Video Linki Yapıştırın",
+      "description": "Tekil videoları, tüm oynatma listelerini ve kanal toplu indirmelerini destekler",
+      "summaryDesc": "Yapay Zeka özeti tekil video analizine optimize edilmiştir",
+      "support": "{tool} {types} destekler",
+      "tool": "toplu altyazı indirici",
+      "types": "Videolar, Oynatma Listeleri ve Kanallar",
+      "poweredBy": "DeepSeek AI ile güçlendirilmiştir",
+      "pasteDemo": "Demo Linki Yapıştırın"
+    },
+    "input": {
+      "placeholder": "YouTube video, oynatma listesi veya kanal URL’sini yapıştırın...",
+      "placeholderSummary": "Yapay zeka özeti için YouTube video URL’si yapıştırın...",
+      "heading": "Başlamak için aşağıya bir link yapıştırın",
+      "headingSummary": "Yapay zeka analizi için bir video linki yapıştırın",
+      "supports": "Destekler: video · oynatma listesi · kanal",
+      "supportsSummary": "Destekler: tek video analizi",
+      "tryDemo": "Demo linki deneyin",
+      "tryExample": "Örnek deneyin"
+    },
+    "ticker": {
+      "subtitles": "YouTube altyazı indir",
+      "caption": "YouTube altyazı indirici",
+      "transcript": "YouTube transcript çıkarıcı",
+      "bulk": "Toplu altyazı indir"
+    },
+    "credits": {
+      "remaining": "{count} Kredi Kaldı",
+      "signup": "5 ücretsiz indirme için kayıt ol",
+      "info": "1 LİNK = 1 İNDİRME KREDİSİ",
+      "ready": "Yüksek verimlilikte YouTube altyazı çıkarımına hazır",
+      "bulkExtraction": "Yüksek hızlı toplu altyazı çıkarımı",
+      "cost": "Ücret: {amount} Kredi",
+      "perVid": "Kredi/Vid",
+      "balance": "Bakiye: {amount} Kredi",
+      "topUp": "Kredi Yükle"
+    }
+  },
+  "downloader": {
+    "batchEnabled": "Toplu işlem etkin",
+    "selectFormat": "Format Seçin",
+    "selectLanguage": "Dil Seçin",
+    "aiMode": "Yapay Zeka Özet Modu",
+    "analyzing": "Analiz ediliyor...",
+    "processing": "İşleniyor..."
+  },
+  "downloaderView": {
+    "checking": "Kontrol ediliyor",
+    "ready": "Hazır",
+    "noSubs": "Altyazı Yok",
+    "allWithSubtitles": "Tamamı altyazılı",
+    "visibleOnPage": "Sayfada görünür",
+    "deselectAll": "Tümünü seçimi kaldır",
+    "all": "Tümü",
+    "subsShort": "Altyazı",
+    "noSubsShort": "Yok",
+    "searchVideos": "Videolarda ara...",
+    "ccAvailable": "Altyazı Var",
+    "loadMore": "Daha Yükle ({count} kaldı)",
+    "noVideosFound": "Filtrenize uygun video bulunamadı",
+    "clearFilters": "Filtreleri Temizle",
+    "selected": "Seçilen",
+    "clearSelection": "Seçimi Temizle",
+    "videoQueue": "Video Kuyruğu",
+    "summary": "Özet",
+    "mindMap": "Zihin Haritası",
+    "transcript": "Transcript",
+    "aiIsTyping": "Yapay zeka yazıyor...",
+    "selectVideoToSummary": "Özet oluşturmak için bir video seçin"
+  },
+  "comparisonSlider": {
+    "title": "YouTube Videolarını Toplu Olarak Metne Nasıl Dönüştürürsünüz",
+    "highlight": "Tek ZIP içinde altyazılar",
+    "description": "Farkı görmek için kaydırıcıyı sürükleyin. Saatler süren manuel çalışmayı tek bir düzenli dosyaya dönüştürün.",
+    "before": "Önce: Manuel Yorgunluk",
+    "after": "Sonra: Tek Tık, Tek ZIP"
+  },
+  "demo": {
+    "title": "Etkileşimli Demo - Gerçek Sonuçları Görün",
+    "description": "Örnek bir video ile altyazı çıkarımımızı deneyin",
+    "video": {
+      "title": "React Uygulaması Nasıl Oluşturulur - Tam Eğitim",
+      "duration": "15:42",
+      "subtitles": "İngilizce Altyazı Mevcut"
+    },
+    "button": "Altyazıları Çıkar ({format})",
+    "result": {
+      "title": "Çıkarılan Altyazılar ({format})",
+      "tryAnother": "Başka Format Deneyin",
+      "completed": "Çıkarım 2.3 saniyede tamamlandı",
+      "ready": "İndirmeye hazır"
+    }
+  },
+  "featuresGrid": {
+    "title": "Tüm YouTube Oynatma Listeleri ve Kanallarından Altyazı İndir",
+    "description": "Biz sadece bir indirici değiliz; aynı zamanda veri hazırlama gücü sunarız. Sorunsuz, modele hazır metin elde edin.",
+    "items": {
+      "clean": {
+        "title": "Temiz TXT Çıktısı",
+        "description": "Zaman damgası ve biçimlendirme gürültüsünden arındırılmış veriler, hemen modele hazır.",
+        "alt": "Önce (dağınık SRT) vs Sonra (Temiz Araştırmaya Hazır TXT) altyazı temizleme karşılaştırması"
+      },
+      "llm": {
+        "title": "LLM’inizi Besleyin",
+        "description": "Yüksek hacimli, tutarlı eğitim korpusuna ihtiyaç duyan araştırmacılar için özel tasarlandı.",
+        "alt": "Araştırmacı YTVidHub arayüzü kullanarak LLM’e temiz veri sağlıyor"
+      },
+      "credits": {
+        "title": "Günlük Ücretsiz Krediler",
+        "description": "Toplu iş hattımızı günlük 5 ücretsiz kredi ile test edin. Abone olmadan kaliteyi görün.",
+        "alt": "5 ÜCRETSİZ Günlük Kredi ile Toplu İndirme tanıtım grafiği"
+      }
+    },
+    "cta": {
+      "text": "Transcript temizlemedeki veri bilimine derinlemesine dalmak ister misiniz?",
+      "button": "Veri Hazırlama Rehberini Oku"
+    }
+  },
+  "coreCapabilities": {
+    "badge": "Temel Özellikler",
+    "title": "LLM Eğitimi için YouTube Transcript Çıkarımı (ChatGPT/Claude)",
+    "description": "Tek bir videodan tüm içerik kütüphanesine kadar her görevi gerçekleştirmek için tasarlanmış özellikler paketi keşfedin.",
+    "action": "HAREKETE GEÇİN",
+    "actionTitle": "Oynatma Listesi ve Kanal Toplu İşlem",
+    "actionDescription": "İster tüm bir YouTube oynatma listesi ister yüzlerce linkten oluşan metin dosyası olsun, sadece yapıştırın. Aracımız akıllıca analiz eder, işler ve her şeyi hazırlar, saatler süren manuel çalışmayı saniyelere indirir.",
+    "adaptive": "UYARLANABİLİR ÇIKTI",
+    "adaptiveTitle": "SRT, VTT veya Temiz TXT olarak dışa aktar",
+    "adaptiveDescription": "Video düzenleme için zamanlı altyazıya mı ihtiyacınız var? SRT seçin. Erişilebilir bir web oynatıcı mı oluşturuyorsunuz? VTT hazır. Sadece analiz için transcript mi lazım? Düz TXT olarak dışa aktarın. Tercih sizin, her dosya için."
+  },
+  "howItWorks": {
+    "title": "YouTube Altyazılarını Nasıl İndirilir",
+    "description": "Ham linkten temiz veriye saniyeler içinde. Karmaşık kurulum gerekmez.",
+    "steps": {
+      "1": {
+        "badge": "Adım 01",
+        "title": "Linkleri Yapıştırın",
+        "description": "YouTube video/oynatma listesi URL'lerini yapıştırın veya toplu işlem için .txt dosyası yükleyin."
+      },
+      "2": {
+        "badge": "Adım 02",
+        "title": "Yapay Zeka Analizi",
+        "description": "Motorumuz altyazıları çıkarır ve anında özetler veya zihin haritaları oluşturur."
+      },
+      "3": {
+        "badge": "Adım 03",
+        "title": "Veriyi Dışa Aktarın",
+        "description": "SRT/VTT/TXT olarak indirin veya yapay zeka özetini doğrudan notlarınıza kopyalayın."
+      }
+    }
+  },
+  "usecases": {
+    "title": "Neden YouTube Altyazılarını İndirmelisiniz?",
+    "description": "Erişilebilirlikten yapay zeka eğitimine kadar YouTube altyazılarının birçok kullanım alanını keşfedin",
+    "cases": {
+      "editing": {
+        "title": "Video Düzenleme",
+        "description": "Profesyonel video prodüksiyonu ve son işleme için altyazıları düzenleme yazılımına aktarın."
+      },
+      "accessibility": {
+        "title": "Erişilebilirlik",
+        "description": "Uygun altyazılarla içeriğin işitme engelli kitleler için erişilebilir olmasını sağlayın."
+      },
+      "ai": {
+        "title": "Yapay Zeka Eğitimi",
+        "description": "Makine öğrenimi modelleri ve doğal dil işleme için temiz metin veri setleri oluşturun."
+      },
+      "translation": {
+        "title": "Çeviri",
+        "description": "İçeriği birden fazla dile çevirmek için transkriptleri kaynak materyal olarak kullanın."
+      },
+      "research": {
+        "title": "Araştırma",
+        "description": "Akademik araştırma, içerik analizi ve veri madenciliği için video içeriğini analiz edin."
+      },
+      "content": {
+        "title": "İçerik Oluşturma",
+        "description": "Video içeriğini blog yazıları, makaleler ve sosyal medya içeriğine dönüştürün."
+      },
+      "education": {
+        "title": "Eğitim",
+        "description": "Eğitim amaçlı çalışma materyalleri ve ders transkriptleri oluşturun."
+      },
+      "seo": {
+        "title": "SEO Optimizasyonu",
+        "description": "Arama motoru optimizasyonu ve içerik keşfedilebilirliğini artırmak için metin içeriği çıkarın."
+      }
+    }
+  },
+  "comparison": {
+    "title": "YouTube Altyazı İndir İçin Neden YTVidHub'ı Seçmelisiniz?",
+    "others": {
+      "title": "Diğer Araçlar",
+      "features": [
+        "Tek video indirme ile sınırlı",
+        "Zayıf format desteği ve kalite",
+        "Reklamlar ve zorunlu kayıt",
+        "Yavaş ve güvenilmez işleme",
+        "Toplu veya oynatma listesi desteği yok"
+      ]
+    },
+    "ours": {
+      "title": "Bizim Çözümümüz",
+      "features": [
+        "Tek video + toplu oynatma listesi indirme",
+        "Yüksek kaliteli SRT, VTT, TXT formatları",
+        "Reklamsız ve kayıtsız ücretsiz katman",
+        "Ultra hızlı bulut işleme",
+        "Gelişmiş toplu ve yapay zeka destekli özellikler"
+      ]
+    }
+  },
+  "technical": {
+    "title": "Teknik Özellikler",
+    "supported": {
+      "title": "Desteklenen Video Türleri",
+      "types": [
+        "Herkese açık YouTube videoları",
+        "Listelenmemiş videolar (URL ile)",
+        "Otomatik oluşturulan altyazılar",
+        "Manuel yüklenen altyazılar",
+        "Çoklu dil parçaları"
+      ]
+    },
+    "output": {
+      "title": "Çıktı Formatları",
+      "formats": [
+        "Zaman damgalı SRT (SubRip)",
+        "Web oynatıcılar için VTT (WebVTT)",
+        "TXT (Düz Metin) temiz format",
+        "UTF-8 kodlama desteği",
+        "Özelleştirilebilir format seçenekleri"
+      ]
+    }
+  },
+  "faq": {
+    "title": "Sık Sorulan Sorular",
+    "questions": {
+      "legal": {
+        "question": "YouTube altyazı indirici kullanmak yasal mı?",
+        "answer": "Evet, kişisel kullanım, öğrenme, araştırma, erişilebilirlik gibi amaçlarla youtube altyazı indir yapmak birçok ülkede kabul edilmektedir. Ancak mutlaka telif hakkı yasalarına ve YouTube kullanım şartlarına uygun kullanın."
+      },
+      "transcript": {
+        "question": "YouTube videosunun transkript metnini indirebilir miyim?",
+        "answer": "Evet. YTVidHub, YouTube altyazılarını metne dönüştüren bir araç olarak da kullanılabilir. Videonun altyazılarını temiz bir TXT dosyası olarak indirip okuma, analiz veya yapay zeka eğitimi için kullanabilirsiniz."
+      },
+      "formats": {
+        "question": "Altyazıları SRT yerine düz metin (TXT) olarak indirebilir miyim?",
+        "answer": "Mümkündür. SRT (zaman damgalı), VTT (Web oynatıcılar için) ve TXT (zaman damgası olmayan düz metin) olmak üzere 3 formata destek veriyoruz ve kullanım amacınıza göre seçim yapabilirsiniz."
+      },
+      "bulk": {
+        "question": "YouTube oynatma listesinin altyazılarını toplu olarak nasıl indiririm?",
+        "answer": "Oynatma listesi URL'sini yapıştırmanız yeterli, video bazında değil liste halinde toplu altyazı alabilirsiniz. Büyük miktarda youtube altyazı indir ve yapay zeka öğrenme verisi oluşturma için idealdir."
+      },
+      "languages": {
+        "question": "Türkçe dışındaki altyazıları da destekliyor musunuz?",
+        "answer": "Evet. Videoda mevcut olan herhangi bir dilde altyazı indirebilirsiniz. Türkçe altyazılar, İngilizce, Korece gibi birden fazla dilde altyazı indirme desteklenir. Otomatik oluşturulan altyazılar da desteklenir."
+      },
+      "limits": {
+        "question": "Ücretsiz planda sınırlama var mı?",
+        "answer": "Ücretsiz kullanıcılar günde 5 kredi limiti vardır. Daha fazla YouTube altyazı indir veya oynatma listesi toplu işleme yapmak istiyorsanız, ücretli plana yükselterek sınırsız kullanabilirsiniz."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "Dünya Çapında Profesyoneller Tarafından Güvenilir",
+    "description": "Yapay zeka araştırmacılarından içerik oluşturuculara kadar binlerce kişinin altyazı çıkarma ihtiyaçları için YTVidHub'ı neden seçtiğini görün.",
+    "rating": "2,400'den fazla incelemeden 4.9/5",
+    "reviews": [
+      {
+        "name": "Sarah Chen",
+        "role": "Yapay Zeka Araştırmacısı",
+        "company": "Stanford Üniversitesi",
+        "content": "Eğitim veri setleri oluşturmak için mükemmel. Dil modeli araştırmamız için 10,000'den fazla YouTube altyazısı indirdim. Toplu işleme haftalar süren çalışmayı kurtardı."
+      },
+      {
+        "name": "Marcus Rodriguez",
+        "role": "Video Editörü",
+        "company": "Creative Studios",
+        "content": "Premiere Pro düzenleme için kullandığım en iyi **YouTube altyazı indirici**. SRT dosyaları zaman çizelgem ile mükemmel çalışıyor. Her seferinde temiz format ve doğru zaman damgaları."
+      },
+      {
+        "name": "Dr. Emily Watson",
+        "role": "Erişilebilirlik Danışmanı",
+        "company": "AccessTech Solutions",
+        "content": "İçeriği erişilebilir hale getirmek için olmazsa olmaz **altyazı indirici**. VTT formatı web oynatıcılarımızla sorunsuz çalışıyor. Güvenilir ve hızlı işleme."
+      },
+      {
+        "name": "Alex Kim",
+        "role": "İçerik Oluşturucu",
+        "company": "TechTalks YouTube",
+        "content": "Manuel transkripsiyon çalışmasından saatler kazandırıyor. Yapay zeka özet özelliği video açıklamaları ve blog yazıları oluşturmak için inanılmaz derecede yararlı."
+      }
+    ]
+  },
+  "actions": {
+    "analyze": "Linki Analiz Et",
+    "analyzing": "Analiz ediliyor...",
+    "download": "İndir ({count})",
+    "downloading": "İndiriliyor...",
+    "reset": "Sıfırla",
+    "getMore": "Daha Fazla Al",
+    "openWorkspace": "Yapay Zeka Çalışma Alanını Aç",
+    "opening": "Açılıyor",
+    "pasteExample": "Örnek Linkleri Dene",
+    "complete": "Tamamlandı!",
+    "success": "Başarılı!",
+    "selectAllWithSubtitles": "Altyazılı Tümünü Seç",
+    "deselectAll": "Tümünün Seçimini Kaldır",
+    "showOnlyWithSubtitles": "Sadece Altyazılıları Göster",
+    "showAll": "Tümünü Göster",
+    "loadMore": "Daha Fazla Video Yükle"
+  },
+  "playlist": {
+    "processing": {
+      "expanding": "Oynatma Listesi Analiz Ediliyor",
+      "checking": "Altyazılar Kontrol Ediliyor",
+      "completed": "Analiz Tamamlandı",
+      "error": "İşleme Hatası",
+      "paused": "İşleme Duraklatıldı",
+      "unknown": "İşleniyor"
+    },
+    "progress": {
+      "overall": "Genel İlerleme"
+    },
+    "stats": {
+      "total": "Toplam",
+      "processed": "İşlenen",
+      "withSubtitles": "Altyazılı"
+    },
+    "status": {
+      "currentVideo": "Şu anda kontrol ediliyor"
+    },
+    "time": {
+      "estimated": "Tahmini kalan süre"
+    },
+    "actions": {
+      "pause": "Duraklat",
+      "resume": "Devam Et",
+      "cancel": "İptal",
+      "showDetails": "Detayları Göster",
+      "hideDetails": "Detayları Gizle"
+    },
+    "details": {
+      "title": "İşleme Detayları"
+    }
+  },
+  "statusMessages": {
+    "syncing": "Video verileri senkronize ediliyor...",
+    "checking": "Krediler kontrol ediliyor...",
+    "connecting": "Bağlanıyor...",
+    "processing": "{current}/{total} işleniyor...",
+    "initializing": "Başlatılıyor...",
+    "completed": "Çıkarma {time} saniyede tamamlandı",
+    "expandingPlaylist": "Oynatma listesi genişletiliyor ({count} video bulundu)...",
+    "checkingSubtitles": "Altyazı mevcudiyeti kontrol ediliyor...",
+    "deduplicating": "Tekrarlar kaldırılıyor...",
+    "foundVideos": "{playlists} oynatma listesi/kanaldan {count} video bulundu",
+    "loadingMore": "Daha fazla video yükleniyor...",
+    "subtitleStatus": {
+      "checking": "Kontrol ediliyor...",
+      "available": "Altyazı Var",
+      "unavailable": "Altyazı Yok",
+      "error": "Kontrol Başarısız"
+    }
+  },
+  "errors": {
+    "invalidUrl": "Geçersiz YouTube URL'si algılandı",
+    "enterUrl": "Lütfen önce bir YouTube linki girin.",
+    "selectVideo": "Lütfen en az bir video seçin.",
+    "insufficientCredits": "Yeterli krediniz yok.",
+    "loginRequired": "Altyazı indirmek için giriş yapın.",
+    "generic": "Bir hata oluştu. Lütfen tekrar deneyin."
+  },
+  "auth": {
+    "signupFree": "Ücretsiz Kayıt Ol",
+    "loginNow": "Şimdi Giriş Yap",
+    "signupMessage": "Ücretsiz kayıt olun ve anında 5 YouTube altyazı indirme kredisi kazanın!",
+    "registrationRequired": "Kayıt Gerekli",
+    "registrationNote": "Altyazı indirmek için (ücretsiz) kayıt olmanız gerekir. Tüm özellikleri deneyebileceğiniz krediler verilir.",
+    "noCardRequired": "Kredi kartı kaydı gerekmez"
+  },
+  "credits": {
+    "credits": "Kredi",
+    "remaining": "Kalan Kredi: {count}",
+    "freePlan": "ÜCRETSİZ PLAN: {current}/{max}",
+    "noCreditsLeft": "Kredi kalmadı",
+    "getMore": "Daha Fazla Al",
+    "topUp": "Kredi Yükle"
+  },
+  "features": {
+    "tabs": {
+      "download": {
+        "label": "Altyazı İndir",
+        "description": "YouTube'dan SRT, VTT, TXT"
+      },
+      "summary": {
+        "label": "Yapay Zeka YouTube Özeti",
+        "description": "Akıllı özet ve önemli noktalar"
+      }
+    },
+    "tooltip": "Pro ile toplu indirme özelliklerinin kilidini açın"
+  },
+  "schema": {
+    "name": "YTVidHub - YouTube Altyazı İndirici",
+    "description": "Oynatma listesi toplu indirme ve tam kanal çıkarma için profesyonel YouTube altyazı indirici. Yapay zeka eğitimi ve içerik oluşturma için SRT, VTT, TXT altyazı indir.",
+    "faq": {
+      "q1": "YouTube altyazılarını ücretsiz olarak toplu nasıl indirilir?",
+      "a1": "YTVidHub, tam oynatma listelerinden toplu altyazı indirmenize olanak tanıyan ücretsiz bir YouTube altyazı indiricidir. YouTube oynatma listesi URL'sini yapıştırın ve tercih ettiğiniz formatı seçin (SRT, VTT veya TXT).",
+      "q2": "YouTube oynatma listesi altyazılarını toplu olarak indirebilir miyim?",
+      "a2": "Evet! Toplu indirme özellikli altyazı indirici aracımız, oynatma listelerinden ve tam kanallardan toplu olarak altyazı çıkarabilir. Profesyonel planlar büyük ölçekli projeler için sınırsız oynatma listesi toplu indirmeyi destekler.",
+      "q3": "Toplu indirme için hangi altyazı formatları desteklenir?",
+      "a3": "YouTube altyazı indirici aracımız SRT (SubRip), VTT (WebVTT) ve temiz TXT formatlarında toplu indirmeyi destekler. İhtiyaçlarınıza en uygun formatı seçin: video oynatıcılar için SRT, web için VTT veya yapay zeka eğitimi için TXT.",
+      "q4": "Toplu indirme YouTube'un otomatik oluşturulan altyazılarıyla çalışır mı?",
+      "a4": "Evet, YouTube transkript indirici aracımız, tüm mevcut dillerde YouTube oynatma listelerinden hem manuel yüklenen hem de otomatik oluşturulan altyazıları toplu olarak indirebilir.",
+      "q5": "YouTube oynatma listesi altyazı toplu indirmede bir sınır var mı?",
+      "a5": "Ücretsiz kullanıcılar toplu altyazı indirme için günlük 5 kredi alır. Pro üyeler büyük ölçekli yapay zeka eğitimi ve içerik oluşturma projeleri için sınırsız YouTube oynatma listesi toplu indirmenin keyfini çıkarır."
+    }
+  },
+  "singleDownloader": {
+    "hero": {
+      "title": "Tekil <highlight>YouTube Altyazı</highlight> İndirici",
+      "subtitle": "<strong>Tekil YouTube videolarından</strong> saniyeler içinde altyazı çıkarın. Video editörleri, içerik oluşturucular ve araştırmacılar için mükemmel.",
+      "cta": {
+        "primary": "Altyazı İndir",
+        "secondary": "Toplu İndirici"
+      }
+    }
+  },
+  "formats": {
+    "title": "Desteklenen Altyazı Formatları",
+    "description": "İş akışınız için mükemmel formatı seçin. Her format farklı kullanım durumları için optimize edilmiştir.",
+    "srt": {
+      "title": "SRT Formatı",
+      "description": "Hassas zaman damgalarına sahip endüstri standardı altyazı formatı. Video düzenleme ve medya oynatıcılar için mükemmel."
+    },
+    "vtt": {
+      "title": "VTT Formatı",
+      "description": "Gelişmiş stil desteğine sahip modern web formatı. Web oynatıcılar ve çevrimiçi uygulamalar için ideal."
+    },
+    "txt": {
+      "title": "TXT Formatı",
+      "description": "Zaman damgası olmayan temiz düz metin. Yapay zeka eğitimi, metin analizi ve içerik oluşturma için mükemmel."
+    }
+  },
+  "howto": {
+    "title": "YouTube Altyazıları Nasıl İndirilir",
+    "steps": {
+      "1": {
+        "title": "Video URL'sini Yapıştırın",
+        "description": "Altyazılarını çıkarmak istediğiniz YouTube videosunun URL'sini kopyalayıp yapıştırın."
+      },
+      "2": {
+        "title": "Format Seçin",
+        "description": "Özel proje ihtiyaçlarınıza göre SRT, VTT veya TXT arasından seçim yapın."
+      },
+      "3": {
+        "title": "Anında İndirin",
+        "description": "İndirmeye tıklayın ve saniyeler içinde işlenmiş altyazılarınızı kullanıma hazır şekilde alın."
+      }
+    }
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "close": "Kapat",
+    "save": "Kaydet",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "back": "Geri",
+    "next": "İleri",
+    "previous": "Önceki",
+    "search": "Ara",
+    "filter": "Filtrele",
+    "sort": "Sırala",
+    "export": "Dışa Aktar",
+    "import": "İçe Aktar"
+  },
+  "footer": {
+    "description": "Video içerik verisi çıkarma için temel araç seti, hız ve güvenilirlik için tasarlandı. LLM ve AI eğitim araştırması için optimize edildi.",
+    "product": "Ürün",
+    "resources": "Kaynaklar",
+    "legal": "Yasal",
+    "share": "Bu aracı ekibinizle paylaşın",
+    "rights": "Tüm Hakları Saklıdır",
+    "disclaimer": "Google veya YouTube ile bağlantılı değildir.",
+    "home": "Ana Sayfa",
+    "downloader": "İndirici",
+    "downloadSubs": "Altyazı İndir",
+    "bulkDownloader": "Toplu İndirici",
+    "howToDownload": "Altyazı Nasıl İndirilir",
+    "pricing": "Fiyatlandırma",
+    "support": "Destek",
+    "dataPrepGuide": "Veri Hazırlama Kılavuzu",
+    "cleanTranscript": "Temiz Transkript",
+    "faq": "SSS",
+    "studioGuide": "YouTube Studio Dışa Aktarma Kılavuzu",
+    "howToUse": "Nasıl Kullanılır",
+    "aboutUs": "Hakkımızda",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Hizmet Şartları",
+    "guides": "Kılavuzlar",
+    "blog": "Blog",
+    "exportStudio": "YouTube Studio'dan Dışa Aktar",
+    "subsForAi": "AI Eğitim Verisi için Altyazılar",
+    "cleanText": "Temiz Metin Al (Zaman Damgası Yok)",
+    "srtVsVtt": "SRT vs VTT — Hangi Format Kullanılmalı",
+    "analyzeData": "Altyazı Verilerini Analiz Et",
+    "freeApi": "Ücretsiz YouTube Altyazı API",
+    "prepareData": "AI Modelleri için Veri Hazırla",
+    "playlistBulk": "Tüm Oynatma Listesi Altyazılarını İndir",
+    "aiDataPrep": "AI Veri Hazırlama Kılavuzu",
+    "getTranscript": "YouTube Transkripti Nasıl Alınır",
+    "aiSummarizer": "AI YouTube Video Özetleyici",
+    "whySubsWrong": "Altyazılar Neden Bazen Yanlış",
+    "creatorTutorials": "İçerik Üreticileri için Eğitimler",
+    "learnSpanish": "YouTube ile İspanyolca Öğren",
+    "ytDownloader": "YouTube Altyazı İndirici",
+    "chatgptTranscripts": "ChatGPT'de YouTube Transkriptlerini Kullan",
+    "whatIsSrt": "SRT Dosyası Nedir?",
+    "settingsGuide": "Altyazı Ayarları Kılavuzu",
+    "onlineExtractor": "Çevrimiçi Altyazı Çıkarıcı"
+  }
+}

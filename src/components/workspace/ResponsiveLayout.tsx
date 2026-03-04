@@ -56,11 +56,13 @@ export function ResponsiveLayout({
 
   const resize = useCallback((e: MouseEvent) => {
     if (!resizeRef.current || isMobile) return;
-    
-    const newWidth = (e.clientX / window.innerWidth) * 100;
-    if (newWidth > 25 && newWidth < 75) {
-      onLeftWidthChange(newWidth);
-    }
+
+    requestAnimationFrame(() => {
+      const newWidth = (e.clientX / window.innerWidth) * 100;
+      if (newWidth > 25 && newWidth < 75) {
+        onLeftWidthChange(newWidth);
+      }
+    });
   }, [isMobile, onLeftWidthChange]);
 
   useEffect(() => {
@@ -158,9 +160,14 @@ export function ResponsiveLayout({
   // 桌面端布局
   return (
     <div className="flex-1 flex overflow-hidden relative">
+      {/* 拖动遮罩层 - 防止 iframe 捕获鼠标事件 */}
+      {isResizing && (
+        <div className="fixed inset-0 z-50 cursor-col-resize" />
+      )}
+
       {/* 左侧面板 */}
       <div
-        className="flex flex-col bg-white transition-all duration-200 ease-out"
+        className={`flex flex-col bg-white ${isResizing ? '' : 'transition-all duration-200 ease-out'}`}
         style={{ width: `${leftWidth}%` }}
       >
         {leftPanel}
@@ -170,7 +177,7 @@ export function ResponsiveLayout({
       <div
         onMouseDown={startResizing}
         className={`
-          w-1 hover:w-2 -ml-0.5 z-20 cursor-col-resize transition-all shrink-0 
+          w-1 hover:w-2 -ml-0.5 z-20 cursor-col-resize transition-all shrink-0
           flex items-center justify-center group relative
           ${isResizing ? "bg-violet-400/30" : "bg-transparent hover:bg-violet-400/20"}
         `}
@@ -179,10 +186,10 @@ export function ResponsiveLayout({
           w-px h-full transition-colors
           ${isResizing ? "bg-violet-500" : "bg-slate-200 group-hover:bg-violet-400"}
         `} />
-        
+
         {/* 拖拽提示 */}
         {isResizing && (
-          <div className="absolute top-1/2 -translate-y-1/2 left-2 px-2 py-1 bg-violet-600 text-white text-xs rounded whitespace-nowrap">
+          <div className="absolute top-1/2 -translate-y-1/2 left-2 px-2 py-1 bg-violet-600 text-white text-xs rounded whitespace-nowrap z-[60]">
             {Math.round(leftWidth)}% / {Math.round(100 - leftWidth)}%
           </div>
         )}

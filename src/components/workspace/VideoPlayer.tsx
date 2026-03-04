@@ -72,6 +72,16 @@ export const VideoPlayer = React.forwardRef<any, VideoPlayerProps>(({ videoId, s
     );
   };
 
+  // 切换视频时使用 loadVideoById，避免重新加载 iframe
+  useEffect(() => {
+    if (!videoId || !iframeRef.current?.contentWindow) return;
+
+    iframeRef.current.contentWindow.postMessage(
+      JSON.stringify({ event: "command", func: "loadVideoById", args: [videoId] }),
+      "*"
+    );
+  }, [videoId]);
+
   // Seek without reloading
   useEffect(() => {
     if (seekTime === undefined || !iframeRef.current?.contentWindow) return;

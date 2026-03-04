@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -17,6 +18,8 @@ import { MobileNavigation } from "@/components/workspace/MobileNavigation";
 import { ResponsiveLayout } from "@/components/workspace/ResponsiveLayout";
 import { KeyboardShortcuts } from "@/components/workspace/KeyboardShortcuts";
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
+import { DownloadButton } from "@/components/workspace/DownloadButton";
+import { QuickActions } from "@/components/workspace/QuickActions";
 import {
   Loader2,
   ArrowLeft,
@@ -173,16 +176,8 @@ function WorkspaceContent() {
 
         if (cachedResult) {
           setSummaryData(cachedResult);
-        } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(enhancedVideo.id)) {
-          sessionStorage.setItem(storageKey, "true"); // 立即标记，防止组件卸载后重新挂载时重复触发
-          if (autoStartTimer) clearTimeout(autoStartTimer);
-
-          autoStartTimer = setTimeout(() => {
-            if (!isCancelled) {
-              handleRequestAnalysis(enhancedVideo.url, enhancedVideo.id, false, enhancedVideo);
-            }
-          }, 800);
         }
+        // AI 总结改为手动触发，不再自动执行
 
         // 清理URL参数
         if (isFromHome) {
@@ -218,16 +213,8 @@ function WorkspaceContent() {
 
         if (cachedResult) {
           setSummaryData(cachedResult);
-        } else if (isFromHome && !hasAnalyzedInSession && !isAnalyzing.current.has(firstVideo.id)) {
-          sessionStorage.setItem(storageKey, "true"); // 立即标记，防止重复触发
-          if (autoStartTimer) clearTimeout(autoStartTimer);
-
-          autoStartTimer = setTimeout(() => {
-            if (!isCancelled) {
-              handleRequestAnalysis(firstVideo.url, firstVideo.id, false, firstVideo);
-            }
-          }, 800);
         }
+        // AI 总结改为手动触发，不再自动执行
 
         // 清理URL参数
         if (isFromHome) {
@@ -267,6 +254,41 @@ function WorkspaceContent() {
       }
     }
   }, [summaryData, currentVideo?.id, isAiLoading]);
+
+  // 字幕预加载：后台预加载其他视频的字幕
+  useEffect(() => {
+    if (!videoList || videoList.length <= 1) return;
+
+    const preloadSubtitles = async () => {
+      for (const video of videoList) {
+        // 跳过当前视频
+        if (video.id === currentVideo?.id) continue;
+
+        // 检查是否已缓存
+        const cacheKey = `ytvidhub_transcript_${video.url}`;
+        if (sessionStorage.getItem(cacheKey)) continue;
+
+        // 预加载字幕
+        try {
+          const blob = await subtitleApi.downloadSingle({
+            url: video.url,
+            lang: 'en',
+            format: 'vtt',
+            title: video.title,
+            isPreview: true
+          });
+          const text = await blob.text();
+          sessionStorage.setItem(cacheKey, JSON.stringify({ text, format: 'vtt' }));
+        } catch {
+          // 静默失败
+        }
+      }
+    };
+
+    // 延迟执行，避免阻塞主线程
+    const timer = setTimeout(preloadSubtitles, 1000);
+    return () => clearTimeout(timer);
+  }, [videoList, currentVideo?.id]);
 
   // P2: 键盘快捷键支持
   useEffect(() => {
@@ -379,7 +401,7 @@ function WorkspaceContent() {
 
     // 简单的 Youtube URL 验证
     if (!targetUrl.includes("youtube.com") && !targetUrl.includes("youtu.be")) {
-      alert("Please enter a valid YouTube URL");
+      toast.error("Please enter a valid YouTube URL");
       return;
     }
 
@@ -393,17 +415,21 @@ function WorkspaceContent() {
 
     // 如果是 playlist/channel，走批量流程
     if (isPlaylistOrChannelUrl(normalizedUrl)) {
+      toast.info("Analyzing playlist...");
       setInputUrl("");
       const results = await analyzeUrls([normalizedUrl]);
       if (results && results.length > 0) {
         setVideoList(results);
         setCurrentVideo(results[0]);
         setSummaryData("");
+        toast.success(`Added ${results.length} videos!`);
       }
       return;
     }
 
     setIsAddingVideo(true);
+    toast.info("Analyzing video...");
+
     try {
       const videoInfo = await subtitleApi.getVideoInfo(normalizedUrl);
       const videoId = videoInfo.id || extractVideoId(normalizedUrl);
@@ -441,16 +467,17 @@ function WorkspaceContent() {
       setCurrentVideo(newVideo);
       setInputUrl("");
 
-      // 切换到分析标签
+      toast.success("Video added successfully!");
+
+      // 切换到分析标签，但不自动开始 AI 分析
       setActiveTab("analysis");
 
-      // 检查是否有缓存，如果没有则开始分析
+      // 检查是否有缓存的 AI 总结
       const cachedResult = analysisCache.current.get(videoId);
       if (cachedResult && cachedResult.trim().length > 0) {
         setTimeout(() => setSummaryData(cachedResult), 100);
-      } else if (!isAnalyzing.current.has(videoId)) {
-        setTimeout(() => handleRequestAnalysis(normalizedUrl, videoId), 200);
       }
+      // AI 总结改为手动触发，用户需要点击按钮才开始分析
 
     } catch (error) {
       // 失败也记录到数据库
@@ -463,7 +490,7 @@ function WorkspaceContent() {
           lastAction: "video_analyze",
         }).catch(() => { });
       }
-      alert("Failed to fetch video info. Please check the URL and try again.");
+      toast.error("Failed to fetch video info. Please check the URL and try again.");
     } finally {
       setIsAddingVideo(false);
     }
@@ -552,6 +579,12 @@ function WorkspaceContent() {
 
         {/* 新增：积分显示和购买按钮 */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          {/* 下载按钮 */}
+          <DownloadButton
+            videoUrl={currentVideo.url}
+            videoTitle={currentVideo.title}
+          />
+
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-100 rounded-full">
             <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center">
               <span className="text-[10px] font-black text-amber-900">C</span>
@@ -595,19 +628,21 @@ function WorkspaceContent() {
         </div>
 
         <main className="flex-1 flex flex-col overflow-hidden relative">
-          {/* 视频切换器 - 仅在多视频时显示 */}
-          <VideoSwitcher
-            videos={videoList}
-            activeId={currentVideo.id}
-            onSelect={(v: any) => {
-              if (v.id !== currentVideo.id) {
-                setCurrentVideo(v);
-                setSummaryData("");
-                setAnalysisError("");
-              }
-            }}
-            isLoading={isAiLoading}
-          />
+          {/* 视频切换器 - 仅在移动端显示 */}
+          <div className="md:hidden">
+            <VideoSwitcher
+              videos={videoList}
+              activeId={currentVideo.id}
+              onSelect={(v: any) => {
+                if (v.id !== currentVideo.id) {
+                  setCurrentVideo(v);
+                  setSummaryData("");
+                  setAnalysisError("");
+                }
+              }}
+              isLoading={isAiLoading}
+            />
+          </div>
 
           {/* 分析状态指示器 */}
           <AnalysisStatus
@@ -635,6 +670,18 @@ function WorkspaceContent() {
                     {currentVideo.title}
                   </h1>
                 </div>
+
+                {/* 快速操作栏 */}
+                <QuickActions
+                  videoUrl={currentVideo.url}
+                  videoTitle={currentVideo.title}
+                  onCopyAll={() => {
+                    // 触发 TranscriptArea 的复制功能
+                    const event = new CustomEvent('copyAllTranscript');
+                    window.dispatchEvent(event);
+                  }}
+                />
+
                 <div className="flex-1 min-h-0 overflow-hidden">
                   <TranscriptArea
                     videoUrl={currentVideo.url}

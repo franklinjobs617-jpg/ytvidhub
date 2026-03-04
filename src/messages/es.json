@@ -1,13 +1,13 @@
 {
   "metadata": {
-    "title": "Descargador de Subtítulos de YouTube - Descarga SRT, VTT, TXT Gratis | YTVidHub",
-    "description": "Descargador gratuito de subtítulos de YouTube. Descarga subtítulos SRT, VTT, TXT de cualquier video, playlist o canal. Soporta descarga masiva y resumidor de video con IA.",
-    "keywords": "descargador de subtítulos de youtube, descargar subtítulos de youtube, descargador de subtítulos gratis, descarga masiva de subtítulos de youtube"
+    "title": "Descargar Subtitulos YouTube - Gratis SRT, VTT, TXT | YTVidHub",
+    "description": "Descargar subtitulos de YouTube gratis en formatos SRT, VTT, TXT. Descarga subtitulos youtube de cualquier video, playlist o canal. Sin registro.",
+    "keywords": "descargar subtitulos youtube, descarga subtitulos youtube, descargar subtitulos de youtube, descargar subtitulos youtube gratis, descarga masiva subtitulos youtube"
   },
   "subtitleDownloaderPage": {
-    "title": "Descargador Gratuito de Subtítulos de YouTube - Descargar SRT, VTT, TXT Online | YTVidHub",
-    "description": "Descarga subtítulos de YouTube gratis en formatos SRT, VTT y TXT. Extrae subtítulos de cualquier video de YouTube al instante. Sin registro.",
-    "keywords": "descargador de subtítulos de youtube, descargar subtítulos de youtube, descargador gratuito de subtítulos, descargar subtítulos youtube gratis"
+    "title": "Descargador Gratuito de Subtitulos de YouTube - Descargar SRT, VTT, TXT Online | YTVidHub",
+    "description": "Descarga subtitulos de YouTube gratis en formatos SRT, VTT y TXT. Extrae subtitulos de cualquier video de YouTube al instante. Sin registro.",
+    "keywords": "descargador de subtitulos de youtube, descargar subtitulos de youtube, descargador gratuito de subtitulos, descargar subtitulos youtube gratis"
   },
   "navigation": {
     "home": "Inicio",
@@ -32,21 +32,21 @@
     "resources": "Recursos"
   },
   "hero": {
-    "title": "Descargador de Subtítulos de YouTube",
-    "subtitle": "Descarga subtítulos de cualquier video, playlist o canal de YouTube. Extrae SRT, VTT, TXT al instante. Soporta <highlight>descarga masiva</highlight> y resumen con IA.",
-    "highlight": "extraer subtítulos de playlist",
-    "ready": "Listo para la extracción de subtítulos de YouTube de alta eficiencia",
-    "bulkExtraction": "Descarga en lote de subtítulos de alta velocidad",
+    "title": "Descargar Subtitulos de YouTube Gratis",
+    "subtitle": "Descarga subtitulos de cualquier video, playlist o canal de YouTube. Extrae SRT, VTT, TXT al instante. Soporta <highlight>descarga masiva</highlight> y resumen con IA.",
+    "highlight": "descargar subtitulos youtube",
+    "ready": "Listo para la extracción de subtitulos de YouTube de alta eficiencia",
+    "bulkExtraction": "Descarga en lote de subtitulos de alta velocidad",
     "cta": {
-      "primary": "Comenzar a descargar subtítulos",
+      "primary": "Comenzar a descargar subtitulos",
       "secondary": "Probar enlaces de ejemplo",
-      "signup": "Regístrese gratis - Obtenga 5 descargas de subtítulos de YouTube al instante"
+      "signup": "Regístrese gratis - Obtenga 5 descargas de subtitulos de YouTube al instante"
     },
     "features": {
       "videos": "Videos",
       "playlists": "Listas de reproducción",
       "channels": "Canales",
-      "extracted": "Más de 2.4M subtítulos extraídos hoy",
+      "extracted": "Más de 2.4M subtitulos extraídos hoy",
       "playlistSupport": "¡Ahora soporta playlists y canales de YouTube!"
     },
     "placeholder": {
@@ -55,7 +55,7 @@
       "description": "Admite videos individuales, listas de reproducción completas y descargas masivas de canales completos",
       "summaryDesc": "El resumen de IA está optimizado para el análisis de videos individuales",
       "support": "Nuestro {tool} admite {types}",
-      "tool": "descargador de subtítulos con descarga en lote",
+      "tool": "descargador de subtitulos con descarga en lote",
       "types": "Videos, Listas de reproducción y Canales completos",
       "poweredBy": "Impulsado por DeepSeek AI",
       "pasteDemo": "Pegar enlace de demostración"
@@ -71,10 +71,10 @@
       "tryExample": "Prueba un ejemplo"
     },
     "ticker": {
-      "subtitles": "Descargar subtítulos de YouTube",
-      "caption": "Descargador de subtítulos de YouTube",
+      "subtitles": "Descargar subtitulos de YouTube",
+      "caption": "Descargador de subtitulos de YouTube",
       "transcript": "Extractor de transcripciones de YouTube",
-      "bulk": "Descarga masiva de subtítulos"
+      "bulk": "Descarga masiva de subtitulos"
     },
     "credits": {
       "remaining": "{count} Créditos restantes",
@@ -97,7 +97,7 @@
     "checking": "Verificando",
     "ready": "Listo",
     "noSubs": "Sin subs",
-    "allWithSubtitles": "Todos con subtítulos",
+    "allWithSubtitles": "Todos con subtitulos",
     "visibleOnPage": "Visibles en la página",
     "deselectAll": "Deseleccionar todos",
     "all": "Todos",
@@ -119,30 +119,30 @@
   },
   "comparisonSlider": {
     "title": "Cómo Convertir Videos de YouTube a Texto en Lote",
-    "highlight": "descargar subtítulos de youtube",
-    "description": "Arrastra el control deslizante para ver la diferencia. Transforma horas de trabajo manual tedioso en un solo clic para extraer subtítulos de youtube.",
+    "highlight": "descargar subtitulos de youtube",
+    "description": "Arrastra el control deslizante para ver la diferencia. Transforma horas de trabajo manual tedioso en un solo clic para extraer subtitulos de youtube.",
     "before": "Antes: El trabajo manual",
     "after": "Después: Un clic, un ZIP"
   },
   "demo": {
     "title": "Demostración interactiva - Vea resultados reales",
-    "description": "Pruebe nuestra extracción de subtítulos con un video de muestra",
+    "description": "Pruebe nuestra extracción de subtitulos con un video de muestra",
     "video": {
       "title": "Cómo crear una aplicación React - Tutorial completo",
       "duration": "15:42",
-      "subtitles": "Subtítulos en inglés disponibles"
+      "subtitles": "Subtitulos en inglés disponibles"
     },
-    "button": "Extraer subtítulos ({format})",
+    "button": "Extraer subtitulos ({format})",
     "result": {
-      "title": "Subtítulos extraídos ({format})",
+      "title": "Subtitulos extraídos ({format})",
       "tryAnother": "Probar otro formato",
       "completed": "Extracción completada en 2.3 segundos",
       "ready": "Listo para descargar"
     }
   },
   "featuresGrid": {
-    "title": "Descargar Subtítulos de Playlists y Canales Completos de YouTube",
-    "description": "No es solo un descargador de subtítulos; somos una potencia de preparación de datos. Obtenga transcripción limpia y texto listo para modelos sin complicaciones.",
+    "title": "Descargar Subtitulos de Playlists y Canales Completos de YouTube",
+    "description": "No es solo un descargador de subtitulos; somos una potencia de preparación de datos. Obtenga transcripción limpia y texto listo para modelos sin complicaciones.",
     "items": {
       "clean": {
         "title": "Salida TXT limpia",
@@ -174,10 +174,10 @@
     "actionDescription": "Ya sea una lista de reproducción completa de YouTube o un archivo de texto con cientos de enlaces, simplemente péguelo. Nuestra herramienta de descarga masiva analiza, procesa y prepara todo de manera inteligente para usted, convirtiendo horas de trabajo manual en segundos de espera.",
     "adaptive": "SALIDA ADAPTATIVA",
     "adaptiveTitle": "Exportar a SRT, VTT o TXT Limpio",
-    "adaptiveDescription": "¿Necesita subtítulos con tiempo para edición de video? Elija SRT. ¿Está creando un reproductor web accesible? VTT está listo. ¿Solo necesita una transcripción para análisis? Exporte como TXT plano. La elección es suya, para cada archivo."
+    "adaptiveDescription": "¿Necesita subtitulos con tiempo para edición de video? Elija SRT. ¿Está creando un reproductor web accesible? VTT está listo. ¿Solo necesita una transcripción para análisis? Exporte como TXT plano. La elección es suya, para cada archivo."
   },
   "howItWorks": {
-    "title": "Cómo Hacer Descarga Masiva de Subtítulos de Listas de Reproducción de YouTube",
+    "title": "Cómo Hacer Descarga Masiva de Subtitulos de Listas de Reproducción de YouTube",
     "description": "De lista de reproducción sin procesar a datos limpios en segundos. No se requiere configuración compleja.",
     "steps": {
       "1": {
@@ -188,7 +188,7 @@
       "2": {
         "badge": "Paso 02",
         "title": "Análisis de IA",
-        "description": "Nuestro motor extrae subtítulos de forma masiva y genera resúmenes o mapas mentales al instante."
+        "description": "Nuestro motor extrae subtitulos de forma masiva y genera resúmenes o mapas mentales al instante."
       },
       "3": {
         "badge": "Paso 03",
@@ -198,12 +198,12 @@
     }
   },
   "usecases": {
-    "title": "¿Por qué Descargar Subtítulos de YouTube?",
+    "title": "¿Por qué Descargar Subtitulos de YouTube?",
     "description": "Desde la accesibilidad hasta el entrenamiento de IA, descubra los muchos usos de las leyendas de YouTube",
     "cases": {
       "editing": {
         "title": "Edición de video",
-        "description": "Importe subtítulos en software de edición para producción de video profesional y postprocesamiento."
+        "description": "Importe subtitulos en software de edición para producción de video profesional y postprocesamiento."
       },
       "accessibility": {
         "title": "Accesibilidad",
@@ -236,7 +236,7 @@
     }
   },
   "comparison": {
-    "title": "¿Por qué Elegir YTVidHub para Descargar Subtítulos de YouTube?",
+    "title": "¿Por qué Elegir YTVidHub para Descargar Subtitulos de YouTube?",
     "others": {
       "title": "Otras herramientas",
       "features": [
@@ -265,8 +265,8 @@
       "types": [
         "Videos públicos de YouTube",
         "Videos no listados (con URL)",
-        "Subtítulos generados automáticamente",
-        "Subtítulos cargados manualmente",
+        "Subtitulos generados automáticamente",
+        "Subtitulos cargados manualmente",
         "Múltiples pistas de idioma"
       ]
     },
@@ -285,53 +285,53 @@
     "title": "Preguntas frecuentes",
     "questions": {
       "legal": {
-        "question": "¿Es legal descargar subtítulos de YouTube?",
-        "answer": "Sí, descargar subtítulos para uso personal, investigación, accesibilidad o fines educativos es generalmente legal. Sin embargo, siempre respete las leyes de derechos de autor y los términos de servicio de YouTube."
+        "question": "¿Es legal descargar subtitulos de YouTube?",
+        "answer": "Sí, descargar subtitulos para uso personal, investigación, accesibilidad o fines educativos es generalmente legal. Sin embargo, siempre respete las leyes de derechos de autor y los términos de servicio de YouTube."
       },
       "transcript": {
         "question": "¿Puedo obtener una transcripción limpia de YouTube como texto?",
         "answer": "¡Sí! Nuestra herramienta funciona como un potente descargador de transcripciones de YouTube, permitiéndote extraer la transcripción completa del video como un archivo de texto limpio (TXT) para lectura, análisis de contenido o procesamiento de IA."
       },
       "formats": {
-        "question": "¿Puedo descargar subtítulos como texto plano (TXT) en vez de SRT?",
+        "question": "¿Puedo descargar subtitulos como texto plano (TXT) en vez de SRT?",
         "answer": "Admitimos los formatos SRT (SubRip), VTT (WebVTT) y TXT limpio. SRT es perfecto para la edición de video, VTT para reproductores web y TXT para entrenamiento de IA y análisis de texto."
       },
       "bulk": {
-        "question": "¿Cómo descargo subtítulos de una playlist de YouTube de una vez?",
-        "answer": "¡Sí! Nuestro descargador de subtítulos con descarga masiva puede extraer subtítulos de listas de reproducción y canales completos de forma masiva. Perfecto para descarga masiva de grandes conjuntos de datos para entrenamiento de IA o proyectos de investigación a gran escala."
+        "question": "¿Cómo descargo subtitulos de una playlist de YouTube de una vez?",
+        "answer": "¡Sí! Nuestro descargador de subtitulos con descarga masiva puede extraer subtitulos de listas de reproducción y canales completos de forma masiva. Perfecto para descarga masiva de grandes conjuntos de datos para entrenamiento de IA o proyectos de investigación a gran escala."
       },
       "languages": {
         "question": "¿Funciona esto con diferentes idiomas?",
-        "answer": "¡Absolutamente! Nuestra herramienta puede descargar subtítulos en any idioma disponible en el video de YouTube, incluidos los subtítulos generados automáticamente y los cargados manualmente."
+        "answer": "¡Absolutamente! Nuestra herramienta puede descargar subtitulos en any idioma disponible en el video de YouTube, incluidos los subtitulos generados automáticamente y los cargados manualmente."
       },
       "limits": {
-        "question": "¿Este descargador masivo de subtítulos es gratuito?",
-        "answer": "Los usuarios gratuitos obtienen 5 créditos diarios para descargas de subtítulos. Los miembros Pro disfrutan de descarga masiva ilimitada de listas de reproducción para proyectos a gran escala y uso comercial."
+        "question": "¿Este descargador masivo de subtitulos es gratuito?",
+        "answer": "Los usuarios gratuitos obtienen 5 créditos diarios para descargas de subtitulos. Los miembros Pro disfrutan de descarga masiva ilimitada de listas de reproducción para proyectos a gran escala y uso comercial."
       }
     }
   },
   "testimonials": {
     "title": "Confiado por profesionales en todo el mundo",
-    "description": "Desde investigadores de IA hasta creadores de contenido, vea por qué miles eligen YTVidHub para sus necesidades de extracción de subtítulos.",
+    "description": "Desde investigadores de IA hasta creadores de contenido, vea por qué miles eligen YTVidHub para sus necesidades de extracción de subtitulos.",
     "rating": "4.9/5 de más de 2,400 reseñas",
     "reviews": [
       {
         "name": "Sarah Chen",
         "role": "Investigadora de IA",
         "company": "Universidad de Stanford",
-        "content": "Perfecto para crear conjuntos de datos de entrenamiento. Descargué más de 10,000 subtítulos de YouTube para nuestra investigación de modelos de lenguaje. El procesamiento por lotes nos ahorró semanas de trabajo."
+        "content": "Perfecto para crear conjuntos de datos de entrenamiento. Descargué más de 10,000 subtitulos de YouTube para nuestra investigación de modelos de lenguaje. El procesamiento por lotes nos ahorró semanas de trabajo."
       },
       {
         "name": "Marcus Rodriguez",
         "role": "Editor de video",
         "company": "Creative Studios",
-        "content": "El mejor **descargador de subtítulos de YouTube** que he usado para la edición en Premiere Pro. Los archivos SRT funcionan perfectamente con mi línea de tiempo. Formato limpio y marcas de tiempo precisas cada vez."
+        "content": "El mejor **descargador de subtitulos de YouTube** que he usado para la edición en Premiere Pro. Los archivos SRT funcionan perfectamente con mi línea de tiempo. Formato limpio y marcas de tiempo precisas cada vez."
       },
       {
         "name": "Dra. Emily Watson",
         "role": "Consultora de accesibilidad",
         "company": "AccessTech Solutions",
-        "content": "Esencial **descargador de subtítulos** para hacer que el contenido sea accesible. El formato VTT funciona perfectamente con nuestros reproductores web. Procesamiento confiable y rápido."
+        "content": "Esencial **descargador de subtitulos** para hacer que el contenido sea accesible. El formato VTT funciona perfectamente con nuestros reproductores web. Procesamiento confiable y rápido."
       },
       {
         "name": "Alex Kim",
@@ -353,16 +353,16 @@
     "pasteExample": "Probar enlaces de ejemplo",
     "complete": "¡Completado!",
     "success": "¡Éxito!",
-    "selectAllWithSubtitles": "Seleccionar Todos Con Subtítulos",
+    "selectAllWithSubtitles": "Seleccionar Todos Con Subtitulos",
     "deselectAll": "Deseleccionar Todos",
-    "showOnlyWithSubtitles": "Mostrar Solo Con Subtítulos",
+    "showOnlyWithSubtitles": "Mostrar Solo Con Subtitulos",
     "showAll": "Mostrar Todos",
     "loadMore": "Cargar Más Videos"
   },
   "playlist": {
     "processing": {
       "expanding": "Analizando Playlist",
-      "checking": "Verificando Subtítulos",
+      "checking": "Verificando Subtitulos",
       "completed": "Análisis Completo",
       "error": "Error de Procesamiento",
       "paused": "Procesamiento Pausado",
@@ -374,7 +374,7 @@
     "stats": {
       "total": "Total",
       "processed": "Procesados",
-      "withSubtitles": "Con Subtítulos"
+      "withSubtitles": "Con Subtitulos"
     },
     "status": {
       "currentVideo": "Verificando actualmente"
@@ -401,14 +401,14 @@
     "initializing": "Inicializando...",
     "completed": "Extracción completada en {time} segundos",
     "expandingPlaylist": "Expandiendo playlist ({count} videos encontrados)...",
-    "checkingSubtitles": "Verificando disponibilidad de subtítulos...",
+    "checkingSubtitles": "Verificando disponibilidad de subtitulos...",
     "deduplicating": "Eliminando duplicados...",
     "foundVideos": "Se encontraron {count} videos de {playlists} playlist(s)/canal(es)",
     "loadingMore": "Cargando más videos...",
     "subtitleStatus": {
       "checking": "Verificando...",
-      "available": "Tiene Subtítulos",
-      "unavailable": "Sin Subtítulos",
+      "available": "Tiene Subtitulos",
+      "unavailable": "Sin Subtitulos",
       "error": "Verificación Falló"
     }
   },
@@ -417,15 +417,15 @@
     "enterUrl": "Por favor, ingrese un enlace de YouTube primero.",
     "selectVideo": "Por favor, seleccione al menos un video.",
     "insufficientCredits": "No tiene suficientes créditos.",
-    "loginRequired": "Inicie sesión para descargar subtítulos.",
+    "loginRequired": "Inicie sesión para descargar subtitulos.",
     "generic": "Ocurrió un error. Por favor, inténtelo de nuevo."
   },
   "auth": {
     "signupFree": "Regístrate gratis",
     "loginNow": "Inicia sesión ahora",
-    "signupMessage": "¡Regístrate gratis para obtener 5 descargas de subtítulos de YouTube al instante!",
+    "signupMessage": "¡Regístrate gratis para obtener 5 descargas de subtitulos de YouTube al instante!",
     "registrationRequired": "Registro requerido",
-    "registrationNote": "Debes registrarte (gratis) para descargar subtítulos. Obtén 5 créditos instantáneos para probar todas las funciones.",
+    "registrationNote": "Debes registrarte (gratis) para descargar subtitulos. Obtén 5 créditos instantáneos para probar todas las funciones.",
     "noCardRequired": "No se requiere tarjeta de crédito"
   },
   "credits": {
@@ -439,7 +439,7 @@
   "features": {
     "tabs": {
       "download": {
-        "label": "Descargar subtítulos",
+        "label": "Descargar subtitulos",
         "description": "YouTube a SRT, VTT, TXT"
       },
       "summary": {
@@ -450,25 +450,25 @@
     "tooltip": "Desbloquea funciones de descarga en lote con Pro"
   },
   "schema": {
-    "name": "YTVidHub - Descargador de subtítulos de YouTube",
-    "description": "Descargador profesional de subtítulos de YouTube para descarga masiva de listas de reproducción y extracción masiva de canales completos. Descarga subtítulos SRT, VTT, TXT para entrenamiento de IA y creación de contenido.",
+    "name": "YTVidHub - Descargador de subtitulos de YouTube",
+    "description": "Descargador profesional de subtitulos de YouTube para descarga masiva de listas de reproducción y extracción masiva de canales completos. Descarga subtitulos SRT, VTT, TXT para entrenamiento de IA y creación de contenido.",
     "faq": {
-      "q1": "¿Cómo hacer descarga masiva de subtítulos de YouTube gratis?",
-      "a1": "YTVidHub es un descargador de subtítulos de YouTube gratuito que te permite hacer descarga masiva de subtítulos de listas de reproducción completas. Simplemente pega la URL de la lista de reproducción de YouTube y elige tu formato preferido (SRT, VTT o TXT).",
-      "q2": "¿Puedo hacer descarga masiva de subtítulos de listas de reproducción de YouTube?",
-      "a2": "¡Sí! Nuestro descargador de subtítulos con descarga masiva puede extraer subtítulos de listas de reproducción y canales completos de forma masiva. Los planes profesionales admiten descarga masiva ilimitada de listas de reproducción para proyectos a gran escala.",
-      "q3": "¿Qué formatos de subtítulos son compatibles para descarga masiva?",
-      "a3": "Nuestro descargador de subtítulos de YouTube admite descarga masiva en formatos SRT (SubRip), VTT (WebVTT) y TXT limpio. Elige el formato que mejor se adapte a tus necesidades: SRT para reproductores de video, VTT para web o TXT para entrenamiento de IA.",
-      "q4": "¿Funciona la descarga masiva con los subtítulos generados automáticamente de YouTube?",
-      "a4": "Sí, nuestro descargador de transcripciones de YouTube puede hacer descarga masiva tanto de subtítulos subidos manualmente como de subtítulos generados automáticamente de listas de reproducción de YouTube en todos los idiomas disponibles.",
-      "q5": "¿Hay un límite en la descarga masiva de subtítulos de listas de reproducción de YouTube?",
-      "a5": "Los usuarios gratuitos obtienen 5 créditos diarios para descarga masiva de subtítulos. Los miembros Pro disfrutan de descarga masiva ilimitada de listas de reproducción de YouTube para entrenamiento de IA a gran escala y proyectos de creación de contenido."
+      "q1": "¿Cómo hacer descarga masiva de subtitulos de YouTube gratis?",
+      "a1": "YTVidHub es un descargador de subtitulos de YouTube gratuito que te permite hacer descarga masiva de subtitulos de listas de reproducción completas. Simplemente pega la URL de la lista de reproducción de YouTube y elige tu formato preferido (SRT, VTT o TXT).",
+      "q2": "¿Puedo hacer descarga masiva de subtitulos de listas de reproducción de YouTube?",
+      "a2": "¡Sí! Nuestro descargador de subtitulos con descarga masiva puede extraer subtitulos de listas de reproducción y canales completos de forma masiva. Los planes profesionales admiten descarga masiva ilimitada de listas de reproducción para proyectos a gran escala.",
+      "q3": "¿Qué formatos de subtitulos son compatibles para descarga masiva?",
+      "a3": "Nuestro descargador de subtitulos de YouTube admite descarga masiva en formatos SRT (SubRip), VTT (WebVTT) y TXT limpio. Elige el formato que mejor se adapte a tus necesidades: SRT para reproductores de video, VTT para web o TXT para entrenamiento de IA.",
+      "q4": "¿Funciona la descarga masiva con los subtitulos generados automáticamente de YouTube?",
+      "a4": "Sí, nuestro descargador de transcripciones de YouTube puede hacer descarga masiva tanto de subtitulos subidos manualmente como de subtitulos generados automáticamente de listas de reproducción de YouTube en todos los idiomas disponibles.",
+      "q5": "¿Hay un límite en la descarga masiva de subtitulos de listas de reproducción de YouTube?",
+      "a5": "Los usuarios gratuitos obtienen 5 créditos diarios para descarga masiva de subtitulos. Los miembros Pro disfrutan de descarga masiva ilimitada de listas de reproducción de YouTube para entrenamiento de IA a gran escala y proyectos de creación de contenido."
     }
   },
   "singleDownloader": {
     "hero": {
       "title": "Descargador de <highlight>Subtítulos de YouTube</highlight> Individual",
-      "subtitle": "Extrae subtítulos de <strong>videos individuales de YouTube</strong> en segundos. Perfecto para editores de video, creadores de contenido y investigadores.",
+      "subtitle": "Extrae subtitulos de <strong>videos individuales de YouTube</strong> en segundos. Perfecto para editores de video, creadores de contenido y investigadores.",
       "cta": {
         "primary": "Descargar Subtítulos",
         "secondary": "Descargador Masivo"
@@ -480,7 +480,7 @@
     "description": "Elige el formato perfecto para tu flujo de trabajo. Cada formato está optimizado para diferentes casos de uso.",
     "srt": {
       "title": "Formato SRT",
-      "description": "El formato estándar de la industria para subtítulos con marcas de tiempo precisas. Perfecto para edición de video y reproductores multimedia."
+      "description": "El formato estándar de la industria para subtitulos con marcas de tiempo precisas. Perfecto para edición de video y reproductores multimedia."
     },
     "vtt": {
       "title": "Formato VTT",
@@ -496,7 +496,7 @@
     "steps": {
       "1": {
         "title": "Pegar URL del Video",
-        "description": "Copia y pega la URL del video de YouTube del cual quieres extraer los subtítulos."
+        "description": "Copia y pega la URL del video de YouTube del cual quieres extraer los subtitulos."
       },
       "2": {
         "title": "Seleccionar Formato",
@@ -504,7 +504,7 @@
       },
       "3": {
         "title": "Descargar Instantáneamente",
-        "description": "Haz clic en descargar y obtén tus subtítulos procesados y listos para usar en segundos."
+        "description": "Haz clic en descargar y obtén tus subtitulos procesados y listos para usar en segundos."
       }
     }
   },
@@ -537,7 +537,7 @@
     "disclaimer": "No afiliado con Google o YouTube.",
     "home": "Inicio",
     "downloader": "Descargador",
-    "downloadSubs": "Descargar subtítulos",
+    "downloadSubs": "Descargar subtitulos",
     "bulkDownloader": "Descargador masivo",
     "howToDownload": "Cómo Descargar Subtítulos",
     "pricing": "Precios",
@@ -556,20 +556,20 @@
     "subsForAi": "Subtítulos para datos de entrenamiento de IA",
     "cleanText": "Obtener texto limpio (sin marcas de tiempo)",
     "srtVsVtt": "SRT vs VTT — ¿Qué formato usar?",
-    "analyzeData": "Analizar datos de subtítulos",
-    "freeApi": "API gratuita de subtítulos de YouTube",
+    "analyzeData": "Analizar datos de subtitulos",
+    "freeApi": "API gratuita de subtitulos de YouTube",
     "prepareData": "Preparar datos para modelos de IA",
-    "playlistBulk": "Descargar subtítulos de toda la lista de reproducción",
+    "playlistBulk": "Descargar subtitulos de toda la lista de reproducción",
     "aiDataPrep": "Guía de preparación de datos de IA",
     "getTranscript": "Cómo obtener una transcripción de YouTube",
     "aiSummarizer": "Resumidor de video de YouTube con IA",
-    "whySubsWrong": "Por qué los subtítulos a veces son incorrectos",
+    "whySubsWrong": "Por qué los subtitulos a veces son incorrectos",
     "creatorTutorials": "Tutoriales para creadores de contenido",
     "learnSpanish": "Aprende español con YouTube",
-    "ytDownloader": "Descargador de subtítulos de YouTube",
+    "ytDownloader": "Descargador de subtitulos de YouTube",
     "chatgptTranscripts": "Usar transcripciones de YouTube en ChatGPT",
     "whatIsSrt": "¿Qué es un archivo SRT?",
-    "settingsGuide": "Guía de configuración de subtítulos",
-    "onlineExtractor": "Extractor de subtítulos en línea"
+    "settingsGuide": "Guía de configuración de subtitulos",
+    "onlineExtractor": "Extractor de subtitulos en línea"
   }
 }

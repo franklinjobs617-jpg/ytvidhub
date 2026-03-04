@@ -50,7 +50,14 @@ export function TranscriptArea({
     setLoading(true);
     subtitleApi
       .downloadSingle({ url: videoUrl, lang: "en", format: "vtt", title: "transcript", isPreview: true })
-      .then(async (blob) => setTranscriptVtt(await blob.text()))
+      .then(async (blob) => {
+        const text = await blob.text();
+        setTranscriptVtt(text);
+        // 存入缓存
+        try {
+          sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}`, JSON.stringify({ text, format: 'vtt' }));
+        } catch {}
+      })
       .catch(() => setTranscriptVtt(""))
       .finally(() => setLoading(false));
   }, [videoUrl]);
@@ -138,10 +145,19 @@ export function TranscriptArea({
     }
   }, [activeIndex]);
 
+  // 监听外部触发的复制事件
+  useEffect(() => {
+    const handleCopyEvent = () => {
+      handleCopy();
+    };
+    window.addEventListener('copyAllTranscript', handleCopyEvent);
+    return () => window.removeEventListener('copyAllTranscript', handleCopyEvent);
+  }, [displayItems]);
+
   return (
     <div className="flex flex-col h-full bg-white border-r border-slate-100">
       {/* Tab Header — YouMind style */}
-      <div className="flex items-center justify-between px-4 border-b border-slate-100 shrink-0 bg-white">
+      <div className="flex items-center px-4 border-b border-slate-100 shrink-0 bg-white">
         <div className="flex">
           {[{ label: "Smart", value: true }, { label: "Line by Line", value: false }].map(({ label, value }) => (
             <button
@@ -156,22 +172,6 @@ export function TranscriptArea({
               {label}
             </button>
           ))}
-        </div>
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={handleCopy} 
-            className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors"
-            title="Copy all text"
-          >
-            {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
-          </button>
-          <button 
-            onClick={handleExportWithTimestamps} 
-            className="p-1.5 text-slate-400 hover:text-slate-600 transition-colors"
-            title="Export with timestamps"
-          >
-            <Download size={14} />
-          </button>
         </div>
       </div>
 
