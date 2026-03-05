@@ -74,3 +74,44 @@ export function PlaylistManager({ videos, onDownloadSingle, onBatchDownload }: P
           {videos.length} videos
         </div>
       </div>
+
+      {/* 视频列表 */}
+      <div className="flex-1 overflow-y-auto p-6">
+        <div className="space-y-3">
+          {videos.map((video: any) => (
+            <div
+              key={video.id}
+              className="flex items-center gap-4 p-4 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <button onClick={() => toggleSelect(video.id)}>
+                {selectedIds.has(video.id) ? (
+                  <CheckSquare className="w-5 h-5 text-violet-600" />
+                ) : (
+                  <Square className="w-5 h-5 text-slate-400" />
+                )}
+              </button>
+
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium text-slate-900 truncate">{video.title}</h3>
+                <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3.5 h-3.5" />
+                    {video.duration}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleDownload(video, "srt")}
+                className="px-4 py-2 bg-slate-900 hover:bg-black text-white text-sm font-bold rounded-lg transition-colors"
+              >
+                <Download className="w-4 h-4 inline mr-1" />
+                Download
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
