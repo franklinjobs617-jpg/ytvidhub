@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Copy, Share2, Check, ChevronDown, Loader2 } from "lucide-react";
+import { Download, Copy, ChevronDown, Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { subtitleApi } from "@/lib/api";
@@ -11,12 +11,14 @@ interface QuickActionsProps {
   videoUrl: string;
   videoTitle: string;
   onCopyAll: () => void;
+  onGenerateAiSummary?: () => void;
+  hasAiSummary?: boolean;
+  isGeneratingAi?: boolean;
 }
 
-export function QuickActions({ videoUrl, videoTitle, onCopyAll }: QuickActionsProps) {
+export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi }: QuickActionsProps) {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [copied, setCopied] = useState(false);
   const { user, refreshUser } = useAuth();
   const router = useRouter();
 
@@ -69,15 +71,20 @@ export function QuickActions({ videoUrl, videoTitle, onCopyAll }: QuickActionsPr
     }
   };
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(videoUrl);
-    setCopied(true);
-    toast.success('Link copied to clipboard!');
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <div className="flex items-center gap-2 px-3 py-2 border-t border-slate-100 bg-slate-50/50">
+      {/* AI Summary 按钮 */}
+      {onGenerateAiSummary && !hasAiSummary && (
+        <button
+          onClick={onGenerateAiSummary}
+          disabled={isGeneratingAi}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all disabled:opacity-50"
+        >
+          {isGeneratingAi ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+          <span>{isGeneratingAi ? 'Analyzing...' : 'AI Summary'}</span>
+        </button>
+      )}
+
       {/* Download 下拉菜单 */}
       <div className="relative">
         <button
@@ -123,14 +130,6 @@ export function QuickActions({ videoUrl, videoTitle, onCopyAll }: QuickActionsPr
       >
         <Copy size={14} />
         <span>Copy All</span>
-      </button>
-
-      <button
-        onClick={handleShare}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 hover:text-violet-600 hover:bg-violet-50 rounded-lg transition-all"
-      >
-        {copied ? <Check size={14} /> : <Share2 size={14} />}
-        <span>{copied ? 'Copied!' : 'Share'}</span>
       </button>
     </div>
   );

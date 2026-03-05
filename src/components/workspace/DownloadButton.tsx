@@ -102,7 +102,7 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
         ) : (
           <Download size={16} />
         )}
-        <span className="hidden sm:inline">Download</span>
+        <span className="hidden sm:inline">Download Single</span>
         <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 

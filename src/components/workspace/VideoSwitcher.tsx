@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Play, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Play,
   Clock,
   Users,
   CheckCircle,
-  Loader2
+  Loader2,
+  Plus
 } from "lucide-react";
 
 interface Video {
@@ -26,11 +27,13 @@ interface VideoSwitcherProps {
   activeId: string;
   onSelect: (video: Video) => void;
   isLoading?: boolean;
+  onAddVideo?: () => void;
 }
 
-export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false }: VideoSwitcherProps) {
+export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, onAddVideo }: VideoSwitcherProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // 更新当前索引
   useEffect(() => {
@@ -74,115 +77,181 @@ export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false }:
 
   if (videos.length <= 1) return null;
 
+  const currentVideo = videos[currentIndex];
+
   return (
-    <div className="bg-white border-b border-slate-100 px-4 py-3">
-      <div className="flex items-center gap-3">
-        {/* 左箭头 */}
-        <button
-          onClick={goToPrevious}
-          disabled={currentIndex === 0 || isTransitioning}
-          className="p-2 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg transition-all"
-        >
-          <ChevronLeft size={18} className="text-slate-600" />
-        </button>
+    <>
+      {/* 紧凑的视频切换栏 */}
+      <div className="bg-white border-b border-slate-100 px-4 py-2.5">
+        <div className="flex items-center gap-3">
+          {/* 左箭头 */}
+          <button
+            onClick={goToPrevious}
+            disabled={currentIndex === 0 || isTransitioning}
+            className="p-1.5 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed rounded-lg transition-all"
+          >
+            <ChevronLeft size={16} className="text-slate-600" />
+          </button>
 
-        {/* 视频列表 */}
-        <div className="flex-1 overflow-hidden">
-          <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide">
-            {videos.map((video, index) => (
-              <motion.button
-                key={video.id}
-                onClick={() => handleSelect(video, index)}
-                disabled={isTransitioning}
-                className={`
-                  flex items-center gap-3 px-3 py-2 rounded-xl transition-all shrink-0 min-w-0
-                  ${video.id === activeId 
-                    ? 'bg-violet-100 border-2 border-violet-500' 
-                    : 'bg-slate-50 hover:bg-slate-100 border-2 border-transparent'
-                  }
-                  ${isTransitioning ? 'opacity-60' : ''}
-                `}
-                whileHover={{ scale: video.id === activeId ? 1 : 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* 缩略图 */}
-                <div className="relative">
-                  <div className="w-12 h-8 rounded-lg overflow-hidden bg-slate-200">
-                    <img 
-                      src={video.thumbnail} 
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  {/* 播放状态指示器 */}
-                  {video.id === activeId && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute -top-1 -right-1 w-4 h-4 bg-violet-600 rounded-full flex items-center justify-center"
-                    >
-                      {isLoading ? (
-                        <Loader2 size={8} className="text-white animate-spin" />
-                      ) : (
-                        <Play size={8} className="text-white fill-current" />
-                      )}
-                    </motion.div>
-                  )}
+          {/* 当前视频信息 - 可点击展开列表 */}
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="flex-1 flex items-center gap-2.5 px-3 py-2 hover:bg-slate-50 rounded-lg transition-all text-left min-w-0"
+          >
+            {/* 缩略图 */}
+            <div className="relative shrink-0">
+              <div className="w-14 h-9 rounded-md overflow-hidden bg-slate-200">
+                <img
+                  src={currentVideo.thumbnail}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {isLoading && (
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center rounded-md">
+                  <Loader2 size={12} className="text-white animate-spin" />
                 </div>
+              )}
+            </div>
 
-                {/* 视频信息 */}
-                <div className="min-w-0 text-left">
-                  <h3 className={`
-                    text-sm font-medium line-clamp-1 transition-colors
-                    ${video.id === activeId ? 'text-violet-900' : 'text-slate-700'}
-                  `}>
-                    {video.title}
-                  </h3>
-                  
-                  <div className="flex items-center gap-2 mt-1">
-                    {video.uploader && (
-                      <div className="flex items-center gap-1">
-                        <Users size={10} className="text-slate-400" />
-                        <span className="text-xs text-slate-500 truncate max-w-20">
-                          {video.uploader}
-                        </span>
-                      </div>
-                    )}
-                    
-                    {video.duration && (
-                      <div className="flex items-center gap-1">
-                        <Clock size={10} className="text-slate-400" />
-                        <span className="text-xs text-slate-500">
-                          {formatDuration(video.duration)}
-                        </span>
-                      </div>
-                    )}
-                    
-                    {video.hasSubtitles && (
-                      <CheckCircle size={10} className="text-green-500" />
-                    )}
-                  </div>
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        </div>
+            {/* 视频标题 */}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-medium text-slate-800 line-clamp-1">
+                {currentVideo.title}
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {currentVideo.uploader}
+              </p>
+            </div>
 
-        {/* 右箭头 */}
-        <button
-          onClick={goToNext}
-          disabled={currentIndex === videos.length - 1 || isTransitioning}
-          className="p-2 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg transition-all"
-        >
-          <ChevronRight size={18} className="text-slate-600" />
-        </button>
+            {/* 计数器 */}
+            <div className="shrink-0 px-2.5 py-1 bg-slate-100 rounded-full">
+              <span className="text-xs font-medium text-slate-700">
+                {currentIndex + 1}/{videos.length}
+              </span>
+            </div>
+          </button>
 
-        {/* 计数器 */}
-        <div className="text-xs text-slate-500 font-medium shrink-0">
-          {currentIndex + 1} / {videos.length}
+          {/* 右箭头 */}
+          <button
+            onClick={goToNext}
+            disabled={currentIndex === videos.length - 1 || isTransitioning}
+            className="p-1.5 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed rounded-lg transition-all"
+          >
+            <ChevronRight size={16} className="text-slate-600" />
+          </button>
         </div>
       </div>
-    </div>
+
+      {/* 展开的视频列表 */}
+      <AnimatePresence>
+        {isExpanded && (
+          <>
+            {/* 遮罩层 */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsExpanded(false)}
+              className="fixed inset-0 bg-black/20 z-40"
+            />
+
+            {/* 视频列表弹窗 */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-16 left-4 right-4 max-w-2xl mx-auto bg-white rounded-xl shadow-2xl z-50 max-h-[70vh] overflow-hidden flex flex-col"
+            >
+              {/* 标题栏 */}
+              <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                <h3 className="font-semibold text-slate-900">
+                  Playlist ({videos.length} videos)
+                </h3>
+                <button
+                  onClick={() => setIsExpanded(false)}
+                  className="p-1 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  <ChevronLeft size={18} className="text-slate-600 rotate-90" />
+                </button>
+              </div>
+
+              {/* 视频列表 */}
+              <div className="flex-1 overflow-y-auto p-2">
+                {videos.map((video, index) => (
+                  <button
+                    key={video.id}
+                    onClick={() => {
+                      handleSelect(video, index);
+                      setIsExpanded(false);
+                    }}
+                    className={`
+                      w-full flex items-center gap-3 p-2.5 rounded-lg transition-all text-left
+                      ${video.id === activeId
+                        ? 'bg-violet-50 border border-violet-200'
+                        : 'hover:bg-slate-50'
+                      }
+                    `}
+                  >
+                    {/* 序号 */}
+                    <div className={`
+                      w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shrink-0
+                      ${video.id === activeId
+                        ? 'bg-violet-600 text-white'
+                        : 'bg-slate-100 text-slate-600'
+                      }
+                    `}>
+                      {index + 1}
+                    </div>
+
+                    {/* 缩略图 */}
+                    <div className="relative shrink-0">
+                      <div className="w-20 h-12 rounded-md overflow-hidden bg-slate-200">
+                        <img
+                          src={video.thumbnail}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      {video.id === activeId && (
+                        <div className="absolute inset-0 bg-violet-600/20 flex items-center justify-center rounded-md">
+                          <Play size={16} className="text-white fill-current" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 视频信息 */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className={`
+                        text-sm font-medium line-clamp-2
+                        ${video.id === activeId ? 'text-violet-900' : 'text-slate-800'}
+                      `}>
+                        {video.title}
+                      </h4>
+                      <div className="flex items-center gap-2 mt-1">
+                        {video.uploader && (
+                          <span className="text-xs text-slate-500 truncate">
+                            {video.uploader}
+                          </span>
+                        )}
+                        {video.duration && (
+                          <span className="text-xs text-slate-400">
+                            • {formatDuration(video.duration)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {video.id === activeId && (
+                      <CheckCircle size={18} className="text-violet-600 shrink-0" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

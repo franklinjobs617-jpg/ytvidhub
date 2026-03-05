@@ -20,6 +20,7 @@ import { KeyboardShortcuts } from "@/components/workspace/KeyboardShortcuts";
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 import { DownloadButton } from "@/components/workspace/DownloadButton";
 import { QuickActions } from "@/components/workspace/QuickActions";
+import { TabSwitcher } from "@/components/workspace/TabSwitcher";
 import {
   Loader2,
   ArrowLeft,
@@ -27,6 +28,7 @@ import {
   Video as VideoIcon,
 } from "lucide-react";
 import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/lib/youtube";
+import { BatchGridView } from "@/components/workspace/BatchGridView";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -43,6 +45,13 @@ function WorkspaceContent() {
   const isSummaryMode = modeParam === "summary";
 
   const initialUrls = urlsParam ? decodeURIComponent(urlsParam).split(",") : [];
+
+  // 检测是否为批量模式（多个视频或playlist/channel）
+  const shouldShowBatchMode = initialUrls.length > 1 || (initialUrls.length === 1 && isPlaylistOrChannelUrl(initialUrls[0]));
+
+  const [showBatchView, setShowBatchView] = useState(shouldShowBatchMode);
+  const isBatchMode = shouldShowBatchMode && showBatchView;
+
   const placeholderVideos = initialUrls.map(url => {
     const id = extractVideoId(url);
     return {
@@ -73,6 +82,8 @@ function WorkspaceContent() {
   const [inputUrl, setInputUrl] = useState("");
   const [isAddingVideo, setIsAddingVideo] = useState(false);
   const [analysisError, setAnalysisError] = useState<string>("");
+  const [isTranscriptLoading, setIsTranscriptLoading] = useState(false);
+  const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
 
   const {
     analyzeUrls,
@@ -80,7 +91,12 @@ function WorkspaceContent() {
     summaryData,
     isAiLoading,
     setSummaryData,
-  } = useSubtitleDownloader();
+    startSingleDownload,
+    startBulkDownload,
+    isDownloading,
+    progress,
+    statusText,
+  } = useSubtitleDownloader(refreshUser);
 
   useEffect(() => {
     if (!currentVideo?.id) return;
@@ -422,6 +438,7 @@ function WorkspaceContent() {
         setVideoList(results);
         setCurrentVideo(results[0]);
         setSummaryData("");
+        setShowBatchView(true); // 切换到批量模式
         toast.success(`Added ${results.length} videos!`);
       }
       return;
@@ -552,23 +569,79 @@ function WorkspaceContent() {
       </div>
     );
 
+  // 批量模式：显示九宫格下载界面
+  if (isBatchMode) {
+    return (
+      <div className="fixed inset-0 flex flex-col bg-white overflow-hidden">
+        <header className="h-14 border-b border-slate-100 flex items-center justify-between px-4 shrink-0 bg-white">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => window.location.href = "/"}
+              className="p-2 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              <ArrowLeft size={18} className="text-slate-500" />
+            </button>
+            <span className="text-lg font-black tracking-tighter text-violet-600 italic">
+              YTvidHub
+            </span>
+            <span className="text-sm text-slate-500">Batch Download</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-100 rounded-full">
+              <span className="text-sm font-bold text-amber-700">{user?.credits ?? 0}</span>
+              <span className="text-xs text-amber-600">Credits</span>
+            </div>
+            <DailyRewardButton />
+          </div>
+        </header>
+        <div className="flex-1 overflow-hidden">
+          <BatchGridView
+            videos={videoList}
+            onDownloadSingle={(video, format) => {
+              startSingleDownload(video, format, "en");
+            }}
+            onDownloadBatch={(videos, format) => {
+              startBulkDownload(videos, format, "en");
+            }}
+            onVideoClick={(video) => {
+              setCurrentVideo(video);
+              setShowBatchView(false);
+            }}
+            isDownloading={isDownloading}
+            progress={progress}
+            statusText={statusText}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 flex flex-col bg-white overflow-hidden font-sans">
       <header className="h-14 border-b border-slate-100 flex items-center justify-between px-2 sm:px-4 shrink-0 z-[60] bg-white gap-2 sm:gap-4">
         <div className="flex items-center gap-3 shrink-0">
           <button
-            onClick={() => window.location.href = "/"}
+            onClick={() => {
+              if (shouldShowBatchMode && !showBatchView) {
+                setShowBatchView(true);
+              } else {
+                window.location.href = "/";
+              }
+            }}
             className="p-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer"
           >
             <ArrowLeft size={18} className="text-slate-500" />
           </button>
-          <span className="hidden sm:inline text-lg font-black tracking-tighter text-violet-600 italic">
+          {shouldShowBatchMode && !showBatchView && (
+            <span className="hidden sm:inline text-xs text-slate-500 font-medium">Back to Playlist</span>
+          )}
+          <span className="hidden md:inline text-lg font-black tracking-tighter text-violet-600 italic">
             YTvidHub
           </span>
         </div>
 
-        {/* 新增：URL 输入区域 */}
-        <div className="flex-1 min-w-0 max-w-2xl">
+        {/* URL 输入区域 - 在移动端隐藏 */}
+        <div className="hidden sm:flex flex-1 min-w-0 max-w-2xl">
           <UrlInput
             value={inputUrl}
             onChange={setInputUrl}
@@ -577,7 +650,7 @@ function WorkspaceContent() {
           />
         </div>
 
-        {/* 新增：积分显示和购买按钮 */}
+        {/* 右侧按钮组 */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* 下载按钮 */}
           <DownloadButton
@@ -599,7 +672,7 @@ function WorkspaceContent() {
 
           <button
             onClick={() => router.push("/pricing")}
-            className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold rounded-full transition-all shadow-sm group"
+            className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold rounded-full transition-all shadow-sm group"
           >
             <Sparkles size={12} className="text-amber-400 group-hover:scale-110 transition-transform" />
             <span className="hidden sm:inline">Upgrade</span>
@@ -624,6 +697,7 @@ function WorkspaceContent() {
                 setAnalysisError("");
               }
             }}
+            isLoading={isTranscriptLoading}
           />
         </div>
 
@@ -641,6 +715,7 @@ function WorkspaceContent() {
                 }
               }}
               isLoading={isAiLoading}
+              onAddVideo={() => setShowMobileUrlInput(true)}
             />
           </div>
 
@@ -680,6 +755,9 @@ function WorkspaceContent() {
                     const event = new CustomEvent('copyAllTranscript');
                     window.dispatchEvent(event);
                   }}
+                  onGenerateAiSummary={() => handleRequestAnalysis()}
+                  hasAiSummary={!!summaryData}
+                  isGeneratingAi={isAiLoading}
                 />
 
                 <div className="flex-1 min-h-0 overflow-hidden">
@@ -688,21 +766,34 @@ function WorkspaceContent() {
                     currentTime={currentTime}
                     onSeek={setSeekTime}
                     searchInputRef={searchInputRef}
+                    onLoadingChange={setIsTranscriptLoading}
                   />
                 </div>
               </>
             }
             rightPanel={
-              <div className="w-full h-full">
-                <SummaryArea
-                  data={summaryData}
-                  isLoading={isAiLoading}
-                  onSeek={handleSeek}
-                  onStartAnalysis={() => handleRequestAnalysis()}
-                  onRegenerate={() => handleRequestAnalysis(undefined, undefined, true)}
-                  mobileSubTab={activeTab}
-                  videoUrl={currentVideo.url}
-                />
+              <div className="w-full h-full flex flex-col">
+                {/* 桌面端胶囊切换 */}
+                <div className="hidden md:block">
+                  <TabSwitcher
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                    hasAnalysis={!!summaryData}
+                    isAnalyzing={isAiLoading}
+                  />
+                </div>
+
+                <div className="flex-1 overflow-hidden">
+                  <SummaryArea
+                    data={summaryData}
+                    isLoading={isAiLoading}
+                    onSeek={handleSeek}
+                    onStartAnalysis={() => handleRequestAnalysis()}
+                    onRegenerate={() => handleRequestAnalysis(undefined, undefined, true)}
+                    mobileSubTab={activeTab}
+                    videoUrl={currentVideo.url}
+                  />
+                </div>
               </div>
             }
           >
@@ -724,6 +815,31 @@ function WorkspaceContent() {
 
       {/* P2: 键盘快捷键提示 */}
       <KeyboardShortcuts />
+
+      {/* 移动端 URL 输入弹窗 */}
+      {showMobileUrlInput && (
+        <div className="fixed inset-0 z-[100] flex items-end sm:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setShowMobileUrlInput(false)} />
+          <div className="relative w-full bg-white rounded-t-2xl p-6 animate-in slide-in-from-bottom duration-300">
+            <h3 className="text-lg font-bold text-slate-900 mb-4">Add Video</h3>
+            <UrlInput
+              value={inputUrl}
+              onChange={setInputUrl}
+              onSubmit={() => {
+                handleAnalyzeNewUrl();
+                setShowMobileUrlInput(false);
+              }}
+              isLoading={isAddingVideo}
+            />
+            <button
+              onClick={() => setShowMobileUrlInput(false)}
+              className="mt-4 w-full py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

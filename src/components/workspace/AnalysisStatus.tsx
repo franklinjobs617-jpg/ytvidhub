@@ -82,7 +82,7 @@ export function AnalysisStatus({
     }
   }, [hasResult, isAnalyzing]);
 
-  if (!isAnalyzing && !hasResult && !error) return null;
+  if (!isAnalyzing && !hasResult) return null;
 
   return (
     <AnimatePresence mode="wait">
@@ -210,34 +210,7 @@ export function AnalysisStatus({
         </motion.div>
       )}
 
-      {/* 错误状态 */}
-      {error && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          className="bg-red-50 border border-red-200 rounded-xl p-4 mx-4 mb-4"
-        >
-          <div className="flex items-start gap-3">
-            <AlertCircle size={20} className="text-red-500 mt-0.5 shrink-0" />
-
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-red-900 mb-1">Analysis Failed</p>
-              <p className="text-xs text-red-700 mb-3">{error}</p>
-
-              {onRetry && (
-                <button
-                  onClick={onRetry}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg transition-all"
-                >
-                  <Zap size={12} />
-                  Try Again
-                </button>
-              )}
-            </div>
-          </div>
-        </motion.div>
-      )}
+      {/* 错误状态 - 已移除，改用 toast 通知 */}
     </AnimatePresence>
   );
 }

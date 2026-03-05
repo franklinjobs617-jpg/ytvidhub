@@ -27,8 +27,7 @@ export function extractVideoId(url: string): string {
 /**
  * Normalize YouTube URL:
  * - m.youtube.com → www.youtube.com
- * - watch?v=xxx&list=PLxxx → playlist?list=PLxxx
- * - Strip tracking params (&si=, &index=, &t= etc.)
+ * - Any URL with list parameter → playlist?list=xxx
  */
 export function normalizeYoutubeUrl(url: string): string {
   let normalized = url.trim();
@@ -36,7 +35,7 @@ export function normalizeYoutubeUrl(url: string): string {
   // m.youtube.com → www.youtube.com
   normalized = normalized.replace(/\/\/m\.youtube\.com/, '//www.youtube.com');
 
-  // watch?v=xxx&list=PLxxx → playlist?list=PLxxx
+  // Convert any URL with list parameter to playlist URL
   const listMatch = normalized.match(/[?&]list=([^&#]+)/);
   if (listMatch && !normalized.includes('playlist?list=')) {
     return `https://www.youtube.com/playlist?list=${listMatch[1]}`;
@@ -51,7 +50,7 @@ export function normalizeYoutubeUrl(url: string): string {
 export function isPlaylistOrChannelUrl(url: string): boolean {
   return (
     url.includes('playlist?list=') ||
-    url.includes('&list=') ||
+    url.includes('list=') ||
     url.includes('/channel/') ||
     url.includes('/@') ||
     url.includes('/c/') ||

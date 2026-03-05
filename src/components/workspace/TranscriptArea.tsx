@@ -15,11 +15,13 @@ export function TranscriptArea({
   currentTime,
   onSeek,
   searchInputRef,
+  onLoadingChange,
 }: {
   videoUrl: string;
   currentTime: number;
   onSeek?: (time: number) => void;
   searchInputRef?: React.RefObject<HTMLInputElement>;
+  onLoadingChange?: (loading: boolean) => void;
 }) {
   const [transcriptVtt, setTranscriptVtt] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -48,6 +50,7 @@ export function TranscriptArea({
       }
     } catch {}
     setLoading(true);
+    onLoadingChange?.(true);
     subtitleApi
       .downloadSingle({ url: videoUrl, lang: "en", format: "vtt", title: "transcript", isPreview: true })
       .then(async (blob) => {
@@ -59,8 +62,11 @@ export function TranscriptArea({
         } catch {}
       })
       .catch(() => setTranscriptVtt(""))
-      .finally(() => setLoading(false));
-  }, [videoUrl]);
+      .finally(() => {
+        setLoading(false);
+        onLoadingChange?.(false);
+      });
+  }, [videoUrl, onLoadingChange]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayItems.map(item => item.text).join('\n\n'));
