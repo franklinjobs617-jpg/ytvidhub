@@ -233,117 +233,41 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     setIsActionClicked(true);
 
     try {
-      if (!urls.trim() && videoResults.length === 0) {
+      if (!urls.trim()) {
         setInputError(true);
         toast.error(tErrors('enterUrl'), { position: "top-center" });
         return;
       }
-      if (videoResults.length === 0) {
-        const lines = urls.split("\n").map((u) => u.trim()).filter((u) => u.length > 0);
-        const invalidLinks = lines.filter((link) => !isValidYoutubeUrl(link));
-        if (invalidLinks.length > 0) {
-          setInputError(true);
-          toast.error(tErrors('invalidUrl'), { position: "top-center" });
-          return;
-        }
+
+      const lines = urls.split("\n").map((u) => u.trim()).filter((u) => u.length > 0);
+      const invalidLinks = lines.filter((link) => !isValidYoutubeUrl(link));
+      if (invalidLinks.length > 0) {
+        setInputError(true);
+        toast.error(tErrors('invalidUrl'), { position: "top-center" });
+        return;
       }
+
       if (!user) {
         toast.success(tAuth('signupMessage'), { position: "top-center" });
         pendingAnalysisRef.current = true;
         setShowLoginModal(true);
         return;
       }
-      if (selectedMode === "summary") {
-        if (user && (user.credits || 0) <= 0) {
-          toast.error(tErrors('insufficientCredits'), {
-            description: "You need credits to generate AI summaries.",
-            action: {
-              label: "Get Credits",
-              onClick: () => router.push('/pricing')
-            },
-            duration: 5000,
-          });
-          return;
-        }
 
-        let targetUrls = videoResults.length === 0
-          ? urls.split("\n").map((u) => normalizeYoutubeUrl(u.trim())).filter((u) => u.startsWith("http")).join(",")
-          : videoResults.filter((v) => selectedIds.has(v.id)).map((v?: any) => v.url).join(",");
-        if (!targetUrls) return;
+      const targetUrls = urls.split("\n")
+        .map((u) => normalizeYoutubeUrl(u.trim()))
+        .filter((u) => u.startsWith("http"))
+        .join(",");
 
-        // 立即给用户反馈，表示操作已开始
-        toast.success(tActions('opening') + "...", {
-          position: "top-center",
-          duration: 2000
-        });
+      if (!targetUrls) return;
 
-        router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home&mode=summary`);
-        return;
-      }
-      if (videoResults.length === 0) {
-        const uniqueUrls = Array.from(new Set(urls.split("\n").map((u) => normalizeYoutubeUrl(u.trim())).filter((u) => u.startsWith("http"))));
-        if (uniqueUrls.length === 0) return;
+      toast.success(tActions('opening') + "...", {
+        position: "top-center",
+        duration: 2000
+      });
 
-        // 单视频直接下载快速路径
-        const isSingleVideo = uniqueUrls.length === 1 && !isPlaylistOrChannelUrl(uniqueUrls[0]);
-
-        if (isSingleVideo) {
-          if (user && (user.credits || 0) <= 0) {
-            toast.error(tErrors('insufficientCredits'), {
-              description: "You need credits to download subtitles.",
-              action: { label: "Get Credits", onClick: () => router.push('/pricing') },
-              duration: 5000,
-            });
-            return;
-          }
-          const url = uniqueUrls[0];
-          const videoId = extractVideoId(url) || 'subtitle';
-          await startSingleDownload({ url, title: videoId }, downloadFormat, downloadLang);
-          await refreshCredits();
-          setTimeout(() => refreshCredits(), 2000);
-          return;
-        }
-
-        const results = await analyzeUrls(uniqueUrls);
-        setVideoResults(results);
-        setSelectedIds(new Set(results.filter((v: any) => v.hasSubtitles).map((v: any) => v.id)));
-      } else {
-        // Credits Check before Download
-        if (user && (user.credits || 0) <= 0) {
-          toast.error(tErrors('insufficientCredits'), {
-            description: "You need credits to download subtitles.",
-            action: {
-              label: "Get Credits",
-              onClick: () => router.push('/pricing')
-            },
-            duration: 5000,
-          });
-          return;
-        }
-
-        const selectedVideos = videoResults.filter((v) => selectedIds.has(v.id));
-        if (selectedVideos.length === 0) {
-          toast.warning(tErrors('selectVideo'));
-          return;
-        }
-
-        // 执行下载操作
-        if (selectedVideos.length === 1) {
-          await startSingleDownload(selectedVideos[0], downloadFormat, downloadLang);
-        } else {
-          await startBulkDownload(selectedVideos, downloadFormat, downloadLang);
-        }
-
-        // 下载完成后，立即刷新一次积分
-        await refreshCredits();
-
-        // 额外再延迟刷新一次（确保数据一致性）
-        setTimeout(() => {
-          refreshCredits();
-        }, 2000);
-      }
+      router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home`);
     } finally {
-      // 重置按钮状态
       setTimeout(() => {
         setIsActionClicked(false);
       }, 1000);
@@ -352,11 +276,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
   const actionLabel = isAnalyzing
     ? tActions('analyzing')
-    : downloadedContent
-    ? tActions('analyze')
-    : selectedMode === "summary"
-    ? (videoResults.length > 0 ? tActions('openWorkspace') : tActions('analyze'))
-    : (videoResults.length > 0 ? tActions('download', { count: selectedIds.size }) : tActions('analyze'));
+    : tActions('analyze');
 
   return (
     <div className="relative isolate bg-white min-h-screen">

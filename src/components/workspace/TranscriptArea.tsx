@@ -250,7 +250,7 @@ export function TranscriptArea({
             ))}
           </div>
         ) : displayItems.length > 0 ? (
-          <div className="py-2">
+          <div className="py-2 pb-24 md:pb-2">
             {displayItems.map((item, i) => {
               const isActive = i === activeIndex;
               const isCurrentSearchResult = searchQuery && searchResults.total > 0 && 
