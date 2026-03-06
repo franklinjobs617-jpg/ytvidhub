@@ -45,6 +45,10 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const [showBulkDownloadModal, setShowBulkDownloadModal] = useState(false);
   const [downloadedContent, setDownloadedContent] = useState<{ text: string; title: string; url: string; format?: string } | null>(null);
 
+  // 积分不足弹窗状态
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
+  const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
+
   const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const processingCancelRef = useRef<boolean>(false);
   const processingPausedRef = useRef<boolean>(false);
@@ -333,7 +337,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         format,
         lang,
         subtitleContent: subtitleText,
-      }).catch(() => {});
+      }).catch(() => { });
 
       // 延迟刷新积分显示，确保服务器端已更新
       setTimeout(() => {
@@ -349,15 +353,14 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       // 特殊处理积分不足的错误
       if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
         trackConversion('download_error', { type: 'single', reason: 'insufficient_credits' });
-        toast.error("Download Failed", {
-          id: 'credits-error',
-          description: "Subtitle download requires 1 credit. You don't have enough credits.",
-          action: {
-            label: "Get Credits",
-            onClick: () => window.open("/pricing", "_blank")
-          },
-          duration: 5000,
+        // 获取当前积分
+        const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
+        setModalConfig({
+          required: 1,
+          current: currentCredits,
+          feature: "Subtitle Download"
         });
+        setIsCreditsModalOpen(true);
       } else if (err.message.includes("login")) {
         toast.error("Authentication Required", {
           id: 'auth-error',
@@ -387,15 +390,14 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       setBulkDownloadState(prev => prev ? { ...prev, phase: 'error', error: err.message } : null);
 
       if (err.message?.includes("Insufficient credits") || err.message?.includes("credit")) {
-        toast.error("Bulk Download Failed", {
-          id: 'credits-error',
-          description: `Bulk download requires ${videos.length} credits. You don't have enough.`,
-          action: {
-            label: "Get Credits",
-            onClick: () => window.open("/pricing", "_blank")
-          },
-          duration: 5000,
+        // 获取当前积分
+        const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
+        setModalConfig({
+          required: videos.length,
+          current: currentCredits,
+          feature: `Bulk Download (${videos.length} videos)`
         });
+        setIsCreditsModalOpen(true);
       } else if (err.message?.includes("login")) {
         toast.error("Authentication Required", {
           id: 'auth-error',
@@ -551,15 +553,14 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       console.error("❌ Summary Stream Error:", err);
 
       if (err.message.includes("Insufficient credits") || err.message.includes("credit")) {
-        toast.error("AI Summary Failed", {
-          id: 'credits-error',
-          description: "AI Summary requires 2 credits. You don't have enough.",
-          action: {
-            label: "Get Credits",
-            onClick: () => window.open("/pricing", "_blank")
-          },
-          duration: 5000,
+        // 获取当前积分
+        const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
+        setModalConfig({
+          required: 2,
+          current: currentCredits,
+          feature: "AI Summary"
         });
+        setIsCreditsModalOpen(true);
       } else if (err.message.includes("login")) {
         toast.error("Authentication Required", {
           id: 'auth-error',
@@ -633,5 +634,8 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     cancelBulkDownload,
     downloadedContent,
     clearDownloadedContent,
+    isCreditsModalOpen,
+    setIsCreditsModalOpen,
+    modalConfig,
   };
 }

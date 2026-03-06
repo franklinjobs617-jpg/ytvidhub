@@ -6,6 +6,7 @@ import { subtitleApi } from "@/lib/api";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 
 interface DownloadButtonProps {
   videoUrl: string;
@@ -15,20 +16,14 @@ interface DownloadButtonProps {
 export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const { user, refreshUser } = useAuth();
   const router = useRouter();
 
   const handleDownload = async (format: 'srt' | 'vtt' | 'txt') => {
     // 检查积分
     if (user && (user.credits || 0) <= 0) {
-      toast.error('Insufficient credits', {
-        description: 'You need credits to download subtitles.',
-        action: {
-          label: 'Get Credits',
-          onClick: () => router.push('/pricing')
-        },
-        duration: 5000
-      });
+      setIsCreditsModalOpen(true);
       setIsOpen(false);
       return;
     }
@@ -74,14 +69,7 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
     } catch (error: any) {
       // 特殊处理积分不足错误
       if (error?.message?.includes('Insufficient credits') || error?.message?.includes('credit')) {
-        toast.error('Download Failed', {
-          description: "Subtitle download requires 1 credit. You don't have enough credits.",
-          action: {
-            label: 'Get Credits',
-            onClick: () => router.push('/pricing')
-          },
-          duration: 5000
-        });
+        setIsCreditsModalOpen(true);
       } else {
         toast.error(error?.message || 'Download failed. Please try again.');
       }
@@ -91,55 +79,65 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
   };
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        disabled={isDownloading}
-        className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg font-medium text-sm transition-all shadow-sm"
-      >
-        {isDownloading ? (
-          <Loader2 size={16} className="animate-spin" />
-        ) : (
-          <Download size={16} />
+    <>
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          disabled={isDownloading}
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg font-medium text-sm transition-all shadow-sm"
+        >
+          {isDownloading ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : (
+            <Download size={16} />
+          )}
+          <span className="hidden sm:inline">Download Single</span>
+          <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+
+        {isOpen && !isDownloading && (
+          <>
+            {/* 背景遮罩 */}
+            <div
+              className="fixed inset-0 z-40"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* 下拉菜单 */}
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-lg z-50 overflow-hidden">
+              <button
+                onClick={() => handleDownload('srt')}
+                className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
+              >
+                <span className="font-medium text-slate-700">SRT Format</span>
+                <span className="text-xs text-slate-400 group-hover:text-slate-600">.srt</span>
+              </button>
+              <button
+                onClick={() => handleDownload('vtt')}
+                className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
+              >
+                <span className="font-medium text-slate-700">VTT Format</span>
+                <span className="text-xs text-slate-400 group-hover:text-slate-600">.vtt</span>
+              </button>
+              <button
+                onClick={() => handleDownload('txt')}
+                className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
+              >
+                <span className="font-medium text-slate-700">TXT Format</span>
+                <span className="text-xs text-slate-400 group-hover:text-slate-600">.txt</span>
+              </button>
+            </div>
+          </>
         )}
-        <span className="hidden sm:inline">Download Single</span>
-        <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-      </button>
+      </div>
 
-      {isOpen && !isDownloading && (
-        <>
-          {/* 背景遮罩 */}
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setIsOpen(false)}
-          />
-
-          {/* 下拉菜单 */}
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-lg z-50 overflow-hidden">
-            <button
-              onClick={() => handleDownload('srt')}
-              className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
-            >
-              <span className="font-medium text-slate-700">SRT Format</span>
-              <span className="text-xs text-slate-400 group-hover:text-slate-600">.srt</span>
-            </button>
-            <button
-              onClick={() => handleDownload('vtt')}
-              className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
-            >
-              <span className="font-medium text-slate-700">VTT Format</span>
-              <span className="text-xs text-slate-400 group-hover:text-slate-600">.vtt</span>
-            </button>
-            <button
-              onClick={() => handleDownload('txt')}
-              className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
-            >
-              <span className="font-medium text-slate-700">TXT Format</span>
-              <span className="text-xs text-slate-400 group-hover:text-slate-600">.txt</span>
-            </button>
-          </div>
-        </>
-      )}
-    </div>
+      <InsufficientCreditsModal
+        isOpen={isCreditsModalOpen}
+        onClose={() => setIsCreditsModalOpen(false)}
+        requiredAmount={1}
+        featureName="Subtitle Download"
+      />
+    </>
   );
 }
+

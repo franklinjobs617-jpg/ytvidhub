@@ -11,9 +11,8 @@ interface SidebarProps {
 
 export function Sidebar({ videos, activeId, onSelect, isLoading }: SidebarProps) {
   return (
-    <div className="w-64 bg-white border-r border-slate-200/40 flex flex-col">
-      {/* 视频列表 */}
-      <div className="flex-1 overflow-y-auto">
+    <div className="w-[84px] bg-slate-50/30 flex flex-col transition-all shrink-0 z-10 hidden sm:flex">
+      <div className="flex-1 overflow-y-auto py-4 space-y-4">
         {videos.map((v: any) => {
           const isActive = activeId === v.id;
 
@@ -22,33 +21,20 @@ export function Sidebar({ videos, activeId, onSelect, isLoading }: SidebarProps)
               key={v.id}
               onClick={() => !isLoading && onSelect(v)}
               className={`
-                relative group flex items-center gap-3 p-3 transition-colors border-b border-slate-50
-                ${isActive ? "bg-blue-50" : "hover:bg-slate-50"}
+                relative group flex items-center justify-center transition-all
                 ${isLoading && !isActive ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
               `}
+              title={v.title}
             >
-              {/* 激活指示器 */}
-              {isActive && (
-                <motion.div
-                  layoutId="activeIndicator"
-                  className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600"
+              <div className={`
+                w-[60px] aspect-video shrink-0 rounded-md overflow-hidden relative transition-all duration-300
+                ${isActive ? "ring-2 ring-violet-500 shadow-md ring-offset-2 ring-offset-slate-50" : "ring-1 ring-slate-200 hover:ring-slate-300 hover:shadow-sm opacity-60 hover:opacity-100"}
+              `}>
+                <img
+                  src={v.thumbnail}
+                  alt={v.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-              )}
-
-              {/* 缩略图 */}
-              <img
-                src={v.thumbnail}
-                alt=""
-                className="w-20 h-11 object-cover rounded flex-shrink-0 bg-slate-100"
-              />
-
-              {/* 标题 */}
-              <div className="flex-1 min-w-0">
-                <p className={`text-xs leading-tight line-clamp-2 ${
-                  isActive ? "font-semibold text-slate-900" : "font-medium text-slate-600"
-                }`}>
-                  {v.title}
-                </p>
               </div>
             </div>
           );

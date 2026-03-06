@@ -13,16 +13,13 @@ export const VideoPlayer = React.forwardRef<any, VideoPlayerProps>(({ videoId, s
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const lastUpdateRef = useRef<number>(0);
 
-  // 暴露播放控制方法给父组件
   React.useImperativeHandle(ref, () => ({
     togglePlayPause: () => {
       if (iframeRef.current?.contentWindow) {
-        // 先尝试暂停，如果已经暂停则播放
         iframeRef.current.contentWindow.postMessage(
           JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
           "*"
         );
-        // 延迟一点再尝试播放（如果视频已经暂停）
         setTimeout(() => {
           iframeRef.current?.contentWindow?.postMessage(
             JSON.stringify({ event: "command", func: "playVideo", args: [] }),
@@ -57,7 +54,7 @@ export const VideoPlayer = React.forwardRef<any, VideoPlayerProps>(({ videoId, s
             onTimeUpdate(data.info.currentTime);
           }
         }
-      } catch {}
+      } catch { }
     };
 
     window.addEventListener("message", handleMessage);
@@ -72,7 +69,6 @@ export const VideoPlayer = React.forwardRef<any, VideoPlayerProps>(({ videoId, s
     );
   };
 
-  // 切换视频时使用 loadVideoById，避免重新加载 iframe
   useEffect(() => {
     if (!videoId || !iframeRef.current?.contentWindow) return;
 

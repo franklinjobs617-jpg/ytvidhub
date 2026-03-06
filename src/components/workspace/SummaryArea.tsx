@@ -15,8 +15,14 @@ import {
   ChevronDown,
   FileText,
   FileDown,
+  Clock,
+  Loader2,
+  MoreHorizontal,
+  Zap,
+  X
 } from "lucide-react";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
+import { InsufficientCreditsModal } from './InsufficientCreditsModal';
 
 interface StudyCard {
   question: string;
@@ -43,6 +49,7 @@ interface CardsViewProps {
   cardsStatus: string;
   onSeek: (time: string) => void;
   videoUrl?: string;
+  onGenerateCards: () => void;
 }
 
 interface BrowseCardsProps {
@@ -125,6 +132,9 @@ export function SummaryArea({
   const [cardsStatus, setCardsStatus] = useState('');
   const { toasts, removeToast, success, error: showError, info: showInfo } = useToast();
 
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
+  const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
+
   const handleCopy = () => {
     navigator.clipboard.writeText(data || "");
     setCopied(true);
@@ -140,7 +150,10 @@ export function SummaryArea({
 
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-      if (!token) { showError('Please login first'); return; }
+      if (!token) {
+        showError('Authentication Required', 'Authentication is required to perform this action.');
+        return;
+      }
 
       const res = await fetch('/api/study-cards', {
         method: 'POST',
@@ -150,7 +163,18 @@ export function SummaryArea({
 
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
-        showError(json.error || 'Failed to generate study cards');
+        if (res.status === 402) {
+          // 获取当前积分
+          const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
+          setModalConfig({
+            required: 1,
+            current: currentCredits,
+            feature: "Study Cards"
+          });
+          setIsCreditsModalOpen(true);
+        } else {
+          showError('Generation Failed', json.error || 'An error occurred. Please try again later.');
+        }
         return;
       }
 
@@ -205,8 +229,8 @@ export function SummaryArea({
         setCardsData(prev => [...prev, ...final.cards]);
       }
       setCardsStatus('');
-    } catch {
-      showError('Failed to generate study cards');
+    } catch (err: any) {
+      showError('Generation Failed', 'An error occurred. Please try again later.');
     } finally {
       setIsCardsLoading(false);
     }
@@ -214,64 +238,57 @@ export function SummaryArea({
 
   return (
     <div className="h-full flex flex-col bg-slate-50">
-      {/* Header */}
-      <header className="flex h-16 px-6 border-b border-slate-200 bg-white items-center justify-between shrink-0 sticky top-0 z-30 shadow-sm">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <BookOpen size={20} className="text-slate-700" />
-              {isLoading && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-              )}
-            </div>
-            <div>
-              <h2 className="font-semibold text-slate-900">
-                {isLoading ? 'Analyzing...' : 'Analysis'}
-              </h2>
-              <p className="text-xs text-slate-500">
-                {isLoading ? 'AI is processing content' :
-                  viewMode === 'summary' ? 'AI Summary' : `${cardsData.length} study cards`}
-              </p>
-            </div>
-          </div>
+      <header className="flex h-[52px] border-b border-slate-100 bg-white items-center justify-between shrink-0 sticky top-0 z-30 px-2 lg:px-4">
+        <div className="flex items-center h-full">
+          <button
+            onClick={() => setViewMode('summary')}
+            className={`
+              relative flex items-center h-full px-4 lg:px-6 text-[13px] lg:text-sm font-semibold transition-all duration-300
+              ${viewMode === 'summary' ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'}
+            `}
+          >
+            {viewMode === 'summary' && (
+              <motion.div
+                layoutId="summaryActiveTabIndicator"
+                className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-full shadow-[0_-1px_10px_rgba(37,99,235,0.3)]"
+              />
+            )}
+            <FileText size={16} className={`mr-2.5 transition-transform duration-300 ${viewMode === 'summary' ? 'scale-110 text-blue-600' : 'text-slate-400'}`} />
+            Summary
+          </button>
 
-          {/* View Mode Toggle */}
-          {data && cardsData.length > 0 && (
-            <div className="flex items-center bg-slate-100 rounded-lg p-1">
-              <button
-                onClick={() => setViewMode('summary')}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${viewMode === 'summary'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-800'
-                  }`}
-              >
-                Summary
-              </button>
-              <button
-                onClick={() => setViewMode('cards')}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${viewMode === 'cards'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-800'
-                  }`}
-              >
-                Study Cards ({cardsData.length})
-              </button>
-            </div>
-          )}
+          {/* Study (Cards) Tab */}
+          <button
+            onClick={() => setViewMode('cards')}
+            disabled={!videoUrl}
+            className={`
+              relative flex items-center h-full px-4 lg:px-6 text-[13px] lg:text-sm font-semibold transition-all duration-300
+              ${!videoUrl
+                ? 'text-slate-200 cursor-not-allowed opacity-50'
+                : viewMode === 'cards'
+                  ? 'text-slate-900'
+                  : 'text-slate-400 hover:text-slate-600'
+              }
+            `}
+          >
+            {viewMode === 'cards' && (
+              <motion.div
+                layoutId="summaryActiveTabIndicator"
+                className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-full shadow-[0_-1px_10px_rgba(37,99,235,0.3)]"
+              />
+            )}
+            <BookOpen size={16} className={`mr-2.5 transition-transform duration-300 ${viewMode === 'cards' ? 'scale-110 text-blue-600' : 'text-slate-400'}`} />
+            Study
+            {cardsData.length > 0 && (
+              <span className={`ml-2 px-1.5 py-0.5 rounded-md text-[10px] font-bold shadow-sm ${viewMode === 'cards' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500'
+                }`}>
+                {cardsData.length}
+              </span>
+            )}
+          </button>
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Loading indicator in header */}
-          {isLoading && (
-            <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-700 rounded-lg">
-              <div className="flex gap-1">
-                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"></div>
-              </div>
-              <span className="text-sm font-medium">Processing</span>
-            </div>
-          )}
 
           {data && !isLoading && (
             <ReAnalyzeButton onRegenerate={onRegenerate} toast={{ success, error: showError, info: showInfo }} />
@@ -297,21 +314,23 @@ export function SummaryArea({
         </div>
       </header>
 
-      {/* Content */}
+      {/* Content Area - Decoupled View Modes */}
       <div className="flex-1 overflow-hidden">
-        {!data && !isLoading ? (
-          <EmptyState onStartAnalysis={onStartAnalysis} />
-        ) : (isLoading && !data) ? (
-          <LoadingState />
-        ) : viewMode === 'summary' ? (
-          <SummaryContent
-            data={data}
-            isLoading={isLoading}
-            onGenerateCards={generateCards}
-            isCardsLoading={isCardsLoading}
-            hasCards={cardsData.length > 0}
-            onViewCards={() => setViewMode('cards')}
-          />
+        {viewMode === 'summary' ? (
+          !data && !isLoading ? (
+            <EmptyState onStartAnalysis={onStartAnalysis} />
+          ) : (isLoading && !data) ? (
+            <LoadingState title="Generating Summary" subtitle="Synthesizing video content" />
+          ) : (
+            <SummaryContent
+              data={data}
+              isLoading={isLoading}
+              onGenerateCards={generateCards}
+              isCardsLoading={isCardsLoading}
+              hasCards={cardsData.length > 0}
+              onViewCards={() => setViewMode('cards')}
+            />
+          )
         ) : (
           <CardsView
             cards={cardsData}
@@ -320,115 +339,134 @@ export function SummaryArea({
             cardsStatus={cardsStatus}
             onSeek={onSeek}
             videoUrl={videoUrl}
+            onGenerateCards={generateCards}
           />
         )}
       </div>
 
       <ToastContainer toasts={toasts} onRemove={removeToast} />
+
+      <InsufficientCreditsModal
+        isOpen={isCreditsModalOpen}
+        onClose={() => setIsCreditsModalOpen(false)}
+        requiredAmount={modalConfig.required}
+        featureName={modalConfig.feature}
+      />
     </div>
   );
 }
 
-// 加载状态组件
-function LoadingState() {
+// 加载状态组件 - 具体化、工程化风格 (Deterministic & Practical)
+function LoadingState({ title = "Processing", subtitle = "Extracting and structuring" }: { title?: string, subtitle?: string }) {
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setElapsed((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-sm"
-      >
-        <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <BookOpen size={28} className="text-blue-600" />
+    <div className="h-full flex flex-col items-center justify-center p-8 bg-white">
+      <div className="w-full max-w-[340px] flex flex-col">
+        {/* Top Header */}
+        <div className="flex items-start justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center border border-slate-200">
+              <Loader2 size={18} className="text-blue-600 animate-spin" />
+            </div>
+            <div>
+              <h2 className="text-[13px] font-semibold text-slate-900">{title}</h2>
+              <p className="text-[11px] text-slate-500">{subtitle}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end">
+            <div className="flex items-center gap-1.5 text-slate-600 bg-slate-50 px-2 py-1 rounded-md border border-slate-200 shadow-sm">
+              <Clock size={12} className="text-slate-400" />
+              <span className="text-[11px] font-medium font-mono tabular-nums">
+                {elapsed}s / ~45s
+              </span>
+            </div>
+          </div>
         </div>
 
-        <h2 className="text-xl font-semibold text-slate-800 mb-2">
-          AI is Analyzing...
-        </h2>
-        <p className="text-slate-500 text-sm mb-6">
-          This may take 30–60 seconds.
-        </p>
+        {/* Progress tracks (Fake steps to make it feel deterministic) */}
+        <div className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-medium text-slate-700 flex items-center gap-2">
+                <Check size={14} className="text-green-500" /> Initializing Task
+              </span>
+              <span className="text-slate-400">Done</span>
+            </div>
+          </div>
 
-        <div className="flex items-center justify-center gap-1.5">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-medium text-slate-900 flex items-center gap-2">
+                <Loader2 size={14} className="text-blue-600 animate-spin" /> Heavy Processing
+              </span>
+              <span className="text-blue-600 font-medium">{Math.min(99, Math.floor((elapsed / 45) * 100))}%</span>
+            </div>
+            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-blue-600"
+                initial={{ width: "5%" }}
+                animate={{ width: "95%" }}
+                transition={{ duration: 45, ease: "easeOut" }}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 opacity-40">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-medium text-slate-700 flex items-center gap-2">
+                <div className="w-3.5 h-3.5 border border-slate-300 rounded-full" /> Finalizing Result
+              </span>
+              <span className="text-slate-400">Waiting</span>
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
 
-// 空状态组件 - NotebookLM风格，添加手动开始按钮
+// 空状态组件 - 实用工具风格 (Practical Tool Style)
 function EmptyState({ onStartAnalysis }: any) {
   return (
-    <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md"
-      >
-        {/* Simple Icon - NotebookLM style */}
-        <div className="w-16 h-16 bg-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
-          <BookOpen size={28} className="text-slate-600" />
+    <div className="h-full flex flex-col items-center justify-center p-8 bg-white relative overflow-hidden text-center">
+      <div className="w-full max-w-[420px] flex flex-col items-center relative z-10">
+
+        {/* 实用图标容器 */}
+        <div className="w-14 h-14 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center mb-5 shadow-sm">
+          <FileText size={22} className="text-slate-600" />
         </div>
 
-        {/* Content */}
-        <h2 className="text-xl font-semibold text-slate-800 mb-3">
-          Ready for Analysis
+        {/* 标题与描述 */}
+        <h2 className="text-[18px] font-bold text-slate-900 tracking-tight mb-2">
+          Study Notes Ready to Generate
         </h2>
-        <p className="text-slate-600 mb-6 leading-relaxed">
-          Generate AI-powered study materials and insights from this video content.
+        <p className="text-[13px] text-slate-500 leading-relaxed mb-8 max-w-[320px]">
+          Convert this video into structured notes and interactive flashcards to accelerate your learning.
         </p>
 
-        {/* Start Analysis Button */}
+        {/* CTA 按钮: 更明确的动作与时间 */}
         <button
           onClick={onStartAnalysis}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all shadow-lg hover:shadow-xl mb-6"
+          className="group relative flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 outline-none rounded-lg text-white text-[13px] font-semibold transition-all shadow-sm w-full max-w-[260px]"
         >
-          <Sparkles size={20} />
-          Start AI Analysis
+          <FileText size={16} className="opacity-90" />
+          <span>Generate Notes</span>
         </button>
 
-        {/* What to expect */}
-        <div className="text-left space-y-3">
-          <div className="flex items-start gap-3">
-            <div className="w-5 h-5 bg-slate-100 rounded flex items-center justify-center mt-0.5">
-              <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-slate-700">Key Insights</p>
-              <p className="text-xs text-slate-500">Important concepts and takeaways</p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-5 h-5 bg-slate-100 rounded flex items-center justify-center mt-0.5">
-              <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-slate-700">Study Cards</p>
-              <p className="text-xs text-slate-500">Interactive learning materials</p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-5 h-5 bg-slate-100 rounded flex items-center justify-center mt-0.5">
-              <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-slate-700">Structured Summary</p>
-              <p className="text-xs text-slate-500">Organized content breakdown</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 pt-4 border-t border-slate-200">
-          <p className="text-xs text-slate-500">
-            Analysis typically takes 30-60 seconds
-          </p>
-        </div>
-      </motion.div>
+        <p className="text-[11px] text-slate-500 mt-4 flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
+          <Clock size={12} className="text-slate-400" />
+          Estimated processing time: ~45 seconds
+        </p>
+      </div>
     </div>
   );
 }
@@ -453,7 +491,7 @@ function StreamingText({ content, isLoading }: { content: string; isLoading: boo
     // 打字机效果
     let currentIndex = displayedContent.length;
     const targetLength = content.length;
-    
+
     if (currentIndex >= targetLength) {
       setIsComplete(true);
       return;
@@ -501,7 +539,7 @@ function StreamingText({ content, isLoading }: { content: string; isLoading: boo
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="mt-4 flex items-center gap-2 text-green-600 text-sm font-medium"
+          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
         >
           <motion.div
             initial={{ scale: 0 }}
@@ -586,7 +624,7 @@ function LoadingSkeleton() {
 }
 
 // 卡片视图组件 - NotebookLM风格重设计
-function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, videoUrl }: CardsViewProps) {
+function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, videoUrl, onGenerateCards }: any) {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [studyMode, setStudyMode] = useState<'browse' | 'study'>('browse');
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -610,44 +648,53 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
       if (videoUrl) {
         try {
           localStorage.setItem(`study-progress-${videoUrl}`, JSON.stringify([...next]));
-        } catch {}
+        } catch { }
       }
       return next;
     });
   };
 
   if (isCardsLoading && cards.length === 0) {
-    return (
-      <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-sm">
-          <div className="w-16 h-16 bg-violet-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Sparkles size={28} className="text-violet-600" />
-          </div>
-          <h2 className="text-xl font-semibold text-slate-800 mb-2">Generating Study Cards...</h2>
-          <p className="text-slate-500 text-sm mb-4">
-            {cardsStatus || 'AI is creating personalized flashcards'}
-          </p>
-          <div className="flex justify-center gap-1.5">
-            {[0, 1, 2].map(i => (
-              <div key={i} className="w-2 h-2 bg-violet-500 rounded-full animate-bounce"
-                style={{ animationDelay: `${i * 0.15}s` }} />
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    );
+    return <LoadingState title="Generating Study Cards" subtitle={cardsStatus || "Creating contextual flashcards"} />;
   }
 
   if (cards.length === 0) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-slate-50">
-        <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mb-6">
-          <BookOpen size={32} className="text-white" />
+      <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-white relative overflow-hidden">
+        <div className="w-full max-w-[420px] flex flex-col items-center relative z-10">
+
+          {/* 实用图标容器 - 与 Summary 保持一致 */}
+          <div className="w-14 h-14 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center mb-5 shadow-sm">
+            <BookOpen size={22} className="text-slate-600" />
+          </div>
+
+          {/* 标题与描述 */}
+          <h2 className="text-[18px] font-bold text-slate-900 tracking-tight mb-2">
+            Study Cards Ready to Generate
+          </h2>
+          <p className="text-[13px] text-slate-500 leading-relaxed mb-8 max-w-[320px]">
+            Generate AI flashcards to test your knowledge and retain key concepts from this video.
+          </p>
+
+          {/* CTA 按钮 - 与 Summary 保持一致的蓝色 */}
+          <button
+            onClick={onGenerateCards}
+            disabled={isCardsLoading}
+            className="group relative flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 outline-none rounded-lg text-white text-[13px] font-semibold transition-all shadow-sm w-full max-w-[260px]"
+          >
+            {isCardsLoading ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Sparkles size={16} className="opacity-90" />
+            )}
+            <span>{isCardsLoading ? "Generating Cards..." : "Generate Study Cards"}</span>
+          </button>
+
+          <p className="text-[11px] text-slate-500 mt-4 flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
+            <Clock size={12} className="text-slate-400" />
+            Estimated processing time: ~45 seconds (1 Credit)
+          </p>
         </div>
-        <h3 className="text-xl font-bold text-slate-800 mb-3">Ready to Create Study Cards</h3>
-        <p className="text-slate-600 text-sm max-w-md leading-relaxed">
-          Study cards will appear here when the AI analysis includes interactive learning content.
-        </p>
       </div>
     );
   }
@@ -837,15 +884,14 @@ function StudyCards({ cards, currentIndex, setCurrentIndex, onSeek, masteredCard
             {cards.map((_: StudyCard, i: number) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
-                  masteredCards.has(i)
-                    ? 'bg-green-500'
-                    : i < currentIndex
+                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${masteredCards.has(i)
+                  ? 'bg-green-500'
+                  : i < currentIndex
                     ? 'bg-slate-300'
                     : i === currentIndex
-                    ? 'bg-blue-400'
-                    : 'bg-slate-200'
-                }`}
+                      ? 'bg-blue-400'
+                      : 'bg-slate-200'
+                  }`}
               />
             ))}
           </div>

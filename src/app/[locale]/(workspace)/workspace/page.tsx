@@ -26,9 +26,12 @@ import {
   ArrowLeft,
   Sparkles,
   Video as VideoIcon,
+  Zap,
 } from "lucide-react";
 import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/lib/youtube";
 import { BatchGridView } from "@/components/workspace/BatchGridView";
+
+import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -72,7 +75,7 @@ function WorkspaceContent() {
     isSummaryMode ? "analysis" : "video"
   );
 
-  const [leftWidth, setLeftWidth] = useState(35); // 从50改为35
+  const [leftWidth, setLeftWidth] = useState(40); // 调整默认比例分配 40:60，右侧留给功能区域更多空间
 
   const analysisCache = useRef<Map<string, string>>(new Map());
   const isAnalyzing = useRef<Set<string>>(new Set());
@@ -86,16 +89,20 @@ function WorkspaceContent() {
   const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
 
   const {
-    analyzeUrls,
-    generateAiSummary,
-    summaryData,
     isAiLoading,
+    summaryData,
     setSummaryData,
+    generateAiSummary,
+    analyzeUrls,
     startSingleDownload,
     startBulkDownload,
+    isAnalyzing: isTranscriptAnalyzing,
     isDownloading,
     progress,
     statusText,
+    isCreditsModalOpen,
+    setIsCreditsModalOpen,
+    modalConfig,
   } = useSubtitleDownloader(refreshUser);
 
   useEffect(() => {
@@ -617,9 +624,9 @@ function WorkspaceContent() {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-white overflow-hidden font-sans">
-      <header className="h-14 border-b border-slate-100 flex items-center justify-between px-2 sm:px-4 shrink-0 z-[60] bg-white gap-2 sm:gap-4">
-        <div className="flex items-center gap-3 shrink-0">
+    <div className="bg-[#F7F9FC] h-screen overflow-hidden flex flex-col font-sans">
+      <header className="h-14 border-b border-gray-200 flex items-center justify-between px-2 sm:px-4 shrink-0 z-[60] bg-white gap-2 sm:gap-4 relative">
+        <div className="flex items-center gap-3 shrink-0 relative z-10">
           <button
             onClick={() => {
               if (shouldShowBatchMode && !showBatchView) {
@@ -635,50 +642,40 @@ function WorkspaceContent() {
           {shouldShowBatchMode && !showBatchView && (
             <span className="hidden sm:inline text-xs text-slate-500 font-medium">Back to Playlist</span>
           )}
-          <span className="hidden md:inline text-lg font-black tracking-tighter text-violet-600 italic">
+          <span className="hidden md:inline text-lg font-black tracking-tighter text-slate-800 italic">
             YTvidHub
           </span>
         </div>
 
-        {/* URL 输入区域 - 在移动端隐藏 */}
-        <div className="hidden sm:flex flex-1 min-w-0 max-w-2xl">
+        {/* URL 输入区域 - 绝对居中 */}
+        <div className="hidden sm:flex absolute left-1/2 -translate-x-1/2 w-[500px] lg:w-[600px] xl:w-[680px]">
           <UrlInput
             value={inputUrl}
             onChange={setInputUrl}
             onSubmit={handleAnalyzeNewUrl}
             isLoading={isAddingVideo}
+            className="w-full"
           />
         </div>
 
         {/* 右侧按钮组 */}
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-          {/* 下载按钮 */}
-          <DownloadButton
-            videoUrl={currentVideo.url}
-            videoTitle={currentVideo.title}
-          />
-
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-100 rounded-full">
-            <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center">
-              <span className="text-[10px] font-black text-amber-900">C</span>
-            </div>
-            <span className="text-sm font-bold text-amber-700 tabular-nums">
+        <div className="flex items-center gap-3 shrink-0 relative z-10">
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded-full shadow-sm">
+            <Zap size={14} className="text-yellow-500 fill-yellow-500" />
+            <span className="text-sm font-bold text-yellow-700 tabular-nums">
               {user?.credits ?? 0}
             </span>
-            <span className="hidden lg:inline text-[10px] font-bold text-amber-600/70 uppercase tracking-wide">
+            <span className="text-[11px] font-bold text-yellow-600 uppercase tracking-wide">
               Credits
             </span>
           </div>
 
           <button
             onClick={() => router.push("/pricing")}
-            className="hidden sm:flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold rounded-full transition-all shadow-sm group"
+            className="hidden sm:flex items-center justify-center px-4 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-px"
           >
-            <Sparkles size={12} className="text-amber-400 group-hover:scale-110 transition-transform" />
-            <span className="hidden sm:inline">Upgrade</span>
+            Upgrade
           </button>
-
-          <DailyRewardButton />
         </div>
       </header>
 
@@ -719,14 +716,6 @@ function WorkspaceContent() {
             />
           </div>
 
-          {/* 分析状态指示器 */}
-          <AnalysisStatus
-            isAnalyzing={isAiLoading}
-            hasResult={!!summaryData && !isAiLoading}
-            error={analysisError}
-            onRetry={() => handleRequestAnalysis(undefined, undefined, true)}
-          />
-
           <ResponsiveLayout
             activeTab={activeTab}
             onTabChange={setActiveTab}
@@ -734,14 +723,17 @@ function WorkspaceContent() {
             onLeftWidthChange={setLeftWidth}
             leftPanel={
               <>
-                <div className="p-3 shrink-0 bg-white border-b border-slate-50">
-                  <VideoPlayer
-                    ref={videoPlayerRef}
-                    videoId={currentVideo.id}
-                    seekTime={seekTime}
-                    onTimeUpdate={setCurrentTime}
-                  />
-                  <h1 className="mt-3 text-sm md:text-base font-semibold text-slate-800 line-clamp-2 leading-tight">
+                {/* 改造为“参考视窗 (Reference Window)” */}
+                <div className="p-4 shrink-0 bg-slate-50/50 border-b border-slate-100 flex flex-col items-center justify-center gap-4 group">
+                  <div className="w-full max-w-[320px] aspect-video rounded-xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.1)] ring-1 ring-slate-200/50 bg-black/5 overflow-hidden transition-transform duration-300 group-hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.12)]">
+                    <VideoPlayer
+                      ref={videoPlayerRef}
+                      videoId={currentVideo.id}
+                      seekTime={seekTime}
+                      onTimeUpdate={setCurrentTime}
+                    />
+                  </div>
+                  <h1 className="text-[13px] md:text-sm font-semibold text-slate-800 line-clamp-2 md:line-clamp-3 leading-relaxed text-center flex-1 max-w-[400px]">
                     {currentVideo.title}
                   </h1>
                 </div>
@@ -773,15 +765,6 @@ function WorkspaceContent() {
             }
             rightPanel={
               <div className="w-full h-full flex flex-col">
-                {/* 桌面端胶囊切换 */}
-                <div className="hidden md:block">
-                  <TabSwitcher
-                    activeTab={activeTab}
-                    onTabChange={setActiveTab}
-                    hasAnalysis={!!summaryData}
-                    isAnalyzing={isAiLoading}
-                  />
-                </div>
 
                 <div className="flex-1 overflow-hidden">
                   <SummaryArea
@@ -797,7 +780,6 @@ function WorkspaceContent() {
               </div>
             }
           >
-            {/* 这里可以放置其他共享内容 */}
           </ResponsiveLayout>
         </main>
       </div>
@@ -840,6 +822,13 @@ function WorkspaceContent() {
           </div>
         </div>
       )}
+      {/* Credits Modal */}
+      <InsufficientCreditsModal
+        isOpen={isCreditsModalOpen}
+        onClose={() => setIsCreditsModalOpen(false)}
+        requiredAmount={modalConfig.required}
+        featureName={modalConfig.feature}
+      />
     </div>
   );
 }
