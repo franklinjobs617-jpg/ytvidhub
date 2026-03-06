@@ -9,6 +9,238 @@
     "description": "Download YouTube subtitles for free in SRT, VTT, and TXT formats. Extract captions from any YouTube video instantly. No registration required.",
     "keywords": "youtube subtitle downloader, download youtube subtitles, free subtitle downloader, youtube caption downloader, download youtube captions, youtube cc download"
   },
+  "transcriptPage": {
+    "title": "YouTube Transcript Generator - Free Online YouTube to Text Tool | YTVidHub",
+    "description": "Stop rewinding videos! Our free YouTube transcript generator converts any YouTube video to text instantly. AI-powered accuracy, supports all languages. No signup needed!",
+    "keywords": "youtube transcript generator, youtube transcript, generate youtube transcript, youtube video transcript, free transcript generator, youtube to text converter",
+    "generating": "Generating transcript",
+    "hero": {
+      "title": "YouTube Transcript Generator",
+      "subtitle": "Transform any YouTube video into accurate, searchable text transcripts. Our AI-powered generator delivers professional-quality transcripts in seconds, supporting 100+ languages and multiple export formats.",
+      "benefits": {
+        "free": "100% Free",
+        "accurate": "AI-Enhanced Accuracy",
+        "fast": "Lightning Fast",
+        "formats": "Multiple Formats"
+      }
+    },
+    "interface": {
+      "title": "Generate YouTube Transcript",
+      "subtitle": "Paste any YouTube video URL to get started",
+      "placeholder": "Paste YouTube video URL here...",
+      "generate": "Generate Transcript",
+      "tryExample": "Try an example"
+    },
+    "stats": {
+      "transcripts": "Transcripts Generated",
+      "languages": "Languages Supported",
+      "accuracy": "Accuracy Rate",
+      "speed": "Average Speed"
+    },
+    "features": {
+      "title": "Best YouTube Transcript Generator - Why Choose YTVidHub?",
+      "subtitle": "Experience the most advanced YouTube transcript extraction technology with unmatched accuracy and speed.",
+      "accurate": {
+        "title": "AI-Powered YouTube Transcript Generation with 99.5% Accuracy",
+        "description": "Our advanced AI algorithms ensure 99.5% accuracy in transcript generation, handling various accents, technical terms, and background noise with precision."
+      },
+      "formats": {
+        "title": "Multiple Export Formats - SRT, VTT, TXT Transcript Download",
+        "description": "Export your transcripts in SRT, VTT, or TXT formats. Perfect for video editing, subtitles, accessibility, or content analysis."
+      },
+      "languages": {
+        "title": "100+ Languages YouTube Transcript Extractor",
+        "description": "Generate transcripts in over 100 languages with native speaker-level accuracy. Automatic language detection included."
+      },
+      "fast": {
+        "title": "Lightning Fast YouTube Video to Text Conversion",
+        "description": "Get your complete transcript in under 30 seconds. Our optimized servers handle videos of any length efficiently."
+      },
+      "secure": {
+        "title": "Privacy & Security First",
+        "description": "Your videos are never stored on our servers. All processing happens securely and your data is automatically deleted after generation."
+      },
+      "ai": {
+        "title": "Smart Content Analysis",
+        "description": "Beyond transcription - get AI-powered summaries, key points extraction, and content insights from your YouTube videos."
+      }
+    },
+    "benefits": {
+      "title": "Additional Benefits",
+      "noRegistration": {
+        "title": "No Registration Required",
+        "description": "Start generating transcripts immediately without creating an account or providing personal information."
+      },
+      "unlimited": {
+        "title": "Unlimited Usage",
+        "description": "Generate as many transcripts as you need. No daily limits or usage restrictions for our free users."
+      },
+      "privacy": {
+        "title": "Complete Privacy",
+        "description": "We don't store your videos or transcripts. Everything is processed securely and deleted immediately after generation."
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Our dedicated support team is available around the clock to help you with any questions or issues."
+      }
+    },
+    "howItWorks": {
+      "title": "How to Extract YouTube Transcript - Step by Step Guide",
+      "subtitle": "Get professional-quality transcripts in just 4 simple steps. No technical knowledge required.",
+      "step1": {
+        "title": "Paste YouTube Video URL",
+        "description": "Copy and paste any YouTube video URL into our transcript generator. We support all YouTube video formats and lengths."
+      },
+      "step2": {
+        "title": "Click Generate Transcript",
+        "description": "Our AI-powered system immediately begins processing your video, analyzing audio patterns and speech recognition."
+      },
+      "step3": {
+        "title": "Review Generated YouTube Transcript",
+        "description": "Preview your generated transcript with timestamps. Our AI ensures high accuracy with proper punctuation and formatting."
+      },
+      "step4": {
+        "title": "Download YouTube Transcript in Multiple Formats",
+        "description": "Export your transcript in SRT, VTT, or TXT format. Perfect for subtitles, content analysis, or accessibility purposes."
+      },
+      "cta": {
+        "title": "Ready to Generate Your First YouTube Transcript?",
+        "description": "Join thousands of content creators, educators, and professionals who trust our YouTube transcript generator.",
+        "button": "Start Generating Transcripts Now"
+      }
+    },
+    "comparison": {
+      "title": "Best YouTube Transcript Generator - Why YTVidHub Beats Competitors",
+      "subtitle": "See how our YouTube transcript generator outperforms the competition in every aspect that matters.",
+      "headers": {
+        "feature": "Feature",
+        "others": "Other Tools"
+      },
+      "features": {
+        "speed": "YouTube Transcript Generation Speed",
+        "accuracy": "Transcript Accuracy Rate",
+        "formats": "Export Formats (SRT, VTT, TXT)",
+        "languages": "Language Support",
+        "registration": "Registration Required",
+        "ads": "Advertisements",
+        "privacy": "Data Privacy",
+        "ai": "AI Enhancement"
+      },
+      "ytvidhub": {
+        "speed": "Under 30 seconds",
+        "accuracy": "99.5% AI-enhanced",
+        "formats": "SRT, VTT, TXT",
+        "languages": "100+ languages",
+        "registration": "No registration needed",
+        "ads": "Completely ad-free",
+        "privacy": "Zero data retention",
+        "ai": "Advanced AI analysis"
+      },
+      "others": {
+        "speed": "2-5 minutes",
+        "accuracy": "85-90% basic",
+        "formats": "Limited options",
+        "languages": "10-20 languages",
+        "registration": "Account required",
+        "ads": "Heavy advertising",
+        "privacy": "Data stored indefinitely",
+        "ai": "Basic transcription only"
+      },
+      "cta": "Try Best YouTube Transcript Generator Now"
+    },
+    "testimonials": {
+      "title": "Trusted by Content Creators Worldwide",
+      "subtitle": "See what our users say about our YouTube transcript generator and how it's transformed their workflow.",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "Content Creator",
+        "content": "This YouTube transcript generator is a game-changer! The accuracy is incredible and it saves me hours of manual transcription work. Perfect for creating subtitles for my YouTube channel."
+      },
+      "testimonial2": {
+        "name": "Dr. Michael Chen",
+        "role": "Online Educator",
+        "content": "As an educator, I need accurate transcripts for accessibility. YTVidHub delivers 99%+ accuracy consistently, and the multiple format options are exactly what I need."
+      },
+      "testimonial3": {
+        "name": "Alex Rodriguez",
+        "role": "Video Editor",
+        "content": "The speed is unmatched - I get professional transcripts in under 30 seconds. The SRT export works perfectly with all my editing software. Highly recommended!"
+      },
+      "testimonial4": {
+        "name": "Emma Thompson",
+        "role": "Researcher",
+        "content": "I analyze hundreds of videos for my research. This tool handles technical terminology and multiple languages flawlessly. It's become essential to my workflow."
+      },
+      "testimonial5": {
+        "name": "David Kim",
+        "role": "Filmmaker",
+        "content": "The AI enhancement really shows - it catches nuances that other tools miss. Plus, the privacy-first approach gives me confidence when working with sensitive content."
+      },
+      "testimonial6": {
+        "name": "Lisa Wang",
+        "role": "Marketing Manager",
+        "content": "We use this for all our video content analysis. The accuracy and speed help us create better content strategies. The free tier is incredibly generous too!"
+      }
+    },
+    "trustIndicators": {
+      "title": "Trusted by Professionals Worldwide",
+      "transcripts": "Transcripts Generated",
+      "users": "Active Users",
+      "rating": "User Rating",
+      "support": "Support Available"
+    }
+  },
+  "transcriptFaq": {
+    "title": "Frequently Asked Questions - YouTube Transcript Generator",
+    "subtitle": "Everything you need to know about our YouTube transcript generator. Can't find your answer? Contact our support team.",
+    "questions": {
+      "what": {
+        "question": "What is a YouTube transcript generator?",
+        "answer": "A YouTube transcript generator is a tool that automatically converts the audio content of YouTube videos into written text. Our AI-powered generator analyzes the video's audio track and creates accurate, timestamped transcripts that can be exported in various formats like SRT, VTT, or TXT."
+      },
+      "how": {
+        "question": "How accurate are the generated YouTube transcripts?",
+        "answer": "Our AI-enhanced transcript generator achieves 99.5% accuracy on average. The accuracy depends on factors like audio quality, speaker clarity, and background noise. Our advanced algorithms are specifically trained to handle various accents, technical terms, and challenging audio conditions."
+      },
+      "formats": {
+        "question": "What formats can I export my YouTube transcripts in?",
+        "answer": "You can export your YouTube transcripts in three popular formats: SRT (SubRip Subtitle), VTT (WebVTT), and TXT (Plain Text). SRT and VTT formats include timestamps, making them perfect for subtitles, while TXT provides clean text for content analysis."
+      },
+      "free": {
+        "question": "Is the YouTube transcript generator really free?",
+        "answer": "Yes, our YouTube transcript generator is completely free to use. There are no hidden fees, subscription requirements, or usage limits. You can generate unlimited transcripts without creating an account or providing payment information."
+      },
+      "accuracy": {
+        "question": "How do you ensure YouTube transcript accuracy?",
+        "answer": "We use advanced AI algorithms trained on millions of hours of audio data. Our system employs multiple layers of processing including noise reduction, speaker identification, context analysis, and grammar correction to ensure the highest possible accuracy in transcript generation."
+      },
+      "languages": {
+        "question": "Which languages are supported for YouTube transcript generation?",
+        "answer": "Our transcript generator supports over 100 languages including English, Spanish, French, German, Chinese, Japanese, Korean, Arabic, Hindi, Portuguese, Russian, Italian, Dutch, and many more. The system automatically detects the video's language and generates transcripts accordingly."
+      },
+      "extract": {
+        "question": "How to extract transcript from YouTube video automatically?",
+        "answer": "To extract a YouTube transcript automatically, simply paste the video URL into our YouTube transcript extractor. Our AI-powered system will analyze the audio and generate an accurate transcript in under 30 seconds."
+      },
+      "convert": {
+        "question": "Can I convert YouTube video to text for free?",
+        "answer": "Yes, our YouTube to text converter is completely free. You can convert unlimited YouTube videos to text transcripts without any registration or payment required."
+      },
+      "best": {
+        "question": "What is the best YouTube transcript generator in 2026?",
+        "answer": "YTVidHub is considered the best YouTube transcript generator in 2026, offering 99.5% accuracy, support for 100+ languages, and free unlimited usage with no registration required."
+      },
+      "automatic": {
+        "question": "Does YouTube have automatic transcript generation?",
+        "answer": "While YouTube has basic auto-captions, our advanced YouTube transcript generator provides much higher accuracy and better formatting, making it the preferred choice for professional use."
+      }
+    },
+    "contact": {
+      "title": "Still Have Questions?",
+      "description": "Our support team is here to help you with any questions about transcript generation or technical issues.",
+      "button": "Contact Support"
+    }
+  },
   "navigation": {
     "home": "Home",
     "features": "Features",
@@ -20,6 +252,7 @@
     "signup": "Sign Up",
     "dashboard": "Dashboard",
     "bulkDownloader": "Bulk Downloader",
+    "transcriptGenerator": "Transcript Generator",
     "extension": "Extension",
     "guide": "Guide",
     "blog": "Blog",

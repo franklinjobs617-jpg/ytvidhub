@@ -105,6 +105,16 @@ export default function Header() {
             </Link>
 
             <Link
+              href="/youtube-transcript-generator"
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/youtube-transcript-generator")
+                ? "text-blue-600"
+                : "text-slate-500 hover:text-slate-900"
+                }`}
+            >
+              {t('transcriptGenerator')}
+            </Link>
+
+            <Link
               href="/pricing"
               className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/pricing")
                 ? "text-blue-600"
@@ -340,6 +350,15 @@ export default function Header() {
                 }`}
             >
               {t('bulkDownloader')}
+            </Link>
+            <Link
+              href="/youtube-transcript-generator"
+              className={`block text-lg font-bold ${isActive("/youtube-transcript-generator")
+                ? "text-blue-600"
+                : "text-slate-900"
+                }`}
+            >
+              {t('transcriptGenerator')}
             </Link>
             <Link
               href="/pricing"
