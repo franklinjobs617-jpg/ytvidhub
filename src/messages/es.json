@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Descargar Subtitulos YouTube - Gratis SRT, VTT, TXT | YTVidHub",
-    "description": "Descargar subtitulos de YouTube gratis en formatos SRT, VTT, TXT. Descarga subtitulos youtube de cualquier video, playlist o canal. Sin registro.",
-    "keywords": "descargar subtitulos youtube, descarga subtitulos youtube, descargar subtitulos de youtube, descargar subtitulos youtube gratis, descarga masiva subtitulos youtube"
+    "title": "Descargar Subtítulos de YouTube - Descarga SRT, VTT, TXT Gratis | YTVidHub",
+    "description": "Herramienta gratuita para descargar subtítulos de YouTube. Descarga videos de YouTube con subtítulos en formato SRT, VTT, TXT de cualquier video, lista de reproducción o canal. Compatible con extracción masiva.",
+    "keywords": "descargar subtitulos de youtube, descargar videos de youtube con subtitulos, descargador de subtitulos youtube, descargar subtitulos youtube gratis, descarga masiva subtitulos youtube"
   },
   "subtitleDownloaderPage": {
     "title": "Descargador Gratuito de Subtitulos de YouTube - Descargar SRT, VTT, TXT Online | YTVidHub",
@@ -32,9 +32,9 @@
     "resources": "Recursos"
   },
   "hero": {
-    "title": "Descargar Subtitulos de YouTube Gratis",
-    "subtitle": "Descarga subtitulos de cualquier video, playlist o canal de YouTube. Extrae SRT, VTT, TXT al instante. Soporta <highlight>descarga masiva</highlight> y resumen con IA.",
-    "highlight": "descargar subtitulos youtube",
+    "title": "Descargar Subtítulos de YouTube",
+    "subtitle": "Descarga subtítulos de cualquier video, lista de reproducción o canal de YouTube. Extrae subtítulos SRT, VTT, TXT al instante. Compatible con <highlight>descarga masiva</highlight> y resumen de video con IA.",
+    "highlight": "descargador de subtítulos de listas de reproducción",
     "ready": "Listo para la extracción de subtitulos de YouTube de alta eficiencia",
     "bulkExtraction": "Descarga en lote de subtitulos de alta velocidad",
     "cta": {
@@ -118,9 +118,9 @@
     "selectVideoToSummary": "Seleccione un video para generar el resumen"
   },
   "comparisonSlider": {
-    "title": "Cómo Convertir Videos de YouTube a Texto en Lote",
-    "highlight": "descargar subtitulos de youtube",
-    "description": "Arrastra el control deslizante para ver la diferencia. Transforma horas de trabajo manual tedioso en un solo clic para extraer subtitulos de youtube.",
+    "title": "Cómo Descargar Videos de YouTube con Subtítulos en Lote",
+    "highlight": "Subtítulos en 1 ZIP",
+    "description": "Arrastra el control deslizante para ver la diferencia. Transforma horas de trabajo manual tedioso en un archivo único y organizado.",
     "before": "Antes: El trabajo manual",
     "after": "Después: Un clic, un ZIP"
   },
@@ -141,8 +141,8 @@
     }
   },
   "featuresGrid": {
-    "title": "Descargar Subtitulos de Playlists y Canales Completos de YouTube",
-    "description": "No es solo un descargador de subtitulos; somos una potencia de preparación de datos. Obtenga transcripción limpia y texto listo para modelos sin complicaciones.",
+    "title": "Descargar Subtítulos de YouTube de Listas de Reproducción y Canales Completos",
+    "description": "No es solo un descargador; somos una potencia de preparación de datos. Obtén texto limpio y listo para modelos sin complicaciones.",
     "items": {
       "clean": {
         "title": "Salida TXT limpia",
@@ -167,8 +167,8 @@
   },
   "coreCapabilities": {
     "badge": "Capacidades principales",
-    "title": "Extraer Transcripciones de YouTube para Entrenamiento LLM (ChatGPT/Claude)",
-    "description": "Descubra un conjunto de funciones diseñadas para descarga masiva, desde listas de reproducción individuales hasta bibliotecas de contenido completas.",
+    "title": "Descargar Videos de YouTube con Subtítulos para Entrenamiento LLM (ChatGPT/Claude)",
+    "description": "Descubre un conjunto de funciones diseñadas para manejar cualquier tarea, desde un video individual hasta una biblioteca de contenido completa.",
     "action": "VÉALO EN ACCIÓN",
     "actionTitle": "Descarga Masiva de Listas de Reproducción y Canales Completos",
     "actionDescription": "Ya sea una lista de reproducción completa de YouTube o un archivo de texto con cientos de enlaces, simplemente péguelo. Nuestra herramienta de descarga masiva analiza, procesa y prepara todo de manera inteligente para usted, convirtiendo horas de trabajo manual en segundos de espera.",
@@ -570,6 +570,80 @@
     "chatgptTranscripts": "Usar transcripciones de YouTube en ChatGPT",
     "whatIsSrt": "¿Qué es un archivo SRT?",
     "settingsGuide": "Guía de configuración de subtitulos",
-    "onlineExtractor": "Extractor de subtitulos en línea"
+    "onlineExtractor": "Extractor de subtítulos en línea"
+  },
+  "support": {
+    "title": "Estamos Aquí para Ayudarte",
+    "subtitle": "Obtén soporte para descargar subtítulos de YouTube, procesamiento masivo y problemas de cuenta. Nuestro equipo está listo para asistirte.",
+    "contactTitle": "Contactar Soporte",
+    "contactDescription": "¿Tienes problemas con las descargas, necesitas soporte técnico o tienes una solicitud de función? Nuestro equipo de soporte está aquí para ayudar.",
+    "emailLabel": "Correo de Soporte Oficial",
+    "responseTime": "Respuesta Promedio: 24-48h",
+    "emailNote": "El correo electrónico es la forma más efectiva de contactar a nuestro equipo de soporte técnico. Por favor incluye detalles sobre tu problema para una resolución más rápida.",
+    "howWeCanHelp": "Cómo Podemos Ayudar",
+    "categories": {
+      "technical": {
+        "title": "Problemas Técnicos",
+        "description": "Fallos en descargas, problemas de formato o errores del sitio web. Solucionaremos problemas técnicos rápidamente.",
+        "topic1": "Descarga no funciona",
+        "topic2": "Problemas de conversión de formato",
+        "topic3": "Compatibilidad del navegador",
+        "topic4": "Mensajes de error"
+      },
+      "account": {
+        "title": "Cuenta y Facturación",
+        "description": "Preguntas sobre tu cuenta, créditos, suscripción o facturación. Manejamos todas las consultas relacionadas con la cuenta.",
+        "topic1": "Saldo de créditos",
+        "topic2": "Gestión de suscripción",
+        "topic3": "Problemas de pago",
+        "topic4": "Configuración de cuenta"
+      },
+      "features": {
+        "title": "Solicitudes de Funciones",
+        "description": "¿Tienes una idea para mejorar YTVidHub? Nos encanta escuchar sugerencias de nuestra comunidad.",
+        "topic1": "Nuevas funciones",
+        "topic2": "Soporte de formatos",
+        "topic3": "Mejoras de interfaz",
+        "topic4": "Procesamiento masivo"
+      },
+      "guides": {
+        "title": "Guías de Uso",
+        "description": "¿Necesitas ayuda usando funciones específicas? Proporcionamos orientación paso a paso para todas nuestras herramientas.",
+        "topic1": "Descargas masivas",
+        "topic2": "Procesamiento de listas de reproducción",
+        "topic3": "Selección de formato",
+        "topic4": "Resúmenes con IA"
+      },
+      "api": {
+        "title": "API e Integración",
+        "description": "Preguntas de desarrolladores sobre integración con YTVidHub o uso de nuestros servicios programáticamente.",
+        "topic1": "Acceso a API",
+        "topic2": "Límites de tasa",
+        "topic3": "Ayuda de integración",
+        "topic4": "Recursos para desarrolladores"
+      },
+      "general": {
+        "title": "Consultas Generales",
+        "description": "Cualquier otra pregunta sobre YTVidHub, nuestras políticas o cómo funciona nuestro servicio.",
+        "topic1": "Preguntas sobre el servicio",
+        "topic2": "Aclaración de políticas",
+        "topic3": "Consultas de asociación",
+        "topic4": "Solicitudes de medios"
+      }
+    },
+    "beforeContact": "Antes de Contactarnos",
+    "quickFixes": "Soluciones Rápidas",
+    "includeInfo": "Incluye Esta Información",
+    "quickFix1": "Intenta actualizar la página y limpiar el caché de tu navegador",
+    "quickFix2": "Verifica si el video de YouTube tiene subtítulos disponibles",
+    "quickFix3": "Verifica que tu conexión a internet sea estable",
+    "quickFix4": "Intenta usar un navegador diferente (Chrome, Firefox, Safari)",
+    "includeInfo1": "El nombre y versión de tu navegador",
+    "includeInfo2": "La URL de YouTube que estás intentando descargar",
+    "includeInfo3": "Cualquier mensaje de error que veas",
+    "includeInfo4": "Capturas de pantalla si es posible",
+    "stillQuestions": "¿Aún Tienes Preguntas?",
+    "faqDescription": "Consulta nuestra sección completa de preguntas frecuentes para respuestas instantáneas a preguntas comunes.",
+    "visitFaq": "Visitar Preguntas Frecuentes"
   }
 }
