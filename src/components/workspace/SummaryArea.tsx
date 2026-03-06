@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import {
@@ -23,6 +23,9 @@ import {
 } from "lucide-react";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 import { InsufficientCreditsModal } from './InsufficientCreditsModal';
+
+// 学习卡片缓存
+const cardsCache = new Map<string, StudyCard[]>();
 
 interface StudyCard {
   question: string;
@@ -135,6 +138,17 @@ export function SummaryArea({
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
 
+  // 视频切换时检查缓存
+  useEffect(() => {
+    if (!videoUrl) return;
+    const cached = cardsCache.get(videoUrl);
+    if (cached && cached.length > 0) {
+      setCardsData(cached);
+    } else {
+      setCardsData([]);
+    }
+  }, [videoUrl]);
+
   const handleCopy = () => {
     navigator.clipboard.writeText(data || "");
     setCopied(true);
@@ -144,6 +158,15 @@ export function SummaryArea({
 
   const generateCards = async () => {
     if (!videoUrl || isCardsLoading) return;
+
+    // 检查缓存
+    const cached = cardsCache.get(videoUrl);
+    if (cached && cached.length > 0) {
+      setCardsData(cached);
+      setViewMode('cards');
+      return;
+    }
+
     setIsCardsLoading(true);
     setCardsData([]);
     setCardsStatus('');
@@ -226,8 +249,15 @@ export function SummaryArea({
       // Final parse
       const final = extractCards(buffer, true);
       if (final.cards.length > 0) {
-        setCardsData(prev => [...prev, ...final.cards]);
+        allParsedCards = [...allParsedCards, ...final.cards];
+        setCardsData(allParsedCards);
       }
+
+      // 保存到缓存
+      if (allParsedCards.length > 0) {
+        cardsCache.set(videoUrl, allParsedCards);
+      }
+
       setCardsStatus('');
     } catch (err: any) {
       showError('Generation Failed', 'An error occurred. Please try again later.');

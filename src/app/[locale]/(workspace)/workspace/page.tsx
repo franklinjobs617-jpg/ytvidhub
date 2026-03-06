@@ -108,14 +108,12 @@ function WorkspaceContent() {
   useEffect(() => {
     if (!currentVideo?.id) return;
 
-    setSummaryData("");
-
+    // 先检查缓存，如果有就直接设置，避免闪烁
     const cachedResult = analysisCache.current.get(currentVideo.id);
     if (cachedResult) {
-      setTimeout(() => {
-        setSummaryData(cachedResult);
-      }, 50);
-      return;
+      setSummaryData(cachedResult);
+    } else {
+      setSummaryData("");
     }
   }, [currentVideo?.id]);
 

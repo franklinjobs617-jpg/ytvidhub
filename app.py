@@ -41,6 +41,18 @@ for folder in [DOWNLOAD_FOLDER, BATCH_TEMP_FOLDER, SUBTITLE_TEMP_FOLDER]:
 # 全局任务存储 (同时用于旧版视频批量和新版字幕批量)
 tasks = {}
 
+# 字幕缓存 (避免重复下载)
+_subtitle_cache = {}
+_SUBTITLE_CACHE_TTL = 3600  # 1小时
+
+# AI 总结缓存
+_summary_cache = {}
+_SUMMARY_CACHE_TTL = 7200  # 2小时
+
+# 学习卡片缓存
+_cards_cache = {}
+_CARDS_CACHE_TTL = 7200  # 2小时
+
 # ==============================================================================
 # 1. 动态代理生成逻辑 (参考你提供的代码)
 # ==============================================================================
@@ -1522,11 +1534,24 @@ def api_video_info():
 def api_generate_summary_stream():
     data = request.get_json() or {}
     video_url = data.get('url')
-    if not video_url: 
+    if not video_url:
         return jsonify({"status": "failed", "message": "Missing URL"}), 400
-    
+
     print(f"🚀 [AI Summary] Request received for: {video_url}")
-    
+
+    # 检查缓存
+    if video_url in _summary_cache:
+        ts, cached_summary = _summary_cache[video_url]
+        if time.time() - ts < _SUMMARY_CACHE_TTL:
+            print(f"✅ [AI Summary] Cache hit, returning instantly")
+            def return_cached():
+                yield cached_summary
+            res = Response(stream_with_context(return_cached()), mimetype='text/event-stream')
+            res.headers['X-Accel-Buffering'] = 'no'
+            res.headers['Cache-Control'] = 'no-cache'
+            res.headers['Connection'] = 'keep-alive'
+            return res
+
     def generate():
         # 1. 立即告知前端正在工作
         yield "__STATUS__:Analyzing video structure...\n"
@@ -1616,6 +1641,7 @@ Transcript:
             response = requests.post(ARK_URL, headers=headers, json=payload, stream=True, timeout=180)
             thinking_notified = False
             content_started = False
+            full_summary = ""  # 收集完整内容用于缓存
             for line in response.iter_lines():
                 if line:
                     chunk = line.decode('utf-8').strip()
@@ -1637,9 +1663,15 @@ Transcript:
                                 if not content_started:
                                     content_started = True
                                     print(f"📝 [AI Summary] Content streaming started")
+                                full_summary += content
                                 yield content
                         except:
                             continue
+
+            # 保存到缓存
+            if full_summary:
+                _summary_cache[video_url] = (time.time(), full_summary)
+                print(f"💾 [AI Summary] Cached for future use")
 
         except Exception as e:
             print(f"❌ [AI Summary] Error: {str(e)}")
@@ -1659,6 +1691,19 @@ def api_generate_study_cards_stream():
     pre_transcript = data.get('transcript')  # 前端传来的已有内容（summary文本）
     if not video_url:
         return jsonify({"error": "Missing URL"}), 400
+
+    # 检查缓存
+    if video_url in _cards_cache:
+        ts, cached_cards = _cards_cache[video_url]
+        if time.time() - ts < _CARDS_CACHE_TTL:
+            print(f"✅ [Study Cards] Cache hit, returning instantly")
+            def return_cached():
+                yield cached_cards
+            res = Response(stream_with_context(return_cached()), mimetype='text/plain')
+            res.headers['X-Accel-Buffering'] = 'no'
+            res.headers['Cache-Control'] = 'no-cache'
+            res.headers['Connection'] = 'keep-alive'
+            return res
 
     def generate():
         # 如果前端已经传了 transcript（来自 AI Summary），直接用，跳过字幕获取
@@ -1735,6 +1780,7 @@ Output ONLY the card blocks in the specified format."""
             response = requests.post(ARK_URL, headers=headers, json=payload, stream=True, timeout=180)
             thinking_notified = False
             content_started = False
+            full_cards = ""  # 收集完整内容用于缓存
             for line in response.iter_lines():
                 if line:
                     chunk = line.decode('utf-8').strip()
@@ -1756,9 +1802,15 @@ Output ONLY the card blocks in the specified format."""
                                 if not content_started:
                                     content_started = True
                                     print(f"📝 [Study Cards] Content streaming started")
+                                full_cards += content
                                 yield content
                         except:
                             continue
+
+            # 保存到缓存
+            if full_cards:
+                _cards_cache[video_url] = (time.time(), full_cards)
+                print(f"💾 [Study Cards] Cached for future use")
 
         except Exception as e:
             print(f"❌ [Study Cards] Error: {str(e)}")
