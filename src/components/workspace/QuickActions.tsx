@@ -15,6 +15,7 @@ interface QuickActionsProps {
   onGenerateAiSummary?: () => void;
   hasAiSummary?: boolean;
   isGeneratingAi?: boolean;
+  onTranslate?: () => void;
 }
 
 export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi }: QuickActionsProps) {
