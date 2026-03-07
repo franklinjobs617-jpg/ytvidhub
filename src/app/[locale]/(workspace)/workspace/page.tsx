@@ -30,6 +30,8 @@ import {
 } from "lucide-react";
 import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/lib/youtube";
 import { BatchGridView } from "@/components/workspace/BatchGridView";
+import { BatchProgressModal } from "@/components/workspace/BatchProgressModal";
+import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressModal";
 
 import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
 
@@ -100,6 +102,9 @@ function WorkspaceContent() {
     isDownloading,
     progress,
     statusText,
+    bulkDownloadState,
+    playlistProcessing,
+    showPlaylistModal,
     isCreditsModalOpen,
     setIsCreditsModalOpen,
     modalConfig,
@@ -612,9 +617,17 @@ function WorkspaceContent() {
               setCurrentVideo(video);
               setShowBatchView(false);
             }}
-            isDownloading={isDownloading}
-            progress={progress}
-            statusText={statusText}
+            isDownloading={false}
+            progress={0}
+            statusText=""
+          />
+          <BatchProgressModal
+            isOpen={isDownloading && !!bulkDownloadState}
+            total={bulkDownloadState?.totalVideos || 0}
+            completed={bulkDownloadState?.successCount || 0}
+            failed={bulkDownloadState?.failedCount || 0}
+            currentVideo={bulkDownloadState?.currentVideoTitle}
+            failedVideos={bulkDownloadState?.failedVideos || []}
           />
         </div>
       </div>
@@ -826,6 +839,17 @@ function WorkspaceContent() {
         onClose={() => setIsCreditsModalOpen(false)}
         requiredAmount={modalConfig.required}
         featureName={modalConfig.feature}
+      />
+      {/* Playlist Progress Modal */}
+      <PlaylistProgressModal
+        isOpen={showPlaylistModal}
+        phase={playlistProcessing?.phase || 'expanding'}
+        totalVideos={playlistProcessing?.totalVideos || 0}
+        processedVideos={playlistProcessing?.processedVideos || 0}
+        videosWithSubtitles={playlistProcessing?.videosWithSubtitles || 0}
+        currentVideoTitle={playlistProcessing?.currentVideoTitle}
+        playlistTitle={playlistProcessing?.currentPlaylist?.title}
+        error={playlistProcessing?.error}
       />
     </div>
   );

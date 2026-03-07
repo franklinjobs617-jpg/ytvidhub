@@ -28,7 +28,10 @@ interface BulkDownloadState {
   phase: 'processing' | 'completed' | 'error';
   totalVideos: number;
   processedVideos: number;
+  successCount: number;
+  failedCount: number;
   currentVideoTitle?: string;
+  failedVideos: Array<{ title: string; error: string }>;
   error?: string;
 }
 
@@ -423,7 +426,10 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       setBulkDownloadState({
         phase: 'processing',
         totalVideos: videos.length,
-        processedVideos: 0
+        processedVideos: 0,
+        successCount: 0,
+        failedCount: 0,
+        failedVideos: []
       });
 
       const task = await subtitleApi.submitBulkTask(videos, lang, format);
@@ -440,7 +446,13 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
           if (status.status === "completed") {
             setProgress(100);
-            setBulkDownloadState(prev => prev ? { ...prev, processedVideos: videos.length } : null);
+            setBulkDownloadState(prev => prev ? {
+              ...prev,
+              processedVideos: videos.length,
+              successCount: status.completed || videos.length,
+              failedCount: status.failed || 0,
+              failedVideos: status.failed_videos || []
+            } : null);
 
             const blob = await subtitleApi.downloadZip(task.task_id);
             if (blob.size === 0) throw new Error("Downloaded ZIP is empty");
@@ -469,7 +481,10 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
             setBulkDownloadState(prev => prev ? {
               ...prev,
               processedVideos: c,
-              currentVideoTitle: videos[c]?.title
+              successCount: status.completed || 0,
+              failedCount: status.failed || 0,
+              failedVideos: status.failed_videos || [],
+              currentVideoTitle: status.current_video || videos[c]?.title
             } : null);
           }
         }

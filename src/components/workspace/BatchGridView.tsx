@@ -55,29 +55,29 @@ export function BatchGridView({
 
   return (
     <div className="h-full flex flex-col bg-white">
-      {/* Sticky 顶部工具栏 */}
-      <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-3 bg-white border-b border-slate-200 shadow-sm">
-        <div className="flex items-center gap-4">
+      {/* Sticky 顶部工具栏 - 移动端优化 */}
+      <div className="sticky top-0 z-20 flex flex-col sm:flex-row items-stretch sm:items-center justify-between px-3 sm:px-6 py-2 sm:py-3 bg-white border-b border-slate-200 shadow-sm gap-2 sm:gap-0">
+        <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
           <button
             onClick={toggleSelectAll}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-md transition-colors"
+            className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-md transition-colors"
           >
             {selectedIds.size === videos.length && videos.length > 0 ? (
-              <CheckSquare className="w-4 h-4 text-blue-600" />
+              <CheckSquare className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-blue-600" />
             ) : (
-              <Square className="w-4 h-4" />
+              <Square className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
             )}
             <span className="text-xs font-semibold">
-              {selectedIds.size > 0 ? `${selectedIds.size} Selected` : "Select All"}
+              {selectedIds.size > 0 ? `${selectedIds.size}` : "All"}
             </span>
           </button>
 
-          <div className="h-5 w-px bg-slate-200" />
+          <div className="h-5 w-px bg-slate-200 hidden sm:block" />
 
           <select
             value={downloadFormat}
             onChange={(e) => setDownloadFormat(e.target.value)}
-            className="px-2.5 py-1.5 text-xs font-medium border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            className="px-2 sm:px-2.5 py-1.5 text-xs font-medium border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
           >
             <option value="srt">SRT</option>
             <option value="vtt">VTT</option>
@@ -87,25 +87,26 @@ export function BatchGridView({
           <button
             onClick={handleBatchDownload}
             disabled={selectedIds.size === 0}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold rounded-md transition-colors flex-1 sm:flex-none justify-center ${
               selectedIds.size > 0
                 ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-slate-100 text-slate-400 cursor-not-allowed"
             }`}
           >
             <Download className="w-3.5 h-3.5" />
-            Batch Download
+            <span className="hidden sm:inline">Batch Download</span>
+            <span className="sm:hidden">Download</span>
           </button>
         </div>
 
-        <div className="text-xs text-slate-500 font-medium">
+        <div className="text-xs text-slate-500 font-medium text-center sm:text-left">
           {videos.length} videos
         </div>
       </div>
 
-      {/* 九宫格卡片视图 */}
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+      {/* 九宫格卡片视图 - 移动端优化 */}
+      <div className="flex-1 overflow-y-auto p-3 sm:p-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4">
           {videos.map((video) => {
             const isLoading = video.title === "Loading video info..." || video.title.includes("Loading");
 
@@ -180,20 +181,20 @@ export function BatchGridView({
                   )}
                 </div>
 
-                {/* 视频信息 */}
-                <div className="p-3 bg-white">
+                {/* 视频信息 - 移动端优化 */}
+                <div className="p-2 sm:p-3 bg-white">
                   {isLoading ? (
                     <>
-                      <div className="h-4 bg-slate-200 rounded animate-pulse mb-2" />
-                      <div className="h-3 bg-slate-200 rounded animate-pulse w-2/3" />
+                      <div className="h-3 sm:h-4 bg-slate-200 rounded animate-pulse mb-1 sm:mb-2" />
+                      <div className="h-2 sm:h-3 bg-slate-200 rounded animate-pulse w-2/3" />
                     </>
                   ) : (
                     <>
-                      <h3 className="text-sm font-medium text-slate-900 line-clamp-2 leading-snug mb-1">
+                      <h3 className="text-xs sm:text-sm font-medium text-slate-900 line-clamp-2 leading-snug mb-1">
                         {video.title}
                       </h3>
                       {video.uploader && (
-                        <p className="text-xs text-slate-500 truncate">
+                        <p className="text-[10px] sm:text-xs text-slate-500 truncate">
                           {video.uploader}
                         </p>
                       )}

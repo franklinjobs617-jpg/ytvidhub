@@ -276,4 +276,35 @@ export const subtitleApi = {
       return [];
     }
   },
+
+  // 14. 访客单次下载（无需登录）
+  async guestDownload(url: string, lang: string = 'en', format: string = 'srt') {
+    const res = await fetch("/api/subtitle/guest-download", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, lang, format }),
+    });
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.error || "Guest download failed");
+    }
+    return res.blob();
+  },
+
+  // 15. 获取批量任务历史
+  async getBatchHistory() {
+    const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+    if (!token) return [];
+    try {
+      const res = await fetch("/api/subtitle/batch-history", {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      });
+      if (!res.ok) return [];
+      const json = await res.json();
+      return json.tasks ?? [];
+    } catch {
+      return [];
+    }
+  },
 };
