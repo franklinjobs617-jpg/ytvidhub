@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { subtitleApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { LoginPromptModal } from "./LoginPromptModal";
 
 interface QuickActionsProps {
   videoUrl: string;
@@ -14,16 +15,39 @@ interface QuickActionsProps {
   onGenerateAiSummary?: () => void;
   hasAiSummary?: boolean;
   isGeneratingAi?: boolean;
-  onTranslate?: () => void;
 }
 
-export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi, onTranslate }: QuickActionsProps) {
+export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi }: QuickActionsProps) {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { user, refreshUser } = useAuth();
   const router = useRouter();
 
+  const checkGuestDownloadLimit = () => {
+    if (user) return true; // 已登录用户无限制
+
+    const guestDownloads = parseInt(localStorage.getItem('ytvidhub_guest_downloads') || '0');
+    if (guestDownloads >= 1) {
+      setShowLoginPrompt(true);
+      return false;
+    }
+    return true;
+  };
+
+  const incrementGuestDownload = () => {
+    if (!user) {
+      const current = parseInt(localStorage.getItem('ytvidhub_guest_downloads') || '0');
+      localStorage.setItem('ytvidhub_guest_downloads', String(current + 1));
+    }
+  };
+
   const handleDownload = async (format: 'srt' | 'vtt' | 'txt') => {
+    // 检查访客下载限制
+    if (!checkGuestDownloadLimit()) {
+      return;
+    }
+
     if (user && (user.credits || 0) <= 0) {
       toast.error('Insufficient credits', {
         action: { label: 'Get Credits', onClick: () => router.push('/pricing') }
@@ -37,12 +61,19 @@ export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSumm
     try {
       toast.info(`Preparing ${format.toUpperCase()} download...`);
 
-      const blob = await subtitleApi.downloadSingle({
-        url: videoUrl,
-        lang: 'en',
-        format,
-        title: videoTitle
-      });
+      let blob;
+      if (user) {
+        // 已登录用户：使用正常下载API（会扣除积分）
+        blob = await subtitleApi.downloadSingle({
+          url: videoUrl,
+          lang: 'en',
+          format,
+          title: videoTitle
+        });
+      } else {
+        // 未登录用户：使用访客下载API（免费）
+        blob = await subtitleApi.guestDownload(videoUrl, 'en', format);
+      }
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -55,9 +86,12 @@ export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSumm
 
       toast.success(`${format.toUpperCase()} downloaded successfully!`);
 
-      refreshUser();
-      setTimeout(() => refreshUser(), 1000);
-      setTimeout(() => refreshUser(), 2000);
+      incrementGuestDownload();
+      if (user) {
+        refreshUser();
+        setTimeout(() => refreshUser(), 1000);
+        setTimeout(() => refreshUser(), 2000);
+      }
     } catch (error: any) {
       if (error?.message?.includes('Insufficient credits') || error?.message?.includes('credit')) {
         toast.error('Download Failed', {
@@ -132,6 +166,8 @@ export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSumm
         <Copy size={14} />
         <span>Copy All</span>
       </button>
+
+      <LoginPromptModal isOpen={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
     </div>
   );
 }
