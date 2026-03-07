@@ -5,9 +5,15 @@ Allow: /
 # Allow major search engines
 User-agent: Googlebot
 Allow: /
+Disallow: /_next/
+Disallow: /api/
+
 
 User-agent: Bingbot
 Allow: /
+Disallow: /_next/
+Disallow: /api/
+
 
 # Block AI training crawlers (protect content)
 User-agent: GPTBot
@@ -20,8 +26,8 @@ Disallow: /
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /workspace/
-Disallow: /_next/static/
+
+Disallow: /_next/
 
 # Sitemap location
 Sitemap: https://ytvidhub.com/sitemap.xml
