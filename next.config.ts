@@ -65,6 +65,11 @@ const nextConfig: NextConfig = {
         destination: "/guide/how-to-download-youtube-subtitles-complete-guide/",
         permanent: true,
       },
+      {
+        source: "/:locale/how-to-download-youtube-subtitles-complete-guide/",
+        destination: "/:locale/guide/how-to-download-youtube-subtitles-complete-guide/",
+        permanent: true,
+      },
     ];
   },
 
