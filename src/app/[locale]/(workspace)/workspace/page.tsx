@@ -32,6 +32,7 @@ import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/l
 import { BatchGridView } from "@/components/workspace/BatchGridView";
 import { BatchProgressModal } from "@/components/workspace/BatchProgressModal";
 import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressModal";
+import { TranslateModal } from "@/components/workspace/TranslateModal";
 
 import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
 
@@ -89,6 +90,7 @@ function WorkspaceContent() {
   const [analysisError, setAnalysisError] = useState<string>("");
   const [isTranscriptLoading, setIsTranscriptLoading] = useState(false);
   const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
+  const [showTranslateModal, setShowTranslateModal] = useState(false);
 
   const {
     isAiLoading,
@@ -761,6 +763,7 @@ function WorkspaceContent() {
                   onGenerateAiSummary={() => handleRequestAnalysis()}
                   hasAiSummary={!!summaryData}
                   isGeneratingAi={isAiLoading}
+                  onTranslate={() => setShowTranslateModal(true)}
                 />
 
                 <div className="flex-1 min-h-0 overflow-hidden">
@@ -850,6 +853,14 @@ function WorkspaceContent() {
         currentVideoTitle={playlistProcessing?.currentVideoTitle}
         playlistTitle={playlistProcessing?.currentPlaylist?.title}
         error={playlistProcessing?.error}
+      />
+
+      {/* Translate Modal */}
+      <TranslateModal
+        isOpen={showTranslateModal}
+        onClose={() => setShowTranslateModal(false)}
+        videoUrl={currentVideo?.url || ""}
+        videoTitle={currentVideo?.title || ""}
       />
     </div>
   );

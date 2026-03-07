@@ -14,9 +14,10 @@ interface QuickActionsProps {
   onGenerateAiSummary?: () => void;
   hasAiSummary?: boolean;
   isGeneratingAi?: boolean;
+  onTranslate?: () => void;
 }
 
-export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi }: QuickActionsProps) {
+export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi, onTranslate }: QuickActionsProps) {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const { user, refreshUser } = useAuth();

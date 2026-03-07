@@ -165,7 +165,7 @@ export function TranscriptArea({
       {/* Tab Header — YouMind style */}
       <div className="flex items-center px-4 border-b border-slate-100 shrink-0 bg-white">
         <div className="flex">
-          {[{ label: "Smart", value: true }, { label: "Line by Line", value: false }].map(({ label, value }) => (
+          {[{ label: "Paragraph View", value: true }, { label: "Timestamp View", value: false }].map(({ label, value }) => (
             <button
               key={label}
               onClick={() => setIsSmartMode(value)}
