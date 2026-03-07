@@ -18,7 +18,7 @@ export function parseSRT(content: string): SubtitleEntry[] {
     const [startTime, endTime] = timeLine.split(' --> ');
     const text = lines.slice(2).join('\n');
     return { index, startTime, endTime, text };
-  }).filter((entry): entry is SubtitleEntry => entry !== null && entry.index && entry.startTime);
+  }).filter((entry): entry is SubtitleEntry => entry !== null && typeof entry.index === 'number' && typeof entry.startTime === 'string');
 }
 
 export function parseVTT(content: string): SubtitleEntry[] {

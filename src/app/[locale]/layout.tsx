@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       type: "website",
       images: [
         {
-          url: `/image/og-image.webp`,
+          url: `/image/yyt.png`,
           width: 1200,
           height: 630,
           alt: t('title'),
@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       card: "summary_large_image",
       title: t('title'),
       description: t('description'),
-      images: [`/image/og-image.webp`],
+      images: [`/image/yyt.png`],
     },
 
     alternates: {

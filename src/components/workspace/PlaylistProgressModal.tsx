@@ -4,7 +4,7 @@ import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
 interface PlaylistProgressModalProps {
   isOpen: boolean;
-  phase: 'expanding' | 'checking' | 'completed' | 'error';
+  phase: 'expanding' | 'checking' | 'completed' | 'error' | 'paused';
   totalVideos: number;
   processedVideos: number;
   videosWithSubtitles: number;
