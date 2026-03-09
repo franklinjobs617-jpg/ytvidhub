@@ -25,6 +25,12 @@ const resourceLinks = [
   { key: "aiSummarizer", href: "/blog/ai-youtube-video-summarizer" },
 ];
 
+const toolLinks = [
+  { key: "transcriptGenerator", href: "/youtube-transcript-generator" },
+  { key: "subtitleExtractor", href: "/youtube-subtitle-extractor" },
+  { key: "bulkDownloader", href: "/bulk-youtube-subtitle-downloader" },
+];
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -92,6 +98,37 @@ export default function Header() {
             >
               {t('home')}
             </Link>
+
+            <div className="relative group h-20 flex items-center">
+              <button
+                className={`flex items-center gap-1 text-sm font-semibold transition-colors ${isParentActive(toolLinks)
+                  ? "text-blue-600"
+                  : "text-slate-600 group-hover:text-slate-900"
+                  }`}
+              >
+                <span>{t('tools')}</span>
+                <ChevronDown
+                  size={14}
+                  className="transition-transform duration-200 group-hover:rotate-180"
+                />
+              </button>
+              <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-2">
+                  {toolLinks.map((item) => (
+                    <Link
+                      key={item.key}
+                      href={item.href}
+                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-slate-600 hover:bg-slate-50"
+                        }`}
+                    >
+                      {t(item.key)}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             <Link
               href="/pricing"
@@ -296,6 +333,22 @@ export default function Header() {
             >
               {t('home')}
             </Link>
+
+            <div className="space-y-2">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                {t('tools')}
+              </p>
+              {toolLinks.map((item) => (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"}`}
+                >
+                  {t(item.key)}
+                </Link>
+              ))}
+            </div>
+
             <Link
               href="/pricing"
               className={`block text-base font-semibold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"}`}

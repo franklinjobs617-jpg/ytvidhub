@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
+import HeroSection from "@/components/landing/HeroSection";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -47,23 +48,10 @@ export default async function SubtitleExtractorPage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        {/* Hero */}
-        <section className="container mx-auto px-6 py-16 md:py-24 max-w-6xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-black mb-6 text-slate-900">{t('hero.title')}</h1>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">{t('hero.subtitle')}</p>
-          </div>
-          
-          <div className="bg-white rounded-3xl shadow-xl p-8 max-w-4xl mx-auto border border-slate-200">
-            <div className="flex flex-col md:flex-row gap-4">
-              <input type="url" placeholder={t('tool.placeholder')} className="flex-1 px-6 py-4 border-2 border-slate-200 rounded-xl focus:border-red-500 outline-none" />
-              <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold transition-all">{t('tool.button')}</button>
-            </div>
-            <p className="text-sm text-slate-600 mt-4 text-center">{t('tool.note')}</p>
-          </div>
-        </section>
 
+      <HeroSection />
+
+      <div className="bg-white">
         {/* Expert Insight */}
         <section className="container mx-auto px-6 py-16 max-w-6xl">
           <div className="bg-yellow-50 border-l-4 border-yellow-400 rounded-xl p-8">
@@ -139,11 +127,19 @@ export default async function SubtitleExtractorPage({ params }: Props) {
         <section className="container mx-auto px-6 py-16 max-w-6xl">
           <h2 className="text-3xl font-bold mb-8">Visual Output Gallery</h2>
           <div className="flex gap-6 overflow-x-auto pb-4">
-            <div className="flex-shrink-0 w-80 h-48 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center">
-              <p className="text-slate-400 text-sm">SRT Preview Image</p>
+            <div className="flex-shrink-0 w-80 h-48 rounded-xl border border-slate-200 overflow-hidden">
+              <img
+                src="/image/A graphic breakdown of the SRT file format.webp"
+                alt="YouTube Subtitle Extractor SRT Output Sample - Professional subtitle format with timestamps"
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex-shrink-0 w-80 h-48 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center">
-              <p className="text-slate-400 text-sm">AI Summary Preview</p>
+            <div className="flex-shrink-0 w-80 h-48 rounded-xl border border-slate-200 overflow-hidden">
+              <img
+                src="/image/blog-ai-summary-interface.webp"
+                alt="AI Video Summary from YouTube Subtitles - Clean text extraction for AI processing"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </section>
@@ -153,7 +149,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
           <div className="container mx-auto px-6 max-w-4xl">
             <h2 className="text-3xl font-bold mb-12 text-center">{t('faq.title')}</h2>
             <div className="space-y-6">
-              {[1, 2].map((i) => (
+              {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200">
                   <h3 className="text-lg font-bold mb-3 text-red-600">{t(`faq.q${i}.question`)}</h3>
                   <p className="text-slate-700">{t(`faq.q${i}.answer`)}</p>
