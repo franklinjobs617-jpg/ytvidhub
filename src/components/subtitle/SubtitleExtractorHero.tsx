@@ -185,17 +185,17 @@ export default function SubtitleExtractorHero() {
                             <div className="p-6 md:p-8">
                                 <div className="relative group/input">
                                     <div className={`absolute -inset-0.5 rounded-2xl transition-all duration-500 ${isFocused
-                                            ? 'bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 opacity-100'
-                                            : inputError
-                                                ? 'bg-red-400 opacity-100'
-                                                : 'bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400 opacity-40 group-hover/input:opacity-70'
+                                        ? 'bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 opacity-100'
+                                        : inputError
+                                            ? 'bg-red-400 opacity-100'
+                                            : 'bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400 opacity-40 group-hover/input:opacity-70'
                                         } blur-sm`} />
 
                                     <div className={`relative flex items-center rounded-2xl border bg-white transition-all duration-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)] ${isFocused
-                                            ? 'border-blue-400 shadow-xl shadow-blue-100/50'
-                                            : inputError
-                                                ? 'border-red-400'
-                                                : 'border-slate-200 hover:border-slate-300'
+                                        ? 'border-blue-400 shadow-xl shadow-blue-100/50'
+                                        : inputError
+                                            ? 'border-red-400'
+                                            : 'border-slate-200 hover:border-slate-300'
                                         }`}>
 
                                         <div className="pl-5 flex-shrink-0">
@@ -220,8 +220,8 @@ export default function SubtitleExtractorHero() {
                                                 onClick={handleExtractSubtitle}
                                                 disabled={!url.trim() || isAnalyzing}
                                                 className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all whitespace-nowrap ${url.trim() && !isAnalyzing
-                                                        ? 'bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5'
-                                                        : 'bg-blue-50 text-blue-300 cursor-not-allowed'
+                                                    ? 'bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5'
+                                                    : 'bg-blue-50 text-blue-300 cursor-not-allowed'
                                                     }`}
                                             >
                                                 {isAnalyzing ? (

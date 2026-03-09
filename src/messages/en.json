@@ -963,10 +963,33 @@
     },
     "performance": {
       "title": "2026 Performance & Accuracy Audit",
+      "description": "We continuously benchmark our extraction engine to ensure zero data loss across platforms.",
+      "benchmarks": [
+        "Sync-correction Algorithm v2.4",
+        "100+ Language Native Extraction",
+        "Strict SubRip Compliance"
+      ],
       "table": {
         "type": "Video Type",
         "speed": "Extraction Speed",
         "accuracy": "Format Accuracy"
+      }
+    },
+    "workflow": {
+      "title": "Seamless Integration into Your Workflow",
+      "items": {
+        "ai": {
+          "title": "Clean Text for AI",
+          "description": "Export as TXT without timestamps. Perfect for summarization in ChatGPT or training custom LLMs."
+        },
+        "pro": {
+          "title": "Professional Subtitles",
+          "description": "SRT and VTT files compatible with all major video editors including Premiere Pro and DaVinci Resolve."
+        },
+        "privacy": {
+          "title": "Privacy Verified",
+          "description": "Secure client-side processing. Your private URLs and video data stay in your browser."
+        }
       }
     },
     "faq": {

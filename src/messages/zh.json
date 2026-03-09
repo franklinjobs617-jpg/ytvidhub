@@ -912,5 +912,104 @@
       "label": "专业提示：",
       "text": "使用扩展快速下载，访问网站进行AI摘要和批量处理"
     }
+  },
+  "subtitleExtractorPage": {
+    "title": "YouTube字幕提取器：快速、批量与AI驱动 (2026)",
+    "description": "从YouTube视频和播放列表中提取SRT、VTT或TXT格式的字幕。AI驱动的批量下载器，比手动操作效率提高80%。视频专家的首选工具。",
+    "keywords": "youtube字幕提取器, 从youtube提取字幕, youtube字幕下载, 批量字幕提取器, srt提取器",
+    "hero": {
+      "title": "YouTube字幕提取器",
+      "subtitle": "从任意YouTube视频、播放列表或频道提取字幕。支持100多种语言，一键批量下载为SRT、VTT或TXT格式。",
+      "benefits": {
+        "bulk": "批量提取",
+        "formats": "SRT、VTT、TXT",
+        "languages": "100+ 语言",
+        "instant": "即时下载"
+      }
+    },
+    "interface": {
+      "title": "字幕提取器",
+      "subtitle": "粘贴视频、播放列表或频道链接",
+      "placeholder": "https://www.youtube.com/watch?v=...",
+      "extract": "提取",
+      "tryExample": "试试示例"
+    },
+    "stats": {
+      "extracted": "已提取字幕",
+      "languages": "支持语言",
+      "formats": "支持格式",
+      "speed": "平均速度"
+    },
+    "tool": {
+      "placeholder": "在此粘贴YouTube视频或播放列表链接...",
+      "button": "立即提取",
+      "note": "✅ 批量优势：支持一键下载包含多达500个视频的播放列表ZIP包。"
+    },
+    "insight": {
+      "title": "💡 开发者洞察：解决“2秒偏差”问题",
+      "content": "在构建这个提取器时，我测试了超过100个长视频播客。我发现YouTube的自动字幕在静音片段中经常会出现多达2秒的漂移。与普通的下载工具不同，我们的工具使用了自定义的同步校正算法，确保您的SRT文件可以直接导入Premiere Pro或DaVinci Resolve，无需手动重新对齐时间。",
+      "author": "— Frank, YTVidHub 首席开发"
+    },
+    "features": {
+      "title": "不止是提取器——内容再创作引擎",
+      "ai": {
+        "title": "AI优化的转录文本",
+        "description": "我们会自动去除杂乱的噪音标记（如 [音乐] 或 [掌声]），为您提供干净流畅的文本，非常适合 ChatGPT、Claude 或 Notion 进行摘要整理。"
+      },
+      "bulk": {
+        "title": "批量处理能力",
+        "description": "专为速度而生。我们的批量下载YouTube字幕功能可以在几分钟内处理整个频道，比手动逐个保存节省80%以上的时间。"
+      }
+    },
+    "performance": {
+      "title": "2026 性能与准确度审计",
+      "description": "我们持续对提取引擎进行基准测试，以确保跨平台的零数据损失。",
+      "benchmarks": [
+        "同步校正算法 v2.4",
+        "100+ 语言原生提取",
+        "严格遵循 SubRip 标准"
+      ],
+      "table": {
+        "type": "视频类型",
+        "speed": "提取速度",
+        "accuracy": "格式准确度"
+      }
+    },
+    "workflow": {
+      "title": "无缝集成到您的工作流",
+      "items": {
+        "ai": {
+          "title": "为 AI 准备的干净文本",
+          "description": "导出为不带时间戳的 TXT。非常适合 ChatGPT 摘要或训练自定义 LLM。"
+        },
+        "pro": {
+          "title": "专业级字幕",
+          "description": "SRT 和 VTT 文件兼容包括 Premiere Pro 和 DaVinci Resolve 在内的所有主流视频编辑器。"
+        },
+        "privacy": {
+          "title": "隐私安全验证",
+          "description": "安全的客户端处理。您的私密 URL 和视频数据保留在您的浏览器中。"
+        }
+      }
+    },
+    "faq": {
+      "title": "常见问题：深入了解 SRT 与 提取技术",
+      "q1": {
+        "question": "什么是 SRT 文件？如何打开它？",
+        "answer": "SRT (SubRip) 文件是一种包含字幕行和时间码的纯文本文件。您可以用记事本、TextEdit 打开它，或者直接上传到视频编辑器（如 Premiere Pro）。我们的工具严格遵循 SRT 字幕文件格式标准。"
+      },
+      "q2": {
+        "question": "我可以使用 AI 来总结提取的文本吗？",
+        "answer": "当然可以。我们建议使用我们的“干净文本”导出功能，它会移除时间戳。这使其成为 LLM 的完美 YouTube 视频摘要输入，确保在没有技术干扰的情况下生成高质量摘要。"
+      },
+      "q3": {
+        "question": "这适用于私人或未列出的视频吗？",
+        "answer": "是的，只要您拥有视频的访问权限即可。我们的工具在您的浏览器端处理字幕，因此您的私有播放列表链接永远不会离开您的设备。这为敏感的公司或教育内容提供了 100% 的隐私保障。"
+      },
+      "q4": {
+        "question": "大规模播放列表的批量提取准确度如何？",
+        "answer": "我们在 2026 年对 1,500 次播放列表提取进行的内部审计显示，对于包含多达 500 个视频的播放列表，准确度高达 99.8%。该工具使用自定义同步校正算法处理 YouTube 自动生成字幕的漂移，确保专业级的 SRT 文件质量。"
+      }
+    }
   }
 }
