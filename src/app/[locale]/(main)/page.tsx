@@ -8,6 +8,7 @@ import CoreCapabilities from "@/components/landing/CoreCapabilities";
 import FAQ from "@/components/landing/FAQ";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 
 const ComparisonSlider = dynamic(() => import("@/components/landing/ComparisonSlider"));
 const Testimonials = dynamic(() => import("@/components/landing/Testimonials"));
@@ -44,18 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: t('description'),
       images: ["/image/og-home.webp"],
     },
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        'en': buildCanonicalUrl({ locale: 'en', pathname: '' }),
-        'es': buildCanonicalUrl({ locale: 'es', pathname: '' }),
-        'de': buildCanonicalUrl({ locale: 'de', pathname: '' }),
-        'ko': buildCanonicalUrl({ locale: 'ko', pathname: '' }),
-        'ja': buildCanonicalUrl({ locale: 'ja', pathname: '' }),
-        'ru': buildCanonicalUrl({ locale: 'ru', pathname: '' }),
-        'x-default': buildCanonicalUrl({ locale: 'en', pathname: '' }),
-      },
-    },
+    alternates: buildAlternates(locale, '', true),
   };
 }
 

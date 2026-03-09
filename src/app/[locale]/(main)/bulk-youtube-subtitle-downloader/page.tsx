@@ -9,6 +9,7 @@
 import { Metadata } from "next";
 import BulkDownloaderClient from "./BulkDownloaderClient";
 import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -23,18 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: "Bulk YouTube Subtitle Downloader | Extract Captions from Playlists | YTVidHub",
     description: "Professional bulk YouTube subtitle downloader for extracting SRT, VTT, and TXT captions from entire playlists, channels, and multiple videos.",
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        'en': buildCanonicalUrl({ locale: 'en', pathname }),
-        'es': buildCanonicalUrl({ locale: 'es', pathname }),
-        'de': buildCanonicalUrl({ locale: 'de', pathname }),
-        'ko': buildCanonicalUrl({ locale: 'ko', pathname }),
-        'ja': buildCanonicalUrl({ locale: 'ja', pathname }),
-        'ru': buildCanonicalUrl({ locale: 'ru', pathname }),
-        'x-default': buildCanonicalUrl({ locale: 'en', pathname }),
-      },
-    },
+    alternates: buildAlternates(locale, pathname),
   };
 }
 

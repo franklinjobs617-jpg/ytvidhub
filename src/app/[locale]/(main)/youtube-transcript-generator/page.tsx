@@ -47,11 +47,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: canonicalUrl,
       languages: {
         'en': buildCanonicalUrl({ locale: 'en', pathname: '/youtube-transcript-generator' }),
-        'es': buildCanonicalUrl({ locale: 'es', pathname: '/youtube-transcript-generator' }),
-        'de': buildCanonicalUrl({ locale: 'de', pathname: '/youtube-transcript-generator' }),
-        'ko': buildCanonicalUrl({ locale: 'ko', pathname: '/youtube-transcript-generator' }),
-        'ja': buildCanonicalUrl({ locale: 'ja', pathname: '/youtube-transcript-generator' }),
-        'ru': buildCanonicalUrl({ locale: 'ru', pathname: '/youtube-transcript-generator' }),
         'x-default': buildCanonicalUrl({ locale: 'en', pathname: '/youtube-transcript-generator' }),
       },
     },
@@ -111,7 +106,7 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
       />
-      
+
       <TranscriptGeneratorHero />
       <TranscriptFeatures />
       <TranscriptHowItWorks />

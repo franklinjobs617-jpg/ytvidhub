@@ -5,8 +5,21 @@ import { buildCanonicalUrl } from '@/lib/url'
 export default function sitemap(): MetadataRoute.Sitemap {
     const currentDate = new Date().toISOString().split('T')[0]
 
-    // 仅英文的页面（低优先级或内容未翻译）
+    // 仅英文的页面（目前大部分内页尚未翻译，为了 SEO 统一重定向到英文版）
     const englishOnlyPages = [
+        { path: '/youtube-subtitle-downloader', priority: 0.95, changeFreq: 'monthly' as const },
+        { path: '/youtube-transcript-generator', priority: 0.95, changeFreq: 'monthly' as const },
+        { path: '/extract-youtube-subtitles-online-tool', priority: 0.95, changeFreq: 'monthly' as const },
+        { path: '/download-subs-from-youtube', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/tools/subtitle-extractor-online', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/guide/how-to-download-youtube-subtitles-complete-guide', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/guide/srt-vs-vtt', priority: 0.8, changeFreq: 'monthly' as const },
+        { path: '/pricing', priority: 0.8, changeFreq: 'monthly' as const },
+        { path: '/how-to-use', priority: 0.8, changeFreq: 'monthly' as const },
+        { path: '/youtube-transcript-for-chatgpt', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/what-is-an-srt-file', priority: 0.7, changeFreq: 'yearly' as const },
+        { path: '/faq', priority: 0.7, changeFreq: 'monthly' as const },
+        { path: '/about', priority: 0.5, changeFreq: 'yearly' as const },
         { path: '/youtube-subtitle-extractor', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/bulk-youtube-subtitle-downloader', priority: 0.95, changeFreq: 'monthly' as const },
         { path: '/guide/how-to-download-youtube-studio-subtitles', priority: 0.8, changeFreq: 'monthly' as const },
@@ -22,28 +35,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/blog/engineering-decisions-ytvidhub', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/blog/spanish-yt-channels-subtitles', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/blog/ai-youtube-video-summarizer', priority: 0.7, changeFreq: 'monthly' as const },
+        { path: '/blog/how-to-get-youtube-video-transcript', priority: 0.7, changeFreq: 'monthly' as const },
+        { path: '/support', priority: 0.6, changeFreq: 'monthly' as const },
         { path: '/add-on', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/faq/subtitle-settings-guide', priority: 0.6, changeFreq: 'monthly' as const },
         { path: '/privacy-policy', priority: 0.3, changeFreq: 'yearly' as const },
         { path: '/terms-of-service', priority: 0.3, changeFreq: 'yearly' as const },
     ]
 
-    // 多语言页面 — Google 会为每个 locale 生成 hreflang alternate
+    // 多语言页面 — 当前策略：仅首页（path: ''）支持多语言，其他页面重定向到英文
     const multilingualPages = [
         { path: '', priority: 1.0, changeFreq: 'weekly' as const },
-        { path: '/youtube-subtitle-downloader', priority: 0.95, changeFreq: 'monthly' as const },
-        { path: '/youtube-transcript-generator', priority: 0.95, changeFreq: 'monthly' as const },
-        { path: '/extract-youtube-subtitles-online-tool', priority: 0.95, changeFreq: 'monthly' as const },
-        { path: '/download-subs-from-youtube', priority: 0.9, changeFreq: 'monthly' as const },
-        { path: '/tools/subtitle-extractor-online', priority: 0.9, changeFreq: 'monthly' as const },
-        { path: '/guide/how-to-download-youtube-subtitles-complete-guide', priority: 0.9, changeFreq: 'monthly' as const },
-        { path: '/guide/srt-vs-vtt', priority: 0.8, changeFreq: 'monthly' as const },
-        { path: '/pricing', priority: 0.8, changeFreq: 'monthly' as const },
-        { path: '/how-to-use', priority: 0.8, changeFreq: 'monthly' as const },
-        { path: '/youtube-transcript-for-chatgpt', priority: 0.9, changeFreq: 'monthly' as const },
-        { path: '/what-is-an-srt-file', priority: 0.7, changeFreq: 'yearly' as const },
-        { path: '/faq', priority: 0.7, changeFreq: 'monthly' as const },
-        { path: '/about', priority: 0.5, changeFreq: 'yearly' as const },
     ]
 
     const sitemap: MetadataRoute.Sitemap = []

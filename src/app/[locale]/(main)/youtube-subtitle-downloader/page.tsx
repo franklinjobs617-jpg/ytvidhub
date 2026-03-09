@@ -25,11 +25,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             canonical: canonicalUrl,
             languages: {
                 'en': buildCanonicalUrl({ locale: 'en', pathname }),
-                'es': buildCanonicalUrl({ locale: 'es', pathname }),
-                'de': buildCanonicalUrl({ locale: 'de', pathname }),
-                'ko': buildCanonicalUrl({ locale: 'ko', pathname }),
-                'ja': buildCanonicalUrl({ locale: 'ja', pathname }),
-                'ru': buildCanonicalUrl({ locale: 'ru', pathname }),
                 'x-default': buildCanonicalUrl({ locale: 'en', pathname }),
             },
         },
