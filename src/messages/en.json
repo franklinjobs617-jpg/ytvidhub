@@ -917,8 +917,27 @@
     "description": "Extract subtitles from YouTube videos & playlists in SRT, VTT, or TXT. AI-powered bulk downloader with 80% higher efficiency. Verified by video experts.",
     "keywords": "youtube subtitle extractor, extract subtitles from youtube, youtube subtitles download, bulk subtitle extractor, srt extractor",
     "hero": {
-      "title": "YouTube Subtitle Extractor: Fast & AI-Powered",
-      "subtitle": "Professional-grade subtitle extraction for videos and playlists. No login, no ads."
+      "title": "YouTube Subtitle Extractor",
+      "subtitle": "Extract subtitles from any YouTube video, playlist, or channel. Bulk download in SRT, VTT, or TXT format with 100+ language support.",
+      "benefits": {
+        "bulk": "Bulk Extraction",
+        "formats": "SRT, VTT, TXT",
+        "languages": "100+ Languages",
+        "instant": "Instant Download"
+      }
+    },
+    "interface": {
+      "title": "Subtitle Extractor",
+      "subtitle": "Paste video, playlist, or channel URL",
+      "placeholder": "https://www.youtube.com/watch?v=...",
+      "extract": "Extract",
+      "tryExample": "Try an example"
+    },
+    "stats": {
+      "extracted": "Subtitles Extracted",
+      "languages": "Languages",
+      "formats": "Formats",
+      "speed": "Avg Speed"
     },
     "tool": {
       "placeholder": "Paste YouTube Video or Playlist URL here...",

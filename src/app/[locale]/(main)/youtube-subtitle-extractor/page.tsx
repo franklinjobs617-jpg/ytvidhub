@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
-import HeroSection from "@/components/landing/HeroSection";
+import SubtitleExtractorHero from "@/components/subtitle/SubtitleExtractorHero";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -49,7 +49,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <HeroSection />
+      <SubtitleExtractorHero />
 
       <div className="bg-white">
         {/* Expert Insight */}
