@@ -65,30 +65,33 @@ export default async function SubtitleExtractorPage({ params }: Props) {
       <SubtitleExtractorHero />
 
       {/* Main Content Area */}
-      <main className="relative pb-24 overflow-hidden">
+      <main className="relative z-10 pb-24">
         {/* Subtle Background Elements */}
         <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-slate-50/50 to-transparent -z-10" />
 
         <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
 
           {/* Developer Insight Section - Minimalist Floating Card */}
-          <section className="mb-24 -mt-10 md:-mt-16 relative z-20">
+          <section className="mb-24 -mt-12 md:-mt-20 relative z-20">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 p-8 md:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)]">
-                <div className="flex flex-col md:flex-row gap-8 items-start">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
-                    <Info className="text-blue-600" size={24} />
+              <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/60 p-8 md:p-12 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.06)]">
+                <div className="flex flex-col md:flex-row gap-8 items-start pt-2">
+                  <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100/50">
+                    <Info className="text-blue-600" size={28} />
                   </div>
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4 tracking-tight">
+                  <div className="flex-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-5 leading-tight">
                       {t('insight.title')}
                     </h3>
-                    <p className="text-slate-600 text-lg leading-relaxed italic mb-6">
+                    <p className="text-slate-600 text-lg md:text-xl leading-relaxed italic mb-8">
                       "{t('insight.content')}"
                     </p>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xs">F</div>
-                      <span className="font-bold text-slate-900 text-sm">{t('insight.author')}</span>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-lg">F</div>
+                      <div className="flex flex-col">
+                        <span className="font-bold text-slate-900 text-base">{t('insight.author')}</span>
+                        <span className="text-slate-400 text-xs font-semibold uppercase tracking-widest">{locale === 'zh' ? '首席开发' : 'Lead Developer'}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
