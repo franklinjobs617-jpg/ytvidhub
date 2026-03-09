@@ -77,6 +77,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/:locale(es|de|ko|ja|ru|tr|zh)/bulk-youtube-subtitle-downloader/:path*",
+        destination: "/bulk-youtube-subtitle-downloader/",
+        permanent: true,
+      },
+      {
         source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/playlist-subtitles-bulk/:path*",
         destination: "/guide/playlist-subtitles-bulk/",
         permanent: true,

@@ -19,7 +19,6 @@ import {
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 
 const resourceLinks = [
-  { key: "howToDownload", href: "/guide/how-to-download-youtube-subtitles-complete-guide" },
   { key: "subsForAi", href: "/guide/youtube-subtitles-for-llm-data" },
   { key: "cleanText", href: "/guide/clean-transcript-no-timestamp" },
   { key: "srtVsVtt", href: "/guide/srt-vs-vtt" },
@@ -83,42 +82,22 @@ export default function Header() {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <div className="hidden lg:flex items-center gap-6">
             <Link
               href="/"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/")
+              className={`text-sm font-semibold transition-colors ${isActive("/")
                 ? "text-blue-600"
-                : "text-slate-500 hover:text-slate-900"
+                : "text-slate-600 hover:text-slate-900"
                 }`}
             >
               {t('home')}
             </Link>
 
             <Link
-              href="/bulk-youtube-subtitle-downloader"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/bulk-youtube-subtitle-downloader")
-                ? "text-blue-600"
-                : "text-slate-500 hover:text-slate-900"
-                }`}
-            >
-              {t('bulkDownloader')}
-            </Link>
-
-            <Link
-              href="/youtube-transcript-generator"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/youtube-transcript-generator")
-                ? "text-blue-600"
-                : "text-slate-500 hover:text-slate-900"
-                }`}
-            >
-              {t('transcriptGenerator')}
-            </Link>
-
-            <Link
               href="/pricing"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/pricing")
+              className={`text-sm font-semibold transition-colors ${isActive("/pricing")
                 ? "text-blue-600"
-                : "text-slate-500 hover:text-slate-900"
+                : "text-slate-600 hover:text-slate-900"
                 }`}
             >
               {t('pricing')}
@@ -126,9 +105,9 @@ export default function Header() {
 
             <Link
               href="/add-on"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/add-on")
+              className={`text-sm font-semibold transition-colors ${isActive("/add-on")
                 ? "text-blue-600"
-                : "text-slate-500 hover:text-slate-900"
+                : "text-slate-600 hover:text-slate-900"
                 }`}
             >
               {t('extension')}
@@ -136,29 +115,26 @@ export default function Header() {
 
             <div className="relative group h-20 flex items-center">
               <button
-                className={`flex items-center gap-1 text-sm font-bold uppercase tracking-wide transition-colors ${isParentActive(resourceLinks)
+                className={`flex items-center gap-1 text-sm font-semibold transition-colors ${isParentActive(resourceLinks)
                   ? "text-blue-600"
-                  : "text-slate-500 group-hover:text-blue-600"
+                  : "text-slate-600 group-hover:text-slate-900"
                   }`}
               >
                 <span>{t('resources')}</span>
                 <ChevronDown
                   size={14}
-                  className={`transition-transform duration-200 group-hover:rotate-180 ${isParentActive(resourceLinks)
-                    ? "text-blue-600"
-                    : "text-slate-400"
-                    }`}
+                  className="transition-transform duration-200 group-hover:rotate-180"
                 />
               </button>
-              <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
-                <div className="bg-white rounded-xl shadow-xl border border-slate-100 ring-1 ring-black/5 p-2 overflow-hidden text-left">
+              <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-2">
                   {resourceLinks.map((item) => (
                     <Link
                       key={item.key}
                       href={item.href}
                       className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                        ? "bg-blue-50 text-blue-600 font-bold"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-slate-600 hover:bg-slate-50"
                         }`}
                     >
                       {footerT(item.key)}
@@ -167,118 +143,73 @@ export default function Header() {
                 </div>
               </div>
             </div>
-
-            <Link
-              href="/support"
-              className={`text-sm font-bold uppercase tracking-wide transition-colors ${isActive("/support")
-                ? "text-blue-600"
-                : "text-slate-500 hover:text-slate-900"
-                }`}
-            >
-              {t('support')}
-            </Link>
           </div>
 
-          <div className="flex items-center gap-1.5 md:gap-4 pl-1 md:pl-2">
+          <div className="flex items-center gap-2 md:gap-3">
             {isLoading ? (
-              // Loading Skeleton
               <div className="flex items-center gap-2">
                 <div className="w-16 h-8 bg-slate-100 rounded-full animate-pulse hidden md:block" />
                 <div className="w-8 h-8 bg-slate-100 rounded-full animate-pulse" />
               </div>
             ) : !user ? (
               <>
+                <LanguageSwitcher />
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="bg-slate-900 hover:bg-blue-600 text-white text-xs md:text-sm font-bold px-3 md:px-6 py-2 md:py-2.5 rounded-lg transition-all duration-200 shadow-md uppercase tracking-wide"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 md:px-5 py-2 rounded-lg transition-all"
                 >
                   {t('login')}
                 </button>
               </>
             ) : (
               <>
-                <Link href="/pricing" className="group">
-                  <div className="flex items-center gap-1 px-2 py-1 md:gap-1.5 md:px-3 md:py-1.5 bg-amber-50 border border-amber-100 rounded-full hover:border-amber-300 transition-all cursor-pointer">
-                    <Coins
-                      size={14}
-                      className="text-amber-600"
-                      fill="currentColor"
-                    />
-                    <span className="text-xs md:text-sm font-bold text-amber-700 tabular-nums">
-                      {user.credits}
-                    </span>
-                    <span className="hidden lg:inline text-[10px] font-bold text-amber-600/70 uppercase tracking-wide">
-                      {t('credits')}
-                    </span>
-                  </div>
-                </Link>
-
-                <div className="hidden md:block">
-                  <DailyRewardButton />
-                </div>
-
                 <div className="relative" ref={userMenuRef}>
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 group p-0.5 rounded-full hover:bg-slate-50 border border-transparent transition-all focus:outline-none"
+                    className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-50 transition-all"
                   >
-                    <Image
-                      src={
-                        user.picture ||
-                        "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
-                      }
-                      alt={user.name}
-                      width={36}
-                      height={36}
-                      className="h-8 w-8 md:h-9 md:w-9 rounded-full object-cover bg-slate-100 border border-slate-200 group-hover:border-blue-300 transition-colors"
-                    />
-                    <div className="text-left hidden lg:block pr-2">
-                      <p className="text-xs font-bold text-slate-700 leading-none group-hover:text-blue-600 transition-colors">
-                        {user.name}
-                      </p>
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 border border-amber-200 rounded-full">
+                      <Coins size={14} className="text-amber-600" />
+                      <span className="text-sm font-bold text-amber-700">{user.credits}</span>
                     </div>
+                    <Image
+                      src={user.picture || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"}
+                      alt={user.name}
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full border-2 border-slate-200"
+                    />
                   </button>
 
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-3 w-60 rounded-xl bg-white border border-slate-100 shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 origin-top-right">
-                      <div className="lg:hidden px-4 py-3 bg-slate-50/50 border-b border-slate-100">
-                        <p className="text-sm font-bold text-slate-900">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-slate-500 truncate">
-                          {user.email}
-                        </p>
+                    <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white border border-slate-200 shadow-xl z-50">
+                      <div className="px-4 py-3 border-b border-slate-100">
+                        <p className="text-sm font-semibold text-slate-900">{user.name}</p>
+                        <p className="text-xs text-slate-500 truncate">{user.email}</p>
                       </div>
-
-                      <div className="p-1.5">
+                      <div className="p-2">
                         <div className="px-3 py-2 mb-1">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                            {t('currentPlan')}
-                          </span>
                           <div className="flex items-center gap-2">
                             <Sparkles size={14} className="text-blue-500" />
-                            <span className="text-sm font-bold text-slate-800">
-                              {t('freePlan')}
-                            </span>
+                            <span className="text-sm font-semibold text-slate-800">{t('freePlan')}</span>
                           </div>
                         </div>
-
                         <Link
                           href="/pricing"
-                          className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                          className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
                         >
                           <Coins size={16} /> {t('buyCredits')}
                         </Link>
-
                         <Link
                           href="/history"
-                          className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 hover:text-blue-600 transition-colors"
+                          className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
                         >
                           <History size={16} /> History
                         </Link>
-
-                        <div className="h-px bg-slate-100 my-1"></div>
-
+                        <div className="md:hidden">
+                          <DailyRewardButton />
+                        </div>
+                        <div className="h-px bg-slate-100 my-2"></div>
                         <button
                           onClick={() => {
                             logout();
@@ -292,23 +223,25 @@ export default function Header() {
                     </div>
                   )}
                 </div>
+                <div className="hidden md:block">
+                  <DailyRewardButton />
+                </div>
+                <LanguageSwitcher />
               </>
             )}
 
-            <LanguageSwitcher />
-
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-2 -mr-2 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+              className="lg:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
             >
-              <Menu size={24} />
+              <Menu size={22} />
             </button>
           </div>
         </nav>
       </header>
 
       <div
-        className={`fixed inset-0 z-[60] flex flex-col md:hidden transition-all duration-300 ${mobileMenuOpen ? "visible" : "invisible"
+        className={`fixed inset-0 z-[60] flex flex-col lg:hidden transition-all duration-300 ${mobileMenuOpen ? "visible" : "invisible"
           }`}
       >
         <div
@@ -318,108 +251,100 @@ export default function Header() {
         />
 
         <div
-          className={`relative w-[80%] max-w-sm h-full bg-white shadow-2xl transition-transform duration-300 flex flex-col ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          className={`relative w-[85%] max-w-sm h-full bg-white shadow-2xl transition-transform duration-300 flex flex-col ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
             }`}
         >
-          <div className="flex justify-between items-center px-6 h-16 border-b border-slate-100 shrink-0">
-            <span className="font-bold text-lg uppercase tracking-tighter flex items-center gap-2">
+          <div className="flex justify-between items-center px-6 h-16 border-b border-slate-100">
+            <span className="font-bold text-lg flex items-center gap-2">
               <img src="/image/icon.webp" alt="Logo" className="h-7 w-auto" />
               YTVidHub
             </span>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 -mr-2 text-slate-400 hover:text-slate-600"
+              className="p-2 text-slate-400 hover:text-slate-600"
             >
-              <X size={24} />
+              <X size={22} />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {user && (
+            <div className="px-6 py-4 bg-slate-50 border-b border-slate-100">
+              <div className="flex items-center gap-3 mb-3">
+                <Image
+                  src={user.picture || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"}
+                  alt={user.name}
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded-full border-2 border-slate-200"
+                />
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{user.name}</p>
+                  <div className="flex items-center gap-1.5 mt-1">
+                    <Coins size={12} className="text-amber-600" />
+                    <span className="text-xs font-bold text-amber-700">{user.credits} Credits</span>
+                  </div>
+                </div>
+              </div>
+              <DailyRewardButton />
+            </div>
+          )}
+
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
             <Link
               href="/"
-              className={`block text-lg font-bold ${isActive("/") ? "text-blue-600" : "text-slate-900"
-                }`}
+              className={`block text-base font-semibold ${isActive("/") ? "text-blue-600" : "text-slate-900"}`}
             >
               {t('home')}
             </Link>
             <Link
-              href="/bulk-youtube-subtitle-downloader"
-              className={`block text-lg font-bold ${isActive("/bulk-youtube-subtitle-downloader")
-                ? "text-blue-600"
-                : "text-slate-900"
-                }`}
-            >
-              {t('bulkDownloader')}
-            </Link>
-            <Link
-              href="/youtube-transcript-generator"
-              className={`block text-lg font-bold ${isActive("/youtube-transcript-generator")
-                ? "text-blue-600"
-                : "text-slate-900"
-                }`}
-            >
-              {t('transcriptGenerator')}
-            </Link>
-            <Link
               href="/pricing"
-              className={`block text-lg font-bold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"
-                }`}
+              className={`block text-base font-semibold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"}`}
             >
               {t('pricing')}
             </Link>
             <Link
               href="/add-on"
-              className={`block text-lg font-bold ${isActive("/add-on") ? "text-blue-600" : "text-slate-900"
-                }`}
+              className={`block text-base font-semibold ${isActive("/add-on") ? "text-blue-600" : "text-slate-900"}`}
             >
               {t('extension')}
             </Link>
 
-            {/* Resources Group */}
-            <div className="space-y-3">
-              <p
-                className={`text-xs font-bold uppercase tracking-widest ${isParentActive(resourceLinks)
-                  ? "text-blue-600"
-                  : "text-slate-400"
-                  }`}
-              >
+            <div className="space-y-2">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 {t('resources')}
               </p>
               {resourceLinks.map((item) => (
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`block pl-4 py-1 text-base font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"
-                    }`}
+                  className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"}`}
                 >
                   {footerT(item.key)}
                 </Link>
               ))}
             </div>
 
-            <Link
-              href="/support"
-              className={`block text-lg font-bold ${isActive("/support") ? "text-blue-600" : "text-slate-900"
-                }`}
-            >
-              {t('support')}
-            </Link>
+            {user && (
+              <>
+                <div className="h-px bg-slate-200 my-4"></div>
+                <Link
+                  href="/history"
+                  className="flex items-center gap-2 text-base font-semibold text-slate-900"
+                >
+                  <History size={18} /> History
+                </Link>
+              </>
+            )}
           </div>
 
-          {/* Mobile Drawer Footer (Login/Logout) */}
-          <div className="p-6 border-t border-slate-100 bg-slate-50 shrink-0 space-y-3">
-            {user && (
-              <div className="flex justify-center">
-                <DailyRewardButton />
-              </div>
-            )}
+          <div className="p-6 border-t border-slate-100 bg-slate-50">
             {user ? (
               <button
                 onClick={() => {
                   logout();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-rose-600 font-bold py-3 rounded-xl hover:bg-rose-50 transition-colors"
+                className="w-full flex items-center justify-center gap-2 bg-white border border-slate-200 text-rose-600 font-semibold py-3 rounded-lg hover:bg-rose-50 transition-colors"
               >
                 <LogOut size={18} /> {t('logout')}
               </button>
@@ -429,9 +354,9 @@ export default function Header() {
                   setMobileMenuOpen(false);
                   setShowLoginModal(true);
                 }}
-                className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-colors shadow-lg"
+                className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                {t('login')} / {t('signup')}
+                {t('login')}
               </button>
             )}
           </div>
