@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import TranscriptGeneratorHero from "@/components/transcript/TranscriptGeneratorHero";
+import ScrollToTopButton from "@/components/transcript/ScrollToTopButton";
 import {
   ShieldCheck,
   Zap,
@@ -110,7 +111,7 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
                     </h3>
                     <p className="text-slate-600 text-lg md:text-xl leading-relaxed italic mb-8">
                       "{t('insight.content')}"
-                      
+
                     </p>
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-lg">F</div>
@@ -125,7 +126,6 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
             </div>
           </section>
 
-          {/* Capabilities Grid */}
           <section className="mb-32">
             <div className="text-center mb-16">
               <span className="px-4 py-1.5 rounded-full bg-slate-100 text-slate-500 text-xs font-black uppercase tracking-widest mb-4 inline-block">
@@ -294,12 +294,9 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
               <div className="absolute bottom-0 right-0 w-64 h-64 bg-indigo-600/10 blur-[100px] rounded-full -mb-32 -mr-32" />
               <h2 className="text-3xl md:text-5xl font-bold mb-8 relative z-10 leading-tight">{t('cta.title')}</h2>
               <p className="text-indigo-200/80 text-lg md:text-xl mb-12 relative z-10 max-w-xl mx-auto">{t('cta.subtitle')}</p>
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-slate-100 transition-all shadow-xl active:scale-95 relative z-10 hover:shadow-white/10"
-              >
+              <ScrollToTopButton>
                 {t('cta.button')}
-              </button>
+              </ScrollToTopButton>
             </div>
           </section>
 
