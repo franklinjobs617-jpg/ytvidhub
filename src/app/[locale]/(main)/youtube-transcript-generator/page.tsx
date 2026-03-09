@@ -110,6 +110,7 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
                     </h3>
                     <p className="text-slate-600 text-lg md:text-xl leading-relaxed italic mb-8">
                       "{t('insight.content')}"
+                      
                     </p>
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-lg">F</div>
