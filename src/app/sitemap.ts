@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // 仅英文的页面（低优先级或内容未翻译）
     const englishOnlyPages = [
+        { path: '/youtube-subtitle-extractor', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/guide/how-to-download-youtube-studio-subtitles', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/data-prep-guide', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/guide/clean-transcript-no-timestamp', priority: 0.7, changeFreq: 'monthly' as const },

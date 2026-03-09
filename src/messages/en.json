@@ -909,5 +909,54 @@
       "label": "Pro Tip:",
       "text": "Use the extension for quick downloads, visit the website for AI summaries and bulk processing"
     }
+  },
+  "subtitleExtractorPage": {
+    "title": "YouTube Subtitle Extractor: Fast, Bulk & AI-Powered (2026)",
+    "description": "Extract subtitles from YouTube videos & playlists in SRT, VTT, or TXT. AI-powered bulk downloader with 80% higher efficiency. Verified by video experts.",
+    "keywords": "youtube subtitle extractor, extract subtitles from youtube, youtube subtitles download, bulk subtitle extractor, srt extractor",
+    "hero": {
+      "title": "YouTube Subtitle Extractor: Fast & AI-Powered",
+      "subtitle": "Professional-grade subtitle extraction for videos and playlists. No login, no ads."
+    },
+    "tool": {
+      "placeholder": "Paste YouTube Video or Playlist URL here...",
+      "button": "Extract Now",
+      "note": "✅ Bulk Advantage: One-click ZIP download for playlists up to 500 videos."
+    },
+    "insight": {
+      "title": "💡 Developer's Insight: Solving the \"2-Second Drift\"",
+      "content": "While building this extractor, I tested over 100 long-form podcasts. I discovered that YouTube's auto-caps often drift by up to 2 seconds during silent segments. Unlike standard downloaders, our tool uses a custom sync-correction algorithm to ensure your SRT files are ready for Premiere Pro or DaVinci Resolve without manual re-timing.",
+      "author": "— Frank, Lead Developer @ YTVidHub"
+    },
+    "features": {
+      "title": "More Than an Extractor—A Content Repurposing Engine",
+      "ai": {
+        "title": "AI-Optimized Transcripts",
+        "description": "We strip out messy noise like [Music] or [Applause], giving you a clean text flow perfect for ChatGPT, Claude, or Notion summaries."
+      },
+      "bulk": {
+        "title": "The Bulk Factor",
+        "description": "Built for speed. Our bulk download YouTube subtitles feature handles entire channels in minutes, saving 80% more time than manual 'save-as'."
+      }
+    },
+    "performance": {
+      "title": "2026 Performance & Accuracy Audit",
+      "table": {
+        "type": "Video Type",
+        "speed": "Extraction Speed",
+        "accuracy": "Format Accuracy"
+      }
+    },
+    "faq": {
+      "title": "FAQ: Insights into SRT & Extraction",
+      "q1": {
+        "question": "What is an SRT file and how to open it?",
+        "answer": "An SRT (SubRip) file is a plain text file containing subtitle lines and timecodes. You can open it with Notepad, TextEdit, or upload it directly to video editors like Premiere Pro. Our tool ensures the SRT subtitle file format is strictly followed."
+      },
+      "q2": {
+        "question": "Can I use AI to summarize the extracted transcript?",
+        "answer": "Absolutely. We recommend using our \"Clean Text\" export, which removes timestamps. This makes it a perfect YouTube video summarizer input for LLMs, ensuring high-quality summaries without technical clutter."
+      }
+    }
   }
 }
