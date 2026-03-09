@@ -29,6 +29,7 @@
     "buyCredits": "クレジット購入",
     "currentPlan": "現在のプラン",
     "freePlan": "無料プラン",
+    "transcriptGenerator": "文字起こしジェネレーター",
     "resources": "リソース"
   },
   "hero": {
@@ -648,6 +649,34 @@
     "whatIsSrt": "SRTファイルとは？",
     "settingsGuide": "字幕設定ガイド",
     "onlineExtractor": "オンライン字幕抽出ツール"
+  },
+  "extensionBanner": {
+    "badge": "Chrome拡張機能が利用可能",
+    "title": "YouTubeで直接字幕をダウンロード",
+    "subtitle": "URLをコピーする必要はありません。ワンクリックで即座にダウンロード。",
+    "features": {
+      "fast": {
+        "title": "超高速",
+        "description": "3秒でダウンロード、ページの更新不要"
+      },
+      "oneClick": {
+        "title": "ワンクリックダウンロード",
+        "description": "拡張機能アイコンをクリック → フォーマットを選択 → 完了"
+      },
+      "free": {
+        "title": "永久100%無料",
+        "description": "制限なし、登録不要、隠れた料金なし"
+      }
+    },
+    "cta": {
+      "users": "10,000人以上のユーザーが利用中",
+      "button": "Chromeに追加 - 無料",
+      "note": "✓ クレジットカード不要  ✓ 5秒でインストール"
+    },
+    "tip": {
+      "label": "プロのヒント：",
+      "text": "素早いダウンロードには拡張機能を使用し、AI要約と一括処理にはウェブサイトをご利用ください"
+    }
   }
 }
 

@@ -881,5 +881,33 @@
     "stillQuestions": "Still Have Questions?",
     "faqDescription": "Check our comprehensive FAQ section for instant answers to common questions.",
     "visitFaq": "Visit FAQ"
+  },
+  "extensionBanner": {
+    "badge": "Chrome Extension Available",
+    "title": "Download Subtitles Directly on YouTube",
+    "subtitle": "No need to copy URLs. One click, instant download.",
+    "features": {
+      "fast": {
+        "title": "Lightning Fast",
+        "description": "Download in 3 seconds, no page refresh needed"
+      },
+      "oneClick": {
+        "title": "One-Click Download",
+        "description": "Click extension icon → Choose format → Done"
+      },
+      "free": {
+        "title": "100% Free Forever",
+        "description": "No limits, no registration, no hidden fees"
+      }
+    },
+    "cta": {
+      "users": "Join 10,000+ Users",
+      "button": "Add to Chrome - It's Free",
+      "note": "✓ No credit card required  ✓ Install in 5 seconds"
+    },
+    "tip": {
+      "label": "Pro Tip:",
+      "text": "Use the extension for quick downloads, visit the website for AI summaries and bulk processing"
+    }
   }
 }

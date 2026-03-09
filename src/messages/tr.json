@@ -29,6 +29,7 @@
     "buyCredits": "Kredi Satın Al",
     "currentPlan": "Mevcut Plan",
     "freePlan": "Ücretsiz Plan",
+    "transcriptGenerator": "Transkript Oluşturucu",
     "resources": "Kaynaklar"
   },
   "hero": {
@@ -574,5 +575,33 @@
     "whatIsSrt": "SRT Dosyası Nedir?",
     "settingsGuide": "Altyazı Ayarları Kılavuzu",
     "onlineExtractor": "Çevrimiçi Altyazı Çıkarıcı"
+  },
+  "extensionBanner": {
+    "badge": "Chrome Eklentisi Mevcut",
+    "title": "YouTube'da Doğrudan Altyazı İndirin",
+    "subtitle": "URL kopyalamaya gerek yok. Tek tıkla anında indirin.",
+    "features": {
+      "fast": {
+        "title": "Şimşek Hızında",
+        "description": "3 saniyede indirin, sayfa yenilemeye gerek yok"
+      },
+      "oneClick": {
+        "title": "Tek Tıkla İndirme",
+        "description": "Eklenti simgesine tıklayın → Format seçin → Tamam"
+      },
+      "free": {
+        "title": "Sonsuza Kadar %100 Ücretsiz",
+        "description": "Sınırsız, kayıt yok, gizli ücret yok"
+      }
+    },
+    "cta": {
+      "users": "10.000+ Kullanıcıya Katılın",
+      "button": "Chrome'a Ekle - Ücretsiz",
+      "note": "✓ Kredi kartı gerekmez  ✓ 5 saniyede kurulum"
+    },
+    "tip": {
+      "label": "İpucu:",
+      "text": "Hızlı indirmeler için eklentiyi kullanın, AI özetleri ve toplu işleme için web sitesini ziyaret edin"
+    }
   }
 }

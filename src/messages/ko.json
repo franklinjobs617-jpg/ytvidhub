@@ -29,6 +29,7 @@
         "buyCredits": "크레딧 구매",
         "currentPlan": "현재 요금제",
         "freePlan": "무료 플랜",
+        "transcriptGenerator": "트랜스크립트 생성기",
         "resources": "리소스"
     },
     "hero": {
@@ -646,5 +647,33 @@
         "stillQuestions": "여전히 질문이 있으신가요?",
         "faqDescription": "일반적인 질문에 대한 즉시 답변을 위해 포괄적인 FAQ 섹션을 확인하세요.",
         "visitFaq": "FAQ 방문"
+    },
+    "extensionBanner": {
+        "badge": "Chrome 확장 프로그램 사용 가능",
+        "title": "YouTube에서 직접 자막 다운로드",
+        "subtitle": "URL 복사 불필요. 클릭 한 번으로 즉시 다운로드.",
+        "features": {
+            "fast": {
+                "title": "초고속",
+                "description": "3초 내 다운로드, 페이지 새로고침 불필요"
+            },
+            "oneClick": {
+                "title": "원클릭 다운로드",
+                "description": "확장 프로그램 아이콘 클릭 → 형식 선택 → 완료"
+            },
+            "free": {
+                "title": "영구 100% 무료",
+                "description": "제한 없음, 등록 불필요, 숨겨진 비용 없음"
+            }
+        },
+        "cta": {
+            "users": "10,000명 이상의 사용자와 함께하세요",
+            "button": "Chrome에 추가 - 무료",
+            "note": "✓ 신용카드 불필요  ✓ 5초 내 설치"
+        },
+        "tip": {
+            "label": "프로 팁:",
+            "text": "빠른 다운로드는 확장 프로그램을 사용하고, AI 요약 및 대량 처리는 웹사이트를 방문하세요"
+        }
     }
 }

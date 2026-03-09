@@ -1,11 +1,14 @@
 "use client";
 
 import { Chrome, Zap, Download, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/ytvidhub-youtube-subtitle/jdkjibjlihlmpcjppdgiejgoiamogdoj";
 
 export default function ExtensionBanner() {
+  const t = useTranslations("extensionBanner");
+
   return (
     <section className="py-16 bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="container mx-auto px-6 max-w-5xl">
@@ -14,13 +17,13 @@ export default function ExtensionBanner() {
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
             <Sparkles size={14} />
-            <span>Chrome Extension Available</span>
+            <span>{t("badge")}</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
-            Download Subtitles Directly on YouTube
+            {t("title")}
           </h2>
           <p className="text-slate-600 text-lg">
-            No need to copy URLs. One click, instant download.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -39,8 +42,8 @@ export default function ExtensionBanner() {
                     <Zap size={20} className="text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">Lightning Fast</h3>
-                    <p className="text-sm text-slate-600">Download in 3 seconds, no page refresh needed</p>
+                    <h3 className="font-bold text-slate-900 mb-1">{t("features.fast.title")}</h3>
+                    <p className="text-sm text-slate-600">{t("features.fast.description")}</p>
                   </div>
                 </div>
 
@@ -49,8 +52,8 @@ export default function ExtensionBanner() {
                     <Download size={20} className="text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">One-Click Download</h3>
-                    <p className="text-sm text-slate-600">Click extension icon → Choose format → Done</p>
+                    <h3 className="font-bold text-slate-900 mb-1">{t("features.oneClick.title")}</h3>
+                    <p className="text-sm text-slate-600">{t("features.oneClick.description")}</p>
                   </div>
                 </div>
 
@@ -59,8 +62,8 @@ export default function ExtensionBanner() {
                     <Sparkles size={20} className="text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">100% Free Forever</h3>
-                    <p className="text-sm text-slate-600">No limits, no registration, no hidden fees</p>
+                    <h3 className="font-bold text-slate-900 mb-1">{t("features.free.title")}</h3>
+                    <p className="text-sm text-slate-600">{t("features.free.description")}</p>
                   </div>
                 </div>
               </div>
@@ -73,7 +76,7 @@ export default function ExtensionBanner() {
 
                 <div>
                   <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">
-                    Join 10,000+ Users
+                    {t("cta.users")}
                   </p>
                   <div className="flex items-center justify-center gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
@@ -92,14 +95,14 @@ export default function ExtensionBanner() {
                   className="group w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-3"
                 >
                   <Chrome size={24} />
-                  <span>Add to Chrome - It's Free</span>
+                  <span>{t("cta.button")}</span>
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </a>
 
                 <p className="text-xs text-slate-400">
-                  ✓ No credit card required  ✓ Install in 5 seconds
+                  {t("cta.note")}
                 </p>
               </div>
 
@@ -110,7 +113,7 @@ export default function ExtensionBanner() {
         {/* 底部提示 */}
         <div className="text-center mt-8">
           <p className="text-sm text-slate-500">
-            💡 <strong>Pro Tip:</strong> Use the extension for quick downloads, visit the website for AI summaries and bulk processing
+            💡 <strong>{t("tip.label")}</strong> {t("tip.text")}
           </p>
         </div>
 

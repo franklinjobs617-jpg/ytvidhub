@@ -29,6 +29,7 @@
     "buyCredits": "Credits kaufen",
     "currentPlan": "Aktueller Plan",
     "freePlan": "Kostenloser Plan",
+    "transcriptGenerator": "Transkript-Generator",
     "resources": "Ressourcen"
   },
   "hero": {
@@ -648,5 +649,33 @@
     "stillQuestions": "Haben Sie noch Fragen?",
     "faqDescription": "Schauen Sie in unseren umfassenden FAQ Bereich für sofortige Antworten auf häufige Fragen.",
     "visitFaq": "FAQ besuchen"
+  },
+  "extensionBanner": {
+    "badge": "Chrome-Erweiterung Verfügbar",
+    "title": "Untertitel Direkt auf YouTube Herunterladen",
+    "subtitle": "Keine URLs kopieren nötig. Ein Klick, sofortiger Download.",
+    "features": {
+      "fast": {
+        "title": "Blitzschnell",
+        "description": "Download in 3 Sekunden, kein Neuladen der Seite erforderlich"
+      },
+      "oneClick": {
+        "title": "Ein-Klick-Download",
+        "description": "Erweiterungssymbol klicken → Format wählen → Fertig"
+      },
+      "free": {
+        "title": "100% Kostenlos Für Immer",
+        "description": "Keine Limits, keine Registrierung, keine versteckten Gebühren"
+      }
+    },
+    "cta": {
+      "users": "Über 10.000 Nutzer",
+      "button": "Zu Chrome Hinzufügen - Kostenlos",
+      "note": "✓ Keine Kreditkarte erforderlich  ✓ Installation in 5 Sekunden"
+    },
+    "tip": {
+      "label": "Profi-Tipp:",
+      "text": "Nutzen Sie die Erweiterung für schnelle Downloads, besuchen Sie die Website für KI-Zusammenfassungen und Massenverarbeitung"
+    }
   }
 }

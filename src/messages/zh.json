@@ -881,5 +881,33 @@
     "stillQuestions": "还有问题？",
     "faqDescription": "查看我们的综合常见问题部分，即时获得常见问题的答案。",
     "visitFaq": "访问常见问题"
+  },
+  "extensionBanner": {
+    "badge": "Chrome扩展可用",
+    "title": "直接在YouTube上下载字幕",
+    "subtitle": "无需复制URL，一键即时下载。",
+    "features": {
+      "fast": {
+        "title": "闪电般快速",
+        "description": "3秒内下载，无需刷新页面"
+      },
+      "oneClick": {
+        "title": "一键下载",
+        "description": "点击扩展图标 → 选择格式 → 完成"
+      },
+      "free": {
+        "title": "永久100%免费",
+        "description": "无限制，无需注册，无隐藏费用"
+      }
+    },
+    "cta": {
+      "users": "加入10,000+用户",
+      "button": "添加到Chrome - 完全免费",
+      "note": "✓ 无需信用卡  ✓ 5秒安装"
+    },
+    "tip": {
+      "label": "专业提示：",
+      "text": "使用扩展快速下载，访问网站进行AI摘要和批量处理"
+    }
   }
 }
