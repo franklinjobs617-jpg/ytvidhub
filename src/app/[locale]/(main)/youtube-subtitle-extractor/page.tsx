@@ -65,14 +65,14 @@ export default async function SubtitleExtractorPage({ params }: Props) {
       <SubtitleExtractorHero />
 
       {/* Main Content Area */}
-      <main className="relative z-10 pb-24">
+      <main className="relative z-10 pb-24 pt-12 md:pt-16">
         {/* Subtle Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-slate-50/50 to-transparent -z-10" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-50/30 to-transparent -z-10" />
 
         <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
 
           {/* Developer Insight Section - Minimalist Floating Card */}
-          <section className="mb-24 -mt-12 md:-mt-20 relative z-20">
+          <section className="mb-24 relative z-20">
             <div className="max-w-4xl mx-auto">
               <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/60 p-8 md:p-12 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.06)]">
                 <div className="flex flex-col md:flex-row gap-8 items-start pt-2">
@@ -243,13 +243,8 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                     <img
                       src="/image/blog-ai-summary-interface.webp"
                       alt="YTVidHub Subtitle Extractor Interface"
-                      className="w-full h-full object-cover opacity-90"
+                      className="w-full h-full object-cover opacity-100"
                     />
-                  </div>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
-                    <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-2xl transition-transform group-hover:scale-110">
-                      <Play size={32} fill="white" />
-                    </div>
                   </div>
                 </div>
               </div>
