@@ -16,6 +16,8 @@ import {
   Sparkles
 } from "lucide-react";
 
+
+
 type Props = {
   params: Promise<{ locale: string }>;
 };
