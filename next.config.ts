@@ -72,12 +72,12 @@ const nextConfig: NextConfig = {
       },
       // Redirect non-English versions of English-only pages to English
       {
-        source: "/:locale(es|de|ko|ja|ru)/guide/playlist-subtitles-bulk/:path*",
+        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/playlist-subtitles-bulk/:path*",
         destination: "/guide/playlist-subtitles-bulk/",
         permanent: true,
       },
       {
-        source: "/:locale(es|de|ko|ja|ru)/tools/playlist-subtitles-bulk/:path*",
+        source: "/:locale(es|de|ko|ja|ru|tr|zh)/tools/playlist-subtitles-bulk/:path*",
         destination: "/tools/playlist-subtitles-bulk/",
         permanent: true,
       },

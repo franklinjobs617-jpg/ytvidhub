@@ -135,7 +135,7 @@ class GlobalCacheManager {
    * 预加载所有语言的消息（立即执行）
    */
   async preloadAllLocalesImmediately(): Promise<void> {
-    const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr'];
+    const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr', 'zh'];
     const promises = locales.map(locale => this.preloadMessages(locale));
     await Promise.allSettled(promises);
   }
@@ -172,7 +172,7 @@ class GlobalCacheManager {
    * 立即加载所有语言（用于初始化）
    */
   async initializeAllLocales(): Promise<void> {
-    const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr'];
+    const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr', 'zh'];
     const promises = locales.map(locale => {
       if (!this.cache[locale] && !this.loadingPromises.has(locale)) {
         return this.preloadMessages(locale);

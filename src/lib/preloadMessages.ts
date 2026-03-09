@@ -35,11 +35,11 @@ export async function preloadMessages(locale: string) {
 
 // 预加载所有支持的语言
 export async function preloadAllMessages() {
-  const locales = ['en', 'es'];
-  
+  const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr', 'zh'];
+
   // 使用 Promise.allSettled 确保即使某个语言包加载失败也不会影响其他语言包
   const results = await Promise.allSettled(locales.map(locale => preloadMessages(locale)));
-  
+
   // 检查是否有加载失败的情况
   results.forEach((result, index) => {
     if (result.status === 'rejected') {
@@ -55,7 +55,7 @@ export function getCachedMessages(locale: string) {
 
 // 检查是否所有语言包都已预加载
 export function isAllMessagesLoaded() {
-  const locales = ['en', 'es'];
+  const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr', 'zh'];
   return locales.every(locale => messageCache.has(locale));
 }
 

@@ -1,0 +1,885 @@
+{
+  "metadata": {
+    "title": "YouTube字幕下载工具 - 批量下载播放列表SRT/VTT/TXT字幕 | YTVidHub",
+    "description": "专业的YouTube字幕下载工具，支持批量下载播放列表和频道字幕。一键提取SRT、VTT、TXT格式字幕，非常适合内容创作者、学生和研究人员。免费试用，无需注册。",
+    "keywords": "youtube字幕下载, youtube批量字幕下载, youtube播放列表字幕下载, youtube字幕提取, youtube srt字幕下载, youtube字幕转txt, youtube字幕导出"
+  },
+  "subtitleDownloaderPage": {
+    "title": "免费YouTube字幕下载 - 在线下载SRT/VTT/TXT字幕 | YTVidHub",
+    "description": "免费下载YouTube字幕，支持SRT、VTT、TXT格式。即刻提取任意YouTube视频的字幕，无需注册，适合内容创作者和学生使用。",
+    "keywords": "youtube字幕下载, 免费youtube字幕下载, youtube字幕提取工具, youtube字幕导出, youtube cc下载"
+  },
+  "transcriptPage": {
+    "title": "YouTube字幕生成器 - 免费视频转文字工具 | YTVidHub",
+    "description": "免费将YouTube视频转换为文字，AI驱动高精度识别，支持所有语言，无需注册！无论是制作字幕还是内容分析，都能轻松搞定。",
+    "keywords": "youtube字幕生成器, youtube转文字, youtube字幕提取, 视频转文字, 免费字幕生成器",
+    "generating": "正在生成字幕...",
+    "hero": {
+      "title": "YouTube字幕生成器",
+      "subtitle": "将任意YouTube视频转换成精准、可搜索的文字记录。我们的AI生成器几秒钟就能提供专业级字幕文本，支持100多种语言，并可导出多种格式。",
+      "benefits": {
+        "free": "完全免费",
+        "accurate": "AI高精度",
+        "fast": "极速处理",
+        "formats": "多种格式"
+      }
+    },
+    "interface": {
+      "title": "生成YouTube字幕",
+      "subtitle": "粘贴任意YouTube视频链接，立即开始",
+      "placeholder": "在此粘贴YouTube视频链接...",
+      "generate": "生成字幕",
+      "tryExample": "试试示例"
+    },
+    "stats": {
+      "transcripts": "已生成字幕",
+      "languages": "支持语言",
+      "accuracy": "准确率",
+      "speed": "平均速度"
+    },
+    "features": {
+      "title": "为什么选择YTVidHub作为你的YouTube字幕生成器？",
+      "subtitle": "体验最先进的YouTube字幕提取技术，精准度和速度无可比拟。",
+      "accurate": {
+        "title": "AI驱动的YouTube字幕生成，准确率高达99.5%",
+        "description": "我们的先进AI算法确保字幕生成准确率达99.5%，即使面对各种口音、专业术语和背景噪音，也能精准转录。"
+      },
+      "formats": {
+        "title": "多种导出格式 - SRT、VTT、TXT字幕下载",
+        "description": "支持导出SRT、VTT或TXT格式的字幕文件。无论是视频编辑、字幕制作，还是无障碍访问、内容分析，都能满足需求。"
+      },
+      "languages": {
+        "title": "支持100多种语言的YouTube字幕提取",
+        "description": "生成100多种语言的字幕，准确度达到母语水平。系统自动检测视频语言，无需手动选择。"
+      },
+      "fast": {
+        "title": "极速YouTube视频转文字",
+        "description": "30秒内即可获得完整字幕文本。我们优化的服务器能高效处理任意长度的视频。"
+      },
+      "secure": {
+        "title": "隐私与安全优先",
+        "description": "您的视频不会存储在我们的服务器上。所有处理过程安全可靠，生成后数据自动删除。"
+      },
+      "ai": {
+        "title": "智能内容分析",
+        "description": "不只是转录——还能从您的YouTube视频中获取AI生成的摘要、关键点提取和内容洞察。"
+      }
+    },
+    "benefits": {
+      "title": "更多优势",
+      "noRegistration": {
+        "title": "无需注册",
+        "description": "无需创建账户或提供个人信息，立即开始生成字幕。"
+      },
+      "unlimited": {
+        "title": "无限使用",
+        "description": "生成任意数量的字幕，免费用户无每日限制。"
+      },
+      "privacy": {
+        "title": "完全隐私",
+        "description": "我们不存储您的视频或字幕文件，所有内容处理完毕即删除。"
+      },
+      "support": {
+        "title": "全天候支持",
+        "description": "专业支持团队全天候为您解答任何问题。"
+      }
+    },
+    "howItWorks": {
+      "title": "如何提取YouTube字幕 - 分步指南",
+      "subtitle": "只需4个简单步骤即可获得专业级字幕文本，无需技术知识。",
+      "step1": {
+        "title": "粘贴YouTube视频链接",
+        "description": "复制任意YouTube视频链接，粘贴到我们的字幕生成器中。支持所有YouTube视频格式和长度。"
+      },
+      "step2": {
+        "title": "点击生成字幕",
+        "description": "我们的AI驱动系统立即开始处理视频，分析音频并识别语音。"
+      },
+      "step3": {
+        "title": "预览生成的字幕",
+        "description": "预览带时间戳的字幕文本。AI确保高准确度，标点和格式正确。"
+      },
+      "step4": {
+        "title": "下载多种格式的YouTube字幕",
+        "description": "导出为SRT、VTT或TXT格式，适合字幕制作、内容分析或无障碍访问。"
+      },
+      "cta": {
+        "title": "准备好生成第一份YouTube字幕了吗？",
+        "description": "加入数千名信赖我们YouTube字幕生成器的内容创作者、教育工作者和专业人士。",
+        "button": "立即开始生成字幕"
+      }
+    },
+    "comparison": {
+      "title": "YTVidHub vs 其他YouTube字幕生成器",
+      "subtitle": "看看我们的工具如何在各个方面超越竞争对手。",
+      "headers": {
+        "feature": "功能",
+        "others": "其他工具"
+      },
+      "features": {
+        "speed": "YouTube字幕生成速度",
+        "accuracy": "字幕准确率",
+        "formats": "导出格式（SRT、VTT、TXT）",
+        "languages": "语言支持",
+        "registration": "需要注册",
+        "ads": "广告",
+        "privacy": "数据隐私",
+        "ai": "AI增强"
+      },
+      "ytvidhub": {
+        "speed": "30秒内",
+        "accuracy": "99.5% AI增强",
+        "formats": "SRT、VTT、TXT",
+        "languages": "100多种语言",
+        "registration": "无需注册",
+        "ads": "完全无广告",
+        "privacy": "零数据保留",
+        "ai": "先进AI分析"
+      },
+      "others": {
+        "speed": "2-5分钟",
+        "accuracy": "85-90% 基础",
+        "formats": "选项有限",
+        "languages": "10-20种语言",
+        "registration": "需要账户",
+        "ads": "大量广告",
+        "privacy": "数据无限期存储",
+        "ai": "仅基础转录"
+      },
+      "cta": "立即体验最佳YouTube字幕生成器"
+    },
+    "testimonials": {
+      "title": "全球内容创作者的信赖之选",
+      "subtitle": "看看我们的用户如何评价我们的YouTube字幕生成器，以及它如何改变了他们的工作流程。",
+      "testimonial1": {
+        "name": "Sarah Johnson",
+        "role": "内容创作者",
+        "content": "这个YouTube字幕生成器太棒了！准确度惊人，为我节省了数小时手动转录的时间。非常适合为我的YouTube频道制作字幕。"
+      },
+      "testimonial2": {
+        "name": "Dr. Michael Chen",
+        "role": "在线教育工作者",
+        "content": "作为一名教育工作者，我需要准确的字幕来实现无障碍教学。YTVidHub始终提供99%以上的准确度，多种格式选项正是我所需要的。"
+      },
+      "testimonial3": {
+        "name": "Alex Rodriguez",
+        "role": "视频编辑",
+        "content": "速度无与伦比——30秒内就能获得专业字幕。SRT导出与我所有的编辑软件完美配合。强烈推荐！"
+      },
+      "testimonial4": {
+        "name": "Emma Thompson",
+        "role": "研究员",
+        "content": "我为研究分析数百个视频。这个工具完美处理专业术语和多种语言。它已成为我工作流程中不可或缺的一部分。"
+      },
+      "testimonial5": {
+        "name": "David Kim",
+        "role": "电影制作人",
+        "content": "AI增强效果非常明显——它能捕捉到其他工具遗漏的细微差别。隐私优先的设计让我在处理敏感内容时充满信心。"
+      },
+      "testimonial6": {
+        "name": "Lisa Wang",
+        "role": "营销经理",
+        "content": "我们将其用于所有视频内容分析。准确度和速度帮助我们制定更好的内容策略。免费版也非常慷慨！"
+      }
+    },
+    "trustIndicators": {
+      "title": "全球专业人士的信赖之选",
+      "transcripts": "已生成字幕",
+      "users": "活跃用户",
+      "rating": "用户评分",
+      "support": "支持可用"
+    }
+  },
+  "transcriptFaq": {
+    "title": "常见问题 - YouTube字幕生成器",
+    "subtitle": "关于我们YouTube字幕生成器的所有信息。找不到答案？联系我们的支持团队。",
+    "questions": {
+      "what": {
+        "question": "什么是YouTube字幕生成器？",
+        "answer": "YouTube字幕生成器是一种自动将YouTube视频音频内容转换为书面文字的工具。我们的AI驱动生成器分析视频音轨，创建准确的、带时间戳的字幕文本，可以导出为SRT、VTT或TXT等多种格式。"
+      },
+      "how": {
+        "question": "生成的YouTube字幕有多准确？",
+        "answer": "我们的AI增强字幕生成器平均准确率达99.5%。准确度取决于音频质量、说话人清晰度和背景噪音等因素。我们的先进算法经过专门训练，可以处理各种口音、专业术语和具有挑战性的音频条件。"
+      },
+      "formats": {
+        "question": "我可以以什么格式导出YouTube字幕？",
+        "answer": "您可以以三种流行格式导出YouTube字幕：SRT（SubRip字幕）、VTT（WebVTT）和TXT（纯文本）。SRT和VTT格式包含时间戳，非常适合字幕制作，而TXT提供干净的文本用于内容分析。"
+      },
+      "free": {
+        "question": "YouTube字幕生成器真的免费吗？",
+        "answer": "是的，我们的YouTube字幕生成器完全免费使用。没有隐藏费用、订阅要求或使用限制。您可以生成无限的字幕，无需创建账户或提供付款信息。"
+      },
+      "accuracy": {
+        "question": "你们如何确保YouTube字幕的准确性？",
+        "answer": "我们使用在数百万小时音频数据上训练的先进AI算法。我们的系统采用多层处理，包括降噪、说话人识别、上下文分析和语法纠错，以确保字幕生成的最高准确度。"
+      },
+      "languages": {
+        "question": "YouTube字幕生成支持哪些语言？",
+        "answer": "我们的字幕生成器支持100多种语言，包括英语、西班牙语、法语、德语、中文、日语、韩语、阿拉伯语、印地语、葡萄牙语、俄语、意大利语、荷兰语等。系统会自动检测视频的语言并相应生成字幕。"
+      },
+      "extract": {
+        "question": "如何自动从YouTube视频中提取字幕？",
+        "answer": "要自动提取YouTube字幕，只需将视频链接粘贴到我们的YouTube字幕提取器中。我们的AI驱动系统将分析音频并在30秒内生成准确的字幕。"
+      },
+      "convert": {
+        "question": "我可以免费将YouTube视频转换为文字吗？",
+        "answer": "是的，我们的YouTube转文字转换器完全免费。您可以将无限数量的YouTube视频转换为字幕文本，无需任何注册或付款。"
+      },
+      "best": {
+        "question": "2026年最好的YouTube字幕生成器是什么？",
+        "answer": "YTVidHub被认为是2026年最好的YouTube字幕生成器，提供99.5%的准确率，支持100多种语言，免费无限使用，无需注册。"
+      },
+      "automatic": {
+        "question": "YouTube有自动字幕生成功能吗？",
+        "answer": "虽然YouTube有基本的自动字幕功能，但我们先进的YouTube字幕生成器提供更高的准确度和更好的格式，使其成为专业使用的首选。"
+      }
+    },
+    "contact": {
+      "title": "还有问题？",
+      "description": "我们的支持团队随时为您解答有关字幕生成或技术问题的任何疑问。",
+      "button": "联系支持"
+    }
+  },
+  "navigation": {
+    "home": "首页",
+    "features": "功能",
+    "pricing": "价格",
+    "about": "关于",
+    "contact": "联系",
+    "support": "支持",
+    "login": "登录",
+    "signup": "注册",
+    "dashboard": "控制台",
+    "bulkDownloader": "批量下载",
+    "transcriptGenerator": "字幕生成器",
+    "extension": "扩展",
+    "guide": "指南",
+    "blog": "博客",
+    "howToGuide": "下载教程",
+    "logout": "退出",
+    "credits": "积分",
+    "buyCredits": "购买积分",
+    "currentPlan": "当前计划",
+    "freePlan": "免费计划",
+    "resources": "资源"
+  },
+  "hero": {
+    "title": "YouTube字幕下载工具",
+    "subtitle": "从任意YouTube视频、播放列表或频道下载字幕。即时提取SRT、VTT、TXT字幕。支持<highlight>批量下载</highlight>和AI视频摘要。",
+    "highlight": "播放列表字幕下载器",
+    "ready": "高效YouTube字幕提取，即刻开始",
+    "bulkExtraction": "高速批量字幕提取",
+    "cta": {
+      "primary": "开始下载字幕",
+      "secondary": "试试示例链接",
+      "signup": "免费注册 - 立即获得5次YouTube字幕下载"
+    },
+    "features": {
+      "videos": "视频",
+      "playlists": "播放列表",
+      "channels": "频道",
+      "extracted": "今日已提取240万+字幕",
+      "playlistSupport": "现已支持YouTube播放列表和频道！"
+    },
+    "placeholder": {
+      "title": "粘贴YouTube视频链接、播放列表链接或频道链接",
+      "summaryTitle": "粘贴YouTube视频链接",
+      "description": "支持单个视频、整个播放列表和频道批量下载",
+      "summaryDesc": "AI摘要针对单个视频分析进行了优化",
+      "support": "我们的{tool}支持{types}",
+      "tool": "批量字幕下载器",
+      "types": "视频、播放列表和频道",
+      "poweredBy": "由DeepSeek AI驱动",
+      "pasteDemo": "粘贴演示链接"
+    },
+    "input": {
+      "placeholder": "粘贴YouTube视频、播放列表或频道链接...",
+      "placeholderSummary": "粘贴YouTube视频链接以获取AI摘要...",
+      "heading": "在下方粘贴链接即可开始",
+      "headingSummary": "粘贴视频链接进行AI分析",
+      "supports": "支持：视频 · 播放列表 · 频道",
+      "supportsSummary": "支持：单个视频分析",
+      "tryDemo": "试试演示链接",
+      "tryExample": "试试示例"
+    },
+    "ticker": {
+      "subtitles": "下载YouTube字幕",
+      "caption": "YouTube字幕下载器",
+      "transcript": "YouTube字幕提取器",
+      "bulk": "批量字幕下载"
+    },
+    "credits": {
+      "remaining": "剩余{count}积分",
+      "signup": "注册获得5次免费下载",
+      "info": "1个链接 = 1次下载积分",
+      "ready": "高效YouTube字幕提取，即刻开始",
+      "bulkExtraction": "高速批量字幕提取",
+      "cost": "消耗：{amount}积分",
+      "perVid": "积分/视频",
+      "balance": "余额：{amount}积分",
+      "topUp": "充值"
+    }
+  },
+  "downloader": {
+    "batchEnabled": "已启用批量处理",
+    "selectFormat": "选择格式",
+    "selectLanguage": "选择语言",
+    "aiMode": "AI摘要模式",
+    "analyzing": "分析中...",
+    "processing": "处理中..."
+  },
+  "downloaderView": {
+    "checking": "检查中",
+    "ready": "就绪",
+    "noSubs": "无字幕",
+    "allWithSubtitles": "所有有字幕的",
+    "visibleOnPage": "页面可见",
+    "deselectAll": "取消全选",
+    "all": "全部",
+    "subsShort": "有字幕",
+    "noSubsShort": "无字幕",
+    "searchVideos": "搜索视频...",
+    "ccAvailable": "字幕可用",
+    "loadMore": "加载更多（剩余{count}个）",
+    "noVideosFound": "未找到符合筛选条件的视频",
+    "clearFilters": "清除筛选",
+    "selected": "已选择",
+    "clearSelection": "清除选择",
+    "videoQueue": "视频队列",
+    "summary": "摘要",
+    "mindMap": "思维导图",
+    "transcript": "字幕文本",
+    "aiIsTyping": "AI正在输入...",
+    "selectVideoToSummary": "选择一个视频以生成摘要"
+  },
+  "comparisonSlider": {
+    "title": "如何批量将YouTube视频转换为文字",
+    "highlight": "字幕打包成1个ZIP",
+    "description": "拖动滑块，看看区别。将数小时繁琐的手工工作转变为一个有序的文件。",
+    "before": "之前：手动苦力",
+    "after": "之后：一键搞定，一个ZIP"
+  },
+  "demo": {
+    "title": "互动演示 - 查看真实效果",
+    "description": "用示例视频试试我们的字幕提取功能",
+    "video": {
+      "title": "如何构建React应用 - 完整教程",
+      "duration": "15:42",
+      "subtitles": "英文字幕可用"
+    },
+    "button": "提取字幕（{format}）",
+    "result": {
+      "title": "已提取字幕（{format}）",
+      "tryAnother": "试试其他格式",
+      "completed": "提取在2.3秒内完成",
+      "ready": "准备下载"
+    }
+  },
+  "featuresGrid": {
+    "title": "从整个YouTube播放列表和频道下载字幕",
+    "description": "我们不只是下载工具，更是数据准备的得力助手。轻松获取干净、模型就绪的文本。",
+    "items": {
+      "clean": {
+        "title": "干净的TXT输出",
+        "description": "获取去除时间戳和格式噪音的纯文本，立即可用于模型训练。",
+        "alt": "字幕清理对比：之前（杂乱的SRT）vs 之后（干净的研究就绪TXT）"
+      },
+      "llm": {
+        "title": "为您的LLM提供燃料",
+        "description": "专为需要大量、一致训练语料库的研究人员设计。",
+        "alt": "研究人员使用YTVidHub界面为LLM提供干净数据"
+      },
+      "credits": {
+        "title": "每日免费积分",
+        "description": "每天用5个免费积分测试我们的批量处理流程。订阅前先看质量。",
+        "alt": "批量下载，每日5个免费积分促销图"
+      }
+    },
+    "cta": {
+      "text": "想深入了解字幕清理背后的数据科学？",
+      "button": "阅读数据准备指南"
+    }
+  },
+  "coreCapabilities": {
+    "badge": "核心功能",
+    "title": "提取YouTube字幕用于LLM训练（ChatGPT/Claude）",
+    "description": "探索一套功能，可处理从单个视频到整个内容库的任何任务。",
+    "action": "查看实际效果",
+    "actionTitle": "播放列表和频道批量处理",
+    "actionDescription": "无论是整个YouTube播放列表还是包含数百个链接的文本文件，只需粘贴即可。我们的工具智能解析、处理并为您准备好一切，将数小时的手动工作变成几秒钟的等待。",
+    "adaptive": "自适应输出",
+    "adaptiveTitle": "导出为SRT、VTT或干净的TXT",
+    "adaptiveDescription": "需要用于视频编辑的定时字幕？选择SRT。构建无障碍网页播放器？VTT已就绪。只需要用于分析的文字？导出为纯TXT。每个文件都由您选择。"
+  },
+  "howItWorks": {
+    "title": "如何下载YouTube字幕",
+    "description": "从原始链接到干净数据，只需几秒钟。无需复杂设置。",
+    "steps": {
+      "1": {
+        "badge": "步骤01",
+        "title": "粘贴链接",
+        "description": "粘贴YouTube视频/播放列表链接，或上传.txt文件进行批量处理。"
+      },
+      "2": {
+        "badge": "步骤02",
+        "title": "AI分析",
+        "description": "我们的引擎即时提取字幕并生成摘要或思维导图。"
+      },
+      "3": {
+        "badge": "步骤03",
+        "title": "导出数据",
+        "description": "下载为SRT/VTT/TXT，或直接将AI摘要复制到您的笔记中。"
+      }
+    }
+  },
+  "usecases": {
+    "title": "为什么要下载YouTube字幕？",
+    "description": "从无障碍访问到AI训练，探索YouTube字幕的多种用途",
+    "cases": {
+      "editing": {
+        "title": "视频编辑",
+        "description": "将字幕导入编辑软件，用于专业视频制作和后期处理。"
+      },
+      "accessibility": {
+        "title": "无障碍支持",
+        "description": "通过适当的字幕确保内容对听障人士可访问。"
+      },
+      "ai": {
+        "title": "AI训练",
+        "description": "为机器学习模型和自然语言处理创建干净的文本数据集。"
+      },
+      "translation": {
+        "title": "翻译",
+        "description": "使用字幕文本作为源材料，将内容翻译成多种语言。"
+      },
+      "research": {
+        "title": "研究",
+        "description": "分析视频内容，用于学术研究、内容分析和数据挖掘。"
+      },
+      "content": {
+        "title": "内容创作",
+        "description": "将视频内容重新利用为博客文章、文章和社交媒体内容。"
+      },
+      "education": {
+        "title": "教育",
+        "description": "为教育目的创建学习材料和课程字幕。"
+      },
+      "seo": {
+        "title": "SEO优化",
+        "description": "提取文本内容以改善搜索引擎优化和内容可发现性。"
+      }
+    }
+  },
+  "comparison": {
+    "title": "为什么选择YTVidHub下载YouTube字幕？",
+    "others": {
+      "title": "其他工具",
+      "features": [
+        "仅限单个视频下载",
+        "格式支持和质量差",
+        "需要广告和注册",
+        "处理缓慢且不可靠",
+        "不支持批量或播放列表"
+      ]
+    },
+    "ours": {
+      "title": "我们的解决方案",
+      "features": [
+        "单个视频 + 批量播放列表下载",
+        "高质量SRT、VTT和TXT格式",
+        "免费版无广告或注册",
+        "闪电般快速的云处理",
+        "先进的批量和AI就绪功能"
+      ]
+    }
+  },
+  "technical": {
+    "title": "技术规格",
+    "supported": {
+      "title": "支持的视频类型",
+      "types": [
+        "公开YouTube视频",
+        "未列出的视频（带链接）",
+        "自动生成的字幕",
+        "手动上传的字幕",
+        "多语言轨道"
+      ]
+    },
+    "output": {
+      "title": "输出格式",
+      "formats": [
+        "带时间戳的SRT（SubRip）",
+        "用于网页播放器的VTT（WebVTT）",
+        "干净格式的TXT（纯文本）",
+        "UTF-8编码支持",
+        "可自定义格式选项"
+      ]
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "questions": {
+      "legal": {
+        "question": "使用YouTube字幕下载工具合法吗？",
+        "answer": "是的，将YouTube字幕下载器用于个人使用、研究、无障碍访问或教育目的通常是合法的。但请始终尊重版权法和YouTube的服务条款。"
+      },
+      "transcript": {
+        "question": "我可以将YouTube字幕下载为文本吗？",
+        "answer": "可以！我们的工具是一个强大的YouTube字幕下载器，允许您将完整的视频字幕提取为干净的文本文件（TXT），用于阅读、内容分析或AI处理。"
+      },
+      "formats": {
+        "question": "我可以将字幕下载为纯文本（TXT）而不是SRT吗？",
+        "answer": "可以！我们支持SRT（SubRip）、VTT（WebVTT）和干净的TXT格式。SRT非常适合视频编辑，VTT适合网页播放器，TXT适合AI训练和文本分析。"
+      },
+      "bulk": {
+        "question": "如何一次性下载YouTube播放列表的字幕？",
+        "answer": "只需将YouTube播放列表链接粘贴到YTVidHub中，然后点击下载。我们的批量YouTube字幕下载器可一键提取整个播放列表和频道的字幕——非常适合为AI训练或研究项目创建大型数据集。"
+      },
+      "languages": {
+        "question": "这适用于不同的语言吗？",
+        "answer": "当然！我们的工具可以下载YouTube视频上任何可用语言的字幕，包括自动生成的字幕和手动上传的字幕。"
+      },
+      "limits": {
+        "question": "这个批量字幕下载器免费吗？",
+        "answer": "是的！免费用户每天可获得5个积分用于字幕下载。专业会员可享受无限批量下载，适用于大规模项目和商业用途。"
+      }
+    }
+  },
+  "testimonials": {
+    "title": "全球专业人士的信赖之选",
+    "description": "从AI研究人员到内容创作者，看看为什么数千人选择YTVidHub进行字幕提取。",
+    "rating": "来自2400多条评论的4.9/5评分",
+    "reviews": [
+      {
+        "name": "Sarah Chen",
+        "role": "AI研究员",
+        "company": "斯坦福大学",
+        "content": "非常适合创建训练数据集。为我们的语言模型研究下载了10000多个YouTube字幕。批量处理为我们节省了数周的工作。"
+      },
+      {
+        "name": "Marcus Rodriguez",
+        "role": "视频编辑",
+        "company": "创意工作室",
+        "content": "我用过的最好的**YouTube字幕下载器**，用于Premiere Pro编辑。SRT文件与我的时间线完美配合。格式干净，时间戳准确。"
+      },
+      {
+        "name": "Dr. Emily Watson",
+        "role": "无障碍顾问",
+        "company": "AccessTech Solutions",
+        "content": "使内容可访问的必备**字幕下载器**。VTT格式与我们的网页播放器无缝配合。可靠且处理快速。"
+      },
+      {
+        "name": "Alex Kim",
+        "role": "内容创作者",
+        "company": "TechTalks YouTube",
+        "content": "节省了数小时的手动转录工作。AI摘要功能对于创建视频描述和博客文章非常有用。"
+      }
+    ]
+  },
+  "actions": {
+    "analyze": "分析链接",
+    "analyzing": "分析中...",
+    "download": "下载（{count}）",
+    "downloading": "下载中...",
+    "reset": "重置",
+    "getMore": "获取更多",
+    "openWorkspace": "打开AI工作区",
+    "opening": "打开中",
+    "pasteExample": "试试示例链接",
+    "complete": "完成！",
+    "success": "成功！",
+    "selectAllWithSubtitles": "选择所有有字幕的",
+    "deselectAll": "取消全选",
+    "showOnlyWithSubtitles": "仅显示有字幕的",
+    "showAll": "显示全部",
+    "loadMore": "加载更多视频"
+  },
+  "playlist": {
+    "processing": {
+      "expanding": "分析播放列表",
+      "checking": "检查字幕",
+      "completed": "分析完成",
+      "error": "处理错误",
+      "paused": "处理已暂停",
+      "unknown": "处理中"
+    },
+    "progress": {
+      "overall": "总体进度"
+    },
+    "stats": {
+      "total": "总计",
+      "processed": "已处理",
+      "withSubtitles": "有字幕"
+    },
+    "status": {
+      "currentVideo": "当前检查"
+    },
+    "time": {
+      "estimated": "预计剩余时间"
+    },
+    "actions": {
+      "pause": "暂停",
+      "resume": "继续",
+      "cancel": "取消",
+      "showDetails": "显示详情",
+      "hideDetails": "隐藏详情"
+    },
+    "details": {
+      "title": "处理详情"
+    }
+  },
+  "statusMessages": {
+    "syncing": "同步视频数据...",
+    "checking": "检查积分...",
+    "connecting": "连接中...",
+    "processing": "处理中 {current}/{total}...",
+    "initializing": "初始化中...",
+    "completed": "提取在{time}秒内完成",
+    "expandingPlaylist": "展开播放列表（找到{count}个视频）...",
+    "checkingSubtitles": "检查字幕可用性...",
+    "deduplicating": "删除重复项...",
+    "foundVideos": "从{playlists}个播放列表/频道中找到{count}个视频",
+    "loadingMore": "加载更多视频...",
+    "subtitleStatus": {
+      "checking": "检查中...",
+      "available": "有字幕",
+      "unavailable": "无字幕",
+      "error": "检查失败"
+    }
+  },
+  "errors": {
+    "invalidUrl": "检测到无效的YouTube链接",
+    "enterUrl": "请先输入YouTube链接。",
+    "selectVideo": "请至少选择一个视频。",
+    "insufficientCredits": "您的积分不足。",
+    "loginRequired": "请登录以下载字幕。",
+    "generic": "发生错误。请重试。"
+  },
+  "auth": {
+    "signupFree": "免费注册",
+    "loginNow": "立即登录",
+    "signupMessage": "免费注册，立即获得5次YouTube字幕下载！",
+    "registrationRequired": "需要注册",
+    "registrationNote": "您需要注册（免费）才能下载字幕。获得5个即时积分以试用所有功能。",
+    "noCardRequired": "无需信用卡"
+  },
+  "credits": {
+    "credits": "积分",
+    "remaining": "剩余{count}积分",
+    "freePlan": "免费计划：{current}/{max}",
+    "noCreditsLeft": "积分已用完",
+    "getMore": "获取更多",
+    "topUp": "充值"
+  },
+  "features": {
+    "tabs": {
+      "download": {
+        "label": "下载字幕",
+        "description": "SRT、VTT、TXT格式"
+      },
+      "summary": {
+        "label": "AI YouTube摘要",
+        "description": "智能摘要和关键点"
+      }
+    },
+    "tooltip": "使用专业版解锁批量功能"
+  },
+  "schema": {
+    "name": "YTVidHub - YouTube字幕下载工具",
+    "description": "专业YouTube字幕下载工具，支持单个视频和批量播放列表提取。下载SRT、VTT、TXT字幕，用于AI训练和内容创作。",
+    "faq": {
+      "q1": "如何免费下载YouTube字幕？",
+      "a1": "YTVidHub是一个免费的YouTube字幕下载工具，允许您从单个视频中提取字幕或从播放列表批量下载。只需粘贴YouTube链接并选择您喜欢的格式（SRT、VTT或TXT）。",
+      "q2": "我可以批量下载YouTube播放列表字幕吗？",
+      "a2": "可以！我们的批量YouTube字幕下载器可以从整个播放列表和频道提取字幕。专业计划支持大规模项目的无限批量下载。",
+      "q3": "支持哪些字幕格式？",
+      "a3": "我们的YouTube字幕下载器支持SRT（SubRip）、VTT（WebVTT）和干净的TXT格式。选择最适合您需求的格式：SRT用于视频播放器，VTT用于网页，TXT用于AI训练。",
+      "q4": "它适用于YouTube的自动生成字幕吗？",
+      "a4": "是的，我们的YouTube字幕下载器可以提取手动上传的字幕和YouTube的自动生成字幕，支持所有可用语言。",
+      "q5": "我可以下载多少YouTube字幕有限制吗？",
+      "a5": "免费用户每天可获得5个积分用于字幕下载。专业会员可享受无限批量提取YouTube字幕，用于大规模AI训练和内容创作项目。"
+    }
+  },
+  "singleDownloader": {
+    "hero": {
+      "title": "单个<highlight>YouTube字幕</highlight>下载器",
+      "subtitle": "几秒钟内从<strong>单个YouTube视频</strong>提取字幕。非常适合视频编辑、内容创作者和研究人员。",
+      "cta": {
+        "primary": "下载字幕",
+        "secondary": "批量下载器"
+      }
+    }
+  },
+  "formats": {
+    "title": "支持的字幕格式",
+    "description": "为您的工作流程选择完美的格式。每种格式都针对不同的用例进行了优化。",
+    "srt": {
+      "title": "SRT格式",
+      "description": "带精确时间戳的行业标准字幕格式。非常适合视频编辑和媒体播放器。"
+    },
+    "vtt": {
+      "title": "VTT格式",
+      "description": "支持高级样式的现代网页格式。适用于网页播放器和在线应用。"
+    },
+    "txt": {
+      "title": "TXT格式",
+      "description": "无时间戳的干净纯文本。非常适合AI训练、文本分析和内容创作。"
+    }
+  },
+  "howto": {
+    "title": "如何下载YouTube字幕",
+    "steps": {
+      "1": {
+        "title": "粘贴视频链接",
+        "description": "复制并粘贴您想要提取字幕的YouTube视频链接。"
+      },
+      "2": {
+        "title": "选择格式",
+        "description": "根据您的具体项目需求，在SRT、VTT或TXT之间进行选择。"
+      },
+      "3": {
+        "title": "即时下载",
+        "description": "点击下载，几秒钟内即可获得处理好的字幕。"
+      }
+    }
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认",
+    "close": "关闭",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "export": "导出",
+    "import": "导入"
+  },
+  "footer": {
+    "description": "视频内容数据提取的必备工具包，专为速度和可靠性而构建。针对LLM和AI训练研究进行了优化。",
+    "product": "产品",
+    "resources": "资源",
+    "legal": "法律",
+    "share": "与您的团队分享此工具",
+    "rights": "版权所有",
+    "disclaimer": "与Google或YouTube无关联。",
+    "home": "首页",
+    "downloader": "下载器",
+    "downloadSubs": "下载字幕",
+    "bulkDownloader": "批量下载器",
+    "howToDownload": "如何下载字幕",
+    "pricing": "价格",
+    "support": "支持",
+    "dataPrepGuide": "数据准备指南",
+    "cleanTranscript": "干净字幕文本",
+    "faq": "常见问题",
+    "studioGuide": "YouTube Studio导出指南",
+    "howToUse": "如何使用",
+    "aboutUs": "关于我们",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "guides": "指南",
+    "blog": "博客",
+    "exportStudio": "从YouTube Studio导出",
+    "subsForAi": "用于AI训练数据的字幕",
+    "cleanText": "获取干净文本（无时间戳）",
+    "srtVsVtt": "SRT vs VTT - 使用哪种格式",
+    "analyzeData": "分析字幕数据",
+    "freeApi": "免费YouTube字幕API",
+    "prepareData": "为AI模型准备数据",
+    "playlistBulk": "下载整个播放列表字幕",
+    "aiDataPrep": "AI数据准备指南",
+    "getTranscript": "如何获取YouTube字幕",
+    "aiSummarizer": "AI YouTube视频摘要器",
+    "whySubsWrong": "为什么字幕有时会出错",
+    "creatorTutorials": "内容创作者教程",
+    "learnSpanish": "用YouTube学习西班牙语",
+    "ytDownloader": "YouTube字幕下载器",
+    "chatgptTranscripts": "在ChatGPT中使用YouTube字幕",
+    "whatIsSrt": "什么是SRT文件？",
+    "settingsGuide": "字幕设置指南",
+    "onlineExtractor": "在线字幕提取器"
+  },
+  "support": {
+    "title": "我们随时为您提供帮助",
+    "subtitle": "获取YouTube字幕下载、批量处理和账户问题的支持。我们的团队随时准备为您提供帮助。",
+    "contactTitle": "联系支持",
+    "contactDescription": "下载遇到问题、需要技术支持或有功能请求？我们的支持团队随时为您提供帮助。",
+    "emailLabel": "官方支持邮箱",
+    "responseTime": "平均响应时间：24-48小时",
+    "emailNote": "电子邮件是联系我们技术支持团队最有效的方式。请包含有关您问题的详细信息，以便更快解决。",
+    "howWeCanHelp": "我们如何提供帮助",
+    "categories": {
+      "technical": {
+        "title": "技术问题",
+        "description": "下载失败、格式问题或网站错误。我们将快速排查和修复技术问题。",
+        "topic1": "下载不工作",
+        "topic2": "格式转换问题",
+        "topic3": "浏览器兼容性",
+        "topic4": "错误消息"
+      },
+      "account": {
+        "title": "账户和账单",
+        "description": "关于您的账户、积分、订阅或账单的问题。我们处理所有与账户相关的查询。",
+        "topic1": "积分余额",
+        "topic2": "订阅管理",
+        "topic3": "付款问题",
+        "topic4": "账户设置"
+      },
+      "features": {
+        "title": "功能请求",
+        "description": "有改进YTVidHub的想法？我们喜欢听取社区的建议。",
+        "topic1": "新功能",
+        "topic2": "格式支持",
+        "topic3": "UI改进",
+        "topic4": "批量处理"
+      },
+      "guides": {
+        "title": "使用指南",
+        "description": "需要使用特定功能的帮助？我们为所有工具提供分步指导。",
+        "topic1": "批量下载",
+        "topic2": "播放列表处理",
+        "topic3": "格式选择",
+        "topic4": "AI摘要"
+      },
+      "api": {
+        "title": "API和集成",
+        "description": "关于与YTVidHub集成或以编程方式使用我们服务的开发者问题。",
+        "topic1": "API访问",
+        "topic2": "速率限制",
+        "topic3": "集成帮助",
+        "topic4": "开发者资源"
+      },
+      "general": {
+        "title": "一般咨询",
+        "description": "关于YTVidHub、我们的政策或我们的服务如何运作的任何其他问题。",
+        "topic1": "服务问题",
+        "topic2": "政策说明",
+        "topic3": "合作咨询",
+        "topic4": "媒体请求"
+      }
+    },
+    "beforeContact": "联系我们之前",
+    "quickFixes": "快速修复",
+    "includeInfo": "包含此信息",
+    "quickFix1": "尝试刷新页面并清除浏览器缓存",
+    "quickFix2": "检查YouTube视频是否有可用字幕",
+    "quickFix3": "验证您的互联网连接是否稳定",
+    "quickFix4": "尝试使用不同的浏览器（Chrome、Firefox、Safari）",
+    "includeInfo1": "您的浏览器名称和版本",
+    "includeInfo2": "您尝试下载的YouTube链接",
+    "includeInfo3": "您看到的任何错误消息",
+    "includeInfo4": "如果可能，请提供截图",
+    "stillQuestions": "还有问题？",
+    "faqDescription": "查看我们的综合常见问题部分，即时获得常见问题的答案。",
+    "visitFaq": "访问常见问题"
+  }
+}

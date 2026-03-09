@@ -7,8 +7,8 @@ const loadingPromises = new Map<string, Promise<any>>();
 
 // 预加载所有支持的语言包以提高性能
 async function initializeCaches() {
-  const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr'];
-  
+  const locales = ['en', 'es', 'de', 'ko', 'ja', 'ru', 'tr', 'zh'];
+
   for (const locale of locales) {
     if (!messageCache.has(locale)) {
       try {
