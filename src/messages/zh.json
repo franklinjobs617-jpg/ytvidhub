@@ -918,8 +918,8 @@
     "description": "从YouTube视频和播放列表中提取SRT、VTT或TXT格式的字幕。AI驱动的批量下载器，比手动操作效率提高80%。视频专家的首选工具。",
     "keywords": "youtube字幕提取器, 从youtube提取字幕, youtube字幕下载, 批量字幕提取器, srt提取器",
     "hero": {
-      "title": "YouTube字幕提取器",
-      "subtitle": "从任意YouTube视频、播放列表或频道提取字幕。支持100多种语言，一键批量下载为SRT、VTT或TXT格式。",
+      "title": "YouTube字幕提取器：批量导出SRT字幕 (2026最新版)",
+      "subtitle": "专业的YouTube字幕提取工具。支持一键批量处理播放列表，智能过滤噪音，为 AI 训练提供纯净的 TXT 或 SRT 字幕文件。",
       "benefits": {
         "bulk": "批量提取",
         "formats": "SRT、VTT、TXT",
@@ -954,7 +954,7 @@
       "title": "不止是提取器——内容再创作引擎",
       "ai": {
         "title": "AI优化的转录文本",
-        "description": "我们会自动去除杂乱的噪音标记（如 [音乐] 或 [掌声]），为您提供干净流畅的文本，非常适合 ChatGPT、Claude 或 Notion 进行摘要整理。"
+        "description": "我们会自动去除杂乱的噪音标记（如 [音乐] 或 [掌声]），为您提供干净流畅的文本，非常适合 ChatGPT 或 Claude 进行摘要整理。建议配合我们的 <a href='/ai-summarizer' class='text-blue-600 hover:underline'>AI 视频摘要工具</a> 使用。"
       },
       "bulk": {
         "title": "批量处理能力",
@@ -991,6 +991,11 @@
           "description": "安全的客户端处理。您的私密 URL 和视频数据保留在您的浏览器中。"
         }
       }
+    },
+    "cta": {
+      "title": "准备好提取您的第一个 YouTube 字幕了吗？",
+      "subtitle": "立即体验专业的批量提取技术，比传统工具快 80%。",
+      "button": "返回顶部开始"
     },
     "faq": {
       "title": "常见问题：深入了解 SRT 与 提取技术",

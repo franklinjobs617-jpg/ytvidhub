@@ -918,8 +918,8 @@
     "description": "Extract subtitles from YouTube videos & playlists in SRT, VTT, or TXT. AI-powered bulk downloader with 80% higher efficiency. Verified by video experts.",
     "keywords": "youtube subtitle extractor, extract subtitles from youtube, youtube subtitles download, bulk subtitle extractor, srt extractor",
     "hero": {
-      "title": "YouTube Subtitle Extractor",
-      "subtitle": "Extract subtitles from any YouTube video, playlist, or channel. Bulk download in SRT, VTT, or TXT format with 100+ language support.",
+      "title": "YouTube Subtitle Extractor: Bulk SRT Export (2026 Update)",
+      "subtitle": "Professional YouTube caption extractor. Batch process playlists in one click, remove background noise, and get clean SRT or TXT files for AI training.",
       "benefits": {
         "bulk": "Bulk Extraction",
         "formats": "SRT, VTT, TXT",
@@ -954,7 +954,7 @@
       "title": "More Than an Extractor—A Content Repurposing Engine",
       "ai": {
         "title": "AI-Optimized Transcripts",
-        "description": "We strip out messy noise like [Music] or [Applause], giving you a clean text flow perfect for ChatGPT, Claude, or Notion summaries."
+        "description": "We automatically strip out noise like [Music] or [Applause], providing a clean text flow perfect for ChatGPT or Claude. Best with our <a href='/en/ai-summarizer' class='text-blue-600 hover:underline'>AI YouTube Summarizer</a>."
       },
       "bulk": {
         "title": "The Bulk Factor",
@@ -991,6 +991,11 @@
           "description": "Secure client-side processing. Your private URLs and video data stay in your browser."
         }
       }
+    },
+    "cta": {
+      "title": "Ready to Extract Your First Subtitle?",
+      "subtitle": "Experience professional batch extraction 80% faster than manual saving.",
+      "button": "Back to Top"
     },
     "faq": {
       "title": "FAQ: Insights into SRT & Extraction",
