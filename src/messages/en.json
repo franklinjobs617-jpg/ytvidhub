@@ -24,6 +24,47 @@
         "formats": "Multiple Formats"
       }
     },
+    "insight": {
+      "title": "💡 Developer's Insight: Fighting AI 'Hallucinations'",
+      "content": "Developing an accurate transcript generator means tackling background audio noise. We implemented an adaptive noise cancellation layer that filters out music and wind, ensuring the resulting text is optimized for clean reading and AI summarization without clutter.",
+      "author": "— Frank, Lead Developer @ YTVidHub"
+    },
+    "performance": {
+      "title": "2026 Transcription Benchmarks",
+      "description": "Our transcription engine undergoes continuous testing to maintain accuracy across various accents and complex audio environments.",
+      "benchmarks": [
+        "Adaptive Denoising v3.1",
+        "Multi-accent Recognition Engine",
+        "Smart Punctuation Correction"
+      ],
+      "table": {
+        "type": "Audio Type",
+        "speed": "Generation Speed",
+        "accuracy": "Recognition Accuracy"
+      }
+    },
+    "workflow": {
+      "title": "Seamless Integration into Your Content Engine",
+      "items": {
+        "ai": {
+          "title": "Optimized for LLMs",
+          "description": "Structured transcripts designed for high-context windows in ChatGPT or Claude, handling up to 10-hour lecture series."
+        },
+        "pro": {
+          "title": "Writer-Ready Outputs",
+          "description": "Our cleaned TXT files are pre-formatted for blog writers and note-takers, removing time-stamp artifacts by default."
+        },
+        "privacy": {
+          "title": "Enterprise Trust",
+          "description": "Secure, ephemeral audio processing. Your content never leaves our secure sandbox and is destroyed immediately after transcription."
+        }
+      }
+    },
+    "cta": {
+      "title": "Turn Your Video Assets into High-Value Text Today",
+      "subtitle": "Experience AI-powered transcription with 10x the efficiency.",
+      "button": "Back to Top"
+    },
     "interface": {
       "title": "Generate YouTube Transcript",
       "subtitle": "Paste any YouTube video URL to get started",
