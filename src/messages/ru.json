@@ -30,7 +30,10 @@
     "currentPlan": "Текущий тариф",
     "freePlan": "Бесплатный тариф",
     "transcriptGenerator": "Генератор транскрипций",
-    "resources": "Ресурсы"
+    "subtitleExtractor": "Экстрактор субтитров",
+    "tools": "Инструменты",
+    "resources": "Ресурсы",
+    "history": "История"
   },
   "hero": {
     "title": "Скачать субтитры с Ютуба бесплатно",

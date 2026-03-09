@@ -30,7 +30,10 @@
     "currentPlan": "現在のプラン",
     "freePlan": "無料プラン",
     "transcriptGenerator": "文字起こしジェネレーター",
-    "resources": "リソース"
+    "subtitleExtractor": "字幕抽出器",
+    "tools": "ツール",
+    "resources": "リソース",
+    "history": "履歴"
   },
   "hero": {
     "title": "YouTube字幕ダウンロード & 文字起こしツール",
@@ -679,4 +682,3 @@
     }
   }
 }
-

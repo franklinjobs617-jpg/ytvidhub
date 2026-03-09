@@ -30,7 +30,10 @@
     "currentPlan": "Mevcut Plan",
     "freePlan": "Ücretsiz Plan",
     "transcriptGenerator": "Transkript Oluşturucu",
-    "resources": "Kaynaklar"
+    "subtitleExtractor": "Altyazı Çıkarıcı",
+    "tools": "Araçlar",
+    "resources": "Kaynaklar",
+    "history": "Geçmiş"
   },
   "hero": {
     "title": "YouTube Altyazı İndirici",

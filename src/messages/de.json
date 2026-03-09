@@ -30,7 +30,10 @@
     "currentPlan": "Aktueller Plan",
     "freePlan": "Kostenloser Plan",
     "transcriptGenerator": "Transkript-Generator",
-    "resources": "Ressourcen"
+    "subtitleExtractor": "Untertitel-Extraktor",
+    "tools": "Tools",
+    "resources": "Ressourcen",
+    "history": "Verlauf"
   },
   "hero": {
     "title": "YouTube Untertitel herunterladen",

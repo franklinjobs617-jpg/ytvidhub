@@ -253,6 +253,8 @@
     "dashboard": "控制台",
     "bulkDownloader": "批量下载",
     "transcriptGenerator": "字幕生成器",
+    "subtitleExtractor": "字幕提取器",
+    "tools": "工具",
     "extension": "扩展",
     "guide": "指南",
     "blog": "博客",
@@ -262,7 +264,8 @@
     "buyCredits": "购买积分",
     "currentPlan": "当前计划",
     "freePlan": "免费计划",
-    "resources": "资源"
+    "resources": "资源",
+    "history": "历史记录"
   },
   "hero": {
     "title": "YouTube字幕下载工具",

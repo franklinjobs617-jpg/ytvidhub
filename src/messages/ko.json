@@ -30,7 +30,10 @@
         "currentPlan": "현재 요금제",
         "freePlan": "무료 플랜",
         "transcriptGenerator": "트랜스크립트 생성기",
-        "resources": "리소스"
+        "subtitleExtractor": "자막 추출기",
+        "tools": "도구",
+        "resources": "리소스",
+        "history": "기록"
     },
     "hero": {
         "title": "유튜브 자막 다운로드",

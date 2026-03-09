@@ -241,7 +241,7 @@ export default function Header() {
                           href="/history"
                           className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
                         >
-                          <History size={16} /> History
+                          <History size={16} /> {t('history')}
                         </Link>
                         <div className="md:hidden">
                           <DailyRewardButton />
@@ -318,7 +318,7 @@ export default function Header() {
                   <p className="text-sm font-semibold text-slate-900">{user.name}</p>
                   <div className="flex items-center gap-1.5 mt-1">
                     <Coins size={12} className="text-amber-600" />
-                    <span className="text-xs font-bold text-amber-700">{user.credits} Credits</span>
+                    <span className="text-xs font-bold text-amber-700">{user.credits} {t('credits')}</span>
                   </div>
                 </div>
               </div>
@@ -384,7 +384,7 @@ export default function Header() {
                   href="/history"
                   className="flex items-center gap-2 text-base font-semibold text-slate-900"
                 >
-                  <History size={18} /> History
+                  <History size={18} /> {t('history')}
                 </Link>
               </>
             )}

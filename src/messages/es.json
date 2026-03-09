@@ -30,7 +30,10 @@
     "currentPlan": "Plan actual",
     "freePlan": "Plan gratuito",
     "transcriptGenerator": "Generador de transcripciones",
-    "resources": "Recursos"
+    "subtitleExtractor": "Extractor de subtítulos",
+    "tools": "Herramientas",
+    "resources": "Recursos",
+    "history": "Historial"
   },
   "hero": {
     "title": "Descargar Subtítulos de YouTube",
