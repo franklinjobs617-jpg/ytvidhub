@@ -31,35 +31,54 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  // 检查缓存
-  if (messageCache.has(locale)) {
+  // 获取通用基础消息（英语），作为回退
+  const baseMessages = (await import(`../messages/${routing.defaultLocale}.json`)).default;
+
+  // 如果是默认语言，直接返回
+  if (locale === routing.defaultLocale) {
     return {
-      locale: locale as string,
-      messages: messageCache.get(locale)
+      locale,
+      messages: baseMessages
     };
   }
 
-  // 如果正在加载，返回现有的 Promise
-  if (loadingPromises.has(locale)) {
-    const messages = await loadingPromises.get(locale);
-    return {
-      locale: locale as string,
-      messages
-    };
-  }
-
-  // 开始加载并缓存消息
-  const loadPromise = import(`../messages/${locale}.json`).then(module => module.default);
-  loadingPromises.set(locale, loadPromise);
-
+  // 加载目标语言消息
   try {
-    const messages = await loadPromise;
-    messageCache.set(locale, messages);
+    const targetMessages = (await import(`../messages/${locale}.json`)).default;
+    
+    // 合并基础消息和目标消息，确保缺失的键能回退到英语
     return {
-      locale: locale as string,
-      messages
+      locale,
+      messages: deepMerge(baseMessages, targetMessages)
     };
-  } finally {
-    loadingPromises.delete(locale);
+  } catch (error) {
+    console.warn(`Failed to load messages for locale: ${locale}, falling back to default`, error);
+    return {
+      locale: routing.defaultLocale,
+      messages: baseMessages
+    };
   }
 });
+
+// 简单的深度合并工具函数
+function deepMerge(target: any, source: any) {
+  const output = { ...target };
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!(key in target)) {
+          Object.assign(output, { [key]: source[key] });
+        } else {
+          output[key] = deepMerge(target[key], source[key]);
+        }
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
+}
+
+function isObject(item: any) {
+  return (item && typeof item === 'object' && !Array.isArray(item));
+}

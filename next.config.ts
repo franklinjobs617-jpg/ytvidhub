@@ -70,105 +70,10 @@ const nextConfig: NextConfig = {
         destination: "/:locale/guide/how-to-download-youtube-subtitles-complete-guide/",
         permanent: true,
       },
-      // Redirect non-English versions of English-only pages to English
+      // Redirect non-English versions of all internal pages to English (only homepage is localized for now)
       {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/youtube-subtitle-extractor/:path*",
-        destination: "/youtube-subtitle-extractor/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/bulk-youtube-subtitle-downloader/:path*",
-        destination: "/bulk-youtube-subtitle-downloader/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/playlist-subtitles-bulk/:path*",
-        destination: "/guide/playlist-subtitles-bulk/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/tools/playlist-subtitles-bulk/:path*",
-        destination: "/tools/playlist-subtitles-bulk/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/how-to-download-youtube-studio-subtitles/:path*",
-        destination: "/guide/how-to-download-youtube-studio-subtitles/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/data-prep-guide/:path*",
-        destination: "/data-prep-guide/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/clean-transcript-no-timestamp/:path*",
-        destination: "/guide/clean-transcript-no-timestamp/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/data-prep-toolkit/:path*",
-        destination: "/guide/data-prep-toolkit/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/mastering-vtt-data-analysis/:path*",
-        destination: "/guide/mastering-vtt-data-analysis/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/youtube-subtitles-api-free/:path*",
-        destination: "/guide/youtube-subtitles-api-free/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/guide/youtube-subtitles-for-llm-data/:path*",
-        destination: "/guide/youtube-subtitles-for-llm-data/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/blog/creator-tutorials/:path*",
-        destination: "/blog/creator-tutorials/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/blog/subtitle-accuracy-problem/:path*",
-        destination: "/blog/subtitle-accuracy-problem/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/blog/engineering-decisions-ytvidhub/:path*",
-        destination: "/blog/engineering-decisions-ytvidhub/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/blog/spanish-yt-channels-subtitles/:path*",
-        destination: "/blog/spanish-yt-channels-subtitles/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/blog/ai-youtube-video-summarizer/:path*",
-        destination: "/blog/ai-youtube-video-summarizer/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/add-on/:path*",
-        destination: "/add-on/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/faq/subtitle-settings-guide/:path*",
-        destination: "/faq/subtitle-settings-guide/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/privacy-policy/:path*",
-        destination: "/privacy-policy/",
-        permanent: true,
-      },
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/terms-of-service/:path*",
-        destination: "/terms-of-service/",
+        source: "/:locale(es|de|ko|ja|ru|tr|zh)/:slug+",
+        destination: "/:slug/",
         permanent: true,
       },
     ];
