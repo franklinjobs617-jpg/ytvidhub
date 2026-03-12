@@ -129,50 +129,42 @@ export default function PricingPage() {
       <div className="absolute top-[-20%] left-[-20%] w-[35rem] h-[35rem] bg-blue-400/20 rounded-full blur-[100px] animate-pulse"></div>
       <div className="absolute bottom-[-20%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-400/20 rounded-full blur-[100px] animate-pulse"></div>
 
-      <section className="relative pt-20 pb-16 text-center px-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in">
-          <span className="relative flex h-2 w-2">
+      <section className="relative pt-10 pb-6 text-center px-6 max-w-5xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-4 animate-fade-in">
+          <span className="relative flex h-1.5 w-1.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
           </span>
           Trusted by 10,000+ Researchers
         </div>
-        <h1 className="text-5xl md:text-7xl font-display font-black italic uppercase tracking-tight text-slate-900 mb-8 drop-shadow-sm leading-[0.9]">
+        <h1 className="text-5xl md:text-7xl font-display font-black italic uppercase tracking-tight text-slate-900 mb-6 drop-shadow-sm leading-[0.85]">
           The Perfect Plan <br /> For Your <span className="text-blue-600">Ambition</span>
         </h1>
-        <p className="text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
+        <p className="text-base text-slate-500 max-w-xl mx-auto font-medium leading-normal mb-8">
           Stop wasting hours on manual downloads. Choose a professional plan and <br />
-          <span className="text-slate-900 font-bold">get instant access to high-volume data.</span>
+          <span className="text-slate-900 font-bold underline decoration-blue-500 decoration-2 underline-offset-4">1 Download = 1 Credit | 1 AI Summary = 2 Credits</span>
         </p>
 
-        {/* Trust Bar */}
-        <div className="mt-12 flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m17.236 0a11.955 11.955 0 01-14.717 9.917m14.717-9.917a11.955 11.955 0 01-4.88 15.688M12 20.944a11.955 11.955 0 01-8.618-3.04m17.236 0a11.955 11.955 0 01-4.88-15.688" /></svg>
-            <span className="text-xs font-bold uppercase tracking-tighter">Secure Payment</span>
+        {/* Trust Bar - More Compact */}
+        <div className="flex flex-wrap justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500 text-[10px] font-bold uppercase tracking-widest">
+          <div className="flex items-center gap-1.5">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m17.236 0a11.955 11.955 0 01-14.717 9.917m14.717-9.917a11.955 11.955 0 01-4.88 15.688M12 20.944a11.955 11.955 0 01-8.618-3.04m17.236 0a11.955 11.955 0 01-4.88-15.688" /></svg>
+            Secure Payment
           </div>
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-            <span className="text-xs font-bold uppercase tracking-tighter">Instant Delivery</span>
+          <div className="flex items-center gap-1.5">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            Instant Delivery
           </div>
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-            <span className="text-xs font-bold uppercase tracking-tighter">VAT Invoice Available</span>
+          <div className="flex items-center gap-1.5">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+            Global VAT Invoice
           </div>
         </div>
       </section>
 
       <section className="pb-24 px-4 lg:px-8">
-        {/* === Custom Credit Slider (High Visibility - User Request) === */}
-        <div className="mb-20 max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-display font-black italic uppercase tracking-wider text-slate-900 mb-4">
-              Flexible Credits, Total Control
-            </h2>
-            <p className="text-slate-500 font-medium">
-              Only pay for exactly what you need. <span className="text-slate-900 font-bold underline decoration-blue-500 underline-offset-4 text-lg">1 Download = 1 Credit | 1 AI Summary = 2 Credits</span>
-            </p>
-          </div>
+        {/* === Custom Credit Slider (Ultra-Visible) === */}
+        <div className="mb-12 max-w-6xl mx-auto -mt-4">
           <CustomCreditSlider onRequestLogin={() => setShowLoginModal(true)} />
         </div>
 
