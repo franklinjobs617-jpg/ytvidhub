@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { subtitleApi } from "@/lib/api";
-import { History, Sparkles, FileText, Play, ArrowRight } from "lucide-react";
+import { History, Sparkles, FileText, Play, ArrowRight, Zap } from "lucide-react";
 
 interface HistoryItem {
   videoId: string;
@@ -36,14 +36,36 @@ function timeAgo(dateStr: string) {
   return mins > 0 ? `${mins}m ago` : "just now";
 }
 
+// 全局内存缓存，用于同 session 瞬时加载
+let memoryCache: HistoryItem[] | null = null;
+const CACHE_KEY = "ytvidhub_recent_history_cache";
+
 export function RecentHistory() {
   const router = useRouter();
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState<HistoryItem[]>(() => {
+    // 初始化时尝试从内存或 LocalStorage 加载
+    if (memoryCache) return memoryCache;
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(CACHE_KEY);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return [];
+        }
+      }
+    }
+    return [];
+  });
+
+  // 如果有缓存，初始 loading 设为 false，实现秒开
+  const [loading, setLoading] = useState(!memoryCache && history.length === 0);
 
   useEffect(() => {
     subtitleApi.getHistory(6).then((data) => {
       setHistory(data);
+      memoryCache = data;
+      localStorage.setItem(CACHE_KEY, JSON.stringify(data));
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);
@@ -143,6 +165,11 @@ export function RecentHistory() {
                   <span className="flex items-center gap-0.5 text-[9px] font-bold bg-violet-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
                     <Sparkles size={8} />
                     AI
+                  </span>
+                ) : item.lastAction === "batch_download" ? (
+                  <span className="flex items-center gap-0.5 text-[9px] font-bold bg-amber-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
+                    <Zap size={8} />
+                    BATCH
                   </span>
                 ) : (
                   <span className="flex items-center gap-0.5 text-[9px] font-bold bg-blue-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">

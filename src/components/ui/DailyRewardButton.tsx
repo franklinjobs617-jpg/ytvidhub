@@ -10,9 +10,26 @@ interface RewardStatus {
   nextClaimAt: string | null;
 }
 
+// 全局内存缓存，用于同 session 瞬时加载
+let memoryCache: RewardStatus | null = null;
+const CACHE_KEY = "ytvidhub_daily_reward_status";
+
 export function DailyRewardButton() {
   const { refreshUser } = useAuth();
-  const [status, setStatus] = useState<RewardStatus | null>(null);
+  const [status, setStatus] = useState<RewardStatus | null>(() => {
+    if (memoryCache) return memoryCache;
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(CACHE_KEY);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
   const [claiming, setClaiming] = useState(false);
   const [justClaimed, setJustClaimed] = useState<number | null>(null);
   const [showIntro, setShowIntro] = useState(false);
@@ -24,12 +41,17 @@ export function DailyRewardButton() {
       const res = await fetch("/api/daily-reward", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (res.ok) setStatus(await res.json());
-    } catch {}
+      if (res.ok) {
+        const data = await res.json();
+        setStatus(data);
+        memoryCache = data;
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+      }
+    } catch { }
   }, []);
 
   useEffect(() => {
-    fetchStatus().then(() => {});
+    fetchStatus().then(() => { });
   }, [fetchStatus]);
 
   useEffect(() => {

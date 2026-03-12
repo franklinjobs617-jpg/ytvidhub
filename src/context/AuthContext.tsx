@@ -35,8 +35,29 @@ const GOOGLE_CLIENT_ID =
 const BACKEND_REDIRECT_URI = "https://api.ytvidhub.com/prod-api/g/callback";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("loggedInUser");
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
+
+  const [isLoading, setIsLoading] = useState(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("auth_token");
+      const userStr = localStorage.getItem("loggedInUser");
+      // 如果本地有 token 和用户信息，我们认为不处于加载状态（稍后静默刷新）
+      if (token && userStr) return false;
+    }
+    return true;
+  });
 
   // 添加防重复请求的标志
   const isRefreshingRef = useRef(false);
@@ -98,21 +119,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
-    const userStr = localStorage.getItem("loggedInUser");
-
-    if (token && userStr) {
-      try {
-        const parsedUser = JSON.parse(userStr);
-        setUser(parsedUser);
-        // 初始加载时刷新一次用户数据
-        refreshUser();
-      } catch (e) {
-        console.error("User parse error", e);
-        logout();
-      }
+    if (token) {
+      refreshUser();
     }
     setIsLoading(false);
-  }, [refreshUser, logout]); // 添加 refreshUser 到依赖数组
+  }, [refreshUser]);
 
   // 3. 处理 Google 登录弹窗逻辑
   const login = () => {
