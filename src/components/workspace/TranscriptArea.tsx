@@ -16,14 +16,18 @@ export function TranscriptArea({
   onSeek,
   searchInputRef,
   onLoadingChange,
+  videoId,
+  initialSubtitleContent,
 }: {
   videoUrl: string;
   currentTime: number;
   onSeek?: (time: number) => void;
   searchInputRef?: React.RefObject<HTMLInputElement>;
   onLoadingChange?: (loading: boolean) => void;
+  videoId?: string;
+  initialSubtitleContent?: string;
 }) {
-  const [transcriptVtt, setTranscriptVtt] = useState<string>("");
+  const [transcriptVtt, setTranscriptVtt] = useState<string>(initialSubtitleContent || "");
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [copied, setCopied] = useState(false);
@@ -34,6 +38,19 @@ export function TranscriptArea({
 
   useEffect(() => {
     if (!videoUrl) return;
+
+    // 如果初始化就有内容，直接用，并同步到 session 缓存
+    if (initialSubtitleContent) {
+      setTranscriptVtt(initialSubtitleContent);
+      try {
+        sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}`, JSON.stringify({
+          text: initialSubtitleContent,
+          format: 'vtt'
+        }));
+      } catch (e) { }
+      return;
+    }
+
     try {
       const cached = sessionStorage.getItem(`ytvidhub_transcript_${videoUrl}`);
       if (cached) {
@@ -48,7 +65,7 @@ export function TranscriptArea({
           return;
         }
       }
-    } catch {}
+    } catch { }
     setLoading(true);
     onLoadingChange?.(true);
     subtitleApi
@@ -59,7 +76,7 @@ export function TranscriptArea({
         // 存入缓存
         try {
           sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}`, JSON.stringify({ text, format: 'vtt' }));
-        } catch {}
+        } catch { }
       })
       .catch(() => setTranscriptVtt(""))
       .finally(() => {
@@ -84,7 +101,7 @@ export function TranscriptArea({
       '',
       ...displayItems.map(item => `[${formatTime(item.startTime)}] ${item.text}`)
     ].join('\n');
-    
+
     navigator.clipboard.writeText(exportContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -109,18 +126,18 @@ export function TranscriptArea({
     const finalItems = isSmartMode
       ? groupTranscriptByTime(rawItems)
       : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
-    
+
     const matches = finalItems
       .map((item, index) => ({ ...item, originalIndex: index }))
       .filter((i) => i.text.toLowerCase().includes(searchQuery.toLowerCase()));
-    
+
     return { total: matches.length, matches };
   }, [transcriptVtt, isSmartMode, searchQuery]);
 
   // P1: 搜索导航功能
   const navigateSearch = (direction: 'prev' | 'next') => {
     if (searchResults.total === 0) return;
-    
+
     if (direction === 'next') {
       setCurrentSearchIndex((prev) => (prev + 1) % searchResults.total);
     } else {
@@ -169,11 +186,10 @@ export function TranscriptArea({
             <button
               key={label}
               onClick={() => setIsSmartMode(value)}
-              className={`px-3 py-3 text-xs font-medium border-b-2 transition-colors ${
-                isSmartMode === value
-                  ? "border-violet-500 text-violet-600"
-                  : "border-transparent text-slate-400 hover:text-slate-600"
-              }`}
+              className={`px-3 py-3 text-xs font-medium border-b-2 transition-colors ${isSmartMode === value
+                ? "border-violet-500 text-violet-600"
+                : "border-transparent text-slate-400 hover:text-slate-600"
+                }`}
             >
               {label}
             </button>
@@ -192,14 +208,14 @@ export function TranscriptArea({
             placeholder="Search transcript..."
             className="w-full pl-9 pr-20 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
           />
-          
+
           {searchQuery && searchResults.total > 0 && (
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
               {/* 匹配计数 */}
               <span className="text-[10px] text-slate-500 font-medium px-1.5 py-0.5 bg-white border border-slate-200 rounded">
                 {currentSearchIndex + 1} / {searchResults.total}
               </span>
-              
+
               {/* 导航按钮 */}
               <div className="flex">
                 <button
@@ -219,14 +235,14 @@ export function TranscriptArea({
               </div>
             </div>
           )}
-          
+
           {searchQuery && searchResults.total === 0 && (
             <span className="absolute right-7 top-1/2 -translate-y-1/2 text-[10px] text-slate-400">No matches</span>
           )}
-          
+
           {searchQuery && (
-            <button 
-              onClick={() => setSearchQuery("")} 
+            <button
+              onClick={() => setSearchQuery("")}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-sm"
             >
               ×
@@ -253,49 +269,45 @@ export function TranscriptArea({
           <div className="py-2 pb-24 md:pb-2">
             {displayItems.map((item, i) => {
               const isActive = i === activeIndex;
-              const isCurrentSearchResult = searchQuery && searchResults.total > 0 && 
+              const isCurrentSearchResult = searchQuery && searchResults.total > 0 &&
                 searchResults.matches[currentSearchIndex]?.startTime === item.startTime;
-              
+
               return (
                 <div
                   key={i}
                   ref={isActive ? activeItemRef : undefined}
-                  className={`group relative flex gap-3 px-4 py-2.5 transition-all cursor-default ${
-                    isCurrentSearchResult
-                      ? "bg-yellow-50 border-l-2 border-yellow-500 ring-1 ring-yellow-200"
-                      : isActive
+                  className={`group relative flex gap-3 px-4 py-2.5 transition-all cursor-default ${isCurrentSearchResult
+                    ? "bg-yellow-50 border-l-2 border-yellow-500 ring-1 ring-yellow-200"
+                    : isActive
                       ? "bg-violet-50 border-l-2 border-violet-500"
                       : `border-l-2 border-transparent ${activeIndex >= 0 ? "opacity-55 hover:opacity-100" : "hover:bg-slate-50"}`
-                  }`}
+                    }`}
                 >
                   {/* Timestamp */}
                   <span
                     onClick={() => onSeek?.(item.startTime)}
-                    className={`shrink-0 text-[11px] font-mono mt-0.5 cursor-pointer transition-colors ${
-                      isCurrentSearchResult
-                        ? "text-yellow-600 font-semibold"
-                        : isActive 
-                        ? "text-violet-500 font-semibold" 
+                    className={`shrink-0 text-[11px] font-mono mt-0.5 cursor-pointer transition-colors ${isCurrentSearchResult
+                      ? "text-yellow-600 font-semibold"
+                      : isActive
+                        ? "text-violet-500 font-semibold"
                         : "text-slate-400 hover:text-violet-500"
-                    }`}
+                      }`}
                   >
                     {formatTime(item.startTime)}
                   </span>
 
                   {/* Text */}
-                  <p className={`text-sm leading-6 flex-1 ${
-                    isCurrentSearchResult
+                  <p className={`text-sm leading-6 flex-1 ${isCurrentSearchResult
+                    ? "text-slate-900 font-medium"
+                    : isActive
                       ? "text-slate-900 font-medium"
-                      : isActive 
-                      ? "text-slate-900 font-medium" 
                       : "text-slate-600"
-                  }`}>
+                    }`}>
                     {highlightText(item.text, searchQuery).map((seg, j) =>
                       seg.isMatch
-                        ? <mark key={j} className={`rounded px-0.5 ${
-                            isCurrentSearchResult 
-                              ? "bg-yellow-300 text-yellow-900 font-semibold" 
-                              : "bg-yellow-200 text-yellow-900"
+                        ? <mark key={j} className={`rounded px-0.5 ${isCurrentSearchResult
+                          ? "bg-yellow-300 text-yellow-900 font-semibold"
+                          : "bg-yellow-200 text-yellow-900"
                           }`}>{seg.part}</mark>
                         : seg.part
                     )}

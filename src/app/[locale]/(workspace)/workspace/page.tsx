@@ -124,6 +124,8 @@ function WorkspaceContent() {
     }
   }, [currentVideo?.id]);
 
+  const [initialSubtitleContent, setInitialSubtitleContent] = useState<string>("");
+
   // --- 初始化逻辑 ---
   useEffect(() => {
     if (!urlsParam) return;
@@ -171,59 +173,26 @@ function WorkspaceContent() {
           analysisCache.current.set(vid, savedContent.summaryContent);
         }
 
-        // 清理URL参数
+        if (savedContent.subtitleContent) {
+          setInitialSubtitleContent(savedContent.subtitleContent);
+          try {
+            sessionStorage.setItem(`ytvidhub_transcript_${urls[0]}`, JSON.stringify({
+              text: savedContent.subtitleContent,
+              format: 'vtt'
+            }));
+          } catch (e) { }
+        }
+
         const newParams = new URLSearchParams(searchParams.toString());
         newParams.delete("from");
         router.replace(`/workspace?${newParams.toString()}`, { scroll: false });
       }).catch(() => {
         if (!isCancelled) analyzeUrls(urls).then(handleAnalysisResults);
       });
-
-      // 如果是summary模式，先快速获取视频信息，然后立即开始分析
-    } else if (isSummaryMode && urls.length === 1) {
-      // 快速获取视频信息
-      subtitleApi.getVideoInfo(urls[0]).then((videoInfo) => {
-        if (isCancelled) return;
-
-        const enhancedVideo = {
-          id: videoInfo.id || extractVideoId(urls[0]),
-          url: urls[0],
-          title: videoInfo.title || 'Loading...',
-          uploader: videoInfo.uploader || '...',
-          hasSubtitles: videoInfo.has_subtitles,
-          thumbnail: videoInfo.thumbnail || `https://i.ytimg.com/vi/${videoInfo.id}/hqdefault.jpg`,
-          duration: videoInfo.duration
-        };
-
-        setCurrentVideo(enhancedVideo);
-        setVideoList([enhancedVideo]);
-
-        const storageKey = `auto_analyzed_${enhancedVideo.id}`;
-        const hasAnalyzedInSession = sessionStorage.getItem(storageKey);
-        const cachedResult = analysisCache.current.get(enhancedVideo.id);
-
-        if (cachedResult) {
-          setSummaryData(cachedResult);
-        }
-        // AI 总结改为手动触发，不再自动执行
-
-        // 清理URL参数
-        if (isFromHome) {
-          const newParams = new URLSearchParams(searchParams.toString());
-          newParams.delete("from");
-          newParams.delete("mode");
-          router.replace(`/workspace?${newParams.toString()}`, {
-            scroll: false,
-          });
-        }
-      }).catch(() => {
-        if (!isCancelled) {
-          analyzeUrls(urls).then(handleAnalysisResults);
-        }
-      });
     } else {
       analyzeUrls(urls).then(handleAnalysisResults);
     }
+    // ... (rest of the file logic continues correctly)
 
     function handleAnalysisResults(results: any[]) {
       if (isCancelled) return;
@@ -778,10 +747,12 @@ function WorkspaceContent() {
                 <div className="flex-1 min-h-0 overflow-hidden">
                   <TranscriptArea
                     videoUrl={currentVideo.url}
+                    videoId={currentVideo.id}
                     currentTime={currentTime}
                     onSeek={setSeekTime}
                     searchInputRef={searchInputRef}
                     onLoadingChange={setIsTranscriptLoading}
+                    initialSubtitleContent={initialSubtitleContent}
                   />
                 </div>
               </>
