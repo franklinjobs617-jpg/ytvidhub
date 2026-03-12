@@ -1,10 +1,10 @@
-// hooks/useSubtitleDownloader.ts
 import { useState, useRef } from "react";
 import { subtitleApi } from "@/lib/api";
 import { extractVideoId, isPlaylistOrChannelUrl } from "@/lib/youtube";
 import { toast } from "sonner";
 import { useTranslations } from 'next-intl';
 import { trackConversion } from "@/lib/analytics";
+import { useAuth } from "@/context/AuthContext";
 
 interface PlaylistProcessingState {
   phase: 'expanding' | 'checking' | 'completed' | 'error' | 'paused';
@@ -36,6 +36,7 @@ interface BulkDownloadState {
 }
 
 export function useSubtitleDownloader(onCreditsChanged?: () => void) {
+  const { user } = useAuth();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -295,12 +296,68 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     trackConversion('download_start', { type: 'single', format, lang });
 
     try {
-      // 如果已有相同 URL 和格式的内容，直接下载
+      // 1. 优先检查 sessionStorage 缓存（针对极速下载优化）
+      const cacheKey = `ytvidhub_transcript_${video.url}`;
+      const cached = sessionStorage.getItem(cacheKey);
+
+      if (cached) {
+        try {
+          const { text, format: cachedFormat } = JSON.parse(cached);
+
+          if (cachedFormat === format) {
+            // 虽然是缓存，但依然需要扣除积分以保证公平性
+            const userCredits = user?.credits ?? 0;
+            if (userCredits < 1) {
+              setModalConfig({
+                required: 1,
+                current: userCredits,
+                feature: "Subtitle Download"
+              });
+              setIsCreditsModalOpen(true);
+              setIsDownloading(false);
+              return;
+            }
+
+            // 执行扣费 API
+            subtitleApi.deductCredits(1, `Subtitle Download (${format})`).then(() => {
+              if (onCreditsChanged) onCreditsChanged();
+            }).catch(() => {
+              console.error("Failed to deduct credits for cached download");
+            });
+
+            setProgress(100);
+            const blob = new Blob([text], { type: 'text/plain' });
+            triggerDownload(blob, `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`);
+            trackConversion('download_success', { type: 'single', format, lang, cached: true });
+
+            // 写入历史记录
+            subtitleApi.upsertHistory({
+              videoId: extractVideoId(video.url),
+              videoUrl: video.url,
+              title: video.title,
+              thumbnail: video.thumbnail,
+              duration: video.duration,
+              lastAction: "subtitle_download",
+              format,
+              lang,
+              subtitleContent: text,
+            }).catch(() => { });
+
+            setTimeout(() => setIsDownloading(false), 300);
+            return;
+          }
+        } catch (e) {
+          console.error("Cache parse error:", e);
+        }
+      }
+
+      // 2. 检查内存中的下载历史缓存
       if (downloadedContent && downloadedContent.url === video.url && downloadedContent.format === format) {
+        // ... 内存缓存属于同一操作的重复下载，通常不重复扣费（根据需求设定，这里维持原样或参考上面）
         setProgress(100);
         const blob = new Blob([downloadedContent.text], { type: 'text/plain' });
         triggerDownload(blob, `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`);
-        trackConversion('download_success', { type: 'single', format, lang, cached: true });
+        trackConversion('download_success', { type: 'single', format, lang, memory_cached: true });
         setTimeout(() => setIsDownloading(false), 500);
         return;
       }
