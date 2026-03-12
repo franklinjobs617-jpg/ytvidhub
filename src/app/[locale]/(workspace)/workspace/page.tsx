@@ -244,8 +244,17 @@ function WorkspaceContent() {
         }
         // AI 总结改为手动触发，不再自动执行
 
-        // 清理URL参数
+        // 如果是从首页来的，自动保存到历史记录
         if (isFromHome) {
+          subtitleApi.upsertHistory({
+            videoId: firstVideo.id,
+            videoUrl: firstVideo.url,
+            title: firstVideo.title,
+            thumbnail: firstVideo.thumbnail,
+            duration: firstVideo.duration,
+            lastAction: "video_analyze",
+          }).catch(() => { });
+
           const newParams = new URLSearchParams(searchParams.toString());
           newParams.delete("from");
           newParams.delete("mode");

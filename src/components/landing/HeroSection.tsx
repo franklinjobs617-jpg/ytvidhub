@@ -77,14 +77,14 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   // 动态 placeholder 打字效果
   const placeholderExamples = selectedMode === 'summary'
     ? [
-        'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        'https://youtu.be/jNQXAC9IVRw',
-      ]
+      'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      'https://youtu.be/jNQXAC9IVRw',
+    ]
     : [
-        'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        'https://www.youtube.com/playlist?list=PLrAXtmRdnEQy...',
-        'https://www.youtube.com/@ChannelName',
-      ];
+      'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      'https://www.youtube.com/playlist?list=PLrAXtmRdnEQy...',
+      'https://www.youtube.com/@ChannelName',
+    ];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [typedPlaceholder, setTypedPlaceholder] = useState('');
 
@@ -157,7 +157,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
       subtitleApi.getHistory(50).then((data) => {
         const hasUsedSummary = data.some((h: any) => h.lastAction === "ai_summary");
         setIsFirstSummaryFree(!hasUsedSummary);
-      }).catch(() => {});
+      }).catch(() => { });
 
       // 登录后自动继续之前的操作
       if (pendingAnalysisRef.current) {
@@ -229,6 +229,8 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     if (inputError) setInputError(false);
   };
 
+  const [isNavigating, setIsNavigating] = useState(false);
+
   const handleMainAction = async () => {
     setIsActionClicked(true);
 
@@ -261,10 +263,8 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
       if (!targetUrls) return;
 
-      toast.success(tActions('opening') + "...", {
-        position: "top-center",
-        duration: 2000
-      });
+      // 立即进入导航状态，消除用户等待感
+      setIsNavigating(true);
 
       router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home`);
     } finally {
@@ -280,6 +280,18 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
   return (
     <div className="relative isolate bg-white min-h-screen">
+      {/* 极速导航加载提示 */}
+      {isNavigating && (
+        <div className="fixed inset-0 z-[100] bg-white/80 backdrop-blur-md flex flex-col items-center justify-center animate-in fade-in duration-300">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin"></div>
+            <Sparkles className="absolute inset-0 m-auto text-blue-600 animate-pulse" size={20} />
+          </div>
+          <h3 className="mt-6 text-sm font-black uppercase tracking-widest text-slate-800 animate-pulse">
+            Entering Workspace...
+          </h3>
+        </div>
+      )}
       <Toaster richColors closeButton position="top-center" />
       <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
 
@@ -303,11 +315,10 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
               </div>
 
               <div
-                className={`relative flex flex-col bg-white transition-all duration-300 ${
-                  !isAnalyzing && videoResults.length === 0 && !downloadedContent
-                    ? ""
-                    : "min-h-[400px]"
-                }`}
+                className={`relative flex flex-col bg-white transition-all duration-300 ${!isAnalyzing && videoResults.length === 0 && !downloadedContent
+                  ? ""
+                  : "min-h-[400px]"
+                  }`}
               >
                 {isAnalyzing ? (
                   <div className="flex-1 flex flex-col items-center justify-center p-12">
@@ -328,11 +339,10 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                       <div className="flex items-center gap-2 shrink-0">
                         <button
                           onClick={handleCopyContent}
-                          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-black text-xs uppercase tracking-widest transition-all ${
-                            copied
-                              ? "bg-green-500 text-white"
-                              : "bg-slate-900 text-white hover:bg-black"
-                          }`}
+                          className={`flex items-center gap-1.5 px-4 py-2 rounded-lg font-black text-xs uppercase tracking-widest transition-all ${copied
+                            ? "bg-green-500 text-white"
+                            : "bg-slate-900 text-white hover:bg-black"
+                            }`}
                         >
                           {copied ? <CheckCheck size={13} /> : <Copy size={13} />}
                           {copied ? "Copied!" : "Copy"}
@@ -351,7 +361,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                                   `ytvidhub_transcript_${url}`,
                                   JSON.stringify({ text, format: fmt })
                                 );
-                              } catch {}
+                              } catch { }
                             }, 0);
                           }}
                           className="flex items-center gap-1.5 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-black text-xs uppercase tracking-widest transition-all"
@@ -384,7 +394,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                                     message: `[Intent Survey] "${item.label}" | Format: ${downloadFormat} | Lang: ${downloadLang} | Video: ${downloadedContent?.title || 'unknown'}`,
                                     contact: user?.email || 'anonymous',
                                   }),
-                                }).catch(() => {});
+                                }).catch(() => { });
                                 setIntentFading(true);
                                 setTimeout(() => setIntentSurveyDone(true), 500);
                               }}
@@ -422,78 +432,74 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                       {/* 搜索栏 — 带发光动画边框 */}
                       <div className="relative group/input">
                         {/* 发光背景层 */}
-                        <div className={`absolute -inset-0.5 rounded-2xl transition-all duration-500 ${
-                          isFocused
-                            ? selectedMode === 'summary'
-                              ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500 opacity-100'
-                              : 'bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 opacity-100'
-                            : inputError
-                              ? 'bg-red-400 opacity-100'
-                              : 'bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400 opacity-40 group-hover/input:opacity-70'
-                        } blur-sm`} />
+                        <div className={`absolute -inset-0.5 rounded-2xl transition-all duration-500 ${isFocused
+                          ? selectedMode === 'summary'
+                            ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500 opacity-100'
+                            : 'bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 opacity-100'
+                          : inputError
+                            ? 'bg-red-400 opacity-100'
+                            : 'bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400 opacity-40 group-hover/input:opacity-70'
+                          } blur-sm`} />
 
                         {/* 搜索栏主体 */}
-                        <div className={`relative flex items-center rounded-2xl border bg-white transition-all duration-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)] ${
-                          isFocused
-                            ? selectedMode === 'summary'
-                              ? 'border-purple-400 shadow-xl shadow-purple-100/50'
-                              : 'border-blue-400 shadow-xl shadow-blue-100/50'
-                            : inputError
-                              ? 'border-red-400'
-                              : 'border-slate-200 hover:border-slate-300'
-                        }`}>
-                        {/* 左侧图标 */}
-                        <div className="pl-4 md:pl-5 flex-shrink-0">
-                          <Youtube size={24} className="text-red-500" />
-                        </div>
+                        <div className={`relative flex items-center rounded-2xl border bg-white transition-all duration-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)] ${isFocused
+                          ? selectedMode === 'summary'
+                            ? 'border-purple-400 shadow-xl shadow-purple-100/50'
+                            : 'border-blue-400 shadow-xl shadow-blue-100/50'
+                          : inputError
+                            ? 'border-red-400'
+                            : 'border-slate-200 hover:border-slate-300'
+                          }`}>
+                          {/* 左侧图标 */}
+                          <div className="pl-4 md:pl-5 flex-shrink-0">
+                            <Youtube size={24} className="text-red-500" />
+                          </div>
 
-                        {/* 输入区域 */}
-                        <textarea
-                          ref={textareaRef}
-                          value={urls}
-                          onChange={(e) => {
-                            handleInputChange(e);
-                            const el = e.target;
-                            el.style.height = 'auto';
-                            el.style.height = Math.min(el.scrollHeight, 200) + 'px';
-                          }}
-                          onFocus={() => setIsFocused(true)}
-                          onBlur={() => !urls && setIsFocused(false)}
-                          rows={1}
-                          className={`flex-1 py-3.5 md:py-4 px-3 bg-transparent text-base md:text-lg text-slate-800 outline-none resize-none placeholder:text-slate-400 placeholder:text-sm md:placeholder:text-base leading-relaxed ${
-                            inputError ? 'caret-red-500' : 'caret-blue-600'
-                          }`}
-                          placeholder={isFocused || urls ? (selectedMode === 'summary'
-                            ? t('input.placeholderSummary')
-                            : t('input.placeholder')) : typedPlaceholder || '|'}
-                          spellCheck={false}
-                        />
+                          {/* 输入区域 */}
+                          <textarea
+                            ref={textareaRef}
+                            value={urls}
+                            onChange={(e) => {
+                              handleInputChange(e);
+                              const el = e.target;
+                              el.style.height = 'auto';
+                              el.style.height = Math.min(el.scrollHeight, 200) + 'px';
+                            }}
+                            onFocus={() => setIsFocused(true)}
+                            onBlur={() => !urls && setIsFocused(false)}
+                            rows={1}
+                            className={`flex-1 py-3.5 md:py-4 px-3 bg-transparent text-base md:text-lg text-slate-800 outline-none resize-none placeholder:text-slate-400 placeholder:text-sm md:placeholder:text-base leading-relaxed ${inputError ? 'caret-red-500' : 'caret-blue-600'
+                              }`}
+                            placeholder={isFocused || urls ? (selectedMode === 'summary'
+                              ? t('input.placeholderSummary')
+                              : t('input.placeholder')) : typedPlaceholder || '|'}
+                            spellCheck={false}
+                          />
 
-                        {/* 右侧操作按钮 */}
-                        <div className="pr-2.5 md:pr-3 pt-2.5 md:pt-3 pb-2.5 md:pb-3 flex-shrink-0">
-                          <button
-                            onClick={(e) => { e.stopPropagation(); handleMainAction(); }}
-                            disabled={!urls.trim() || isAnalyzing || isDownloading}
-                            className={`flex items-center gap-2 px-5 md:px-7 py-3 md:py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all whitespace-nowrap ${
-                              urls.trim() && !isAnalyzing
+                          {/* 右侧操作按钮 */}
+                          <div className="pr-2.5 md:pr-3 pt-2.5 md:pt-3 pb-2.5 md:pb-3 flex-shrink-0">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); handleMainAction(); }}
+                              disabled={!urls.trim() || isAnalyzing || isDownloading}
+                              className={`flex items-center gap-2 px-5 md:px-7 py-3 md:py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all whitespace-nowrap ${urls.trim() && !isAnalyzing
                                 ? selectedMode === 'summary'
                                   ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-lg hover:shadow-purple-500/20 hover:-translate-y-0.5'
                                   : 'bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5'
                                 : selectedMode === 'summary'
                                   ? 'bg-purple-100 text-purple-300 cursor-not-allowed'
                                   : 'bg-blue-50 text-blue-300 cursor-not-allowed'
-                            }`}
-                          >
-                            {isAnalyzing ? (
-                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            ) : selectedMode === 'summary' ? (
-                              <Sparkles size={15} />
-                            ) : (
-                              <ArrowRight size={15} />
-                            )}
-                            <span className="hidden sm:inline">{actionLabel}</span>
-                          </button>
-                        </div>
+                                }`}
+                            >
+                              {isAnalyzing ? (
+                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              ) : selectedMode === 'summary' ? (
+                                <Sparkles size={15} />
+                              ) : (
+                                <ArrowRight size={15} />
+                              )}
+                              <span className="hidden sm:inline">{actionLabel}</span>
+                            </button>
+                          </div>
                         </div>
                       </div>
 
@@ -586,26 +592,26 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
               </div>
 
               {(videoResults.length > 0 || downloadedContent) && (
-              <div className="bg-white border-t border-slate-100 px-6 py-4">
-                <ControlBar
-                  mode={selectedMode}
-                  userCredits={user?.credits?.toString() ?? "--"}
-                  format={downloadFormat}
-                  setFormat={setDownloadFormat}
-                  availableFormats={selectedMode === "download" ? ["srt", "vtt", "txt"] : []}
-                  lang={downloadLang}
-                  setLang={setDownloadLang}
-                  availableLangs={selectedMode === "download" ? ["en", "zh", "es", "fr", "de", "ja", "ko", "pt", "ru", "ar", "hi", "it", "nl", "pl", "tr", "vi", "id", "th"] : []}
-                  onReset={handleReset}
-                  onAction={handleMainAction}
-                  canReset={videoResults.length > 0 || !!urls}
-                  isAnalyzing={isAnalyzing}
-                  isDownloading={isDownloading}
-                  isActionClicked={isActionClicked}
-                  canAction={!isAnalyzing && (videoResults.length > 0 || !!urls)}
-                  actionLabel={actionLabel}
-                />
-              </div>
+                <div className="bg-white border-t border-slate-100 px-6 py-4">
+                  <ControlBar
+                    mode={selectedMode}
+                    userCredits={user?.credits?.toString() ?? "--"}
+                    format={downloadFormat}
+                    setFormat={setDownloadFormat}
+                    availableFormats={selectedMode === "download" ? ["srt", "vtt", "txt"] : []}
+                    lang={downloadLang}
+                    setLang={setDownloadLang}
+                    availableLangs={selectedMode === "download" ? ["en", "zh", "es", "fr", "de", "ja", "ko", "pt", "ru", "ar", "hi", "it", "nl", "pl", "tr", "vi", "id", "th"] : []}
+                    onReset={handleReset}
+                    onAction={handleMainAction}
+                    canReset={videoResults.length > 0 || !!urls}
+                    isAnalyzing={isAnalyzing}
+                    isDownloading={isDownloading}
+                    isActionClicked={isActionClicked}
+                    canAction={!isAnalyzing && (videoResults.length > 0 || !!urls)}
+                    actionLabel={actionLabel}
+                  />
+                </div>
               )}
             </div>
 
