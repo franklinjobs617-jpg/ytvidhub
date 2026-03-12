@@ -14,12 +14,13 @@ const plans = [
     name: "Starter",
     price: "$0",
     period: "Free Forever",
-    desc: "For casual users to experience our core bulk download feature.",
+    desc: "Experience our core AI extraction features.",
     features: [
-      { text: "5 Credits per day", highlight: true, disabled: false },
-      { text: "Bulk Download up to 5 URLs", disabled: false, sub: undefined },
-      { text: "Basic SRT/TXT Output", disabled: false, sub: undefined },
-      { text: "API Access Not Included", disabled: true, sub: undefined },
+      { text: "5 Daily Credits", highlight: true, disabled: false },
+      { text: "5 Downloads OR 2 AI Summaries", disabled: false, sub: "Usage per day" },
+      { text: "Download up to 5 URLs", disabled: false },
+      { text: "Standard SRT/VTT Output", disabled: false },
+      { text: "API Access Not Included", disabled: true },
     ],
     buttonText: "Your Current Plan",
     buttonStyle: "disabled",
@@ -29,17 +30,18 @@ const plans = [
     name: "Pro",
     price: "$19.99",
     period: "/ month",
-    desc: "For the dedicated content creator & researcher who needs reliable, daily access.",
+    desc: "For researchers who need consistent insights.",
     features: [
       {
-        text: "500 Credits/month",
+        text: "500 Monthly Credits",
         highlight: true,
-        sub: "(Process 500 URLs)",
+        sub: "(500 Downloads OR 250 AI Summaries)",
         disabled: false,
       },
-      { text: "Download up to 50 URLs at once", disabled: false },
-      { text: "Priority Queue - your jobs run first", disabled: false },
-      { text: "Access to all output formats (JSON)", disabled: false },
+      { text: "AI Video Summaries & Transcription", disabled: false },
+      { text: "AI Study Cards (1 credit / card)", disabled: false },
+      { text: "Download 50 URLs at once", disabled: false },
+      { text: "Priority AI Processing Queue", disabled: false },
     ],
     buttonText: "Upgrade to Pro",
     buttonStyle: "primary",
@@ -50,17 +52,18 @@ const plans = [
     name: "Premium",
     price: "$29.99",
     period: "/ month",
-    desc: "For power users, agencies, and data teams who require speed and volume.",
+    desc: "For power users requiring high volume.",
     features: [
       {
-        text: "1,000 Credits/month",
+        text: "1,000 Monthly Credits",
         highlight: true,
-        sub: "(Process 1,000 URLs)",
+        sub: "(1,000 Downloads OR 500 AI Summaries)",
         disabled: false,
       },
-      { text: "Download up to 100 URLs at once", disabled: false },
-      { text: "Highest Priority & Email Support", disabled: false },
-      { text: "Early access to new features", disabled: false },
+      { text: "Advanced AI Multi-lingual Analysis", disabled: false },
+      { text: "Full AI Transcription Exports", disabled: false },
+      { text: "Download 100 URLs at once", disabled: false },
+      { text: "Highest Priority AI Execution", disabled: false },
     ],
     buttonText: "Unleash Premium",
     buttonStyle: "secondary",
@@ -72,18 +75,18 @@ const plans = [
     period: "/ year",
     originalPrice: "$239",
     tag: "SAVE 16%",
-    desc: "The ultimate toolkit. Unlock massive scale, automation, and get 2 months free.",
+    desc: "The professional choice. Massive scale.",
     features: [
       {
-        text: "3,000 Credits/month",
+        text: "3,000 Monthly Credits",
         highlight: true,
-        sub: "(36,000/year)",
+        sub: "(3,000 Downloads OR 1,500 AI Summaries)",
         disabled: false,
       },
-      { text: "Full API Access to automate everything", disabled: false },
-      { text: "All Premium Features Included", disabled: false },
-      { text: "Discounted top-up credits", disabled: false },
-      { text: "Discounted top-up credits", sub: undefined },
+      { text: "Full API Access (Summaries & Subs)", disabled: false },
+      { text: "Bulk AI Processing for Playlists", disabled: false },
+      { text: "All Premium AI Features Included", disabled: false },
+      { text: "Deep Learning Insights & Cards", disabled: false },
     ],
     buttonText: "Commit & Save Annually",
     buttonStyle: "secondary",
@@ -126,19 +129,50 @@ export default function PricingPage() {
       <div className="absolute top-[-20%] left-[-20%] w-[35rem] h-[35rem] bg-blue-400/20 rounded-full blur-[100px] animate-pulse"></div>
       <div className="absolute bottom-[-20%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-400/20 rounded-full blur-[100px] animate-pulse"></div>
 
-      <section className="relative pt-12 pb-16 text-center px-6">
-        <h1 className="text-5xl md:text-6xl font-display font-black italic uppercase tracking-wide text-slate-900 mb-6 drop-shadow-sm">
-          The Perfect Plan For Your Ambition
+      <section className="relative pt-20 pb-16 text-center px-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider mb-6 animate-fade-in">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          Trusted by 10,000+ Researchers
+        </div>
+        <h1 className="text-5xl md:text-7xl font-display font-black italic uppercase tracking-tight text-slate-900 mb-8 drop-shadow-sm leading-[0.9]">
+          The Perfect Plan <br /> For Your <span className="text-blue-600">Ambition</span>
         </h1>
-        <p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium">
-          Stop wasting time on manual downloads. Choose a plan and supercharge
-          your data-gathering workflow today.
+        <p className="text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
+          Stop wasting hours on manual downloads. Choose a professional plan and <br />
+          <span className="text-slate-900 font-bold">get instant access to high-volume data.</span>
         </p>
+
+        {/* Trust Bar */}
+        <div className="mt-12 flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m17.236 0a11.955 11.955 0 01-14.717 9.917m14.717-9.917a11.955 11.955 0 01-4.88 15.688M12 20.944a11.955 11.955 0 01-8.618-3.04m17.236 0a11.955 11.955 0 01-4.88-15.688" /></svg>
+            <span className="text-xs font-bold uppercase tracking-tighter">Secure Payment</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            <span className="text-xs font-bold uppercase tracking-tighter">Instant Delivery</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+            <span className="text-xs font-bold uppercase tracking-tighter">VAT Invoice Available</span>
+          </div>
+        </div>
       </section>
 
       <section className="pb-24 px-4 lg:px-8">
-        {/* === Custom Credit Slider (High Visibility) === */}
-        <div className="mb-10">
+        {/* === Custom Credit Slider (High Visibility - User Request) === */}
+        <div className="mb-20 max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-display font-black italic uppercase tracking-wider text-slate-900 mb-4">
+              Flexible Credits, Total Control
+            </h2>
+            <p className="text-slate-500 font-medium">
+              Only pay for exactly what you need. <span className="text-slate-900 font-bold underline decoration-blue-500 underline-offset-4 text-lg">1 Download = 1 Credit | 1 AI Summary = 2 Credits</span>
+            </p>
+          </div>
           <CustomCreditSlider onRequestLogin={() => setShowLoginModal(true)} />
         </div>
 
@@ -147,80 +181,80 @@ export default function PricingPage() {
             <div
               key={plan.name}
               className={`
-                relative flex flex-col p-6 rounded-2xl border transition-all duration-300
+                relative flex flex-col p-8 rounded-3xl border transition-all duration-500 group
                 ${plan.highlight
-                  ? "bg-white border-blue-200 ring-4 ring-blue-500/10 shadow-2xl scale-105 z-10"
-                  : "bg-white/80 backdrop-blur-sm border-slate-200 hover:border-blue-200 hover:shadow-xl"
+                  ? "bg-white border-blue-200 ring-[12px] ring-blue-500/5 shadow-[0_40px_80px_-15px_rgba(59,130,246,0.15)] scale-105 z-10"
+                  : "bg-white/70 backdrop-blur-md border-slate-200/60 hover:border-blue-300 hover:shadow-2xl hover:bg-white"
                 }
               `}
             >
               {plan.highlight && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md">
-                  Most Popular
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-lg">
+                  Most Popular choice
                 </span>
               )}
               {plan.tag && (
-                <span className="absolute top-4 right-4 bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider">
+                <span className="absolute top-6 right-6 bg-emerald-50 text-emerald-600 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter border border-emerald-100">
                   {plan.tag}
                 </span>
               )}
 
-              <div className="mb-6">
+              <div className="mb-8">
                 <h3
-                  className={`text-xl font-bold uppercase tracking-wide mb-2 ${plan.name === "Researcher"
+                  className={`text-sm font-black uppercase tracking-[0.15em] mb-4 ${plan.name === "Researcher"
                     ? "text-purple-600"
                     : plan.highlight
                       ? "text-blue-600"
-                      : "text-slate-700"
+                      : "text-slate-400"
                     }`}
                 >
                   {plan.name}
                 </h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-display font-black italic text-slate-900">
+                <div className="flex items-baseline gap-1 mb-2">
+                  <span className="text-5xl font-display font-black italic text-slate-900 tracking-tighter">
                     {plan.price}
                   </span>
                   {plan.originalPrice && (
-                    <span className="text-sm text-slate-400 line-through">
+                    <span className="text-lg text-slate-300 line-through font-bold">
                       {plan.originalPrice}
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-slate-500 font-medium mb-4">
+                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-6">
                   {plan.period}
                 </p>
-                <p className="text-sm text-slate-600 leading-relaxed min-h-[40px]">
+                <p className="text-sm text-slate-500 leading-relaxed min-h-[48px] font-medium">
                   {plan.desc}
                 </p>
               </div>
 
-              <ul className="space-y-3 mb-8 flex-1">
+              <div className="h-px w-full bg-slate-100 mb-8" />
+
+              <ul className="space-y-4 mb-10 flex-1">
                 {plan.features.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-start text-sm ${feature.disabled ? "text-slate-400" : "text-slate-700"
+                    className={`flex items-start text-[13px] font-medium ${feature.disabled ? "text-slate-300 line-through opacity-50" : "text-slate-600"
                       }`}
                   >
                     <svg
-                      className={`w-5 h-5 mr-3 flex-shrink-0 ${feature.disabled ? "text-slate-300" : "text-green-500"
+                      className={`w-5 h-5 mr-3 flex-shrink-0 ${feature.disabled ? "text-slate-200" : "text-blue-500"
                         }`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      viewBox="0 0 24 24"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 13.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      ></path>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>
+                    <span className="leading-snug">
                       {feature.highlight ? (
-                        <strong>{feature.text}</strong>
+                        <strong className="text-slate-900 font-bold">{feature.text}</strong>
                       ) : (
                         feature.text
                       )}
                       {feature.sub && (
-                        <span className="block text-xs text-slate-500 mt-0.5">
+                        <span className="block text-[11px] text-slate-400 mt-1 font-normal italic">
                           {feature.sub}
                         </span>
                       )}
@@ -234,12 +268,12 @@ export default function PricingPage() {
                 onClick={() => handlePurchase(plan.id)}
                 disabled={!plan.id}
                 className={`
-                  w-full py-3.5 rounded-xl font-bold uppercase tracking-wide text-xs transition-all duration-200
+                  w-full py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all duration-300
                   ${!plan.id
-                    ? "bg-slate-100 text-slate-400 cursor-default"
+                    ? "bg-slate-50 text-slate-300 cursor-default border border-slate-100"
                     : plan.highlight
-                      ? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200"
-                      : "bg-slate-900 text-white hover:bg-slate-800 shadow-md"
+                      ? "bg-blue-600 text-white hover:bg-blue-700 shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:-translate-y-1 active:scale-95"
+                      : "bg-slate-900 text-white hover:bg-black shadow-xl hover:-translate-y-1 active:scale-95"
                   }
                 `}
               >
@@ -248,9 +282,6 @@ export default function PricingPage() {
             </div>
           ))}
         </div>
-
-
-
 
         {/* === Credits Explanation === */}
         <div className="mt-20 max-w-4xl mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
@@ -261,7 +292,7 @@ export default function PricingPage() {
             We use a simple credit system so you only pay for what you use. It
             is transparent and fair.
           </p>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
               <p className="font-bold text-slate-900 text-lg mb-1">1 Credit</p>
               <p className="text-slate-600 text-sm">
@@ -269,11 +300,15 @@ export default function PricingPage() {
               </p>
             </div>
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
-              <p className="font-bold text-slate-900 text-lg mb-1">
-                2 Credits{" "}
-              </p>
+              <p className="font-bold text-slate-900 text-lg mb-1">2 Credits</p>
               <p className="text-slate-600 text-sm">
-                AI-powered transcription & summary for 1 YouTube URL.
+                AI Video Summary & Transcription for 1 URL.
+              </p>
+            </div>
+            <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
+              <p className="font-bold text-slate-900 text-lg mb-1">1 Credit</p>
+              <p className="text-slate-600 text-sm">
+                Generate 1 full set of AI Study Cards.
               </p>
             </div>
           </div>
