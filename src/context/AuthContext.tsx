@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // 添加防重复请求的标志
   const isRefreshingRef = useRef(false);
   const lastRefreshTimeRef = useRef(0);
-  const MIN_REFRESH_INTERVAL = 2000; // 最小刷新间隔 2 秒
+  const MIN_REFRESH_INTERVAL = 2000;
 
   // 登出函数
   const logout = useCallback(() => {
