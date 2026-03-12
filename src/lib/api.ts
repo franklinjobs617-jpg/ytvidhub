@@ -221,11 +221,13 @@ export const subtitleApi = {
     title: string;
     thumbnail?: string;
     duration?: number;
-    lastAction: "subtitle_download" | "ai_summary" | "video_analyze";
+    lastAction: "subtitle_download" | "ai_summary" | "video_analyze" | "batch_download";
     format?: string;
     lang?: string;
     summaryContent?: string;
     subtitleContent?: string;
+    studyCards?: string;
+    batchId?: string;
   }) {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
@@ -239,11 +241,11 @@ export const subtitleApi = {
         },
         body: JSON.stringify(payload),
       });
-    } catch {}
+    } catch { }
   },
 
-  // 12. 获取历史记录中保存的内容（summary / subtitle）
-  async getHistoryContent(videoId: string): Promise<{ summaryContent?: string; subtitleContent?: string }> {
+  // 12. 获取历史记录中保存的内容（summary / subtitle / study_cards）
+  async getHistoryContent(videoId: string): Promise<{ summaryContent?: string; subtitleContent?: string; studyCards?: string }> {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
     if (!token) return {};

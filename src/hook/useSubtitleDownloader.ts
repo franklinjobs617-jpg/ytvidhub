@@ -462,6 +462,22 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
             setBulkDownloadState(prev => prev ? { ...prev, phase: 'completed' } : null);
 
+            // 【关键】记录批量下载历史
+            const batchId = `batch_${Date.now()}`;
+            videos.forEach(video => {
+              subtitleApi.upsertHistory({
+                videoId: video.id,
+                videoUrl: video.url,
+                title: video.title,
+                thumbnail: video.thumbnail,
+                duration: video.duration,
+                lastAction: "batch_download" as any,
+                format,
+                lang,
+                batchId
+              }).catch(() => { });
+            });
+
             setTimeout(() => {
               if (onCreditsChanged) onCreditsChanged();
             }, 1000);

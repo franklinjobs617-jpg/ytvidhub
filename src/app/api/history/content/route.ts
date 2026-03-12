@@ -35,18 +35,28 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({})
         }
 
-        const record = await prisma.video_history.findUnique({
-            where: { user_video: { userId: dbUser.id, videoId } },
-            select: { summaryContent: true, subtitleContent: true },
-        })
-
-        if (!record) {
-            return NextResponse.json({})
-        }
+        const [summaryRecord, subtitleRecord, studyCardsRecord] = await Promise.all([
+            prisma.video_history.findFirst({
+                where: { userId: dbUser.id, videoId, summaryContent: { not: null } },
+                orderBy: { createdAt: 'desc' },
+                select: { summaryContent: true }
+            }),
+            prisma.video_history.findFirst({
+                where: { userId: dbUser.id, videoId, subtitleContent: { not: null } },
+                orderBy: { createdAt: 'desc' },
+                select: { subtitleContent: true }
+            }),
+            prisma.video_history.findFirst({
+                where: { userId: dbUser.id, videoId, studyCards: { not: null } },
+                orderBy: { createdAt: 'desc' },
+                select: { studyCards: true }
+            })
+        ])
 
         return NextResponse.json({
-            summaryContent: record.summaryContent ?? undefined,
-            subtitleContent: record.subtitleContent ?? undefined,
+            summaryContent: summaryRecord?.summaryContent ?? undefined,
+            subtitleContent: subtitleRecord?.subtitleContent ?? undefined,
+            studyCards: studyCardsRecord?.studyCards ?? undefined,
         })
     } catch (error) {
         return NextResponse.json(

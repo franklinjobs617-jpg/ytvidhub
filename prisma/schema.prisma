@@ -48,12 +48,14 @@ model video_history {
   accessCount     Int      @default(1) @map("access_count")
   summaryContent  String?  @db.LongText @map("summary_content")
   subtitleContent String?  @db.LongText @map("subtitle_content")
+  studyCards      String?  @db.LongText @map("study_cards") // 新增：存储学习卡片 JSON
+  batchId         String?  @map("batch_id") // 用于标识批量任务
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   user        user     @relation(fields: [userId], references: [id])
 
-  @@unique([userId, videoId], name: "user_video")
+  @@index([userId, videoId])
   @@index([userId, updatedAt])
   @@map("video_history")
 }

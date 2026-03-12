@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
+import { subtitleApi } from "@/lib/api";
 import {
   Sparkles,
   Copy,
@@ -23,6 +24,7 @@ import {
 } from "lucide-react";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 import { InsufficientCreditsModal } from './InsufficientCreditsModal';
+import { extractVideoId } from "@/lib/youtube";
 
 // 学习卡片缓存
 const cardsCache = new Map<string, StudyCard[]>();
@@ -138,14 +140,33 @@ export function SummaryArea({
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
 
-  // 视频切换时检查缓存
+  // 视频切换时检查缓存和数据库历史
   useEffect(() => {
     if (!videoUrl) return;
+
+    // 1. 先查内存缓存
     const cached = cardsCache.get(videoUrl);
     if (cached && cached.length > 0) {
       setCardsData(cached);
-    } else {
-      setCardsData([]);
+      return;
+    }
+
+    // 2. 再查数据库历史
+    const videoId = extractVideoId(videoUrl);
+    if (videoId) {
+      subtitleApi.getHistoryContent(videoId).then(content => {
+        if (content.studyCards) {
+          try {
+            const parsed = JSON.parse(content.studyCards);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setCardsData(parsed);
+              cardsCache.set(videoUrl, parsed);
+            }
+          } catch (e) {
+            console.error("Failed to parse study cards from history:", e);
+          }
+        }
+      }).catch(() => { });
     }
   }, [videoUrl]);
 
@@ -159,7 +180,7 @@ export function SummaryArea({
   const generateCards = async () => {
     if (!videoUrl || isCardsLoading) return;
 
-    // 检查缓存
+    // 再次确认缓存
     const cached = cardsCache.get(videoUrl);
     if (cached && cached.length > 0) {
       setCardsData(cached);
@@ -187,7 +208,6 @@ export function SummaryArea({
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
         if (res.status === 402) {
-          // 获取当前积分
           const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
           setModalConfig({
             required: 1,
@@ -237,7 +257,6 @@ export function SummaryArea({
           buffer += chunk;
         }
 
-        // Parse any newly completed card blocks
         const result = extractCards(buffer);
         if (result.cards.length > 0) {
           allParsedCards = [...allParsedCards, ...result.cards];
@@ -246,16 +265,29 @@ export function SummaryArea({
         }
       }
 
-      // Final parse
       const final = extractCards(buffer, true);
       if (final.cards.length > 0) {
         allParsedCards = [...allParsedCards, ...final.cards];
         setCardsData(allParsedCards);
       }
 
-      // 保存到缓存
       if (allParsedCards.length > 0) {
         cardsCache.set(videoUrl, allParsedCards);
+
+        // 【关键】保存到历史记录
+        const videoId = extractVideoId(videoUrl);
+        if (videoId) {
+          // 尝试获取视频标题（从 DOM 或状态中获取并不总是可靠，这里简单处理，后台会有标题保护）
+          const title = document.title.split(' - ')[0] || "Unknown Video";
+
+          subtitleApi.upsertHistory({
+            videoId,
+            videoUrl,
+            title,
+            lastAction: "ai_summary", // 复用 ai_summary 动作，或可以用一个新的动作类型
+            studyCards: JSON.stringify(allParsedCards)
+          }).catch(() => { });
+        }
       }
 
       setCardsStatus('');

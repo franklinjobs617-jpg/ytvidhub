@@ -11,6 +11,7 @@ import {
   Play,
   Clock,
   Filter,
+  Zap,
 } from "lucide-react";
 
 interface HistoryItem {
@@ -25,7 +26,7 @@ interface HistoryItem {
   updatedAt: string;
 }
 
-type FilterType = "all" | "ai_summary" | "subtitle_download";
+type FilterType = "all" | "ai_summary" | "subtitle_download" | "batch_download";
 
 function formatDuration(seconds?: number) {
   if (!seconds) return "";
@@ -85,6 +86,9 @@ export default function HistoryPage() {
   const subCount = history.filter(
     (h) => h.lastAction === "subtitle_download"
   ).length;
+  const batchCount = history.filter(
+    (h) => h.lastAction === "batch_download"
+  ).length;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -113,16 +117,19 @@ export default function HistoryPage() {
                 key: "subtitle_download",
                 label: `Subtitles (${subCount})`,
               },
+              {
+                key: "batch_download",
+                label: `Batch (${batchCount})`,
+              },
             ] as { key: FilterType; label: string }[]
           ).map((tab) => (
             <button
               key={tab.key}
               onClick={() => setFilter(tab.key)}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
-                filter === tab.key
-                  ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white border border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700"
-              }`}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${filter === tab.key
+                ? "bg-slate-900 text-white shadow-sm"
+                : "bg-white border border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700"
+                }`}
             >
               {tab.label}
             </button>
@@ -201,6 +208,11 @@ export default function HistoryPage() {
                       <span className="flex items-center gap-0.5 text-[9px] font-bold bg-violet-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
                         <Sparkles size={8} />
                         AI
+                      </span>
+                    ) : item.lastAction === "batch_download" ? (
+                      <span className="flex items-center gap-0.5 text-[9px] font-bold bg-amber-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
+                        <Zap size={8} />
+                        BATCH
                       </span>
                     ) : (
                       <span className="flex items-center gap-0.5 text-[9px] font-bold bg-blue-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
