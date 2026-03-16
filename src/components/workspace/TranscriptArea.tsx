@@ -68,6 +68,7 @@ export function TranscriptArea({
     } catch { }
     setLoading(true);
     onLoadingChange?.(true);
+
     subtitleApi
       .downloadSingle({ url: videoUrl, lang: "en", format: "vtt", title: "transcript", isPreview: true })
       .then(async (blob) => {
@@ -254,16 +255,13 @@ export function TranscriptArea({
       {/* Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {loading ? (
-          <div className="px-4 py-4 space-y-4 animate-pulse">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="flex gap-4">
-                <div className="h-3 w-10 bg-slate-200 rounded shrink-0 mt-1" />
-                <div className="flex-1 space-y-1.5">
-                  <div className="h-3 bg-slate-200 rounded w-full" />
-                  <div className="h-3 bg-slate-200 rounded w-3/4" />
-                </div>
+          <div className="h-full flex items-center justify-center px-6">
+            <div className="text-center space-y-3">
+              <div className="font-mono text-base text-slate-600 animate-pulse">
+                [<span className="inline-block animate-[pulse_1s_ease-in-out_infinite]">||||||||</span>          ]
               </div>
-            ))}
+              <p className="text-xs text-slate-500 font-medium">Fetching subtitles...</p>
+            </div>
           </div>
         ) : displayItems.length > 0 ? (
           <div className="py-2 pb-24 md:pb-2">
@@ -337,8 +335,21 @@ export function TranscriptArea({
             <div className="h-10" />
           </div>
         ) : (
-          <div className="h-full flex items-center justify-center text-slate-400">
-            <p className="text-sm">No transcript available</p>
+          <div className="h-full flex items-center justify-center px-6">
+            <div className="text-center space-y-3 max-w-sm">
+              <div className="w-14 h-14 mx-auto bg-amber-50 rounded-full flex items-center justify-center">
+                <svg className="w-7 h-7 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">No Subtitles Found</p>
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                  This video doesn't have subtitles on YouTube.<br />
+                  We can only extract subtitles that exist on the video.
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>

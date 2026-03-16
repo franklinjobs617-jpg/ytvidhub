@@ -88,6 +88,7 @@ function WorkspaceContent() {
   const [inputUrl, setInputUrl] = useState("");
   const [isAddingVideo, setIsAddingVideo] = useState(false);
   const [analysisError, setAnalysisError] = useState<string>("");
+  const [transcriptLang, setTranscriptLang] = useState("en");
   const [isTranscriptLoading, setIsTranscriptLoading] = useState(false);
   const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
   const [showTranslateModal, setShowTranslateModal] = useState(false);
@@ -588,10 +589,10 @@ function WorkspaceContent() {
           <BatchGridView
             videos={videoList}
             onDownloadSingle={(video, format) => {
-              startSingleDownload(video, format, "en");
+              startSingleDownload(video, format, transcriptLang);
             }}
             onDownloadBatch={(videos, format) => {
-              startBulkDownload(videos, format, "en");
+              startBulkDownload(videos, format, transcriptLang);
             }}
             onVideoClick={(video) => {
               setCurrentVideo(video);
@@ -733,6 +734,7 @@ function WorkspaceContent() {
                 <QuickActions
                   videoUrl={currentVideo.url}
                   videoTitle={currentVideo.title}
+                  lang={transcriptLang}
                   onCopyAll={() => {
                     // 触发 TranscriptArea 的复制功能
                     const event = new CustomEvent('copyAllTranscript');
@@ -753,6 +755,8 @@ function WorkspaceContent() {
                     searchInputRef={searchInputRef}
                     onLoadingChange={setIsTranscriptLoading}
                     initialSubtitleContent={initialSubtitleContent}
+                    lang={transcriptLang}
+                    onLangChange={setTranscriptLang}
                   />
                 </div>
               </>
@@ -850,11 +854,16 @@ export default function WorkspacePage() {
   return (
     <Suspense
       fallback={
-        <div className="h-screen flex flex-col items-center justify-center bg-white gap-4">
-          <Loader2 className="animate-spin text-violet-600 w-10 h-10" />
-          <p className="text-slate-400 text-sm font-medium animate-pulse">
-            Initializing Workspace...
-          </p>
+        <div className="h-screen flex items-center justify-center bg-white">
+          <div className="flex flex-col items-center gap-6">
+            <div className="text-3xl font-black tracking-tighter text-slate-900 italic">
+              YTvidHub
+            </div>
+            <div className="w-48 h-1 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full animate-[loading_1.5s_ease-in-out_infinite]"
+                   style={{ width: '40%' }} />
+            </div>
+          </div>
         </div>
       }
     >
