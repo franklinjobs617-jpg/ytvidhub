@@ -37,6 +37,13 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
     setValidationState(isValidYouTubeUrl ? 'valid' : 'invalid');
   }, [value]);
 
+  // 开始加载时自动失去焦点
+  useEffect(() => {
+    if (isLoading && inputRef.current) {
+      inputRef.current.blur();
+    }
+  }, [isLoading]);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && validationState === 'valid' && !isLoading) {
       onSubmit();

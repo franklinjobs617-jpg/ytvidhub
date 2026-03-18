@@ -70,7 +70,6 @@ export function TranscriptArea({
 
     setLoading(true);
     onLoadingChange?.(true);
-    setTranscriptVtt(""); // 切换语言时清空旧内容
 
     subtitleApi
       .downloadSingle({ url: videoUrl, lang: lang, format: "vtt", title: "transcript", isPreview: true })
@@ -279,23 +278,12 @@ export function TranscriptArea({
       {/* Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {loading ? (
-          <div className="px-4 py-6 space-y-3">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="flex gap-3 animate-pulse" style={{ animationDelay: `${i * 100}ms` }}>
-                <div className="h-3 w-12 bg-gradient-to-r from-slate-200 to-slate-100 rounded shrink-0 mt-1" />
-                <div className="flex-1 space-y-2">
-                  <div className="h-3 bg-gradient-to-r from-slate-200 to-slate-100 rounded w-full" />
-                  <div className="h-3 bg-gradient-to-r from-slate-200 to-slate-100 rounded w-4/5" />
-                </div>
+          <div className="h-full flex items-center justify-center px-6">
+            <div className="text-center space-y-3">
+              <div className="font-mono text-base text-slate-600 animate-pulse">
+                [<span className="inline-block animate-[pulse_1s_ease-in-out_infinite]">||||||||</span>          ]
               </div>
-            ))}
-            <div className="flex items-center justify-center pt-4">
-              <div className="flex items-center gap-2 text-xs text-slate-400">
-                <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                <span className="ml-1">Loading transcript</span>
-              </div>
+              <p className="text-xs text-slate-500 font-medium">Fetching subtitles...</p>
             </div>
           </div>
         ) : displayItems.length > 0 ? (
@@ -371,21 +359,19 @@ export function TranscriptArea({
           </div>
         ) : (
           <div className="h-full flex items-center justify-center px-6">
-            <div className="text-center max-w-sm">
-              <div className="mb-4 flex justify-center">
-                <svg className="w-16 h-16 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <div className="text-center space-y-3 max-w-sm">
+              <div className="w-14 h-14 mx-auto bg-amber-50 rounded-full flex items-center justify-center">
+                <svg className="w-7 h-7 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h3 className="text-sm font-medium text-slate-700 mb-2">No Transcript Available</h3>
-              <p className="text-xs text-slate-500 leading-relaxed mb-4">
-                This video doesn't have subtitles in the selected language, or subtitles are disabled by the creator.
-              </p>
-              {availableLangs.length > 1 && (
-                <p className="text-xs text-violet-600 font-medium">
-                  Try switching to another language above
+              <div>
+                <p className="text-sm font-semibold text-slate-800">No Subtitles Found</p>
+                <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                  This video doesn't have subtitles on YouTube.<br />
+                  We can only extract subtitles that exist on the video.
                 </p>
-              )}
+              </div>
             </div>
           </div>
         )}
