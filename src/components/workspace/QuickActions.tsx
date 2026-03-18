@@ -16,9 +16,10 @@ interface QuickActionsProps {
   hasAiSummary?: boolean;
   isGeneratingAi?: boolean;
   onTranslate?: () => void;
+  lang?: string;
 }
 
-export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi }: QuickActionsProps) {
+export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSummary, hasAiSummary, isGeneratingAi, lang = 'en' }: QuickActionsProps) {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
@@ -67,13 +68,13 @@ export function QuickActions({ videoUrl, videoTitle, onCopyAll, onGenerateAiSumm
         // 已登录用户：使用正常下载API（会扣除积分）
         blob = await subtitleApi.downloadSingle({
           url: videoUrl,
-          lang: 'en',
+          lang: lang,
           format,
           title: videoTitle
         });
       } else {
         // 未登录用户：使用访客下载API（免费）
-        blob = await subtitleApi.guestDownload(videoUrl, 'en', format);
+        blob = await subtitleApi.guestDownload(videoUrl, lang, format);
       }
 
       const url = URL.createObjectURL(blob);

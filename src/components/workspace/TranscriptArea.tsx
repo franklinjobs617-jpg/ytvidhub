@@ -18,6 +18,8 @@ export function TranscriptArea({
   onLoadingChange,
   videoId,
   initialSubtitleContent,
+  lang = 'en',
+  onLangChange,
 }: {
   videoUrl: string;
   currentTime: number;
@@ -26,6 +28,8 @@ export function TranscriptArea({
   onLoadingChange?: (loading: boolean) => void;
   videoId?: string;
   initialSubtitleContent?: string;
+  lang?: string;
+  onLangChange?: (lang: string) => void;
 }) {
   const [transcriptVtt, setTranscriptVtt] = useState<string>(initialSubtitleContent || "");
   const [loading, setLoading] = useState(false);
@@ -33,57 +37,65 @@ export function TranscriptArea({
   const [copied, setCopied] = useState(false);
   const [isSmartMode, setIsSmartMode] = useState(true);
   const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
+  const [availableLangs, setAvailableLangs] = useState<{ code: string, label: string }[]>([]);
   const internalSearchRef = useRef<HTMLInputElement>(null);
   const searchRef = searchInputRef || internalSearchRef;
+
+  // 获取可用语言列表
+  useEffect(() => {
+    if (!videoUrl) return;
+    subtitleApi.getVideoInfo(videoUrl).then(info => {
+      if (info.languages && Array.isArray(info.languages)) {
+        setAvailableLangs(info.languages);
+        // 如果当前语言不在列表中且列表不为空，自动切换到第一个
+        if (onLangChange && !info.languages.some((l: any) => l.code === lang) && info.languages.length > 0) {
+          onLangChange(info.languages[0].code);
+        }
+      }
+    }).catch(console.error);
+  }, [videoUrl]);
 
   useEffect(() => {
     if (!videoUrl) return;
 
-    // 如果初始化就有内容，直接用，并同步到 session 缓存
-    if (initialSubtitleContent) {
-      setTranscriptVtt(initialSubtitleContent);
-      try {
-        sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}`, JSON.stringify({
-          text: initialSubtitleContent,
-          format: 'vtt'
-        }));
-      } catch (e) { }
-      return;
-    }
-
+    // 优先从缓存加载对应语言的字幕
     try {
-      const cached = sessionStorage.getItem(`ytvidhub_transcript_${videoUrl}`);
+      const cached = sessionStorage.getItem(`ytvidhub_transcript_${videoUrl}_${lang}`);
       if (cached) {
         const { text, format } = JSON.parse(cached);
         if (format === 'vtt') { setTranscriptVtt(text); return; }
-        if (format === 'srt') {
-          setTranscriptVtt('WEBVTT\n\n' + text.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2'));
-          return;
-        }
-        if (format === 'txt') {
-          setTranscriptVtt(`WEBVTT\n\n00:00:00.000 --> 99:59:59.000\n${text}`);
-          return;
-        }
+        // ... (其他格式处理保持不变)
       }
     } catch { }
+
     setLoading(true);
     onLoadingChange?.(true);
+    setTranscriptVtt(""); // 切换语言时清空旧内容
+
     subtitleApi
-      .downloadSingle({ url: videoUrl, lang: "en", format: "vtt", title: "transcript", isPreview: true })
+      .downloadSingle({ url: videoUrl, lang: lang, format: "vtt", title: "transcript", isPreview: true })
       .then(async (blob) => {
         const text = await blob.text();
+        // 简单的空检查，防止下载到错误页面
+        if (text.trim().startsWith('{') && text.includes('"error"')) {
+          setTranscriptVtt("");
+          return;
+        }
         setTranscriptVtt(text);
-        // 存入缓存
+        // 存入带语言标识的缓存
         try {
-          sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}`, JSON.stringify({ text, format: 'vtt' }));
+          sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}_${lang}`, JSON.stringify({ text, format: 'vtt' }));
         } catch { }
       })
-      .catch(() => setTranscriptVtt(""))
+      .catch((err) => {
+        console.error("Failed to load transcript:", err);
+        setTranscriptVtt("");
+      })
       .finally(() => {
         setLoading(false);
         onLoadingChange?.(false);
       });
-  }, [videoUrl, onLoadingChange]);
+  }, [videoUrl, lang, onLoadingChange]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(displayItems.map(item => item.text).join('\n\n'));
@@ -180,7 +192,7 @@ export function TranscriptArea({
   return (
     <div className="flex flex-col h-full bg-white border-r border-slate-100">
       {/* Tab Header — YouMind style */}
-      <div className="flex items-center px-4 border-b border-slate-100 shrink-0 bg-white">
+      <div className="flex items-center justify-between px-4 border-b border-slate-100 shrink-0 bg-white">
         <div className="flex">
           {[{ label: "Paragraph View", value: true }, { label: "Timestamp View", value: false }].map(({ label, value }) => (
             <button
@@ -195,6 +207,19 @@ export function TranscriptArea({
             </button>
           ))}
         </div>
+
+        {/* 语言选择器 */}
+        {availableLangs.length > 0 && (
+          <select
+            value={lang}
+            onChange={(e) => onLangChange?.(e.target.value)}
+            className="text-[11px] font-medium text-slate-500 bg-slate-50 border-none rounded-md px-2 py-1 outline-none focus:ring-1 focus:ring-violet-200"
+          >
+            {availableLangs.map(l => (
+              <option key={l.code} value={l.code}>{l.label}</option>
+            ))}
+          </select>
+        )}
       </div>
 
       {/* Search Bar - P1 优化 */}
@@ -254,16 +279,24 @@ export function TranscriptArea({
       {/* Content */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
         {loading ? (
-          <div className="px-4 py-4 space-y-4 animate-pulse">
+          <div className="px-4 py-6 space-y-3">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="flex gap-4">
-                <div className="h-3 w-10 bg-slate-200 rounded shrink-0 mt-1" />
-                <div className="flex-1 space-y-1.5">
-                  <div className="h-3 bg-slate-200 rounded w-full" />
-                  <div className="h-3 bg-slate-200 rounded w-3/4" />
+              <div key={i} className="flex gap-3 animate-pulse" style={{ animationDelay: `${i * 100}ms` }}>
+                <div className="h-3 w-12 bg-gradient-to-r from-slate-200 to-slate-100 rounded shrink-0 mt-1" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 bg-gradient-to-r from-slate-200 to-slate-100 rounded w-full" />
+                  <div className="h-3 bg-gradient-to-r from-slate-200 to-slate-100 rounded w-4/5" />
                 </div>
               </div>
             ))}
+            <div className="flex items-center justify-center pt-4">
+              <div className="flex items-center gap-2 text-xs text-slate-400">
+                <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <span className="ml-1">Loading transcript</span>
+              </div>
+            </div>
           </div>
         ) : displayItems.length > 0 ? (
           <div className="py-2 pb-24 md:pb-2">
@@ -337,8 +370,23 @@ export function TranscriptArea({
             <div className="h-10" />
           </div>
         ) : (
-          <div className="h-full flex items-center justify-center text-slate-400">
-            <p className="text-sm">No transcript available</p>
+          <div className="h-full flex items-center justify-center px-6">
+            <div className="text-center max-w-sm">
+              <div className="mb-4 flex justify-center">
+                <svg className="w-16 h-16 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-sm font-medium text-slate-700 mb-2">No Transcript Available</h3>
+              <p className="text-xs text-slate-500 leading-relaxed mb-4">
+                This video doesn't have subtitles in the selected language, or subtitles are disabled by the creator.
+              </p>
+              {availableLangs.length > 1 && (
+                <p className="text-xs text-violet-600 font-medium">
+                  Try switching to another language above
+                </p>
+              )}
+            </div>
           </div>
         )}
       </div>

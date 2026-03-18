@@ -297,7 +297,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
     try {
       // 1. 优先检查 sessionStorage 缓存（针对极速下载优化）
-      const cacheKey = `ytvidhub_transcript_${video.url}`;
+      const cacheKey = `ytvidhub_transcript_${video.url}_${lang}`;
       const cached = sessionStorage.getItem(cacheKey);
 
       if (cached) {

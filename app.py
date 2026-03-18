@@ -65,12 +65,33 @@ def get_proxy_url():
         gateway = "gate1.ipweb.cc"
         port = "7778"
         # 每次请求生成不同的 Session ID，确保 IP 切换
-        session_id = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        session_id = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
         username = f"{customer_id}_{country}___5_{session_id}"
         return f"http://{username}:{password}@{gateway}:{port}"
     except Exception as e:
         print(f"⚠️ 代理生成失败: {e}")
         return None
+
+def get_ydl_opts_with_retry(proxy=None, skip_download=True):
+    """生成带重试和完整请求头的 yt-dlp 配置"""
+    opts = {
+        'quiet': True,
+        'no_warnings': True,
+        'skip_download': skip_download,
+        'extractor_args': {'youtube': {'player_client': ['ios', 'android', 'web']}},
+        'socket_timeout': 30,
+        'retries': 5,
+        'fragment_retries': 5,
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'en-us,en;q=0.5',
+            'Sec-Fetch-Mode': 'navigate',
+        }
+    }
+    if proxy:
+        opts['proxy'] = proxy
+    return opts
 
 def sanitize_filename(filename):
     """ 清洗文件名，防止文件系统错误 """
@@ -125,19 +146,16 @@ def get_video_info_core(video_url):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl: 
             info = ydl.extract_info(video_url, download=False)
             
-            # 处理字幕列表
-            ALLOWED_LANGS = ['en', 'zh', 'ja', 'ko', 'es', 'fr', 'de', 'ru']
+            # 处理字幕列表 - 支持所有语言
             subtitles_list = []
             # 提取手动字幕
             for lang, subs in info.get('subtitles', {}).items():
-                if any(lang.startswith(al) for al in ALLOWED_LANGS):
-                    subtitles_list.append({"lang_code": lang, "name": subs[0].get('name', lang), "is_auto": False})
+                subtitles_list.append({"lang_code": lang, "name": subs[0].get('name', lang), "is_auto": False})
             # 提取自动字幕
             for lang, subs in info.get('automatic_captions', {}).items():
-                if any(lang.startswith(al) for al in ALLOWED_LANGS):
-                    if not any(s['lang_code'] == lang for s in subtitles_list):
-                        subtitles_list.append({"lang_code": lang, "name": subs[0].get('name', lang), "is_auto": True})
-            
+                if not any(s['lang_code'] == lang for s in subtitles_list):
+                    subtitles_list.append({"lang_code": lang, "name": subs[0].get('name', lang), "is_auto": True})
+
             subtitles_list.sort(key=lambda x: 0 if x['lang_code'].startswith('en') else 1)
 
             return {
@@ -245,15 +263,25 @@ def _get_video_info_cached(video_url: str):
         ts, info = _info_cache[video_url]
         if now - ts < _INFO_CACHE_TTL:
             return info, None
-    proxy = get_proxy_url()
-    ydl_opts = {'proxy': proxy, 'skip_download': True, 'quiet': True, 'no_warnings': True}
-    try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(video_url, download=False)
-        _info_cache[video_url] = (now, info)
-        return info, None
-    except Exception as e:
-        return None, str(e)
+
+    for attempt in range(3):
+        try:
+            if attempt > 0:
+                time.sleep(1.5 ** attempt)
+
+            proxy = get_proxy_url()
+            ydl_opts = get_ydl_opts_with_retry(proxy, skip_download=True)
+
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(video_url, download=False)
+            _info_cache[video_url] = (now, info)
+            return info, None
+        except Exception as e:
+            if attempt == 2:
+                return None, str(e)
+            if '429' in str(e):
+                continue
+    return None, "Failed after retries"
 
 # 字幕内存缓存 {cache_key: (timestamp, transcript, title)}
 _subtitle_cache: dict = {}
@@ -274,44 +302,94 @@ def get_subtitle_fast(video_url: str, lang_code: str = 'en'):
         if now - ts < _SUBTITLE_CACHE_TTL:
             return transcript, title, None
 
-    proxy = get_proxy_url()
-    ydl_opts = {'proxy': proxy, 'skip_download': True, 'quiet': True, 'no_warnings': True}
+    last_error = None
+    # 重试逻辑：最多3次，每次使用新代理
+    for attempt in range(3):
+        try:
+            if attempt > 0:
+                time.sleep(2 ** attempt)  # 指数退避
 
-    try:
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(video_url, download=False)
+            proxy = get_proxy_url()
+            ydl_opts = get_ydl_opts_with_retry(proxy, skip_download=True)
 
-        title = info.get('title', 'Video')
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(video_url, download=False)
 
-        # 优先手动字幕，其次自动字幕
-        sub_url = None
-        for source in [info.get('subtitles', {}), info.get('automatic_captions', {})]:
-            for lang in [lang_code, 'en', 'en-US', 'en-orig']:
-                if lang in source:
-                    for fmt in source[lang]:
-                        if fmt.get('ext') in ('vtt', 'json3', 'srv3'):
-                            sub_url = fmt['url']
-                            break
-                    if sub_url:
+            title = info.get('title', 'Video')
+
+            # 1. 寻找最佳匹配语言键
+            actual_lang_key = None
+            sources = [info.get('subtitles', {}), info.get('automatic_captions', {})]
+
+            # 优先级：请求语种 -> 前缀匹配 -> 英文 -> 第一个可用语种
+            search_candidates = [lang_code]
+            if '-' in lang_code: search_candidates.append(lang_code.split('-')[0])
+            search_candidates.extend(['en', 'en-US', 'en-orig'])
+
+            for cand in search_candidates:
+                for source in sources:
+                    if cand in source:
+                        actual_lang_key = cand
                         break
-            if sub_url:
+                    for s_key in source:
+                        if s_key.startswith(cand):
+                            actual_lang_key = s_key
+                            break
+                    if actual_lang_key: break
+                if actual_lang_key: break
+
+            # 终极兜底：无条件选择第一条
+            if not actual_lang_key:
+                for source in sources:
+                    if source.keys():
+                        actual_lang_key = list(source.keys())[0]
+                        break
+
+            if not actual_lang_key:
+                return None, None, "Video has no subtitles at all."
+
+            # 2. 确定 URL
+            sub_url = None
+            for source in sources:
+                if actual_lang_key in source:
+                    fmts = source[actual_lang_key]
+                    # 优先格式：json3 > vtt > srv3 (json3解析最快)
+                    for f in fmts:
+                        if f.get('ext') == 'json3':
+                            sub_url = f['url']
+                            break
+                    if not sub_url:
+                        for f in fmts:
+                            if f.get('ext') == 'vtt':
+                                sub_url = f['url']
+                                break
+                    if not sub_url and fmts:
+                        sub_url = fmts[0]['url']
+                    if sub_url: break
+
+            if not sub_url:
+                return None, None, "No subtitles found for this language."
+
+            # 直接 HTTP 下载字幕，不走 yt_dlp 下载机制（无磁盘 IO，无 FFmpeg）
+            proxies = {'http': proxy, 'https': proxy} if proxy else None
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+            resp = requests.get(sub_url, timeout=30, proxies=proxies, headers=headers)
+            resp.raise_for_status()
+            transcript = parse_srt_to_text(resp.text)
+
+            # 写入缓存
+            _subtitle_cache[cache_key] = (now, transcript, title)
+            return transcript, title, None
+
+        except Exception as e:
+            last_error = str(e)
+            if '429' in last_error or 'Too Many Requests' in last_error:
+                print(f"⚠️ Rate limited (attempt {attempt+1}/3), retrying with new proxy...")
+                continue
+            if attempt == 2:
                 break
 
-        if not sub_url:
-            return None, None, "No subtitles found for this language."
-
-        # 直接 HTTP 下载字幕，不走 yt_dlp 下载机制（无磁盘 IO，无 FFmpeg）
-        proxies = {'http': proxy, 'https': proxy} if proxy else None
-        resp = requests.get(sub_url, timeout=30, proxies=proxies)
-        resp.raise_for_status()
-        transcript = parse_srt_to_text(resp.text)
-
-        # 写入缓存
-        _subtitle_cache[cache_key] = (now, transcript, title)
-        return transcript, title, None
-
-    except Exception as e:
-        return None, None, str(e)
+    return None, None, last_error or "Failed after 3 attempts"
 
 
 def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
@@ -319,99 +397,191 @@ def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
     快速字幕下载（带格式）：直接 HTTP 拿原始 VTT，纯内存转换，无 FFmpeg 无磁盘IO。
     返回 (content, filename, error)
     """
-    proxy = get_proxy_url()
-    ydl_opts = {'proxy': proxy, 'skip_download': True, 'quiet': True, 'no_warnings': True}
+    last_error = None
+    for retry_attempt in range(3):
+        try:
+            if retry_attempt > 0:
+                time.sleep(2 ** retry_attempt)
 
-    try:
-        info, cache_err = _get_video_info_cached(video_url)
-        if not info:
-            # 缓存未命中，直接获取
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(video_url, download=False)
+            proxy = get_proxy_url()
+            ydl_opts = get_ydl_opts_with_retry(proxy, skip_download=True)
 
-        title = info.get('title', 'subtitle')
+            info, cache_err = _get_video_info_cached(video_url)
+            if not info:
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(video_url, download=False)
 
-        # 找字幕 URL
-        sub_url = None
-        for source in [info.get('subtitles', {}), info.get('automatic_captions', {})]:
-            for lang in [lang_code, 'en', 'en-US', 'en-orig']:
-                if lang in source:
-                    for fmt in source[lang]:
-                        if fmt.get('ext') in ('vtt', 'json3', 'srv3'):
-                            sub_url = fmt['url']
-                            break
-                    if sub_url:
+            title = info.get('title', 'subtitle')
+
+            # 找字幕 URL - 增强逻辑：如果请求的语言不存在，尝试匹配前缀，最后回退到 en
+            sub_url = None
+            target_lang = lang_code
+
+            sources = [info.get('subtitles', {}), info.get('automatic_captions', {})]
+
+            # 1. 寻找完全匹配或前缀匹配的语言
+            actual_lang_key = None
+            for source in sources:
+                # 尝试完全匹配
+                if target_lang in source:
+                    actual_lang_key = target_lang
+                    break
+                # 尝试前缀匹配 (例如 zh 匹配 zh-Hans)
+                for s_lang in source:
+                    if s_lang.startswith(target_lang):
+                        actual_lang_key = s_lang
                         break
-            if sub_url:
+                else: continue
                 break
 
-        if not sub_url:
-            return None, None, "No subtitles found"
+            # 2. 确定最终使用的语言和地址
+            actual_lang = None
+            for source in sources:
+                search_langs = []
+                if actual_lang_key: search_langs.append(actual_lang_key)
+                # 添加常见语言回退
+                search_langs.extend([target_lang, 'en', 'en-US', 'en-orig'])
 
-        # 直接 HTTP 下载原始字幕（带 UA + 重试）
-        proxies = {'http': proxy, 'https': proxy} if proxy else None
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept-Language': 'en-US,en;q=0.9',
-        }
-        raw_content = None
-        for attempt in range(3):
-            try:
-                resp = requests.get(sub_url, timeout=30, proxies=proxies, headers=headers)
-                resp.raise_for_status()
-                raw_content = resp.text
+                for lang in search_langs:
+                    if lang and lang in source:
+                        for fmt in source[lang]:
+                            # 优先选 vtt，因为我们有内置转换器
+                            if fmt.get('ext') == 'vtt':
+                                sub_url = fmt['url']
+                                actual_lang = lang
+                                break
+                            if fmt.get('ext') in ('json3', 'srv3') and not sub_url:
+                                sub_url = fmt['url']
+                                actual_lang = lang
+                        if sub_url and actual_lang == lang: break
+                if sub_url: break
+
+            # 3. 最终兜底：如果所有指定语言都不存在，选择第一个可用字幕
+            if not sub_url:
+                for source in sources:
+                    if source:
+                        first_lang = next(iter(source.keys()), None)
+                        if first_lang and source[first_lang]:
+                            for fmt in source[first_lang]:
+                                if fmt.get('ext') == 'vtt':
+                                    sub_url = fmt['url']
+                                    actual_lang = first_lang
+                                    break
+                                if fmt.get('ext') in ('json3', 'srv3') and not sub_url:
+                                    sub_url = fmt['url']
+                                    actual_lang = first_lang
+                            if sub_url: break
+                    if sub_url: break
+
+            if not sub_url:
+                return None, None, "No subtitles found"
+
+            # 直接 HTTP 下载原始字幕
+            proxies = {'http': proxy, 'https': proxy} if proxy else None
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            }
+
+            raw_content = None
+            for attempt in range(2):
+                try:
+                    resp = requests.get(sub_url, timeout=20, proxies=proxies, headers=headers)
+                    resp.raise_for_status()
+                    raw_content = resp.text
+                    break
+                except Exception:
+                    if attempt == 1: raise
+                    proxies = {'http': get_proxy_url(), 'https': get_proxy_url()} if proxy else None
+
+            if not raw_content:
+                return None, None, "Failed to download subtitle content"
+
+            # 内存中格式转换
+            if output_format == 'txt':
+                content = parse_srt_to_text(raw_content)
+            elif output_format == 'srt':
+                # 如果是 VTT，手动转 SRT；如果是 JSON3，目前只能原样返回或简单清洗
+                if 'WEBVTT' in raw_content or (sub_url and ('.vtt' in sub_url.lower())):
+                    content = _vtt_to_srt(raw_content)
+                else:
+                    content = raw_content # 兜底返回原始格式
+            else:
+                content = raw_content
+
+            safe_filename = f"{sanitize_filename(title)}.{output_format}"
+            return content, safe_filename, None
+
+        except Exception as e:
+            last_error = str(e)
+            if '429' in last_error or 'Too Many Requests' in last_error:
+                print(f"⚠️ Rate limited (attempt {retry_attempt+1}/3), retrying...")
+                continue
+            if retry_attempt == 2:
                 break
-            except Exception:
-                if attempt == 2:
-                    raise
-                proxies = {'http': get_proxy_url(), 'https': get_proxy_url()} if proxy else None
-        if not raw_content:
-            return None, None, "Failed to download subtitle content"
 
-        # 内存中格式转换
-        if output_format == 'txt':
-            content = parse_srt_to_text(raw_content)
-        elif output_format == 'srt':
-            content = _vtt_to_srt(raw_content)
-        else:
-            content = raw_content  # vtt 原样返回
-
-        safe_filename = f"{sanitize_filename(title)}.{output_format}"
-        return content, safe_filename, None
-
-    except Exception as e:
-        return None, None, str(e)
+    return None, None, last_error or "Failed after 3 attempts"
 
 
 def _vtt_to_srt(vtt_content):
-    """VTT → SRT 纯内存转换，无需 FFmpeg"""
-    lines = vtt_content.strip().split('\n')
+    """VTT → SRT 纯内存转换，增强兼容性"""
+    if not vtt_content: return ""
+    
+    # 清理 VTT 头部
+    lines = vtt_content.replace('\r\n', '\n').split('\n')
     srt_lines = []
     counter = 1
-    i = 0
-
-    # 跳过 VTT 头部
-    while i < len(lines):
-        if '-->' in lines[i]:
+    
+    # 查找第一条时间线的起始位置
+    start_idx = 0
+    for i, line in enumerate(lines):
+        if '-->' in line:
+            start_idx = i
             break
-        i += 1
+    else:
+        # 如果没找到时间线，尝试直接返回清洗过的文本
+        return parse_srt_to_text(vtt_content)
 
+    i = start_idx
     while i < len(lines):
         line = lines[i].strip()
-        if '-->' in line:
-            # 转换时间格式: 00:00:01.000 → 00:00:01,000
-            timestamp = line.replace('.', ',')
-            srt_lines.append(str(counter))
-            srt_lines.append(timestamp)
-            counter += 1
+        if not line:
             i += 1
-            # 收集文本行
-            while i < len(lines) and lines[i].strip():
-                text = re.sub(r'<[^>]+>', '', lines[i].strip())
-                if text:
-                    srt_lines.append(text)
+            continue
+            
+        if '-->' in line:
+            # 格式化时间戳: 00:00.000 -> 00:00:00,000
+            parts = line.split('-->')
+            if len(parts) != 2:
                 i += 1
-            srt_lines.append('')
+                continue
+                
+            def fix_ts(ts):
+                ts = ts.strip().split(' ')[0] # 移除样式信息
+                ts = ts.replace('.', ',')
+                if ts.count(':') == 1: ts = "00:" + ts
+                if ',' not in ts: ts = ts + ",000"
+                return ts
+
+            try:
+                start = fix_ts(parts[0])
+                end = fix_ts(parts[1])
+                
+                srt_lines.append(str(counter))
+                srt_lines.append(f"{start} --> {end}")
+                counter += 1
+                i += 1
+                
+                # 收集文本直至遇到空行或下一个时间戳
+                text_block = []
+                while i < len(lines) and lines[i].strip() and '-->' not in lines[i]:
+                    txt = re.sub(r'<[^>]+>', '', lines[i].strip())
+                    if txt: text_block.append(txt)
+                    i += 1
+                
+                srt_lines.append('\n'.join(text_block) if text_block else "...")
+                srt_lines.append("")
+            except:
+                i += 1
         else:
             i += 1
 
@@ -419,6 +589,17 @@ def _vtt_to_srt(vtt_content):
 
 
 def get_subtitle_content(video_url, lang_code, output_format='srt'):
+    """
+    带 FFmpeg 缺失保护的字幕下载。
+    如果 FFmpeg 可用则使用 yt-dlp 转换，否则回退到内置的快速转换逻辑。
+    """
+    # 检查 ffmpeg 是否可用
+    has_ffmpeg = shutil.which('ffmpeg') is not None
+    
+    if not has_ffmpeg:
+        print("⚠️ FFmpeg not found, using internal fast-path for subtitle conversion")
+        return get_subtitle_content_fast(video_url, lang_code, output_format)
+
     proxy = get_proxy_url()
     unique_id = str(uuid.uuid4())
     output_path_base = os.path.join(SUBTITLE_TEMP_FOLDER, unique_id)
@@ -443,26 +624,28 @@ def get_subtitle_content(video_url, lang_code, output_format='srt'):
             info = ydl.extract_info(video_url, download=True)
             title = info.get('title', 'subtitle')
 
+        # 扫描生成的文件
         for f in os.listdir(SUBTITLE_TEMP_FOLDER):
             if f.startswith(unique_id):
                 generated_file = os.path.join(SUBTITLE_TEMP_FOLDER, f)
                 break
         
         if not generated_file:
-            return None, None, "No subtitles found for this language."
+            # 再次尝试快速路径
+            return get_subtitle_content_fast(video_url, lang_code, output_format)
 
         with open(generated_file, 'r', encoding='utf-8') as f: 
             content = f.read()
 
-        final_ext = output_format
         if output_format == 'txt':
             content = parse_srt_to_text(content)
         
-        safe_filename = f"{sanitize_filename(title)}.{final_ext}"
+        safe_filename = f"{sanitize_filename(title)}.{output_format}"
         return content, safe_filename, None
 
     except Exception as e:
-        return None, None, str(e)
+        print(f"⚠️ Single download error: {e}, trying fast-path...")
+        return get_subtitle_content_fast(video_url, lang_code, output_format)
     finally:
         if generated_file and os.path.exists(generated_file):
             try: os.remove(generated_file)
@@ -661,6 +844,9 @@ def batch_subtitle_worker(task_id, videos, lang, fmt):
     errors = []
 
     def download_one(video):
+        # 添加随机延迟避免速率限制
+        time.sleep(random.uniform(0.5, 1.5))
+
         url = video.get('url')
         # 快速路径：直接 HTTP 拿字幕
         content, filename, err = get_subtitle_content_fast(url, lang, fmt)
@@ -696,8 +882,8 @@ def batch_subtitle_worker(task_id, videos, lang, fmt):
             completed[0] += 1
             tasks[task_id]['progress'] = f"{completed[0]}/{total}"
 
-    # 并发下载，max_workers=3 避免代理被限制
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    # 并发下载，max_workers=2 避免代理被限制和触发429
+    with ThreadPoolExecutor(max_workers=2) as executor:
         executor.map(download_one, videos)
 
     if success_files:

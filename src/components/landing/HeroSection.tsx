@@ -282,14 +282,16 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     <div className="relative isolate bg-white min-h-screen">
       {/* 极速导航加载提示 */}
       {isNavigating && (
-        <div className="fixed inset-0 z-[100] bg-white/80 backdrop-blur-md flex flex-col items-center justify-center animate-in fade-in duration-300">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin"></div>
-            <Sparkles className="absolute inset-0 m-auto text-blue-600 animate-pulse" size={20} />
+        <div className="fixed inset-0 z-[100] bg-white flex items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="text-2xl font-black tracking-tighter text-slate-900 italic">
+              YTvidHub
+            </div>
+            <div className="w-32 h-0.5 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full animate-[loading_1.5s_ease-in-out_infinite]"
+                   style={{ width: '40%' }} />
+            </div>
           </div>
-          <h3 className="mt-6 text-sm font-black uppercase tracking-widest text-slate-800 animate-pulse">
-            Entering Workspace...
-          </h3>
         </div>
       )}
       <Toaster richColors closeButton position="top-center" />
