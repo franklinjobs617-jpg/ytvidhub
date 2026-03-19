@@ -383,15 +383,15 @@ export function TranscriptArea({
   return (
     <div className="flex flex-col h-full bg-white border-r border-slate-100">
       {/* Tab Header — YouMind style */}
-      <div className="flex items-center justify-between px-4 border-b border-slate-100 shrink-0 bg-white">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 shrink-0 bg-white">
         <div className="flex">
           {[{ label: "Paragraph View", value: true }, { label: "Timestamp View", value: false }].map(({ label, value }) => (
             <button
               key={label}
               onClick={() => setIsSmartMode(value)}
-              className={`px-3 py-3 text-xs font-medium border-b-2 transition-colors ${isSmartMode === value
-                ? "border-violet-500 text-violet-600"
-                : "border-transparent text-slate-400 hover:text-slate-600"
+              className={`px-4 py-2 text-xs font-medium border-b-2 transition-all duration-200 ${isSmartMode === value
+                ? "border-violet-500 text-violet-600 bg-violet-50/50"
+                : "border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50"
                 }`}
             >
               {label}
@@ -401,15 +401,31 @@ export function TranscriptArea({
 
         {/* 语言选择器 */}
         {availableLangs.length > 0 && (
-          <select
-            value={lang}
-            onChange={(e) => onLangChange?.(e.target.value)}
-            className="text-[11px] font-medium text-slate-500 bg-slate-50 border-none rounded-md px-2 py-1 outline-none focus:ring-1 focus:ring-violet-200"
-          >
-            {availableLangs.map(l => (
-              <option key={l.code} value={l.code}>{l.label}</option>
-            ))}
-          </select>
+          <div className="relative group">
+            <select
+              value={lang}
+              onChange={(e) => onLangChange?.(e.target.value)}
+              className="appearance-none bg-white border border-slate-200 rounded-lg px-3 py-2 pr-8 text-sm font-medium text-slate-700 hover:border-violet-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 focus:outline-none transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md min-w-[140px] group-hover:bg-slate-50/50"
+            >
+              {availableLangs.map(l => (
+                <option key={l.code} value={l.code} className="py-2 text-slate-700">
+                  {l.label} {l.is_auto && '(Auto)'}
+                </option>
+              ))}
+            </select>
+            {/* 自定义下拉箭头 */}
+            <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+              <svg className="w-4 h-4 text-slate-400 group-hover:text-violet-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            {/* 语言数量指示器 */}
+            {availableLangs.length > 1 && (
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-violet-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-sm">
+                {availableLangs.length}
+              </div>
+            )}
+          </div>
         )}
       </div>
 

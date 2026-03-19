@@ -139,18 +139,82 @@ def get_video_info_core(video_url):
     """ 获取视频详细信息 (用于前端 /api/info) """
     proxy = get_proxy_url()
     ydl_opts = {
-        'proxy': proxy, 'quiet': True, 'no_warnings': True, 'skip_download': True,
-        'extractor_args': {'youtube': {'player_client': ['ios', 'android', 'web']}}
+        'proxy': proxy, 
+        'quiet': True, 
+        'no_warnings': True, 
+        'skip_download': True,
+        'socket_timeout': 30,
+        'retries': 3,
+        # 简化配置，移除可能导致问题的参数
+        'extract_flat': False,
+        'no_check_certificate': True
     }
     try:
+        print(f"🔍 Extracting video info for: {video_url}")
+        print(f"🌐 Using proxy: {proxy[:50] if proxy else 'None'}...")
+        
         with yt_dlp.YoutubeDL(ydl_opts) as ydl: 
             info = ydl.extract_info(video_url, download=False)
+            
+            # 调试：打印更多信息
+            print(f"📹 Video title: {info.get('title', 'Unknown')}")
+            print(f"⏱️ Duration: {info.get('duration', 0)} seconds")
+            print(f"👤 Uploader: {info.get('uploader', 'Unknown')}")
+            
+            # 调试：打印原始字幕信息
+            manual_subs = info.get('subtitles', {})
+            auto_subs = info.get('automatic_captions', {})
+            print(f"🔍 Raw manual subtitles: {list(manual_subs.keys())}")
+            print(f"🔍 Raw auto captions: {list(auto_subs.keys())}")
+            
+            # 如果都没有字幕，尝试不同的提取方法
+            if not manual_subs and not auto_subs:
+                print("⚠️ No subtitles found with current method, trying alternative extraction...")
+                
+                # 方法1：最简配置
+                try:
+                    simple_opts = {
+                        'proxy': proxy,
+                        'quiet': False,  # 显示详细信息
+                        'skip_download': True,
+                    }
+                    
+                    with yt_dlp.YoutubeDL(simple_opts) as simple_ydl:
+                        simple_info = simple_ydl.extract_info(video_url, download=False)
+                        manual_subs = simple_info.get('subtitles', {})
+                        auto_subs = simple_info.get('automatic_captions', {})
+                        print(f"🔄 Simple extraction - Manual: {list(manual_subs.keys())}")
+                        print(f"🔄 Simple extraction - Auto: {list(auto_subs.keys())}")
+                        
+                        if manual_subs or auto_subs:
+                            print("✅ Found subtitles with simple method!")
+                        
+                except Exception as e:
+                    print(f"❌ Simple extraction failed: {str(e)}")
+                
+                # 方法2：无代理尝试
+                if not manual_subs and not auto_subs:
+                    try:
+                        no_proxy_opts = {
+                            'quiet': True,
+                            'skip_download': True,
+                            'socket_timeout': 15,
+                        }
+                        
+                        with yt_dlp.YoutubeDL(no_proxy_opts) as no_proxy_ydl:
+                            no_proxy_info = no_proxy_ydl.extract_info(video_url, download=False)
+                            manual_subs = no_proxy_info.get('subtitles', {})
+                            auto_subs = no_proxy_info.get('automatic_captions', {})
+                            print(f"🔄 No-proxy extraction - Manual: {list(manual_subs.keys())}")
+                            print(f"🔄 No-proxy extraction - Auto: {list(auto_subs.keys())}")
+                            
+                    except Exception as e:
+                        print(f"❌ No-proxy extraction failed: {str(e)}")
             
             # 处理字幕列表 - 智能排序，优先显示常用语言
             subtitles_list = []
             
             # 提取手动字幕
-            manual_subs = info.get('subtitles', {})
             for lang, subs in manual_subs.items():
                 subtitles_list.append({
                     "lang_code": lang, 
@@ -159,7 +223,6 @@ def get_video_info_core(video_url):
                 })
             
             # 提取自动字幕
-            auto_subs = info.get('automatic_captions', {})
             for lang, subs in auto_subs.items():
                 # 避免重复添加已有的手动字幕语言
                 if not any(s['lang_code'] == lang for s in subtitles_list):
@@ -194,7 +257,7 @@ def get_video_info_core(video_url):
 
             # 格式化字幕列表用于调试
             subtitle_debug = [f"{s['lang_code']}({'auto' if s['is_auto'] else 'manual'})" for s in subtitles_list[:10]]
-            print(f"📋 Available subtitles for video: {subtitle_debug}")
+            print(f"📋 Final available subtitles: {subtitle_debug}")
 
             return {
                 "url": video_url, 
