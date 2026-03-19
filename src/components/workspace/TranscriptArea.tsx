@@ -407,7 +407,7 @@ export function TranscriptArea({
               onChange={(e) => onLangChange?.(e.target.value)}
               className="appearance-none bg-white border border-slate-200 rounded-lg px-3 py-2 pr-8 text-sm font-medium text-slate-700 hover:border-violet-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 focus:outline-none transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md min-w-[140px] group-hover:bg-slate-50/50"
             >
-              {availableLangs.map(l => (
+              {availableLangs.map((l:any) => (
                 <option key={l.code} value={l.code} className="py-2 text-slate-700">
                   {l.label} {l.is_auto && '(Auto)'}
                 </option>
