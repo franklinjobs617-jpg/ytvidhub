@@ -288,11 +288,53 @@ export function TranscriptArea({
     };
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(displayItems.map(item => item.text).join('\n\n'));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  // Prevent all copy operations
+  useEffect(() => {
+    const preventCopy = (e: ClipboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const preventKeyDown = (e: KeyboardEvent) => {
+      // Block Ctrl+C, Ctrl+A, Ctrl+S, Ctrl+P
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'a' || e.key === 's' || e.key === 'p')) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      // Block F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    const preventContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+
+    const preventSelectStart = (e: Event) => {
+      e.preventDefault();
+    };
+
+    const transcriptArea = document.querySelector('.transcript-content-area') as HTMLElement;
+    if (transcriptArea) {
+      transcriptArea.addEventListener('copy', preventCopy as EventListener, true);
+      transcriptArea.addEventListener('cut', preventCopy as EventListener, true);
+      transcriptArea.addEventListener('keydown', preventKeyDown as EventListener, true);
+      transcriptArea.addEventListener('contextmenu', preventContextMenu as EventListener, true);
+      transcriptArea.addEventListener('selectstart', preventSelectStart as EventListener, true);
+    }
+
+    return () => {
+      if (transcriptArea) {
+        transcriptArea.removeEventListener('copy', preventCopy as EventListener, true);
+        transcriptArea.removeEventListener('cut', preventCopy as EventListener, true);
+        transcriptArea.removeEventListener('keydown', preventKeyDown as EventListener, true);
+        transcriptArea.removeEventListener('contextmenu', preventContextMenu as EventListener, true);
+        transcriptArea.removeEventListener('selectstart', preventSelectStart as EventListener, true);
+      }
+    };
+  }, []);
 
   // P2: 增强的导出功能
   const handleExportWithTimestamps = () => {
@@ -371,14 +413,6 @@ export function TranscriptArea({
     }
   }, [activeIndex]);
 
-  // 监听外部触发的复制事件
-  useEffect(() => {
-    const handleCopyEvent = () => {
-      handleCopy();
-    };
-    window.addEventListener('copyAllTranscript', handleCopyEvent);
-    return () => window.removeEventListener('copyAllTranscript', handleCopyEvent);
-  }, [displayItems]);
 
   return (
     <div className="flex flex-col h-full bg-white border-r border-slate-100">
@@ -483,8 +517,8 @@ export function TranscriptArea({
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar">
+      {/* Content - Protected Area */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar transcript-content-area" style={{ userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', msUserSelect: 'none' }}>
         {(loading || isStreamLoading) ? (
           <div className="h-full flex items-center justify-center px-6">
             <div className="text-center space-y-4">
@@ -545,6 +579,7 @@ export function TranscriptArea({
                       ? "bg-violet-50 border-l-2 border-violet-500"
                       : `border-l-2 border-transparent ${activeIndex >= 0 ? "opacity-55 hover:opacity-100" : "hover:bg-slate-50"}`
                     }`}
+                  style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
                 >
                   {/* Timestamp */}
                   <span
@@ -559,13 +594,15 @@ export function TranscriptArea({
                     {formatTime(item.startTime)}
                   </span>
 
-                  {/* Text */}
+                  {/* Text - Non-selectable */}
                   <p className={`text-sm leading-6 flex-1 ${isCurrentSearchResult
                     ? "text-slate-900 font-medium"
                     : isActive
                       ? "text-slate-900 font-medium"
                       : "text-slate-600"
-                    }`}>
+                    }`}
+                    style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+                  >
                     {highlightText(item.text, searchQuery).map((seg, j) =>
                       seg.isMatch
                         ? <mark key={j} className={`rounded px-0.5 ${isCurrentSearchResult
@@ -576,24 +613,7 @@ export function TranscriptArea({
                     )}
                   </p>
 
-                  {/* P1: 增强的悬浮复制按钮 */}
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(`[${formatTime(item.startTime)}] ${item.text}`);
-                      // 简单的复制反馈
-                      const btn = document.activeElement as HTMLButtonElement;
-                      if (btn) {
-                        const originalText = btn.innerHTML;
-                        btn.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"></polyline></svg> Copied!';
-                        setTimeout(() => {
-                          btn.innerHTML = originalText;
-                        }, 1000);
-                      }
-                    }}
-                    className="absolute right-3 top-2.5 opacity-0 group-hover:opacity-100 flex items-center gap-1 px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-400 hover:text-violet-600 hover:border-violet-300 transition-all shadow-sm"
-                  >
-                    <ClipboardCopy size={10} /> Copy
-                  </button>
+                  {/* Copy button removed - user must download to get subtitle content */}
                 </div>
               );
             })}

@@ -198,6 +198,55 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
+        {/* Anti-copy protection script */}
+        <Script id="anti-copy-protection" strategy="beforeInteractive">
+          {`
+            (function() {
+              // Disable developer tools
+              document.addEventListener('keydown', function(e) {
+                // F12
+                if (e.key === 'F12') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                }
+                // Ctrl+Shift+I/J/C
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                }
+                // Ctrl+U (view source)
+                if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                }
+              }, true);
+
+              // Detect devtools opening
+              const detectDevTools = function() {
+                const threshold = 160;
+                const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+                const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+                
+                if (widthThreshold || heightThreshold) {
+                  document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:24px;font-family:sans-serif;">Access Denied</div>';
+                }
+              };
+
+              setInterval(detectDevTools, 1000);
+
+              // Disable console
+              const noop = function() {};
+              const methods = ['log', 'debug', 'info', 'warn', 'error', 'table', 'clear'];
+              methods.forEach(function(method) {
+                console[method] = noop;
+              });
+            })();
+          `}
+        </Script>
+
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
             <NextTopLoader color="#7c3aed" showSpinner={false} />
