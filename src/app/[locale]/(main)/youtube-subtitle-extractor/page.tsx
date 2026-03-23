@@ -52,15 +52,55 @@ export default async function SubtitleExtractorPage({ params }: Props) {
     "operatingSystem": "Web",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "step": [
-      { "@type": "HowToStep", "text": "粘贴 YouTube 视频或播放列表网址" },
-      { "@type": "HowToStep", "text": "选择格式：SRT、VTT 或纯文本" },
-      { "@type": "HowToStep", "text": "一键批量提取并下载" }
+      { "@type": "HowToStep", "text": "Paste YouTube video or playlist URL" },
+      { "@type": "HowToStep", "text": "Select format: SRT, VTT or plain text" },
+      { "@type": "HowToStep", "text": "One-click bulk extraction and download" }
+    ]
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": t('faq.q1.question'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.q1.answer')
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t('faq.q2.question'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.q2.answer')
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t('faq.q3.question'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.q3.answer')
+        }
+      },
+      {
+        "@type": "Question",
+        "name": t('faq.q4.question'),
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": t('faq.q4.answer')
+        }
+      }
     ]
   };
 
   return (
     <div className="bg-white min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <SubtitleExtractorHero />
 
@@ -242,11 +282,73 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                   <div className="aspect-[4/3] rounded-2xl bg-slate-900 overflow-hidden border border-slate-800">
                     <img
                       src="/image/blog-ai-summary-interface.webp"
-                      alt="YTVidHub Subtitle Extractor Interface"
+                      alt="YouTube Subtitle Extractor Interface - Bulk download subtitles from playlists"
                       className="w-full h-full object-cover opacity-100"
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Use Cases Section */}
+          <section className="mb-32">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">{t('useCases.title')}</h2>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-3xl border border-blue-100">
+                <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <Zap className="text-white" size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-4">{t('useCases.ai.title')}</h3>
+                <p className="text-slate-600 mb-4 leading-relaxed">{t('useCases.ai.description')}</p>
+                <p className="text-blue-600 font-bold text-sm">{t('useCases.ai.stats')}</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-3xl border border-green-100">
+                <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center mb-6">
+                  <FileText className="text-white" size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-4">{t('useCases.research.title')}</h3>
+                <p className="text-slate-600 mb-4 leading-relaxed">{t('useCases.research.description')}</p>
+                <p className="text-green-600 font-bold text-sm">{t('useCases.research.stats')}</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-3xl border border-purple-100">
+                <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-6">
+                  <Layers className="text-white" size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-4">{t('useCases.content.title')}</h3>
+                <p className="text-slate-600 mb-4 leading-relaxed">{t('useCases.content.description')}</p>
+                <p className="text-purple-600 font-bold text-sm">{t('useCases.content.stats')}</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Testimonials Section */}
+          <section className="mb-32">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">{t('testimonials.title')}</h2>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                {(t.raw('testimonials.items') as any[]).map((item, i) => (
+                  <div key={i} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                    <p className="text-slate-600 leading-relaxed mb-6 italic">"{item.quote}"</p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                        {item.author.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="font-bold text-slate-900 text-sm">{item.author}</p>
+                        <p className="text-slate-500 text-xs">{item.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
