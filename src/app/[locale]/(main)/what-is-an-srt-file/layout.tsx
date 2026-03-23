@@ -1,14 +1,14 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'What Is an SRT File? How to Open, Edit & Download SRT Subtitles',
-    description: 'An SRT (SubRip Text) file is the most popular subtitle format for videos. Learn what SRT files are, how to open and edit them, and download SRT subtitles from any YouTube video for free.',
+    title: 'What Is an SRT File? Free Download & Edit Guide (2026)',
+    description: 'SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.',
     alternates: {
         canonical: 'https://ytvidhub.com/what-is-an-srt-file/',
     },
     openGraph: {
-        title: 'What Is an SRT File? How to Open, Edit & Download SRT Subtitles',
-        description: 'An SRT (SubRip Text) file is the most popular subtitle format for videos. Learn what SRT files are, how to open and edit them, and download SRT subtitles from any YouTube video for free.',
+        title: 'What Is an SRT File? Free Download & Edit Guide (2026)',
+        description: 'SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.',
         type: 'article',
         publishedTime: '2026-01-01',
         modifiedTime: '2026-01-01',
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'What Is an SRT File? How to Open, Edit & Download SRT Subtitles',
-        description: 'An SRT (SubRip Text) file is the most popular subtitle format for videos. Learn what SRT files are, how to open and edit them, and download SRT subtitles from any YouTube video for free.',
+        title: 'What Is an SRT File? Free Download & Edit Guide (2026)',
+        description: 'SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.',
     },
 };
 

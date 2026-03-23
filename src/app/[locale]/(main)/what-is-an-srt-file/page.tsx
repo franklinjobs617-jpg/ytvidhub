@@ -10,10 +10,10 @@ export default function SrtFileGuidePage() {
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16">
           <p className="text-sm text-blue-600 font-medium mb-4">Technical Specification</p>
           <h1 className="font-serif text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">
-            SRT File Format: Timestamp Syntax &amp; Rules
+            What Is an SRT File? Complete Guide to Subtitle Format
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            Need the exact <strong>syntax for SRT files</strong>? This reference guide covers correct timestamp formatting (<code>HH:MM:SS,ms</code>), sequence numbering, and required line breaks.
+            An <strong>SRT (SubRip Text) file</strong> is the most popular subtitle format for videos. Learn the exact <strong>timestamp syntax</strong> (<code>HH:MM:SS,ms</code>), how to download SRT files from YouTube, and edit them for free.
           </p>
           <SrtCtaHero />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
@@ -71,6 +71,55 @@ export default function SrtFileGuidePage() {
                           <li>· Content repurposing for social media</li>
                         </ul>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Comparison Table */}
+                  <div className="mb-16">
+                    <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-6">SRT vs VTT vs ASS: Format Comparison</h2>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-slate-900 text-white">
+                            <th className="p-4 text-left">Feature</th>
+                            <th className="p-4 text-left">SRT</th>
+                            <th className="p-4 text-left">VTT</th>
+                            <th className="p-4 text-left">ASS</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-sm">
+                          <tr className="border-b border-slate-200">
+                            <td className="p-4 font-semibold">Compatibility</td>
+                            <td className="p-4 text-green-600">✓ Universal (99.9%)</td>
+                            <td className="p-4 text-blue-600">✓ Web browsers</td>
+                            <td className="p-4 text-slate-500">Limited</td>
+                          </tr>
+                          <tr className="border-b border-slate-200 bg-slate-50">
+                            <td className="p-4 font-semibold">Millisecond Separator</td>
+                            <td className="p-4">Comma (,)</td>
+                            <td className="p-4">Dot (.)</td>
+                            <td className="p-4">Dot (.)</td>
+                          </tr>
+                          <tr className="border-b border-slate-200">
+                            <td className="p-4 font-semibold">Styling Support</td>
+                            <td className="p-4">Basic HTML</td>
+                            <td className="p-4">CSS styling</td>
+                            <td className="p-4">Advanced</td>
+                          </tr>
+                          <tr className="border-b border-slate-200 bg-slate-50">
+                            <td className="p-4 font-semibold">File Size</td>
+                            <td className="p-4 text-green-600">Smallest</td>
+                            <td className="p-4">Small</td>
+                            <td className="p-4">Larger</td>
+                          </tr>
+                          <tr className="border-b border-slate-200">
+                            <td className="p-4 font-semibold">Best For</td>
+                            <td className="p-4">Video players, AI training</td>
+                            <td className="p-4">Web videos, HTML5</td>
+                            <td className="p-4">Anime, karaoke</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
 
