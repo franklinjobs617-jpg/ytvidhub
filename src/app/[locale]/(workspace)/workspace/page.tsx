@@ -248,19 +248,9 @@ function WorkspaceContent() {
         if (cachedResult) {
           setSummaryData(cachedResult);
         }
-        // AI 总结改为手动触发，不再自动执行
 
-        // 如果是从首页来的，自动保存到历史记录
+        // 不再自动添加历史记录，只有在用户下载或解锁时才添加
         if (isFromHome) {
-          subtitleApi.upsertHistory({
-            videoId: firstVideo.id,
-            videoUrl: firstVideo.url,
-            title: firstVideo.title,
-            thumbnail: firstVideo.thumbnail,
-            duration: firstVideo.duration,
-            lastAction: "video_analyze",
-          }).catch(() => { });
-
           const newParams = new URLSearchParams(searchParams.toString());
           newParams.delete("from");
           newParams.delete("mode");
@@ -753,14 +743,14 @@ function WorkspaceContent() {
               <>
                 {/* 改造为“参考视窗 (Reference Window)” */}
                 <div className="p-4 shrink-0 bg-slate-50/50 border-b border-slate-100 flex flex-col items-center justify-center gap-4 group">
-                  <div className="w-full max-w-[600px] aspect-video rounded-xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.1)] ring-1 ring-slate-200/50 bg-black/5 overflow-hidden transition-transform duration-300 group-hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.12)]">
+                  <div className="w-full max-w-[300px] aspect-video rounded-xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.1)] ring-1 ring-slate-200/50 bg-black/5 overflow-hidden transition-transform duration-300 group-hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.12)]">
                     <VideoPlayer
                       ref={videoPlayerRef}
                       videoId={currentVideo.id}
                       seekTime={seekTime}
                       onTimeUpdate={setCurrentTime}
                     />
-                    
+
                   </div>
                   <h1 className="text-[13px] md:text-sm font-semibold text-slate-800 line-clamp-2 md:line-clamp-3 leading-relaxed text-center flex-1 max-w-[400px]">
                     {currentVideo.title}
@@ -898,7 +888,7 @@ export default function WorkspacePage() {
             </div>
             <div className="w-48 h-1 bg-slate-100 rounded-full overflow-hidden">
               <div className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full animate-[loading_1.5s_ease-in-out_infinite]"
-                   style={{ width: '40%' }} />
+                style={{ width: '40%' }} />
             </div>
           </div>
         </div>

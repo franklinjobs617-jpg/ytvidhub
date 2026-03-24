@@ -76,6 +76,15 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
 
       toast.success(`${format.toUpperCase()} downloaded successfully!`);
 
+      // 添加到历史记录
+      subtitleApi.upsertHistory({
+        videoId: videoUrl.split('v=')[1]?.split('&')[0] || videoUrl,
+        videoUrl: videoUrl,
+        title: videoTitle,
+        lastAction: "subtitle_download",
+        format: format,
+      }).catch(() => { });
+
       // 立即刷新一次
       refreshUser();
 
@@ -106,15 +115,15 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
         <button
           onClick={() => setIsOpen(!isOpen)}
           disabled={isDownloading}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-lg font-medium text-sm transition-all shadow-sm"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white rounded-md font-medium text-xs transition-all shadow-sm"
         >
           {isDownloading ? (
-            <Loader2 size={16} className="animate-spin" />
+            <Loader2 size={14} className="animate-spin" />
           ) : (
-            <Download size={16} />
+            <Download size={14} />
           )}
-          <span className="hidden sm:inline">Download Single</span>
-          <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <span className="hidden sm:inline">Download</span>
+          <ChevronDown size={12} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
 
         {isOpen && !isDownloading && (
@@ -126,26 +135,26 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
             />
 
             {/* 下拉菜单 */}
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-lg z-50 overflow-hidden">
+            <div className="absolute right-0 mt-1.5 w-40 bg-white border border-slate-200 rounded-md shadow-md z-50 overflow-hidden">
               <button
                 onClick={() => handleDownload('srt')}
-                className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
+                className="w-full px-3 py-2 text-left text-xs hover:bg-slate-50 transition-colors flex items-center justify-between group"
               >
-                <span className="font-medium text-slate-700">SRT Format</span>
+                <span className="font-medium text-slate-700">SRT</span>
                 <span className="text-xs text-slate-400 group-hover:text-slate-600">.srt</span>
               </button>
               <button
                 onClick={() => handleDownload('vtt')}
-                className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
+                className="w-full px-3 py-2 text-left text-xs hover:bg-slate-50 transition-colors flex items-center justify-between group"
               >
-                <span className="font-medium text-slate-700">VTT Format</span>
+                <span className="font-medium text-slate-700">VTT</span>
                 <span className="text-xs text-slate-400 group-hover:text-slate-600">.vtt</span>
               </button>
               <button
                 onClick={() => handleDownload('txt')}
-                className="w-full px-4 py-2.5 text-left text-sm hover:bg-slate-50 transition-colors flex items-center justify-between group"
+                className="w-full px-3 py-2 text-left text-xs hover:bg-slate-50 transition-colors flex items-center justify-between group"
               >
-                <span className="font-medium text-slate-700">TXT Format</span>
+                <span className="font-medium text-slate-700">TXT</span>
                 <span className="text-xs text-slate-400 group-hover:text-slate-600">.txt</span>
               </button>
             </div>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import { subtitleApi } from "@/lib/api";
 import { Search, Copy, Check, ClipboardCopy, Download, ChevronUp, ChevronDown, Lock, Unlock, Download as DownloadIcon } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -51,21 +52,21 @@ export function TranscriptArea({
     subtitleApi.getVideoInfo(videoUrl).then(info => {
       if (info.languages && Array.isArray(info.languages)) {
         setAvailableLangs(info.languages);
-        
+
         // 智能语言选择逻辑
         if (onLangChange && info.languages.length > 0) {
           const currentLangExists = info.languages.some((l: any) => l.code === lang);
-          
+
           if (!currentLangExists) {
             // 当前语言不存在，按优先级选择：
-            
+
             // 1. 如果请求的是中文，优先选择简体中文变体
             if (lang.startsWith('zh')) {
               const chinesePriority = ['zh-CN', 'zh-cn', 'zh-Hans', 'zh-hans', 'zh', 'zh-Hant', 'zh-hant', 'zh-TW', 'zh-tw'];
-              const chineseLang = chinesePriority.find(priorityLang => 
+              const chineseLang = chinesePriority.find(priorityLang =>
                 info.languages.some((l: any) => l.code === priorityLang)
               );
-              
+
               if (chineseLang) {
                 const selectedLang = info.languages.find((l: any) => l.code === chineseLang);
                 console.log(`🔄 Switching to Chinese variant: ${selectedLang.code}`);
@@ -73,12 +74,12 @@ export function TranscriptArea({
                 return;
               }
             }
-            
+
             // 2. 英文（如果存在）
-            const englishLang = info.languages.find((l: any) => 
+            const englishLang = info.languages.find((l: any) =>
               l.code === 'en' || l.code === 'en-US' || l.code === 'en-orig'
             );
-            
+
             if (englishLang) {
               console.log(`🔄 Switching to English: ${englishLang.code}`);
               onLangChange(englishLang.code);
@@ -111,19 +112,19 @@ export function TranscriptArea({
       const cached = sessionStorage.getItem(`ytvidhub_transcript_${videoUrl}_${lang}`);
       if (cached) {
         const { text, format } = JSON.parse(cached);
-        if (format === 'vtt') { 
-          setTranscriptVtt(text); 
+        if (format === 'vtt') {
+          setTranscriptVtt(text);
           console.log(`📋 Loaded cached subtitles for language: ${lang}`);
-          return; 
+          return;
         }
       }
     } catch { }
 
     console.log(`🔄 Fetching subtitles for language: ${lang}`);
-    
+
     // 对于可能的长视频，使用流式加载
     const shouldUseStream = false; // 暂时禁用流式，可以后续启用
-    
+
     if (shouldUseStream) {
       handleStreamSubtitleLoad();
     } else {
@@ -170,24 +171,24 @@ export function TranscriptArea({
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             const data = line.slice(6);
-            
+
             if (data === '{\"type\": \"content_start\"}') {
               isReceivingContent = true;
               continue;
             }
-            
+
             if (data === '{\"type\": \"content_end\"}') {
               isReceivingContent = false;
               // 合并所有内容块
               const fullContent = contentChunks.join('');
               setTranscriptVtt(fullContent);
-              
+
               // 缓存结果
               try {
-                sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}_${lang}`, 
+                sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}_${lang}`,
                   JSON.stringify({ text: fullContent, format: 'vtt' }));
               } catch { }
-              
+
               console.log(`✅ Stream completed for language: ${lang}`);
               break;
             }
@@ -206,7 +207,7 @@ export function TranscriptArea({
 
             try {
               const eventData = JSON.parse(data);
-              
+
               switch (eventData.type) {
                 case 'status':
                   setStreamStatus(eventData.message);
@@ -257,7 +258,6 @@ export function TranscriptArea({
       .then(async (blob) => {
         clearTimeout(timeoutId);
         const text = await blob.text();
-        // 简单的空检查，防止下载到错误页面
         if (text.trim().startsWith('{') && text.includes('"error"')) {
           console.error(`❌ Error response for language ${lang}:`, text);
           setTranscriptVtt("");
@@ -265,7 +265,6 @@ export function TranscriptArea({
         }
         console.log(`✅ Successfully loaded subtitles for language: ${lang}`);
         setTranscriptVtt(text);
-        // 存入带语言标识的缓存
         try {
           sessionStorage.setItem(`ytvidhub_transcript_${videoUrl}_${lang}`, JSON.stringify({ text, format: 'vtt' }));
         } catch { }
@@ -274,7 +273,7 @@ export function TranscriptArea({
         clearTimeout(timeoutId);
         console.error(`❌ Failed to load transcript for language ${lang}:`, err);
         setTranscriptVtt("");
-        
+
         // 显示更友好的错误信息
         if (err.message && err.message.includes('No subtitles found')) {
           console.log(`ℹ️ No subtitles available for language: ${lang}`);
@@ -292,7 +291,6 @@ export function TranscriptArea({
     };
   };
 
-  // Prevent all copy operations
   useEffect(() => {
     const preventCopy = (e: ClipboardEvent) => {
       e.preventDefault();
@@ -338,7 +336,7 @@ export function TranscriptArea({
         transcriptArea.removeEventListener('selectstart', preventSelectStart as EventListener, true);
       }
     };
-  }, []);
+  }, [videoUrl]);
 
   // P2: 增强的导出功能
   const handleExportWithTimestamps = () => {
@@ -353,6 +351,7 @@ export function TranscriptArea({
 
     navigator.clipboard.writeText(exportContent);
     setCopied(true);
+    toast.success('Transcript copied to clipboard!');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -363,43 +362,72 @@ export function TranscriptArea({
     const finalItems = isSmartMode
       ? groupTranscriptByTime(rawItems)
       : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
-    
+
     // Apply content restriction if not unlocked
     if (!isUnlocked && !searchQuery) {
       const previewCount = Math.ceil(finalItems.length * 0.4);
       return finalItems.slice(0, previewCount);
     }
-    
+
     if (searchQuery) {
       return finalItems.filter((i) => i.text.toLowerCase().includes(searchQuery.toLowerCase()));
     }
     return finalItems;
   }, [transcriptVtt, isSmartMode, searchQuery, isUnlocked]);
 
+  // Check if video is in history (already unlocked or downloaded)
+  const checkHistoryStatus = async () => {
+    if (!user) return;
+
+    try {
+      const history = await subtitleApi.getHistory(20); // Get recent history
+      const videoIdToCheck = videoId || videoUrl.split('v=')[1]?.split('&')[0] || videoUrl;
+
+      // Check if this video exists in history
+      const isInHistory = history.some((item: any) =>
+        item.videoId === videoIdToCheck || item.videoUrl === videoUrl
+      );
+
+      if (isInHistory) {
+        setIsUnlocked(true);
+        console.log('Video found in history, content automatically unlocked');
+      }
+    } catch (error) {
+      console.error('Error checking history:', error);
+    }
+  };
+
+  // Check history status when component mounts or video changes
+  useEffect(() => {
+    if (user && (videoUrl || videoId)) {
+      checkHistoryStatus();
+    }
+  }, [user, videoUrl, videoId]);
+
   // Unlock full content function
   const unlockContent = async () => {
     if (!user) {
-      alert('Please login to unlock full content');
+      toast.error('Please login to unlock full content');
       return;
     }
-    
+
     // Get token from localStorage
     const token = localStorage.getItem('auth_token');
     if (!token) {
-      alert('Please login again to unlock content');
+      toast.error('Please login again to unlock content');
       return;
     }
-    
+
     // Handle credits type - user.credits could be number or string
-    const userCredits = typeof user.credits === 'number' 
-      ? user.credits 
+    const userCredits = typeof user.credits === 'number'
+      ? user.credits
       : parseInt(user.credits || "0") || 0;
-    
+
     if (userCredits < 1) {
-      alert('Insufficient credits. You need 1 credit to unlock full content.');
+      toast.error('Insufficient credits. You need 1 credit to unlock full content.');
       return;
     }
-    
+
     setUnlockLoading(true);
     try {
       // Call API to deduct credits
@@ -411,18 +439,26 @@ export function TranscriptArea({
         },
         body: JSON.stringify({ amount: 1, reason: "Unlock Full Subtitle" })
       });
-      
+
       if (response.ok) {
         setIsUnlocked(true);
         await refreshUser();
-        alert('Content unlocked successfully!');
+        toast.success('Content unlocked successfully!');
+
+        // 添加到历史记录
+        subtitleApi.upsertHistory({
+          videoId: videoId || videoUrl.split('v=')[1]?.split('&')[0] || videoUrl,
+          videoUrl: videoUrl,
+          title: document.title || 'YouTube Video',
+          lastAction: "subtitle_download",
+        }).catch(() => { });
       } else {
         const errorData = await response.json();
-        alert(`Failed to unlock: ${errorData.error || 'Unknown error'}`);
+        toast.error(`Failed to unlock: ${errorData.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Unlock error:', error);
-      alert('Failed to unlock content. Please try again.');
+      toast.error('Failed to unlock content. Please try again.');
     } finally {
       setUnlockLoading(false);
     }
@@ -505,7 +541,7 @@ export function TranscriptArea({
               onChange={(e) => onLangChange?.(e.target.value)}
               className="appearance-none bg-white border border-slate-200 rounded-lg px-3 py-2 pr-8 text-sm font-medium text-slate-700 hover:border-violet-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 focus:outline-none transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md min-w-[140px] group-hover:bg-slate-50/50"
             >
-              {availableLangs.map((l:any) => (
+              {availableLangs.map((l: any) => (
                 <option key={l.code} value={l.code} className="py-2 text-slate-700">
                   {l.label} {l.is_auto && '(Auto)'}
                 </option>
@@ -597,12 +633,12 @@ export function TranscriptArea({
                   {isStreamLoading ? 'Streaming subtitles...' : 'Loading subtitles...'}
                 </p>
                 <p className="text-xs text-slate-500">Language: {availableLangs.find(l => l.code === lang)?.label || lang}</p>
-                
+
                 {/* 流式加载进度 */}
                 {isStreamLoading && (
                   <div className="space-y-2">
                     <div className="w-full bg-slate-200 rounded-full h-2">
-                      <div 
+                      <div
                         className="bg-violet-600 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${streamProgress}%` }}
                       ></div>
@@ -611,7 +647,7 @@ export function TranscriptArea({
                     <p className="text-xs text-slate-400">{streamProgress.toFixed(1)}% completed</p>
                   </div>
                 )}
-                
+
                 {/* 普通加载提示 */}
                 {!isStreamLoading && (
                   <div className="flex items-center justify-center gap-2 text-xs text-slate-400">
@@ -681,13 +717,13 @@ export function TranscriptArea({
                 </div>
               );
             })}
-            
+
             {/* Preview overlay - shown when content is not unlocked */}
             {!isUnlocked && transcriptVtt && parseVtt(transcriptVtt).length > 0 && (
               <div className="relative">
                 {/* Fade overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/90 pointer-events-none"></div>
-                
+
                 {/* Unlock prompt */}
                 <div className="relative mx-4 mb-8 p-6 bg-white border border-slate-200 rounded-xl shadow-lg text-center">
                   <div className="mb-4">
@@ -730,7 +766,7 @@ export function TranscriptArea({
                 </div>
               </div>
             )}
-            
+
             <div className="h-10" />
           </div>
         ) : (
@@ -744,7 +780,7 @@ export function TranscriptArea({
               <div>
                 <p className="text-sm font-semibold text-slate-800">No Subtitles Found</p>
                 <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                  {availableLangs.length === 0 
+                  {availableLangs.length === 0
                     ? "This video doesn't have any subtitles on YouTube."
                     : `No subtitles available for ${availableLangs.find(l => l.code === lang)?.label || lang}.`
                   }
