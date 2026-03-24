@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import { subtitleApi } from "@/lib/api";
-import { Search, Copy, Check, ClipboardCopy, Download, ChevronUp, ChevronDown } from "lucide-react";
+import { Search, Copy, Check, ClipboardCopy, Download, ChevronUp, ChevronDown, Lock, Unlock, Download as DownloadIcon } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -31,6 +32,7 @@ export function TranscriptArea({
   lang?: string;
   onLangChange?: (lang: string) => void;
 }) {
+  const { user, refreshUser } = useAuth();
   const [transcriptVtt, setTranscriptVtt] = useState<string>(initialSubtitleContent || "");
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,6 +40,8 @@ export function TranscriptArea({
   const [isSmartMode, setIsSmartMode] = useState(true);
   const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
   const [availableLangs, setAvailableLangs] = useState<{ code: string, label: string }[]>([]);
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [unlockLoading, setUnlockLoading] = useState(false);
   const internalSearchRef = useRef<HTMLInputElement>(null);
   const searchRef = searchInputRef || internalSearchRef;
 
@@ -352,17 +356,77 @@ export function TranscriptArea({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Content restriction logic - show only 40% in preview mode
   const displayItems = useMemo(() => {
     if (!transcriptVtt) return [];
     const rawItems = parseVtt(transcriptVtt);
     const finalItems = isSmartMode
       ? groupTranscriptByTime(rawItems)
       : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
+    
+    // Apply content restriction if not unlocked
+    if (!isUnlocked && !searchQuery) {
+      const previewCount = Math.ceil(finalItems.length * 0.4);
+      return finalItems.slice(0, previewCount);
+    }
+    
     if (searchQuery) {
       return finalItems.filter((i) => i.text.toLowerCase().includes(searchQuery.toLowerCase()));
     }
     return finalItems;
-  }, [transcriptVtt, isSmartMode, searchQuery]);
+  }, [transcriptVtt, isSmartMode, searchQuery, isUnlocked]);
+
+  // Unlock full content function
+  const unlockContent = async () => {
+    if (!user) {
+      alert('Please login to unlock full content');
+      return;
+    }
+    
+    // Get token from localStorage
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      alert('Please login again to unlock content');
+      return;
+    }
+    
+    // Handle credits type - user.credits could be number or string
+    const userCredits = typeof user.credits === 'number' 
+      ? user.credits 
+      : parseInt(user.credits || "0") || 0;
+    
+    if (userCredits < 1) {
+      alert('Insufficient credits. You need 1 credit to unlock full content.');
+      return;
+    }
+    
+    setUnlockLoading(true);
+    try {
+      // Call API to deduct credits
+      const response = await fetch(`${window.location.origin}/api/deduct-credits`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ amount: 1, reason: "Unlock Full Subtitle" })
+      });
+      
+      if (response.ok) {
+        setIsUnlocked(true);
+        await refreshUser();
+        alert('Content unlocked successfully!');
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to unlock: ${errorData.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Unlock error:', error);
+      alert('Failed to unlock content. Please try again.');
+    } finally {
+      setUnlockLoading(false);
+    }
+  };
 
   // P1: 搜索结果统计和导航
   const searchResults = useMemo(() => {
@@ -617,6 +681,56 @@ export function TranscriptArea({
                 </div>
               );
             })}
+            
+            {/* Preview overlay - shown when content is not unlocked */}
+            {!isUnlocked && transcriptVtt && parseVtt(transcriptVtt).length > 0 && (
+              <div className="relative">
+                {/* Fade overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/90 pointer-events-none"></div>
+                
+                {/* Unlock prompt */}
+                <div className="relative mx-4 mb-8 p-6 bg-white border border-slate-200 rounded-xl shadow-lg text-center">
+                  <div className="mb-4">
+                    <Lock className="w-8 h-8 mx-auto text-violet-500 mb-2" />
+                    <h3 className="text-sm font-semibold text-slate-800 mb-2">Preview Mode</h3>
+                    <p className="text-xs text-slate-500 mb-4">
+                      You're viewing the first 40% of the transcript. Unlock the full content or download the subtitle file.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <button
+                        onClick={unlockContent}
+                        disabled={unlockLoading}
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {unlockLoading ? (
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          <Unlock className="w-4 h-4" />
+                        )}
+                        {unlockLoading ? 'Unlocking...' : 'Unlock Full Content'}
+                      </button>
+                      <button
+                        onClick={() => {
+                          // Trigger download (this should be handled by the DownloadButton component)
+                          const downloadEvent = new CustomEvent('trigger-download', {
+                            detail: { url: videoUrl, lang: lang }
+                          });
+                          window.dispatchEvent(downloadEvent);
+                        }}
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors"
+                      >
+                        <DownloadIcon className="w-4 h-4" />
+                        Download Subtitle
+                      </button>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-3">
+                      Both options require 1 credit per video
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div className="h-10" />
           </div>
         ) : (

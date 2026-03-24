@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Download, ChevronDown, Loader2 } from "lucide-react";
 import { subtitleApi } from "@/lib/api";
 import { toast } from "sonner";
@@ -20,12 +20,34 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
   const { user, refreshUser } = useAuth();
   const router = useRouter();
 
+  // Listen for download trigger events from TranscriptArea
+  useEffect(() => {
+    const handleDownloadTrigger = (event: CustomEvent) => {
+      const { url, lang } = event.detail;
+      if (url === videoUrl) {
+        // Open the download menu when triggered from TranscriptArea
+        setIsOpen(true);
+      }
+    };
+
+    window.addEventListener('trigger-download', handleDownloadTrigger as EventListener);
+    return () => {
+      window.removeEventListener('trigger-download', handleDownloadTrigger as EventListener);
+    };
+  }, [videoUrl]);
+
   const handleDownload = async (format: 'srt' | 'vtt' | 'txt') => {
     // 检查积分
-    if (user && (user.credits || 0) <= 0) {
-      setIsCreditsModalOpen(true);
-      setIsOpen(false);
-      return;
+    if (user) {
+      const userCredits = typeof user.credits === 'number' 
+        ? user.credits 
+        : parseInt(user.credits || "0") || 0;
+      
+      if (userCredits <= 0) {
+        setIsCreditsModalOpen(true);
+        setIsOpen(false);
+        return;
+      }
     }
 
     setIsDownloading(true);
