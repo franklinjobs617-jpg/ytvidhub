@@ -760,6 +760,7 @@ function WorkspaceContent() {
                       seekTime={seekTime}
                       onTimeUpdate={setCurrentTime}
                     />
+                    
                   </div>
                   <h1 className="text-[13px] md:text-sm font-semibold text-slate-800 line-clamp-2 md:line-clamp-3 leading-relaxed text-center flex-1 max-w-[400px]">
                     {currentVideo.title}
