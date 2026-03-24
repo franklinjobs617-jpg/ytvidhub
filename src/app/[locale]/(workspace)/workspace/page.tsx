@@ -753,7 +753,7 @@ function WorkspaceContent() {
               <>
                 {/* 改造为“参考视窗 (Reference Window)” */}
                 <div className="p-4 shrink-0 bg-slate-50/50 border-b border-slate-100 flex flex-col items-center justify-center gap-4 group">
-                  <div className="w-full max-w-[320px] aspect-video rounded-xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.1)] ring-1 ring-slate-200/50 bg-black/5 overflow-hidden transition-transform duration-300 group-hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.12)]">
+                  <div className="w-full max-w-[600px] aspect-video rounded-xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.1)] ring-1 ring-slate-200/50 bg-black/5 overflow-hidden transition-transform duration-300 group-hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.12)]">
                     <VideoPlayer
                       ref={videoPlayerRef}
                       videoId={currentVideo.id}
