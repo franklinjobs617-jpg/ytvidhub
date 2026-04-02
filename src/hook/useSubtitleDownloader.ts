@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { subtitleApi } from "@/lib/api";
 import { extractVideoId, isPlaylistOrChannelUrl } from "@/lib/youtube";
 import { toast } from "sonner";
@@ -35,6 +35,34 @@ interface BulkDownloadState {
   error?: string;
 }
 
+type BatchVideo = {
+  id: string;
+  url: string;
+  title: string;
+  thumbnail?: string;
+  duration?: string | number;
+};
+
+interface BulkCreditsGuardState {
+  videos: BatchVideo[];
+  format: string;
+  lang: string;
+  currentCredits: number;
+  requiredCredits: number;
+  affordableCount: number;
+  shortfall: number;
+}
+
+interface PendingBulkTask {
+  videos: BatchVideo[];
+  format: string;
+  lang: string;
+  createdAt: number;
+  source: string;
+}
+
+const PENDING_BULK_TASK_KEY = "ytvidhub_pending_bulk_resume_v1";
+
 export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const { user } = useAuth();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -52,6 +80,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   // 积分不足弹窗状态
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
+  const [bulkCreditsGuard, setBulkCreditsGuard] = useState<BulkCreditsGuardState | null>(null);
 
   const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const processingCancelRef = useRef<boolean>(false);
@@ -60,7 +89,39 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
   // 多语言支持
   const tStatus = useTranslations('statusMessages');
-  const tActions = useTranslations('actions');
+
+  const getCurrentCredits = () => {
+    if (typeof user?.credits === "number") return user.credits;
+    if (typeof user?.credits === "string") return parseInt(user.credits, 10) || 0;
+    return 0;
+  };
+
+  const getLocalePrefix = () => {
+    if (typeof window === "undefined") return "";
+    const firstSegment = window.location.pathname.split("/").filter(Boolean)[0];
+    return firstSegment && firstSegment.length === 2 ? `/${firstSegment}` : "";
+  };
+
+  const savePendingBulkTask = (task: PendingBulkTask) => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(PENDING_BULK_TASK_KEY, JSON.stringify(task));
+  };
+
+  const readPendingBulkTask = (): PendingBulkTask | null => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem(PENDING_BULK_TASK_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw) as PendingBulkTask;
+    } catch {
+      return null;
+    }
+  };
+
+  const clearPendingBulkTask = () => {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(PENDING_BULK_TASK_KEY);
+  };
 
   const startSmoothProgress = (max = 95) => {
     if (progressTimerRef.current) clearInterval(progressTimerRef.current);
@@ -439,25 +500,99 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     }
   };
 
-  const startBulkDownload = async (videos: any[], format: string, lang: string = "en") => {
+  const startBulkDownload = async (
+    videos: BatchVideo[],
+    format: string,
+    lang: string = "en",
+    options?: { skipCreditPrecheck?: boolean; source?: "direct" | "partial_affordable" | "resume_after_payment" }
+  ) => {
+    const normalizedVideos = (videos || []).filter((video) => !!video?.url);
+    if (normalizedVideos.length === 0) {
+      toast.error("Please select at least one video.");
+      return;
+    }
+
+    const currentCredits = getCurrentCredits();
+    const requiredCredits = normalizedVideos.length;
+
+    if (!options?.skipCreditPrecheck) {
+      if (!user) {
+        toast.error("Authentication Required", {
+          id: "auth-error",
+          description: "Please login to download subtitles.",
+          action: {
+            label: "Login",
+            onClick: () => (window.location.href = "/"),
+          },
+          duration: 5000,
+        });
+        return;
+      }
+
+      if (currentCredits < requiredCredits) {
+        const shortfall = Math.max(0, requiredCredits - currentCredits);
+        setBulkCreditsGuard({
+          videos: normalizedVideos,
+          format,
+          lang,
+          currentCredits,
+          requiredCredits,
+          affordableCount: Math.max(0, currentCredits),
+          shortfall,
+        });
+        toast.info(`You need ${shortfall} more credits to download all selected videos.`);
+
+        trackConversion("download_error", {
+          type: "bulk",
+          reason: "insufficient_credits_precheck",
+          currentCredits,
+          requiredCredits,
+          shortfall,
+        });
+        return;
+      }
+    }
+
     setIsDownloading(true);
     setProgress(5);
     bulkDownloadCancelRef.current = false;
-    trackConversion('download_start', { type: 'bulk', format, lang, count: videos.length });
+    trackConversion("download_start", {
+      type: "bulk",
+      format,
+      lang,
+      count: normalizedVideos.length,
+      source: options?.source || "direct",
+    });
 
     const handleBulkError = (err: any) => {
       setIsDownloading(false);
       setBulkDownloadState(prev => prev ? { ...prev, phase: 'error', error: err.message } : null);
 
-      if (err.message?.includes("Insufficient credits") || err.message?.includes("credit")) {
+      const isCreditsError =
+        err?.code === "INSUFFICIENT_CREDITS" ||
+        err.message?.includes("Insufficient credits") ||
+        err.message?.toLowerCase?.().includes("credit");
+
+      if (isCreditsError) {
         // 获取当前积分
-        const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
-        setModalConfig({
-          required: videos.length,
-          current: currentCredits,
-          feature: `Bulk Download (${videos.length} videos)`
+        const details = err?.details || {};
+        const availableCredits = Number.isFinite(Number(details.userCredits))
+          ? Number(details.userCredits)
+          : getCurrentCredits();
+        const required = Number(details.requiredCredits) > 0
+          ? Number(details.requiredCredits)
+          : normalizedVideos.length;
+
+        setBulkCreditsGuard({
+          videos: normalizedVideos,
+          format,
+          lang,
+          currentCredits: availableCredits,
+          requiredCredits: required,
+          affordableCount: Math.max(0, Number(details.affordableCount ?? availableCredits)),
+          shortfall: Math.max(0, required - availableCredits),
         });
-        setIsCreditsModalOpen(true);
+        toast.info(`Not enough credits for full batch. You can continue with a partial download.`);
       } else if (err.message?.includes("login")) {
         toast.error("Authentication Required", {
           id: 'auth-error',
@@ -482,14 +617,14 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       setShowBulkDownloadModal(true);
       setBulkDownloadState({
         phase: 'processing',
-        totalVideos: videos.length,
+        totalVideos: normalizedVideos.length,
         processedVideos: 0,
         successCount: 0,
         failedCount: 0,
         failedVideos: []
       });
 
-      const task = await subtitleApi.submitBulkTask(videos, lang, format);
+      const task = await subtitleApi.submitBulkTask(normalizedVideos, lang, format);
 
       const pollTaskStatus = async (): Promise<void> => {
         // eslint-disable-next-line no-constant-condition
@@ -500,40 +635,51 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
           await new Promise(resolve => setTimeout(resolve, 2000));
           const status = await subtitleApi.checkTaskStatus(task.task_id);
+          const statusData = status?.data || status;
 
           if (status.status === "completed") {
             setProgress(100);
             setBulkDownloadState(prev => prev ? {
               ...prev,
-              processedVideos: videos.length,
-              successCount: status.completed || videos.length,
-              failedCount: status.failed || 0,
-              failedVideos: status.failed_videos || []
+              processedVideos: normalizedVideos.length,
+              successCount: statusData.completed || status.completed || normalizedVideos.length,
+              failedCount: statusData.failed || status.failed || 0,
+              failedVideos: statusData.failed_videos || status.failed_videos || []
             } : null);
 
             const blob = await subtitleApi.downloadZip(task.task_id);
             if (blob.size === 0) throw new Error("Downloaded ZIP is empty");
 
             triggerDownload(blob, `bulk_subs_${Date.now()}.zip`);
-            trackConversion('download_success', { type: 'bulk', format, lang, count: videos.length });
+            trackConversion('download_success', {
+              type: 'bulk',
+              format,
+              lang,
+              count: normalizedVideos.length,
+              source: options?.source || "direct"
+            });
 
             setBulkDownloadState(prev => prev ? { ...prev, phase: 'completed' } : null);
 
             // 【关键】记录批量下载历史
             const batchId = `batch_${Date.now()}`;
-            videos.forEach(video => {
+            normalizedVideos.forEach(video => {
               subtitleApi.upsertHistory({
                 videoId: video.id,
                 videoUrl: video.url,
                 title: video.title,
                 thumbnail: video.thumbnail,
-                duration: video.duration,
+                duration: typeof video.duration === "number" ? video.duration : undefined,
                 lastAction: "batch_download" as any,
                 format,
                 lang,
                 batchId
               }).catch(() => { });
             });
+
+            if (options?.source === "resume_after_payment") {
+              clearPendingBulkTask();
+            }
 
             setTimeout(() => {
               if (onCreditsChanged) onCreditsChanged();
@@ -549,15 +695,20 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
             throw new Error(status.error || "Batch task failed on server");
           } else {
             const [c, t] = (status.progress || "0/0").split("/").map(Number);
+            const completedCount = statusData.completed ?? status.completed ?? c;
+            const failedCount = statusData.failed ?? status.failed ?? 0;
+            const failedVideos = statusData.failed_videos || status.failed_videos || [];
+            const currentVideoTitle =
+              statusData.current_video || status.current_video || normalizedVideos[c]?.title;
             setProgress(t > 0 ? (c / t) * 100 : 15);
 
             setBulkDownloadState(prev => prev ? {
               ...prev,
               processedVideos: c,
-              successCount: status.completed || 0,
-              failedCount: status.failed || 0,
-              failedVideos: status.failed_videos || [],
-              currentVideoTitle: status.current_video || videos[c]?.title
+              successCount: completedCount,
+              failedCount,
+              failedVideos,
+              currentVideoTitle
             } : null);
           }
         }
@@ -567,6 +718,95 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     } catch (err: any) {
       handleBulkError(err);
     }
+  };
+
+  const closeBulkCreditsGuard = () => {
+    setBulkCreditsGuard(null);
+  };
+
+  const downloadAffordableBulkNow = async () => {
+    if (!bulkCreditsGuard) return;
+
+    const { videos, affordableCount, format, lang } = bulkCreditsGuard;
+    if (affordableCount <= 0) return;
+
+    const downloadableNow = videos.slice(0, affordableCount);
+    const remaining = videos.slice(affordableCount);
+    setBulkCreditsGuard(null);
+
+    if (remaining.length > 0) {
+      savePendingBulkTask({
+        videos: remaining,
+        format,
+        lang,
+        createdAt: Date.now(),
+        source: "remaining_after_partial",
+      });
+
+      toast.info(`Starting ${downloadableNow.length} downloads now`, {
+        description: `${remaining.length} videos are saved so you can resume after top-up.`,
+      });
+    }
+
+    await startBulkDownload(downloadableNow, format, lang, {
+      skipCreditPrecheck: true,
+      source: "partial_affordable",
+    });
+  };
+
+  const upgradeForBulkDownload = () => {
+    if (!bulkCreditsGuard) return;
+
+    const { videos, format, lang, currentCredits, requiredCredits, shortfall } = bulkCreditsGuard;
+    savePendingBulkTask({
+      videos,
+      format,
+      lang,
+      createdAt: Date.now(),
+      source: "upgrade_from_shortfall",
+    });
+
+    const localePrefix = getLocalePrefix();
+    const query = new URLSearchParams({
+      from: "bulk-shortfall",
+      selected: String(requiredCredits),
+      current: String(currentCredits),
+      missing: String(shortfall),
+      resume: "1",
+    });
+
+    window.location.href = `${localePrefix}/pricing?${query.toString()}`;
+  };
+
+  const resumePendingBulkDownload = async () => {
+    const pending = readPendingBulkTask();
+    if (!pending) return false;
+
+    const requiredCredits = pending.videos.length;
+    const currentCredits = getCurrentCredits();
+    if (currentCredits < requiredCredits) {
+      setBulkCreditsGuard({
+        videos: pending.videos,
+        format: pending.format,
+        lang: pending.lang,
+        currentCredits,
+        requiredCredits,
+        affordableCount: Math.max(0, currentCredits),
+        shortfall: Math.max(0, requiredCredits - currentCredits),
+      });
+      return false;
+    }
+
+    toast.success(`Resuming saved batch (${requiredCredits} videos)...`);
+    await startBulkDownload(pending.videos, pending.format, pending.lang, {
+      skipCreditPrecheck: true,
+      source: "resume_after_payment",
+    });
+    return true;
+  };
+
+  const hasPendingBulkDownload = () => {
+    return !!readPendingBulkTask();
   };
 
   const generateAiSummary = async (
@@ -708,6 +948,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     analyzeUrls,
     startSingleDownload,
     startBulkDownload,
+    downloadAffordableBulkNow,
+    upgradeForBulkDownload,
+    closeBulkCreditsGuard,
+    resumePendingBulkDownload,
+    hasPendingBulkDownload,
     isAnalyzing,
     isDownloading,
     progress,
@@ -725,5 +970,6 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     isCreditsModalOpen,
     setIsCreditsModalOpen,
     modalConfig,
+    bulkCreditsGuard,
   };
 }

@@ -61,8 +61,18 @@ export async function POST(request: NextRequest) {
         });
 
         if (!user || userCredits < requiredCredits) {
+            const shortfall = Math.max(0, requiredCredits - userCredits)
             return NextResponse.json(
-                { error: `Insufficient credits. You have ${userCredits} credits, but bulk download requires ${requiredCredits} credits (1 per video).` },
+                {
+                    code: 'INSUFFICIENT_CREDITS',
+                    error: 'Insufficient credits',
+                    message: `You have ${userCredits} credits, but this batch needs ${requiredCredits} credits.`,
+                    userCredits,
+                    requiredCredits,
+                    shortfall,
+                    affordableCount: Math.max(0, userCredits),
+                    unitCost: 1
+                },
                 { status: 402 }
             )
         }

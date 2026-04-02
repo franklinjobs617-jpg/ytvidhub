@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
@@ -35,6 +35,7 @@ import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressMo
 import { TranslateModal } from "@/components/workspace/TranslateModal";
 
 import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
+import { BulkCreditActionModal } from "@/components/workspace/BulkCreditActionModal";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -82,6 +83,7 @@ function WorkspaceContent() {
   const urlsParam = searchParams.get("urls");
   const fromParam = searchParams.get("from");
   const modeParam = searchParams.get("mode");
+  const resumeBulkParam = searchParams.get("resumeBulk");
   const isFromHome = fromParam === "home";
   const isFromHistory = fromParam === "history";
   const isSummaryMode = modeParam === "summary";
@@ -101,7 +103,7 @@ function WorkspaceContent() {
       url,
       title: "Loading video info...",
       uploader: "...",
-      hasSubtitles: true,
+      hasSubtitles: false,
       thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
     };
   });
@@ -120,6 +122,7 @@ function WorkspaceContent() {
   const isAnalyzing = useRef<Set<string>>(new Set());
   const videoPlayerRef = useRef<any>(null);
   const searchInputRef = useRef<HTMLInputElement>(null!);
+  const hasTriedResumeRef = useRef(false);
 
   const [inputUrl, setInputUrl] = useState("");
   const [isAddingVideo, setIsAddingVideo] = useState(false);
@@ -137,6 +140,11 @@ function WorkspaceContent() {
     analyzeUrls,
     startSingleDownload,
     startBulkDownload,
+    downloadAffordableBulkNow,
+    upgradeForBulkDownload,
+    closeBulkCreditsGuard,
+    resumePendingBulkDownload,
+    hasPendingBulkDownload,
     isAnalyzing: isTranscriptAnalyzing,
     isDownloading,
     progress,
@@ -147,7 +155,28 @@ function WorkspaceContent() {
     isCreditsModalOpen,
     setIsCreditsModalOpen,
     modalConfig,
+    bulkCreditsGuard,
   } = useSubtitleDownloader(refreshUser);
+
+  useEffect(() => {
+    if (resumeBulkParam !== "1" || hasTriedResumeRef.current) return;
+    if (!user) return;
+
+    hasTriedResumeRef.current = true;
+
+    (async () => {
+      const resumed = await resumePendingBulkDownload();
+      if (!resumed && !hasPendingBulkDownload()) {
+        toast.info("No pending batch found to resume.");
+      }
+    })();
+
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.delete("resumeBulk");
+    nextParams.delete("fromPayment");
+    const nextQuery = nextParams.toString();
+    router.replace(nextQuery ? `/workspace?${nextQuery}` : "/workspace", { scroll: false });
+  }, [resumeBulkParam, user, resumePendingBulkDownload, hasPendingBulkDownload, router, searchParams]);
 
   useEffect(() => {
     if (!currentVideo?.id) return;
@@ -614,6 +643,7 @@ function WorkspaceContent() {
         <div className="flex-1 overflow-hidden">
           <BatchGridView
             videos={videoList}
+            userCredits={typeof user?.credits === "number" ? user.credits : 0}
             onDownloadSingle={(video, format) => {
               startSingleDownload(video, format, transcriptLang);
             }}
@@ -635,6 +665,31 @@ function WorkspaceContent() {
             failed={bulkDownloadState?.failedCount || 0}
             currentVideo={bulkDownloadState?.currentVideoTitle}
             failedVideos={bulkDownloadState?.failedVideos || []}
+          />
+          <BulkCreditActionModal
+            isOpen={!!bulkCreditsGuard}
+            currentCredits={bulkCreditsGuard?.currentCredits || 0}
+            requiredCredits={bulkCreditsGuard?.requiredCredits || 0}
+            affordableCount={bulkCreditsGuard?.affordableCount || 0}
+            onClose={closeBulkCreditsGuard}
+            onDownloadAffordable={downloadAffordableBulkNow}
+            onUpgrade={upgradeForBulkDownload}
+          />
+          <InsufficientCreditsModal
+            isOpen={isCreditsModalOpen}
+            onClose={() => setIsCreditsModalOpen(false)}
+            requiredAmount={modalConfig.required}
+            featureName={modalConfig.feature}
+          />
+          <PlaylistProgressModal
+            isOpen={showPlaylistModal}
+            phase={playlistProcessing?.phase || 'expanding'}
+            totalVideos={playlistProcessing?.totalVideos || 0}
+            processedVideos={playlistProcessing?.processedVideos || 0}
+            videosWithSubtitles={playlistProcessing?.videosWithSubtitles || 0}
+            currentVideoTitle={playlistProcessing?.currentVideoTitle}
+            playlistTitle={playlistProcessing?.currentPlaylist?.title}
+            error={playlistProcessing?.error}
           />
         </div>
       </div>
@@ -847,6 +902,15 @@ function WorkspaceContent() {
           </div>
         </div>
       )}
+      <BulkCreditActionModal
+        isOpen={!!bulkCreditsGuard}
+        currentCredits={bulkCreditsGuard?.currentCredits || 0}
+        requiredCredits={bulkCreditsGuard?.requiredCredits || 0}
+        affordableCount={bulkCreditsGuard?.affordableCount || 0}
+        onClose={closeBulkCreditsGuard}
+        onDownloadAffordable={downloadAffordableBulkNow}
+        onUpgrade={upgradeForBulkDownload}
+      />
       {/* Credits Modal */}
       <InsufficientCreditsModal
         isOpen={isCreditsModalOpen}

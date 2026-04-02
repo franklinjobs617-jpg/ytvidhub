@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { trackEvent, trackConversion } from "@/lib/analytics";
 import LoginModal from "@/components/LoginModel";
 import PaymentChoiceModal from "@/components/pricing/PaymentChoiceModal";
 import FAQ from "@/components/landing/FAQ";
 import CustomCreditSlider from "@/components/pricing/CustomCreditSlider";
-import { features } from "process";
 
 const plans = [
   {
@@ -95,15 +95,32 @@ const plans = [
 ];
 
 export default function PricingPage() {
+  const searchParams = useSearchParams();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { user } = useAuth();
 
+  const from = searchParams.get("from");
+  const selectedCount = Number(searchParams.get("selected") || "0");
+  const currentCredits = Number(searchParams.get("current") || "0");
+  const missingCredits = Number(searchParams.get("missing") || "0");
+  const hasBulkShortfallContext =
+    from === "bulk-shortfall" &&
+    Number.isFinite(selectedCount) &&
+    selectedCount > 0 &&
+    Number.isFinite(missingCredits) &&
+    missingCredits > 0;
+
   // 页面曝光埋点
   useEffect(() => {
-    trackEvent('pricing_page_view', { logged_in: !!user });
-  }, []);
+    trackEvent("pricing_page_view", {
+      logged_in: !!user,
+      source: from || "direct",
+      selected_count: selectedCount || 0,
+      missing_credits: missingCredits || 0,
+    });
+  }, [user, from, selectedCount, missingCredits]);
 
   const handlePurchase = (planId: string | null) => {
     if (!planId) return;
@@ -114,6 +131,9 @@ export default function PricingPage() {
       plan_price: plan?.price,
       plan_id: planId,
       logged_in: !!user,
+      source: from || "direct",
+      selected_count: selectedCount || 0,
+      missing_credits: missingCredits || 0,
     });
 
     if (!user) {
@@ -145,6 +165,18 @@ export default function PricingPage() {
           <span className="text-slate-900 font-bold underline decoration-blue-500 decoration-2 underline-offset-4">1 Download = 1 Credit | 1 AI Summary = 2 Credits</span>
         </p>
 
+        {hasBulkShortfallContext && (
+          <div className="mx-auto mb-8 max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-left">
+            <p className="text-sm font-bold text-amber-900">Finish your batch with one top-up</p>
+            <p className="mt-1 text-sm text-amber-800 leading-relaxed">
+              You selected <span className="font-semibold">{selectedCount} videos</span>, currently have{" "}
+              <span className="font-semibold">{currentCredits} credits</span>, and are only{" "}
+              <span className="font-semibold">{missingCredits} credits away</span> from completing everything.
+              After payment, we can take you back to resume the remaining downloads.
+            </p>
+          </div>
+        )}
+
         {/* Trust Bar - More Compact */}
         <div className="flex flex-wrap justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500 text-[10px] font-bold uppercase tracking-widest">
           <div className="flex items-center gap-1.5">
@@ -174,7 +206,9 @@ export default function PricingPage() {
               key={plan.name}
               className={`
                 relative flex flex-col p-8 rounded-3xl border transition-all duration-500 group
-                ${plan.highlight
+                ${hasBulkShortfallContext && plan.id === "a"
+                  ? "bg-white border-amber-300 ring-[10px] ring-amber-500/10 shadow-[0_30px_60px_-20px_rgba(245,158,11,0.4)]"
+                  : plan.highlight
                   ? "bg-white border-blue-200 ring-[12px] ring-blue-500/5 shadow-[0_40px_80px_-15px_rgba(59,130,246,0.15)] scale-105 z-10"
                   : "bg-white/70 backdrop-blur-md border-slate-200/60 hover:border-blue-300 hover:shadow-2xl hover:bg-white"
                 }
@@ -188,6 +222,11 @@ export default function PricingPage() {
               {plan.tag && (
                 <span className="absolute top-6 right-6 bg-emerald-50 text-emerald-600 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter border border-emerald-100">
                   {plan.tag}
+                </span>
+              )}
+              {hasBulkShortfallContext && plan.id === "a" && (
+                <span className="absolute top-6 right-6 bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter border border-amber-200">
+                  Recommended now
                 </span>
               )}
 

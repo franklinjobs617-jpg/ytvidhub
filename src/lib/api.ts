@@ -22,8 +22,14 @@ async function authenticatedFetch(endpoint: string, options: RequestInit = {}) {
   });
 
   if (response.status === 402) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || "Insufficient credits.");
+    const errorData = await response.json().catch(() => ({}));
+    const creditError = new Error(
+      errorData.message || errorData.error || "Insufficient credits."
+    ) as Error & { code?: string; details?: any };
+
+    creditError.code = errorData.code || "INSUFFICIENT_CREDITS";
+    creditError.details = errorData;
+    throw creditError;
   }
 
   return response;
