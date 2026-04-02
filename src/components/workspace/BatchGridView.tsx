@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Download, CheckSquare, Square, Play, Loader2 } from "lucide-react";
+import { Download, CheckSquare, Square, Play, Loader2, Eye } from "lucide-react";
 
 interface Video {
   id: string;
@@ -91,6 +91,17 @@ export function BatchGridView({
     onDownloadBatch(selectedVideos, downloadFormat);
   };
 
+  const toggleCardSelection = (video: Video) => {
+    if (video.hasSubtitles === false) return;
+    const next = new Set(selectedIds);
+    if (next.has(video.id)) {
+      next.delete(video.id);
+    } else {
+      next.add(video.id);
+    }
+    setSelectedIds(next);
+  };
+
   const selectedCount = selectedIds.size;
   const requiredCredits = selectedCount;
   const shortfall =
@@ -175,6 +186,9 @@ export function BatchGridView({
           </span>
         </div>
       )}
+      <div className="px-3 sm:px-6 py-2 bg-blue-50 border-b border-blue-100 text-xs sm:text-sm text-blue-800 font-medium">
+        Click cards to select. Use Preview to open single-video analysis.
+      </div>
 
       {loadingCount > 0 && (
         <div className="px-3 sm:px-6 py-2.5 bg-blue-50 border-b border-blue-100 flex items-center gap-2 text-xs sm:text-sm text-blue-800">
@@ -198,6 +212,7 @@ export function BatchGridView({
             return (
               <div
                 key={video.id}
+                onClick={() => !isLoading && toggleCardSelection(video)}
                 className={`group relative rounded-lg overflow-hidden border-2 transition-all ${
                   isLoading
                     ? "border-slate-200"
@@ -208,10 +223,7 @@ export function BatchGridView({
                     : "border-slate-200 opacity-70"
                 }`}
               >
-                <div
-                  className="relative aspect-video bg-slate-100"
-                  onClick={() => !isLoading && onVideoClick?.(video)}
-                >
+                <div className="relative aspect-video bg-slate-100">
                   {isLoading ? (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 animate-pulse">
                       <div className="w-16 h-16 border-4 border-slate-300 border-t-slate-400 rounded-full animate-spin" />
@@ -253,6 +265,20 @@ export function BatchGridView({
                           )}
                         </div>
                       </div>
+
+                      {onVideoClick && isSelectable && (
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onVideoClick(video);
+                          }}
+                          className="absolute top-2 right-2 z-10 px-2 py-1 rounded-md bg-black/70 text-white text-[10px] font-semibold hover:bg-black/80 transition-colors flex items-center gap-1"
+                        >
+                          <Eye className="w-3 h-3" />
+                          Preview
+                        </button>
+                      )}
 
                       {video.duration && (
                         <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/80 text-white text-xs font-medium rounded">
