@@ -100,6 +100,8 @@ function WorkspaceContent() {
 
   const [showBatchView, setShowBatchView] = useState(shouldShowBatchMode);
   const isBatchMode = shouldShowBatchMode && showBatchView;
+  const [batchSelectedIds, setBatchSelectedIds] = useState<string[]>([]);
+  const [hasConfirmedPreviewLeave, setHasConfirmedPreviewLeave] = useState(false);
 
   const placeholderVideos = initialUrls.map(url => {
     const id = extractVideoId(url);
@@ -136,6 +138,8 @@ function WorkspaceContent() {
   const [isTranscriptLoading, setIsTranscriptLoading] = useState(false);
   const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
   const [showTranslateModal, setShowTranslateModal] = useState(false);
+
+  const selectedBatchCount = batchSelectedIds.length;
 
   const {
     isAiLoading,
@@ -325,6 +329,24 @@ function WorkspaceContent() {
       }
     }
   }, [summaryData, currentVideo?.id, isAiLoading]);
+
+  useEffect(() => {
+    setBatchSelectedIds((previous) => {
+      if (previous.length === 0) return previous;
+      const validIds = new Set(
+        videoList
+          .filter((video) => video.hasSubtitles !== false)
+          .map((video) => video.id)
+      );
+      const filtered = previous.filter((id) => validIds.has(id));
+      if (filtered.length === previous.length) return previous;
+      return filtered;
+    });
+  }, [videoList]);
+
+  useEffect(() => {
+    setHasConfirmedPreviewLeave(false);
+  }, [batchSelectedIds.join(",")]);
 
   // 字幕预加载：后台预加载其他视频的字幕
   useEffect(() => {
@@ -631,7 +653,15 @@ function WorkspaceContent() {
         <header className="h-14 border-b border-slate-100 flex items-center justify-between px-4 shrink-0 bg-white">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => window.location.href = "/"}
+              onClick={() => {
+                if (selectedBatchCount > 0) {
+                  const confirmed = window.confirm(
+                    `You have ${selectedBatchCount} selected videos. Leave batch mode and discard this selection?`
+                  );
+                  if (!confirmed) return;
+                }
+                window.location.href = "/";
+              }}
               className="p-2 hover:bg-slate-50 rounded-lg transition-colors"
             >
               <ArrowLeft size={18} className="text-slate-500" />
@@ -653,6 +683,18 @@ function WorkspaceContent() {
           <BatchGridView
             videos={videoList}
             userCredits={normalizedUserCredits}
+            initialSelectedIds={batchSelectedIds}
+            onSelectedIdsChange={(nextSelectedIds) => {
+              setBatchSelectedIds((previous) => {
+                if (
+                  previous.length === nextSelectedIds.length &&
+                  previous.every((id, index) => id === nextSelectedIds[index])
+                ) {
+                  return previous;
+                }
+                return nextSelectedIds;
+              });
+            }}
             onDownloadSingle={(video, format) => {
               startSingleDownload(video, format, transcriptLang);
             }}
@@ -660,6 +702,13 @@ function WorkspaceContent() {
               startBulkDownload(videos, format, transcriptLang);
             }}
             onVideoClick={(video) => {
+              if (selectedBatchCount > 0 && !hasConfirmedPreviewLeave) {
+                const confirmed = window.confirm(
+                  `You have ${selectedBatchCount} selected videos. Open preview now? Your selection will be kept when you return.`
+                );
+                if (!confirmed) return;
+                setHasConfirmedPreviewLeave(true);
+              }
               setCurrentVideo(video);
               setShowBatchView(false);
             }}

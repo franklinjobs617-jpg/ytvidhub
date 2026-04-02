@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Download, CheckSquare, Square, Play, Loader2, Eye } from "lucide-react";
 
 interface Video {
@@ -23,6 +23,8 @@ interface BatchGridViewProps {
   progress?: number;
   statusText?: string;
   userCredits?: number;
+  initialSelectedIds?: string[];
+  onSelectedIdsChange?: (selectedIds: string[]) => void;
 }
 
 export function BatchGridView({
@@ -34,9 +36,15 @@ export function BatchGridView({
   progress = 0,
   statusText = "",
   userCredits,
+  initialSelectedIds,
+  onSelectedIdsChange,
 }: BatchGridViewProps) {
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(
+    () => new Set(initialSelectedIds || [])
+  );
   const [downloadFormat, setDownloadFormat] = useState("srt");
+  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const longPressTriggeredRef = useRef(false);
 
   const selectableVideos = useMemo(
     () => videos.filter((video) => video.hasSubtitles !== false),
@@ -50,6 +58,15 @@ export function BatchGridView({
     typeof userCredits === "number" && !Number.isNaN(userCredits)
       ? Math.max(0, userCredits)
       : null;
+  const initialSelectionSignature = useMemo(
+    () => (initialSelectedIds || []).slice().sort().join(","),
+    [initialSelectedIds]
+  );
+
+  useEffect(() => {
+    if (!initialSelectedIds) return;
+    setSelectedIds(new Set(initialSelectedIds));
+  }, [initialSelectionSignature]);
 
   useEffect(() => {
     setSelectedIds((previous) => {
@@ -58,10 +75,20 @@ export function BatchGridView({
       );
       if (stillValid.size > 0) return stillValid;
 
+      const selectedFromProps = (initialSelectedIds || []).filter((id) =>
+        selectableIds.has(id)
+      );
+      if (selectedFromProps.length > 0) return new Set(selectedFromProps);
+
       if (selectableVideos.length <= 0) return new Set();
       return new Set(selectableVideos.map((video) => video.id));
     });
-  }, [selectableIds, selectableVideos]);
+  }, [selectableIds, selectableVideos, initialSelectionSignature, initialSelectedIds]);
+
+  useEffect(() => {
+    if (!onSelectedIdsChange) return;
+    onSelectedIdsChange([...selectedIds]);
+  }, [selectedIds, onSelectedIdsChange]);
 
   const toggleSelect = (id: string, event: React.MouseEvent) => {
     event.stopPropagation();
@@ -101,6 +128,43 @@ export function BatchGridView({
     }
     setSelectedIds(next);
   };
+
+  const clearLongPressTimer = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const handleCardClick = (video: Video, isLoading: boolean) => {
+    if (longPressTriggeredRef.current) {
+      longPressTriggeredRef.current = false;
+      return;
+    }
+    if (!isLoading) {
+      toggleCardSelection(video);
+    }
+  };
+
+  const handleCardTouchStart = (video: Video, isSelectable: boolean) => {
+    if (!onVideoClick || !isSelectable) return;
+    clearLongPressTimer();
+    longPressTriggeredRef.current = false;
+    longPressTimerRef.current = setTimeout(() => {
+      longPressTriggeredRef.current = true;
+      onVideoClick(video);
+    }, 450);
+  };
+
+  const handleCardTouchEnd = () => {
+    clearLongPressTimer();
+  };
+
+  useEffect(() => {
+    return () => {
+      clearLongPressTimer();
+    };
+  }, []);
 
   const selectedCount = selectedIds.size;
   const requiredCredits = selectedCount;
@@ -212,7 +276,11 @@ export function BatchGridView({
             return (
               <div
                 key={video.id}
-                onClick={() => !isLoading && toggleCardSelection(video)}
+                onClick={() => handleCardClick(video, isLoading)}
+                onTouchStart={() => handleCardTouchStart(video, isSelectable)}
+                onTouchEnd={handleCardTouchEnd}
+                onTouchMove={handleCardTouchEnd}
+                onTouchCancel={handleCardTouchEnd}
                 className={`group relative rounded-lg overflow-hidden border-2 transition-all ${
                   isLoading
                     ? "border-slate-200"
