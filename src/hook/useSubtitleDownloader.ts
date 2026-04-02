@@ -236,6 +236,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
               playlists: playlists_processed
             }),
             {
+              id: `playlist-found-${total_videos}-${playlists_processed}`,
               position: "top-center",
               duration: 3000
             }

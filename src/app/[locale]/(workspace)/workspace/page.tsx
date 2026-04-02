@@ -37,6 +37,7 @@ import { TranslateModal } from "@/components/workspace/TranslateModal";
 import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
 import { BulkCreditActionModal } from "@/components/workspace/BulkCreditActionModal";
 import { BulkPostPartialUpsellModal } from "@/components/workspace/BulkPostPartialUpsellModal";
+import { BatchActionConfirmModal } from "@/components/workspace/BatchActionConfirmModal";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -102,6 +103,10 @@ function WorkspaceContent() {
   const isBatchMode = shouldShowBatchMode && showBatchView;
   const [batchSelectedIds, setBatchSelectedIds] = useState<string[]>([]);
   const [hasConfirmedPreviewLeave, setHasConfirmedPreviewLeave] = useState(false);
+  const [batchConfirmAction, setBatchConfirmAction] = useState<{
+    mode: "leave_batch" | "open_preview";
+    video?: any;
+  } | null>(null);
 
   const placeholderVideos = initialUrls.map(url => {
     const id = extractVideoId(url);
@@ -347,6 +352,28 @@ function WorkspaceContent() {
   useEffect(() => {
     setHasConfirmedPreviewLeave(false);
   }, [batchSelectedIds.join(",")]);
+
+  const confirmBatchAction = () => {
+    if (!batchConfirmAction) return;
+
+    if (batchConfirmAction.mode === "leave_batch") {
+      setBatchConfirmAction(null);
+      window.location.href = "/";
+      return;
+    }
+
+    if (batchConfirmAction.mode === "open_preview" && batchConfirmAction.video) {
+      setHasConfirmedPreviewLeave(true);
+      toast.success(`Selection kept: ${selectedBatchCount} videos.`, {
+        id: "batch-selection-kept",
+        description: "You can return to batch mode anytime.",
+      });
+      setCurrentVideo(batchConfirmAction.video);
+      setShowBatchView(false);
+    }
+
+    setBatchConfirmAction(null);
+  };
 
   // 字幕预加载：后台预加载其他视频的字幕
   useEffect(() => {
@@ -655,10 +682,8 @@ function WorkspaceContent() {
             <button
               onClick={() => {
                 if (selectedBatchCount > 0) {
-                  const confirmed = window.confirm(
-                    `You have ${selectedBatchCount} selected videos. Leave batch mode and discard this selection?`
-                  );
-                  if (!confirmed) return;
+                  setBatchConfirmAction({ mode: "leave_batch" });
+                  return;
                 }
                 window.location.href = "/";
               }}
@@ -703,11 +728,11 @@ function WorkspaceContent() {
             }}
             onVideoClick={(video) => {
               if (selectedBatchCount > 0 && !hasConfirmedPreviewLeave) {
-                const confirmed = window.confirm(
-                  `You have ${selectedBatchCount} selected videos. Open preview now? Your selection will be kept when you return.`
-                );
-                if (!confirmed) return;
-                setHasConfirmedPreviewLeave(true);
+                setBatchConfirmAction({
+                  mode: "open_preview",
+                  video,
+                });
+                return;
               }
               setCurrentVideo(video);
               setShowBatchView(false);
@@ -760,6 +785,31 @@ function WorkspaceContent() {
             playlistTitle={playlistProcessing?.currentPlaylist?.title}
             error={playlistProcessing?.error}
           />
+          <BatchActionConfirmModal
+            isOpen={!!batchConfirmAction}
+            title={
+              batchConfirmAction?.mode === "leave_batch"
+                ? "Leave Batch Mode?"
+                : "Open Preview?"
+            }
+            description={
+              batchConfirmAction?.mode === "leave_batch"
+                ? `You currently selected ${selectedBatchCount} videos. Leaving now will discard this selection.`
+                : `You selected ${selectedBatchCount} videos. We will keep your selection and you can continue batch download after preview.`
+            }
+            confirmLabel={
+              batchConfirmAction?.mode === "leave_batch"
+                ? "Leave and discard"
+                : "Open preview"
+            }
+            cancelLabel={
+              batchConfirmAction?.mode === "leave_batch"
+                ? "Stay in batch"
+                : "Keep selecting"
+            }
+            onCancel={() => setBatchConfirmAction(null)}
+            onConfirm={confirmBatchAction}
+          />
         </div>
       </div>
     );
@@ -773,6 +823,11 @@ function WorkspaceContent() {
             onClick={() => {
               if (shouldShowBatchMode && !showBatchView) {
                 setShowBatchView(true);
+                if (selectedBatchCount > 0) {
+                  toast.success(`Restored ${selectedBatchCount} selected videos.`, {
+                    id: "batch-selection-restored",
+                  });
+                }
               } else {
                 window.location.href = "/";
               }
