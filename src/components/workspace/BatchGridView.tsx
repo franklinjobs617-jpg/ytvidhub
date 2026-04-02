@@ -58,20 +58,13 @@ export function BatchGridView({
       );
       if (stillValid.size > 0) return stillValid;
 
-      const defaultSelectCount =
-        normalizedCredits === null
-          ? selectableVideos.length
-          : Math.min(normalizedCredits, selectableVideos.length);
-
-      if (defaultSelectCount <= 0) return new Set();
-      return new Set(
-        selectableVideos.slice(0, defaultSelectCount).map((video) => video.id)
-      );
+      if (selectableVideos.length <= 0) return new Set();
+      return new Set(selectableVideos.map((video) => video.id));
     });
-  }, [selectableIds, selectableVideos, normalizedCredits]);
+  }, [selectableIds, selectableVideos]);
 
-  const toggleSelect = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const toggleSelect = (id: string, event: React.MouseEvent) => {
+    event.stopPropagation();
     if (!selectableIds.has(id)) return;
 
     const next = new Set(selectedIds);
@@ -101,7 +94,9 @@ export function BatchGridView({
   const selectedCount = selectedIds.size;
   const requiredCredits = selectedCount;
   const shortfall =
-    normalizedCredits === null ? 0 : Math.max(0, requiredCredits - normalizedCredits);
+    normalizedCredits === null
+      ? 0
+      : Math.max(0, requiredCredits - normalizedCredits);
   const allSelectableSelected =
     selectableVideos.length > 0 && selectedCount === selectableVideos.length;
   const unavailableCount = Math.max(0, videos.length - selectableVideos.length);
@@ -110,8 +105,8 @@ export function BatchGridView({
   ).length;
 
   const buttonText = (() => {
-    if (selectedCount === 0) return "Select videos";
-    if (shortfall > 0) return `Need ${shortfall} more credits`;
+    if (selectedCount === 0) return "Select at least 1 video";
+    if (shortfall > 0) return `Start now, ${shortfall} pending`;
     return `Download ${selectedCount} (${requiredCredits} credits)`;
   })();
 
@@ -158,23 +153,36 @@ export function BatchGridView({
           >
             <Download className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{buttonText}</span>
-            <span className="sm:hidden">{selectedCount > 0 ? `${selectedCount}` : "Download"}</span>
+            <span className="sm:hidden">
+              {selectedCount > 0 ? `${selectedCount}` : "Download"}
+            </span>
           </button>
         </div>
 
         <div className="text-xs text-slate-500 font-medium text-center sm:text-left">
           {videos.length} videos
-          {normalizedCredits !== null && ` • ${normalizedCredits} credits`}
-          {unavailableCount > 0 && ` • ${unavailableCount} unavailable`}
+          {` | selected ${selectedCount}`}
+          {` | cost ${requiredCredits} credits`}
+          {normalizedCredits !== null && ` | balance ${normalizedCredits} credits`}
+          {unavailableCount > 0 && ` | ${unavailableCount} unavailable`}
         </div>
       </div>
+
+      {normalizedCredits !== null && loadingCount === 0 && (
+        <div className="px-3 sm:px-6 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-2 text-xs sm:text-sm text-slate-600">
+          <span className="font-medium">
+            You have {normalizedCredits} credits. We will start what you can afford now, and keep the rest ready to resume.
+          </span>
+        </div>
+      )}
 
       {loadingCount > 0 && (
         <div className="px-3 sm:px-6 py-2.5 bg-blue-50 border-b border-blue-100 flex items-center gap-2 text-xs sm:text-sm text-blue-800">
           <Loader2 className="w-4 h-4 animate-spin flex-shrink-0" />
           <span>
-            Fetching video details for {loadingCount} item{loadingCount > 1 ? "s" : ""}...
-            Please wait a few seconds before downloading.
+            Fetching video details for {loadingCount} item
+            {loadingCount > 1 ? "s" : ""}... Please wait a few seconds before
+            downloading.
           </span>
         </div>
       )}
@@ -183,7 +191,8 @@ export function BatchGridView({
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-4">
           {videos.map((video) => {
             const isLoading =
-              video.title === "Loading video info..." || video.title.includes("Loading");
+              video.title === "Loading video info..." ||
+              video.title.includes("Loading");
             const isSelectable = video.hasSubtitles !== false && !isLoading;
 
             return (
@@ -217,7 +226,10 @@ export function BatchGridView({
 
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
-                          <Play className="w-6 h-6 text-slate-900 ml-1" fill="currentColor" />
+                          <Play
+                            className="w-6 h-6 text-slate-900 ml-1"
+                            fill="currentColor"
+                          />
                         </div>
                       </div>
 
@@ -286,14 +298,18 @@ export function BatchGridView({
         <div className="absolute inset-0 z-50 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center">
           <div className="w-full max-w-md text-center px-6">
             <div className="w-16 h-16 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-slate-900 mb-2">{statusText || "Downloading..."}</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">
+              {statusText || "Downloading..."}
+            </h3>
             <div className="w-full bg-slate-100 rounded-full h-3 mb-2 overflow-hidden shadow-inner">
               <div
                 className="bg-blue-600 h-full transition-all duration-500 ease-out"
                 style={{ width: `${Math.round(progress)}%` }}
               />
             </div>
-            <span className="text-sm font-medium text-slate-600">{Math.round(progress)}% Complete</span>
+            <span className="text-sm font-medium text-slate-600">
+              {Math.round(progress)}% Complete
+            </span>
           </div>
         </div>
       )}

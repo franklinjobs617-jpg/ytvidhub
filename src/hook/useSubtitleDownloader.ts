@@ -61,6 +61,14 @@ interface PendingBulkTask {
   source: string;
 }
 
+interface PostPartialUpsellState {
+  completedCount: number;
+  remainingCount: number;
+  totalSelected: number;
+  currentCredits: number;
+  shortfall: number;
+}
+
 const PENDING_BULK_TASK_KEY = "ytvidhub_pending_bulk_resume_v1";
 
 export function useSubtitleDownloader(onCreditsChanged?: () => void) {
@@ -81,6 +89,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
   const [bulkCreditsGuard, setBulkCreditsGuard] = useState<BulkCreditsGuardState | null>(null);
+  const [postPartialUpsell, setPostPartialUpsell] = useState<PostPartialUpsellState | null>(null);
 
   const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const processingCancelRef = useRef<boolean>(false);
@@ -100,6 +109,25 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     if (typeof window === "undefined") return "";
     const firstSegment = window.location.pathname.split("/").filter(Boolean)[0];
     return firstSegment && firstSegment.length === 2 ? `/${firstSegment}` : "";
+  };
+
+  const gotoPricingWithBulkContext = (params: {
+    selected: number;
+    current: number;
+    missing: number;
+    stage: "precheck" | "post-partial";
+  }) => {
+    const localePrefix = getLocalePrefix();
+    const query = new URLSearchParams({
+      from: "bulk-shortfall",
+      selected: String(params.selected),
+      current: String(params.current),
+      missing: String(params.missing),
+      resume: "1",
+      stage: params.stage,
+    });
+
+    window.location.href = `${localePrefix}/pricing?${query.toString()}`;
   };
 
   const savePendingBulkTask = (task: PendingBulkTask) => {
@@ -531,23 +559,55 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
       if (currentCredits < requiredCredits) {
         const shortfall = Math.max(0, requiredCredits - currentCredits);
-        setBulkCreditsGuard({
-          videos: normalizedVideos,
+        if (currentCredits <= 0) {
+          setBulkCreditsGuard({
+            videos: normalizedVideos,
+            format,
+            lang,
+            currentCredits,
+            requiredCredits,
+            affordableCount: 0,
+            shortfall,
+          });
+          toast.info(`You need ${shortfall} more credits to start this batch.`);
+
+          trackConversion("download_error", {
+            type: "bulk",
+            reason: "insufficient_credits_precheck",
+            currentCredits,
+            requiredCredits,
+            shortfall,
+          });
+          return;
+        }
+
+        const downloadableNow = normalizedVideos.slice(0, currentCredits);
+        const remaining = normalizedVideos.slice(currentCredits);
+
+        savePendingBulkTask({
+          videos: remaining,
           format,
           lang,
-          currentCredits,
-          requiredCredits,
-          affordableCount: Math.max(0, currentCredits),
-          shortfall,
+          createdAt: Date.now(),
+          source: "remaining_after_partial_auto",
         });
-        toast.info(`You need ${shortfall} more credits to download all selected videos.`);
 
-        trackConversion("download_error", {
+        toast.info(`Starting ${downloadableNow.length} downloads now`, {
+          description: `${remaining.length} videos are saved for one-click resume after top-up.`,
+        });
+
+        trackConversion("download_start", {
           type: "bulk",
-          reason: "insufficient_credits_precheck",
+          source: "partial_affordable_auto",
           currentCredits,
           requiredCredits,
-          shortfall,
+          partialCount: downloadableNow.length,
+          remainingCount: remaining.length,
+        });
+
+        await startBulkDownload(downloadableNow, format, lang, {
+          skipCreditPrecheck: true,
+          source: "partial_affordable",
         });
         return;
       }
@@ -681,6 +741,24 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
               clearPendingBulkTask();
             }
 
+            if (options?.source === "partial_affordable") {
+              const pending = readPendingBulkTask();
+              const remainingCount = pending?.videos?.length || 0;
+              if (remainingCount > 0) {
+                const totalSelected = normalizedVideos.length + remainingCount;
+                setTimeout(() => {
+                  const latestCredits = getCurrentCredits();
+                  setPostPartialUpsell({
+                    completedCount: normalizedVideos.length,
+                    remainingCount,
+                    totalSelected,
+                    currentCredits: latestCredits,
+                    shortfall: Math.max(0, remainingCount - latestCredits),
+                  });
+                }, 800);
+              }
+            }
+
             setTimeout(() => {
               if (onCreditsChanged) onCreditsChanged();
             }, 1000);
@@ -766,16 +844,41 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       source: "upgrade_from_shortfall",
     });
 
-    const localePrefix = getLocalePrefix();
-    const query = new URLSearchParams({
-      from: "bulk-shortfall",
-      selected: String(requiredCredits),
-      current: String(currentCredits),
-      missing: String(shortfall),
-      resume: "1",
+    gotoPricingWithBulkContext({
+      selected: requiredCredits,
+      current: currentCredits,
+      missing: shortfall,
+      stage: "precheck",
     });
+  };
 
-    window.location.href = `${localePrefix}/pricing?${query.toString()}`;
+  const closePostPartialUpsell = () => {
+    setPostPartialUpsell(null);
+  };
+
+  const upgradeRemainingBulkDownload = () => {
+    const pending = readPendingBulkTask();
+    if (!pending) {
+      setPostPartialUpsell(null);
+      return;
+    }
+
+    const requiredCredits = pending.videos.length;
+    const currentCredits = getCurrentCredits();
+    const shortfall = Math.max(0, requiredCredits - currentCredits);
+    setPostPartialUpsell(null);
+
+    gotoPricingWithBulkContext({
+      selected: requiredCredits,
+      current: currentCredits,
+      missing: shortfall,
+      stage: "post-partial",
+    });
+  };
+
+  const resumeRemainingBulkNow = async () => {
+    setPostPartialUpsell(null);
+    await resumePendingBulkDownload();
   };
 
   const resumePendingBulkDownload = async () => {
@@ -950,6 +1053,9 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     startBulkDownload,
     downloadAffordableBulkNow,
     upgradeForBulkDownload,
+    closePostPartialUpsell,
+    upgradeRemainingBulkDownload,
+    resumeRemainingBulkNow,
     closeBulkCreditsGuard,
     resumePendingBulkDownload,
     hasPendingBulkDownload,
@@ -971,5 +1077,6 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     setIsCreditsModalOpen,
     modalConfig,
     bulkCreditsGuard,
+    postPartialUpsell,
   };
 }

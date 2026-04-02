@@ -36,12 +36,17 @@ import { TranslateModal } from "@/components/workspace/TranslateModal";
 
 import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
 import { BulkCreditActionModal } from "@/components/workspace/BulkCreditActionModal";
+import { BulkPostPartialUpsellModal } from "@/components/workspace/BulkPostPartialUpsellModal";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, refreshUser } = useAuth();
+  const normalizedUserCredits =
+    typeof user?.credits === "number"
+      ? user.credits
+      : parseInt(String(user?.credits ?? "0"), 10) || 0;
 
   // Anti-devtools protection
   useEffect(() => {
@@ -142,6 +147,9 @@ function WorkspaceContent() {
     startBulkDownload,
     downloadAffordableBulkNow,
     upgradeForBulkDownload,
+    closePostPartialUpsell,
+    upgradeRemainingBulkDownload,
+    resumeRemainingBulkNow,
     closeBulkCreditsGuard,
     resumePendingBulkDownload,
     hasPendingBulkDownload,
@@ -156,6 +164,7 @@ function WorkspaceContent() {
     setIsCreditsModalOpen,
     modalConfig,
     bulkCreditsGuard,
+    postPartialUpsell,
   } = useSubtitleDownloader(refreshUser);
 
   useEffect(() => {
@@ -595,7 +604,7 @@ function WorkspaceContent() {
                 <span className="text-[10px] font-black text-amber-900">C</span>
               </div>
               <span className="text-sm font-bold text-amber-700 tabular-nums">
-                {user?.credits ?? 0}
+                {normalizedUserCredits}
               </span>
             </div>
             <button
@@ -634,7 +643,7 @@ function WorkspaceContent() {
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-100 rounded-full">
-              <span className="text-sm font-bold text-amber-700">{user?.credits ?? 0}</span>
+              <span className="text-sm font-bold text-amber-700">{normalizedUserCredits}</span>
               <span className="text-xs text-amber-600">Credits</span>
             </div>
             <DailyRewardButton />
@@ -643,7 +652,7 @@ function WorkspaceContent() {
         <div className="flex-1 overflow-hidden">
           <BatchGridView
             videos={videoList}
-            userCredits={typeof user?.credits === "number" ? user.credits : 0}
+            userCredits={normalizedUserCredits}
             onDownloadSingle={(video, format) => {
               startSingleDownload(video, format, transcriptLang);
             }}
@@ -674,6 +683,17 @@ function WorkspaceContent() {
             onClose={closeBulkCreditsGuard}
             onDownloadAffordable={downloadAffordableBulkNow}
             onUpgrade={upgradeForBulkDownload}
+          />
+          <BulkPostPartialUpsellModal
+            isOpen={!!postPartialUpsell}
+            completedCount={postPartialUpsell?.completedCount || 0}
+            remainingCount={postPartialUpsell?.remainingCount || 0}
+            totalSelected={postPartialUpsell?.totalSelected || 0}
+            currentCredits={postPartialUpsell?.currentCredits || 0}
+            shortfall={postPartialUpsell?.shortfall || 0}
+            onClose={closePostPartialUpsell}
+            onUpgrade={upgradeRemainingBulkDownload}
+            onResumeNow={resumeRemainingBulkNow}
           />
           <InsufficientCreditsModal
             isOpen={isCreditsModalOpen}
@@ -736,7 +756,7 @@ function WorkspaceContent() {
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded-full shadow-sm">
             <Zap size={14} className="text-yellow-500 fill-yellow-500" />
             <span className="text-sm font-bold text-yellow-700 tabular-nums">
-              {user?.credits ?? 0}
+              {normalizedUserCredits}
             </span>
             <span className="text-[11px] font-bold text-yellow-600 uppercase tracking-wide">
               Credits
@@ -910,6 +930,17 @@ function WorkspaceContent() {
         onClose={closeBulkCreditsGuard}
         onDownloadAffordable={downloadAffordableBulkNow}
         onUpgrade={upgradeForBulkDownload}
+      />
+      <BulkPostPartialUpsellModal
+        isOpen={!!postPartialUpsell}
+        completedCount={postPartialUpsell?.completedCount || 0}
+        remainingCount={postPartialUpsell?.remainingCount || 0}
+        totalSelected={postPartialUpsell?.totalSelected || 0}
+        currentCredits={postPartialUpsell?.currentCredits || 0}
+        shortfall={postPartialUpsell?.shortfall || 0}
+        onClose={closePostPartialUpsell}
+        onUpgrade={upgradeRemainingBulkDownload}
+        onResumeNow={resumeRemainingBulkNow}
       />
       {/* Credits Modal */}
       <InsufficientCreditsModal

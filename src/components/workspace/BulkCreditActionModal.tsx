@@ -26,6 +26,11 @@ export function BulkCreditActionModal({
 
   const missingCredits = Math.max(0, requiredCredits - currentCredits);
   const remainingCount = Math.max(0, requiredCredits - affordableCount);
+  const planHints = [
+    { name: "Pro", price: "$19.99/mo", credits: "500 credits" },
+    { name: "Premium", price: "$29.99/mo", credits: "1,000 credits (best value)" },
+    { name: "Researcher", price: "$199/year", credits: "3,000 credits / month" },
+  ];
 
   return (
     <AnimatePresence>
@@ -80,6 +85,19 @@ export function BulkCreditActionModal({
               download <span className="font-semibold text-slate-900"> {affordableCount} now</span>, then
               continue the remaining <span className="font-semibold text-slate-900">{remainingCount}</span> after top-up.
             </p>
+
+            <div className="rounded-xl border border-blue-100 bg-blue-50 p-3">
+              <p className="text-[11px] uppercase tracking-wider text-blue-700 font-bold mb-2">Popular plans</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {planHints.map((plan) => (
+                  <div key={plan.name} className="rounded-lg bg-white border border-blue-100 px-2.5 py-2">
+                    <p className="text-[11px] font-black text-slate-900">{plan.name}</p>
+                    <p className="text-xs font-bold text-slate-900 mt-0.5">{plan.price}</p>
+                    <p className="text-[10px] text-slate-500 mt-0.5">{plan.credits}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <div className="space-y-3">
               <button
