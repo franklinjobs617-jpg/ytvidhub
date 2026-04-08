@@ -158,6 +158,7 @@ export default async function LocaleLayout({
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <meta name="saashub-verification" content="myoi6jk5w99z" />
         {/* Google AdSense 广告代码 */}
         <Script
           id="adsbygoogle-init"
