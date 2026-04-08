@@ -26,6 +26,8 @@ export default function CustomCreditSlider({
     const PRESETS = [100, 500, 1000, 2000];
     const MIN = 20;
     const MAX = 2000;
+    const getErrorMessage = (error: unknown): string =>
+        error instanceof Error ? error.message : "Unknown error";
 
     const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuantity(Number(e.target.value));
@@ -54,6 +56,7 @@ export default function CustomCreditSlider({
                     project: "ytvidhub",
                     type: "yt_credits_custom",
                     quantity: quantity,
+                    billingMode: "payment",
                 }),
             });
 
@@ -67,9 +70,9 @@ export default function CustomCreditSlider({
             } else {
                 throw new Error("Checkout URL not found.");
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Payment failed:", error);
-            alert(`Payment failed: ${error.message}`);
+            alert(`Payment failed: ${getErrorMessage(error)}`);
         } finally {
             setLoading(false);
         }

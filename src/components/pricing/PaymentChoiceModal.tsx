@@ -15,10 +15,56 @@ export default function PaymentChoiceModal({
   onClose,
   selectedPlanId,
 }: PaymentChoiceModalProps) {
-  const [loading, setLoading] = useState(false);
+  const [loadingProvider, setLoadingProvider] = useState<"stripe" | "paypal" | null>(null);
   const { user } = useAuth();
 
   const BASE_URL = "https://api.ytvidhub.com";
+  const STRIPE_SUBSCRIPTION_TYPE_MAP: Record<string, string> = {
+    a: "ytvid_a_monthly",
+    b: "ytvid_b_monthly",
+    c: "ytvid_c_yearly",
+  };
+  const STRIPE_SUBSCRIPTION_PRICE_ID_MAP: Record<string, string | undefined> = {
+    a: process.env.NEXT_PUBLIC_STRIPE_YTVID_A_MONTHLY_PRICE_ID,
+    b: process.env.NEXT_PUBLIC_STRIPE_YTVID_B_MONTHLY_PRICE_ID,
+    c: process.env.NEXT_PUBLIC_STRIPE_YTVID_C_YEARLY_PRICE_ID,
+  };
+  const PAYPAL_SUBSCRIPTION_TYPE_MAP: Record<string, string> = {
+    a: "ytvid_a_monthly",
+    b: "ytvid_b_monthly",
+    c: "ytvid_c_yearly",
+  };
+  const PAYPAL_SUBSCRIPTION_CREDITS_MAP: Record<string, number> = {
+    ytvid_a_monthly: 500,
+    ytvid_b_monthly: 1000,
+    ytvid_c_yearly: 3000,
+  };
+  const PAYPAL_SUBSCRIPTION_APPROVE_PREFIX =
+    "https://www.paypal.com/webapps/billing/subscriptions?ba_token=";
+  const isRecord = (value: unknown): value is Record<string, unknown> =>
+    typeof value === "object" && value !== null;
+  const readString = (value: unknown): string | null =>
+    typeof value === "string" ? value : null;
+  const getErrorMessage = (error: unknown): string =>
+    error instanceof Error ? error.message : "Unknown error";
+  const savePendingPaypalContext = (subscriptionType: string) => {
+    try {
+      const expectedCredits = PAYPAL_SUBSCRIPTION_CREDITS_MAP[subscriptionType] || 0;
+      localStorage.setItem(
+        "pending_paypal_payment",
+        JSON.stringify({
+          provider: "paypal",
+          googleUserId: user?.googleUserId || "",
+          planType: subscriptionType,
+          beforeCredits: Number(user?.credits ?? 0),
+          expectedCredits,
+          createdAt: Date.now(),
+        })
+      );
+    } catch (storageError) {
+      console.warn("save pending paypal context failed", storageError);
+    }
+  };
 
   const handlePayment = async (provider: "stripe" | "paypal") => {
     if (!selectedPlanId || !user?.googleUserId) {
@@ -26,12 +72,27 @@ export default function PaymentChoiceModal({
       return;
     }
 
-    setLoading(true);
+    if (loadingProvider) return;
+
+    setLoadingProvider(provider);
     trackConversion('payment_initiated', { provider, plan_id: selectedPlanId });
     const endpoint =
       provider === "stripe"
         ? "/prod-api/stripe/getPayUrl"
-        : "/prod-api/paypal/createOrder";
+        : "/prod-api/paypal/smart/create-subscription";
+
+    const typeForProvider =
+      provider === "stripe"
+        ? STRIPE_SUBSCRIPTION_TYPE_MAP[selectedPlanId]
+        : PAYPAL_SUBSCRIPTION_TYPE_MAP[selectedPlanId];
+    const stripePriceId =
+      provider === "stripe" ? STRIPE_SUBSCRIPTION_PRICE_ID_MAP[selectedPlanId] : undefined;
+
+    if (!typeForProvider) {
+      alert(`Unsupported plan for ${provider === "stripe" ? "Stripe" : "PayPal"} subscription.`);
+      setLoadingProvider(null);
+      return;
+    }
 
     try {
       const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -39,7 +100,10 @@ export default function PaymentChoiceModal({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           googleUserId: user.googleUserId,
-          type: selectedPlanId,
+          type: typeForProvider,
+          project: "ytvidhub",
+          billingMode: provider === "stripe" ? "subscription" : undefined,
+          stripePriceId: stripePriceId || undefined,
         }),
       });
 
@@ -48,15 +112,66 @@ export default function PaymentChoiceModal({
       }
 
       const data = await response.json();
-      if (data && data.data) {
-        window.location.href = data.data;
-      } else {
-        throw new Error("Checkout URL not found.");
+      const payload: unknown = data?.data;
+
+      if (provider === "stripe") {
+        if (typeof payload === "string" && payload.startsWith("http")) {
+          window.location.href = payload;
+          return;
+        }
+        throw new Error("Stripe checkout URL not found.");
       }
-    } catch (error: any) {
+
+      if (typeof payload === "string") {
+        if (payload.startsWith("http")) {
+          savePendingPaypalContext(typeForProvider);
+          window.location.href = payload;
+          return;
+        }
+        if (payload.startsWith("I-")) {
+          savePendingPaypalContext(typeForProvider);
+          window.location.href = `${PAYPAL_SUBSCRIPTION_APPROVE_PREFIX}${encodeURIComponent(payload)}`;
+          return;
+        }
+      }
+
+      if (payload && typeof payload === "object") {
+        const payloadObj = isRecord(payload) ? payload : {};
+        const rawLinks = Array.isArray(payloadObj.links) ? payloadObj.links : [];
+        const approveLink = rawLinks.find((link) => {
+          if (!isRecord(link)) return false;
+          const rel = readString(link.rel);
+          return rel === "approve" || rel === "payer-action";
+        });
+        const approveUrlFromLinks =
+          isRecord(approveLink) && typeof approveLink.href === "string"
+            ? approveLink.href
+            : null;
+        const approveUrl =
+          readString(payloadObj.approveUrl) ||
+          readString(payloadObj.href) ||
+          readString(payloadObj.url) ||
+          approveUrlFromLinks;
+        if (typeof approveUrl === "string" && approveUrl.startsWith("http")) {
+          savePendingPaypalContext(typeForProvider);
+          window.location.href = approveUrl;
+          return;
+        }
+
+        const subscriptionId = readString(payloadObj.id);
+        if (typeof subscriptionId === "string" && subscriptionId.startsWith("I-")) {
+          savePendingPaypalContext(typeForProvider);
+          window.location.href = `${PAYPAL_SUBSCRIPTION_APPROVE_PREFIX}${encodeURIComponent(subscriptionId)}`;
+          return;
+        }
+      }
+
+      throw new Error("PayPal subscription redirect URL not found.");
+    } catch (error: unknown) {
       console.error("Payment failed:", error);
-      alert(`Payment failed: ${error.message}`);
-      setLoading(false);
+      alert(`Payment failed: ${getErrorMessage(error)}`);
+    } finally {
+      setLoadingProvider(null);
     }
   };
 
@@ -102,10 +217,10 @@ export default function PaymentChoiceModal({
           {/* Stripe Button */}
           <button
             onClick={() => handlePayment("stripe")}
-            disabled={loading}
+            disabled={!!loadingProvider}
             className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-slate-300 rounded-lg hover:bg-slate-50 transition-all duration-200 group disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? (
+            {loadingProvider === "stripe" ? (
               <span className="text-sm font-semibold text-slate-500">
                 Processing...
               </span>
@@ -134,10 +249,10 @@ export default function PaymentChoiceModal({
           {/* PayPal Button */}
           <button
             onClick={() => handlePayment("paypal")}
-            disabled={loading}
+            disabled={!!loadingProvider}
             className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-slate-300 rounded-lg hover:bg-slate-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? (
+            {loadingProvider === "paypal" ? (
               <span className="text-sm font-semibold text-slate-500">
                 Processing...
               </span>

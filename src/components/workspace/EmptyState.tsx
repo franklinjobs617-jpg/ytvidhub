@@ -24,29 +24,30 @@ export function EmptyState({ onUrlSubmit }: EmptyStateProps) {
   };
 
   const exampleUrls = [
-    { 
-      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", 
+    {
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       title: "Music Video",
-      type: "music" 
+      type: "music",
     },
-    { 
-      url: "https://www.youtube.com/watch?v=jNQXAC9IVRw", 
+    {
+      url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
       title: "Tech Talk",
-      type: "tech" 
+      type: "tech",
     },
-    { 
-      url: "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME", 
+    {
+      url: "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME",
       title: "Course Playlist",
-      type: "playlist" 
-    }
+      type: "playlist",
+    },
   ];
 
   return (
     <div className="h-full flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-50/50 p-4 md:p-8">
-      <div className={`max-w-lg w-full transition-all duration-700 ease-out ${
-        isAnimating ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}>
-        
+      <div
+        className={`max-w-lg w-full transition-all duration-700 ease-out ${
+          isAnimating ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        }`}
+      >
         {/* 主图标 - 精致但简洁 */}
         <div className="text-center mb-8">
           <div className="relative inline-flex items-center justify-center w-16 h-16 mb-6">
@@ -55,7 +56,7 @@ export function EmptyState({ onUrlSubmit }: EmptyStateProps) {
               <FileText size={24} className="text-white" />
             </div>
           </div>
-          
+
           {/* 文案 - 友好直接 */}
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
             Ready to analyze?
@@ -65,7 +66,6 @@ export function EmptyState({ onUrlSubmit }: EmptyStateProps) {
           </p>
         </div>
 
-        {/* 输入区域 - 突出但优雅，支持键盘导航 */}
         <form onSubmit={handleSubmit} className="mb-8">
           <div className="relative group">
             <input
@@ -102,15 +102,28 @@ export function EmptyState({ onUrlSubmit }: EmptyStateProps) {
                 aria-label={`Try example: ${example.title}`}
               >
                 <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center shrink-0">
-                  {example.type === 'music' && <Play size={14} className="text-slate-600" />}
-                  {example.type === 'tech' && <Zap size={14} className="text-slate-600" />}
-                  {example.type === 'playlist' && <Brain size={14} className="text-slate-600" />}
+                  {example.type === "music" && (
+                    <Play size={14} className="text-slate-600" />
+                  )}
+                  {example.type === "tech" && (
+                    <Zap size={14} className="text-slate-600" />
+                  )}
+                  {example.type === "playlist" && (
+                    <Brain size={14} className="text-slate-600" />
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-slate-700">{example.title}</div>
-                  <div className="text-xs text-slate-500 truncate">{example.url}</div>
+                  <div className="font-medium text-slate-700">
+                    {example.title}
+                  </div>
+                  <div className="text-xs text-slate-500 truncate">
+                    {example.url}
+                  </div>
                 </div>
-                <ArrowRight size={14} className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowRight
+                  size={14}
+                  className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                />
               </button>
             ))}
           </div>

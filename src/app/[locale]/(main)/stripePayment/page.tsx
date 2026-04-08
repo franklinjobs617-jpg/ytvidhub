@@ -11,6 +11,7 @@ export default function StripeCallback() {
 
     const [status, setStatus] = useState<"verifying" | "success" | "error" | "timeout">("verifying");
     const [errorMsg, setErrorMsg] = useState("");
+    const [checkCount, setCheckCount] = useState(0);
 
     const checkCountRef = useRef(0);
     const maxChecks = 15;
@@ -23,7 +24,7 @@ export default function StripeCallback() {
 
         const checkOrderStatus = async () => {
             try {
-                const res = await fetch(`https://inewline.com/prod-api/stripe/check-order-status?sessionId=${sessionId}`);
+                const res = await fetch(`https://api.ytvidhub.com/prod-api/stripe/check-order-status?sessionId=${sessionId}`);
                 const result = await res.json();
 
                 if (result.data === 'paid') {
@@ -34,12 +35,14 @@ export default function StripeCallback() {
                 }
             } catch (err) {
                 console.error("Verification error:", err);
+                setErrorMsg("Network error while verifying payment status.");
                 return false;
             }
         };
 
         const timer = setInterval(async () => {
             checkCountRef.current += 1;
+            setCheckCount(checkCountRef.current);
             const isDone = await checkOrderStatus();
 
             if (isDone) {
@@ -71,7 +74,7 @@ export default function StripeCallback() {
                         <Loader2 className="w-16 h-16 text-indigo-500 animate-spin mx-auto mb-6" />
                         <h1 className="text-3xl font-black italic tracking-tighter mb-4 uppercase">Verifying Order</h1>
                         <p className="text-zinc-500">We&apos;re finalizing your high-speed credits. Don&apos;t close this page.</p>
-                        <p className="text-zinc-700 text-xs mt-4">Attempt {checkCountRef.current} of {maxChecks}...</p>
+                        <p className="text-zinc-700 text-xs mt-4">Attempt {checkCount} of {maxChecks}...</p>
                     </>
                 )}
 
