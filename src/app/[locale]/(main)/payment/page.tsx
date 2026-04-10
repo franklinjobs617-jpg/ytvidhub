@@ -12,7 +12,6 @@ interface PendingPaypalPayment {
   googleUserId: string;
   planType: string;
   beforeCredits: number;
-  expectedCredits: number;
   createdAt: number;
 }
 
@@ -20,6 +19,8 @@ interface GoogleUserPayload {
   credits?: string | number;
   googleUserId?: string;
 }
+
+type PaymentOrderStatus = "paid" | "pending" | "failed" | "not_found" | "unknown";
 
 const BASE_URL = "https://api.ytvidhub.com";
 const CONTEXT_KEY = "pending_paypal_payment";
@@ -54,22 +55,6 @@ const syncLocalUserCredits = (nextCredits: number) => {
   }
 };
 
-const getStepState = (status: PageStatus, index: number): "done" | "active" | "todo" => {
-  if (status === "success") return "done";
-  if (status === "error") return index === 0 ? "active" : "todo";
-  if (status === "processing") {
-    if (index === 0) return "done";
-    if (index === 1) return "active";
-    return "todo";
-  }
-  if (status === "verifying") {
-    if (index === 0) return "done";
-    if (index === 1) return "active";
-    return "todo";
-  }
-  return "todo";
-};
-
 export default function PayPalPaymentPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -100,11 +85,12 @@ export default function PayPalPaymentPage() {
       if (pendingContext) {
         setBeforeCredits(Number(pendingContext.beforeCredits || 0));
       }
-
-      const targetCredits =
-        pendingContext && pendingContext.expectedCredits > 0
-          ? Number(pendingContext.beforeCredits || 0) + Number(pendingContext.expectedCredits || 0)
-          : null;
+      const orderIdFromQuery =
+        searchParams.get("token") ||
+        searchParams.get("orderId") ||
+        searchParams.get("subscription_id") ||
+        searchParams.get("ba_token") ||
+        null;
 
       const query = searchParams.toString();
       if (query) {
@@ -115,7 +101,7 @@ export default function PayPalPaymentPage() {
         }
       }
 
-      const checkUser = async (): Promise<{ credited: boolean; credits: number | null }> => {
+      const checkUserCredits = async (): Promise<number | null> => {
         const response = await fetch(`${BASE_URL}/prod-api/g/getUser`, {
           method: "GET",
           headers: {
@@ -125,16 +111,35 @@ export default function PayPalPaymentPage() {
           cache: "no-store",
         });
 
-        if (!response.ok) return { credited: false, credits: null };
+        if (!response.ok) return null;
         const payload = await response.json();
         const user = payload?.data as GoogleUserPayload | undefined;
         const credits = Number(user?.credits || 0);
         setAfterCredits(credits);
+        return credits;
+      };
 
-        if (targetCredits === null) {
-          return { credited: false, credits };
+      const checkOrderStatus = async (): Promise<PaymentOrderStatus> => {
+        if (!orderIdFromQuery) return "unknown";
+        try {
+          const response = await fetch(
+            `${BASE_URL}/prod-api/paypal/check-order-status?orderId=${encodeURIComponent(orderIdFromQuery)}`,
+            {
+              method: "GET",
+              cache: "no-store",
+            }
+          );
+          if (!response.ok) return "unknown";
+          const payload = await response.json();
+          const normalized = String(payload?.data || "").toLowerCase().trim();
+          if (normalized === "paid") return "paid";
+          if (normalized === "pending") return "pending";
+          if (normalized === "failed") return "failed";
+          if (normalized === "order not found") return "not_found";
+          return "unknown";
+        } catch {
+          return "unknown";
         }
-        return { credited: credits >= targetCredits, credits };
       };
 
       timer = setInterval(async () => {
@@ -143,23 +148,36 @@ export default function PayPalPaymentPage() {
         try {
           checkCountRef.current += 1;
           setCheckCount(checkCountRef.current);
-          const { credited, credits } = await checkUser();
-          if (credited && !cancelled) {
-            if (timer) clearInterval(timer);
-            const currentCredits = credits ?? targetCredits;
-            if (typeof currentCredits === "number") {
-              syncLocalUserCredits(currentCredits);
+          const orderStatus = await checkOrderStatus();
+          if (orderStatus === "paid") {
+            const credits = await checkUserCredits();
+            if (!cancelled) {
+              if (timer) clearInterval(timer);
+              if (typeof credits === "number") {
+                syncLocalUserCredits(credits);
+              }
+              localStorage.removeItem(CONTEXT_KEY);
+              setStatus("success");
+              setTips("Payment confirmed. Credits have been added to your account.");
+              return;
             }
-            localStorage.removeItem(CONTEXT_KEY);
-            setStatus("success");
-            setTips("Payment confirmed. Credits have been added to your account.");
+          }
+
+          if (orderStatus === "failed" && !cancelled) {
+            if (timer) clearInterval(timer);
+            setStatus("error");
+            setTips("Payment verification failed. If you were charged, please contact support.");
             return;
+          }
+
+          if ((orderStatus === "not_found" || orderStatus === "unknown") && checkCountRef.current >= 6) {
+            setTips("Payment callback was received. Waiting for final confirmation from PayPal...");
           }
 
           if (!cancelled && checkCountRef.current >= MAX_CHECKS) {
             if (timer) clearInterval(timer);
             setStatus("processing");
-            setTips("Payment is successful, and credits are still being finalized. This usually completes within one minute.");
+            setTips("Payment is still processing. If you were charged, your credits will appear automatically shortly.");
           }
         } catch {
           // ignore and continue polling
@@ -184,120 +202,70 @@ export default function PayPalPaymentPage() {
     return () => clearTimeout(timer);
   }, [status, router]);
 
-  const stepLabels = ["Payment approved", "Credit sync", "Ready to continue"];
   const deltaCredits =
     beforeCredits !== null && afterCredits !== null ? Math.max(afterCredits - beforeCredits, 0) : null;
 
   return (
-    <div className="min-h-screen bg-[#020204] text-white flex items-center justify-center font-sans p-4 relative overflow-hidden">
-      <div className="absolute top-[-22%] left-[-18%] w-[34rem] h-[34rem] bg-indigo-500/20 rounded-full blur-[110px] animate-pulse" />
-      <div className="absolute bottom-[-28%] right-[-12%] w-[30rem] h-[30rem] bg-blue-500/20 rounded-full blur-[110px] animate-pulse" />
-
-      <div className="max-w-xl w-full rounded-[36px] border border-white/10 bg-zinc-900/65 backdrop-blur-2xl p-8 md:p-10 shadow-[0_45px_90px_-30px_rgba(37,99,235,0.35)] relative z-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 text-blue-200 text-[10px] font-bold uppercase tracking-[0.2em] border border-blue-400/20 mb-6">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50 text-slate-900 flex items-center justify-center font-sans p-4">
+      <div className="max-w-md w-full p-10 rounded-[32px] bg-white border border-slate-200 text-center shadow-[0_30px_80px_-40px_rgba(15,23,42,0.4)]">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-[0.2em] border border-blue-200 mb-6">
           <ShieldCheck className="w-3.5 h-3.5" />
           Secure PayPal Checkout
         </div>
 
-        <div className="mb-7">
-          <h1 className="text-3xl md:text-4xl font-black italic tracking-tight uppercase leading-[0.95]">
-            {status === "success"
-              ? "Credits Added Successfully"
-              : status === "processing"
-                ? "Payment Received"
-                : status === "error"
-                  ? "Login Required"
-                  : "Finalizing Your Payment"}
-          </h1>
-          <p className="text-zinc-300 mt-3 leading-relaxed">{tips}</p>
-        </div>
-
-        <div className="mb-7 grid grid-cols-3 gap-2">
-          {stepLabels.map((label, index) => {
-            const stepState = getStepState(status, index);
-            return (
-              <div
-                key={label}
-                className={`rounded-xl border px-3 py-3 text-[11px] font-semibold tracking-wide ${stepState === "done"
-                  ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-200"
-                  : stepState === "active"
-                    ? "border-blue-400/40 bg-blue-400/10 text-blue-200"
-                    : "border-white/10 bg-white/5 text-zinc-500"
-                  }`}
-              >
-                {label}
-              </div>
-            );
-          })}
-        </div>
-
         {status === "verifying" && (
-          <div className="rounded-2xl border border-white/10 bg-zinc-950/45 p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <Loader2 className="w-6 h-6 text-indigo-400 animate-spin" />
-              <span className="text-sm font-semibold text-zinc-200">Checking account balance updates...</span>
-            </div>
-            <p className="text-xs text-zinc-500">
-              Attempt {checkCount}/{MAX_CHECKS} · We wait for webhook-confirmed credit delivery.
-            </p>
-          </div>
+          <>
+            <Loader2 className="w-16 h-16 text-blue-600 animate-spin mx-auto mb-6" />
+            <h1 className="text-3xl font-black tracking-tight mb-3">Verifying your payment</h1>
+            <p className="text-slate-600 mb-2">{tips}</p>
+            <p className="text-slate-400 text-xs">Attempt {checkCount} / {MAX_CHECKS}</p>
+          </>
         )}
 
         {status === "success" && (
-          <div className="rounded-2xl border border-emerald-400/30 bg-emerald-400/10 p-5 mb-6">
-            <div className="flex items-center gap-3 mb-3">
-              <CheckCircle2 className="w-6 h-6 text-emerald-300" />
-              <span className="text-sm font-semibold text-emerald-100">Subscription payment is confirmed.</span>
+          <>
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 ring-8 ring-emerald-50">
+              <CheckCircle2 className="w-12 h-12 text-emerald-600" />
             </div>
+            <h1 className="text-3xl font-black tracking-tight mb-3">Payment successful 🎉</h1>
+            <p className="text-slate-600 mb-6">{tips}</p>
             {beforeCredits !== null && afterCredits !== null && (
-              <div className="text-sm text-emerald-50">
-                Credits: <span className="font-black">{beforeCredits}</span> →{" "}
-                <span className="font-black">{afterCredits}</span>
+              <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                Credits: <span className="font-black">{beforeCredits}</span> {"->"} <span className="font-black">{afterCredits}</span>
                 {deltaCredits !== null && (
-                  <span className="ml-2 inline-flex items-center gap-1 text-emerald-200">
+                  <span className="ml-2 inline-flex items-center gap-1 text-emerald-700">
                     <Sparkles className="w-3.5 h-3.5" /> +{deltaCredits}
                   </span>
                 )}
               </div>
             )}
-          </div>
+            <Link href="/workspace?resumeBulk=1&fromPayment=1" className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all w-full justify-center">
+              <Home className="w-4 h-4" /> Continue in Workspace
+            </Link>
+          </>
         )}
 
         {status === "processing" && (
-          <div className="rounded-2xl border border-yellow-400/30 bg-yellow-400/10 p-5 mb-6">
-            <div className="flex items-center gap-3 mb-3">
-              <Clock3 className="w-6 h-6 text-yellow-300" />
-              <span className="text-sm font-semibold text-yellow-100">Payment captured. Credit sync is still in progress.</span>
-            </div>
-            <p className="text-xs text-yellow-100/80">
-              You can go back now. Credits usually appear shortly after webhook processing finishes.
-            </p>
-          </div>
+          <>
+            <Clock3 className="w-16 h-16 text-amber-500 mx-auto mb-6" />
+            <h1 className="text-3xl font-black tracking-tight mb-3">Still processing</h1>
+            <p className="text-slate-600 mb-8">{tips}</p>
+            <Link href="/workspace?resumeBulk=1&fromPayment=1" className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all w-full justify-center">
+              <Home className="w-4 h-4" /> Go to Workspace
+            </Link>
+          </>
         )}
 
         {status === "error" && (
-          <div className="rounded-2xl border border-red-400/30 bg-red-400/10 p-5 mb-6">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="w-6 h-6 text-red-300" />
-              <span className="text-sm font-semibold text-red-100">Please log in and check your workspace balance.</span>
-            </div>
-          </div>
+          <>
+            <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-6" />
+            <h1 className="text-3xl font-black tracking-tight mb-3">Verification failed</h1>
+            <p className="text-slate-600 mb-8">{tips}</p>
+            <Link href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all w-full justify-center">
+              Return Home
+            </Link>
+          </>
         )}
-
-        <div className="grid sm:grid-cols-2 gap-3">
-          <Link
-            href="/workspace?resumeBulk=1&fromPayment=1"
-            className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white text-black font-black text-[11px] uppercase tracking-[0.12em] hover:bg-zinc-200 transition-all"
-          >
-            <Home className="w-4 h-4" /> Continue to Workspace
-          </Link>
-          <Link
-            href="/pricing"
-            className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-zinc-800 text-white font-black text-[11px] uppercase tracking-[0.12em] hover:bg-zinc-700 transition-all border border-white/10"
-          >
-            View Plans
-          </Link>
-        </div>
       </div>
     </div>
   );

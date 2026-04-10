@@ -4,8 +4,6 @@ import { buildCanonicalUrl } from '@/lib/url'
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const currentDate = new Date().toISOString().split('T')[0]
-
-    // 仅英文的页面（目前大部分内页尚未翻译，为了 SEO 统一重定向到英文版）
     const englishOnlyPages = [
         { path: '/youtube-subtitle-downloader', priority: 0.95, changeFreq: 'monthly' as const },
         { path: '/youtube-transcript-generator', priority: 0.95, changeFreq: 'monthly' as const },
@@ -43,7 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/terms-of-service', priority: 0.3, changeFreq: 'yearly' as const },
     ]
 
-    // 多语言页面 — 当前策略：仅首页（path: ''）支持多语言，其他页面重定向到英文
     const multilingualPages = [
         { path: '', priority: 1.0, changeFreq: 'weekly' as const },
     ]

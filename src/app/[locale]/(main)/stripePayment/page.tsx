@@ -65,25 +65,30 @@ export default function StripeCallback() {
     }, [status, router]);
 
     return (
-        <div className="min-h-screen bg-[#020204] text-white flex items-center justify-center font-sans p-4">
-            <div className="max-w-md w-full p-10 rounded-[40px] bg-zinc-900/50 border border-white/5 text-center backdrop-blur-2xl">
+        <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-blue-50 text-slate-900 flex items-center justify-center font-sans p-4">
+            <div className="max-w-md w-full p-10 rounded-[32px] bg-white border border-slate-200 text-center shadow-[0_30px_80px_-40px_rgba(15,23,42,0.4)]">
 
                 {/* 校验中状态 */}
                 {status === "verifying" && (
                     <>
-                        <Loader2 className="w-16 h-16 text-indigo-500 animate-spin mx-auto mb-6" />
-                        <h1 className="text-3xl font-black italic tracking-tighter mb-4 uppercase">Verifying Order</h1>
-                        <p className="text-zinc-500">We&apos;re finalizing your high-speed credits. Don&apos;t close this page.</p>
-                        <p className="text-zinc-700 text-xs mt-4">Attempt {checkCount} of {maxChecks}...</p>
+                        <Loader2 className="w-16 h-16 text-blue-600 animate-spin mx-auto mb-6" />
+                        <h1 className="text-3xl font-black tracking-tight mb-3">Verifying your payment</h1>
+                        <p className="text-slate-600">Please keep this page open while we sync your credits.</p>
+                        <p className="text-slate-400 text-xs mt-4">Attempt {checkCount} / {maxChecks}</p>
                     </>
                 )}
 
                 {status === "success" && (
                     <>
-                        <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-6 animate-pulse" />
-                        <h1 className="text-3xl font-black italic tracking-tighter mb-4 uppercase">Payment Success!</h1>
-                        <p className="text-zinc-500 mb-10">Your credits are ready. We&apos;ll take you back so you can continue your batch download.</p>
-                        <Link href="/workspace?resumeBulk=1&fromPayment=1" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all w-full justify-center">
+                        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 ring-8 ring-emerald-50">
+                            <CheckCircle2 className="w-12 h-12 text-emerald-600" />
+                        </div>
+                        <h1 className="text-3xl font-black tracking-tight mb-3">Payment successful 🎉</h1>
+                        <p className="text-slate-600 mb-8">Your credits are now available on this account.</p>
+                        <div className="mb-8 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+                            Verified and synced. Redirecting you back to workspace...
+                        </div>
+                        <Link href="/workspace?resumeBulk=1&fromPayment=1" className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all w-full justify-center">
                             <Home className="w-4 h-4" /> Continue in Workspace
                         </Link>
                     </>
@@ -91,10 +96,10 @@ export default function StripeCallback() {
 
                 {status === "timeout" && (
                     <>
-                        <AlertCircle className="w-16 h-16 text-yellow-500 mx-auto mb-6" />
-                        <h1 className="text-3xl font-black italic tracking-tighter mb-4 uppercase">Still Processing</h1>
-                        <p className="text-zinc-500 mb-10">Your payment is confirmed, but it&apos;s taking a moment to update your credits. Please check back in a minute.</p>
-                        <Link href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-zinc-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-700 transition-all w-full justify-center">
+                        <AlertCircle className="w-16 h-16 text-amber-500 mx-auto mb-6" />
+                        <h1 className="text-3xl font-black tracking-tight mb-3">Still processing</h1>
+                        <p className="text-slate-600 mb-10">Payment is received and credits are being finalized. Please check again in about one minute.</p>
+                        <Link href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all w-full justify-center">
                             <Home className="w-4 h-4" /> Go to Dashboard
                         </Link>
                     </>
@@ -104,9 +109,9 @@ export default function StripeCallback() {
                 {status === "error" && (
                     <>
                         <XCircle className="w-16 h-16 text-red-500 mx-auto mb-6" />
-                        <h1 className="text-3xl font-black italic tracking-tighter mb-4 uppercase">Verification Failed</h1>
-                        <p className="text-zinc-500 mb-10">{errorMsg || "We couldn't verify your payment. If you were charged, please contact support."}</p>
-                        <Link href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-zinc-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-zinc-700 transition-all w-full justify-center">
+                        <h1 className="text-3xl font-black tracking-tight mb-3">Verification failed</h1>
+                        <p className="text-slate-600 mb-10">{errorMsg || "We couldn't verify your payment. If you were charged, please contact support."}</p>
+                        <Link href="/" className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all w-full justify-center">
                             Return Home
                         </Link>
                     </>
