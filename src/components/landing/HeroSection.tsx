@@ -14,14 +14,10 @@ import {
   AlertCircle,
   Youtube,
   Sparkles,
-  Play,
-  ListVideo,
-  Radio,
   Download,
-  Loader2,
-  ArrowRight
+  Loader2
 } from "lucide-react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 import { PlaylistProcessingModal } from "@/components/playlist/PlaylistProcessingModal";
 import { RecentHistory } from "@/components/landing/RecentHistory";
@@ -31,6 +27,12 @@ const isValidYoutubeUrl = (url: string) => {
   if (!url) return false;
   return /^(https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be)\/.+$/.test(url.trim());
 };
+
+const PLACEHOLDER_EXAMPLES = [
+  "Paste a YouTube video link...",
+  "Or paste a playlist link...",
+  "Try pasting a channel URL...",
+];
 
 interface HeroSectionProps {
   heroHeader?: React.ReactNode;
@@ -43,10 +45,9 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
   const t = useTranslations("hero");
   const tErrors = useTranslations("errors");
-  const tAuth = useTranslations("auth");
 
   const [urls, setUrls] = useState("");
-  const [inputError, setInputError] = useState(false);
+  const [inputErrorKey, setInputErrorKey] = useState<"enterUrl" | "invalidUrl" | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -56,17 +57,12 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const [isNavigating, setIsNavigating] = useState(false);
   const [activeAction, setActiveAction] = useState<'download' | 'summary' | null>(null);
 
-  const placeholderExamples = [
-    "Paste a YouTube video link...",
-    "Or paste a playlist link...",
-    "Try pasting a channel URL...",
-  ];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [typedPlaceholder, setTypedPlaceholder] = useState("");
 
   useEffect(() => {
     if (isFocused || urls) return;
-    const target = placeholderExamples[placeholderIndex];
+    const target = PLACEHOLDER_EXAMPLES[placeholderIndex];
     let charIndex = 0;
     let pauseTimer: ReturnType<typeof setTimeout>;
     setTypedPlaceholder("");
@@ -77,7 +73,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
       if (charIndex >= target.length) {
         clearInterval(typeInterval);
         pauseTimer = setTimeout(() => {
-          setPlaceholderIndex((prev) => (prev + 1) % placeholderExamples.length);
+          setPlaceholderIndex((prev) => (prev + 1) % PLACEHOLDER_EXAMPLES.length);
         }, 2000);
       }
     }, 40);
@@ -90,7 +86,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
   const refreshCredits = async () => {
     if (user) {
-      try { await refreshUser(); } catch (error) {}
+      try { await refreshUser(); } catch {}
     }
   };
 
@@ -106,7 +102,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     if (user) {
       refreshCredits();
       subtitleApi.getHistory(50).then((data) => {
-        const hasUsedSummary = data.some((h: any) => h.lastAction === "ai_summary");
+        const hasUsedSummary = data.some((h: { lastAction?: string }) => h.lastAction === "ai_summary");
         setIsFirstSummaryFree(!hasUsedSummary);
         setHasHistory(data.length > 0);
       }).catch(() => {});
@@ -123,15 +119,14 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUrls(e.target.value);
-    if (inputError) setInputError(false);
+    if (inputErrorKey) setInputErrorKey(null);
   };
 
   const handleMainAction = async (targetMode: 'download' | 'summary') => {
     setActiveAction(targetMode);
     try {
       if (!urls.trim()) {
-        setInputError(true);
-        toast.error(tErrors("enterUrl"), { position: "top-center" });
+        setInputErrorKey("enterUrl");
         setActiveAction(null);
         return;
       }
@@ -156,8 +151,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
       const invalidLinks = lines.filter((link) => !isValidYoutubeUrl(link));
       
       if (invalidLinks.length > 0) {
-        setInputError(true);
-        toast.error(tErrors("invalidUrl"), { position: "top-center" });
+        setInputErrorKey("invalidUrl");
         setActiveAction(null);
         return;
       }
@@ -173,7 +167,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
       setIsNavigating(true);
       router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home&mode=${targetMode}`);
       
-    } catch (e) {
+    } catch {
       setActiveAction(null);
     }
   };
@@ -209,7 +203,6 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
           </div>
         </div>
       )}
-      <Toaster richColors closeButton position="top-center" />
 
       {/* 
         核心内容区
@@ -233,7 +226,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
               className={`bg-white rounded-[20px] border transition-all duration-300 ${
                 isFocused 
                   ? "border-blue-400 ring-[4px] ring-blue-50 shadow-[0_20px_60px_-15px_rgba(59,130,246,0.15)]" 
-                  : inputError 
+                  : inputErrorKey 
                   ? "border-red-300 ring-[4px] ring-red-50" 
                   : "border-slate-200 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_-10px_rgba(0,0,0,0.1)] hover:border-slate-300"
               }`}
@@ -253,7 +246,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                   onBlur={() => !urls && setIsFocused(false)}
                   rows={1}
                   className={`flex-1 w-full bg-transparent text-lg md:text-[22px] text-slate-800 font-medium outline-none resize-none placeholder:text-slate-300 placeholder:font-normal leading-relaxed min-h-[44px] ${
-                    inputError ? "caret-red-500" : "caret-blue-600"
+                    inputErrorKey ? "caret-red-500" : "caret-blue-600"
                   }`}
                   placeholder={isFocused || urls ? "Paste link(s) here..." : typedPlaceholder || "|"}
                   spellCheck={false}
@@ -305,10 +298,10 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
             </div>
             
             {/* 错误提示框 */}
-            {inputError && (
+            {inputErrorKey && (
               <div className="mt-4 text-center animate-in fade-in slide-in-from-top-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 text-[13px] font-semibold text-red-600 border border-red-100 shadow-sm">
-                  <AlertCircle size={14} /> {tErrors("invalidUrl")}
+                  <AlertCircle size={14} /> {tErrors(inputErrorKey)}
                 </span>
               </div>
             )}

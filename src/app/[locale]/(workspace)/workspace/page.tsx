@@ -18,7 +18,6 @@ import { MobileNavigation } from "@/components/workspace/MobileNavigation";
 import { ResponsiveLayout } from "@/components/workspace/ResponsiveLayout";
 import { KeyboardShortcuts } from "@/components/workspace/KeyboardShortcuts";
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
-import { DownloadButton } from "@/components/workspace/DownloadButton";
 import { QuickActions } from "@/components/workspace/QuickActions";
 import { TabSwitcher } from "@/components/workspace/TabSwitcher";
 import {
@@ -27,6 +26,7 @@ import {
   Sparkles,
   Video as VideoIcon,
   Zap,
+  Plus,
 } from "lucide-react";
 import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/lib/youtube";
 import { BatchGridView } from "@/components/workspace/BatchGridView";
@@ -141,7 +141,9 @@ function WorkspaceContent() {
   const [analysisError, setAnalysisError] = useState<string>("");
   const [transcriptLang, setTranscriptLang] = useState("en");
   const [isTranscriptLoading, setIsTranscriptLoading] = useState(false);
+  const [isTranscriptReady, setIsTranscriptReady] = useState(false);
   const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
+  const [mobileKeyboardInset, setMobileKeyboardInset] = useState(0);
   const [showTranslateModal, setShowTranslateModal] = useState(false);
 
   const selectedBatchCount = batchSelectedIds.length;
@@ -313,6 +315,10 @@ function WorkspaceContent() {
 
   // --- Handle Video Switching & Caching ---
   useEffect(() => {
+    setIsTranscriptReady(false);
+  }, [currentVideo?.id]);
+
+  useEffect(() => {
     if (!currentVideo?.id) return;
 
     // 立即清空显示内容，防止串台
@@ -348,6 +354,41 @@ function WorkspaceContent() {
       return filtered;
     });
   }, [videoList]);
+
+  useEffect(() => {
+    if (!showMobileUrlInput) {
+      setMobileKeyboardInset(0);
+      return;
+    }
+
+    const updateKeyboardInset = () => {
+      const viewport = window.visualViewport;
+      if (!viewport) {
+        setMobileKeyboardInset(0);
+        return;
+      }
+
+      const inset = Math.max(
+        0,
+        Math.round(window.innerHeight - viewport.height - viewport.offsetTop)
+      );
+      setMobileKeyboardInset(inset);
+    };
+
+    updateKeyboardInset();
+
+    const viewport = window.visualViewport;
+    viewport?.addEventListener("resize", updateKeyboardInset);
+    viewport?.addEventListener("scroll", updateKeyboardInset);
+    window.addEventListener("orientationchange", updateKeyboardInset);
+
+    return () => {
+      viewport?.removeEventListener("resize", updateKeyboardInset);
+      viewport?.removeEventListener("scroll", updateKeyboardInset);
+      window.removeEventListener("orientationchange", updateKeyboardInset);
+      setMobileKeyboardInset(0);
+    };
+  }, [showMobileUrlInput]);
 
   useEffect(() => {
     setHasConfirmedPreviewLeave(false);
@@ -857,6 +898,14 @@ function WorkspaceContent() {
 
         {/* 右侧按钮组 */}
         <div className="flex items-center gap-3 shrink-0 relative z-10">
+          <button
+            onClick={() => setShowMobileUrlInput(true)}
+            className="md:hidden inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700"
+          >
+            <Plus size={14} />
+            <span>Add Link</span>
+          </button>
+
           <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded-full shadow-sm">
             <Zap size={14} className="text-yellow-500 fill-yellow-500" />
             <span className="text-sm font-bold text-yellow-700 tabular-nums">
@@ -921,7 +970,7 @@ function WorkspaceContent() {
             leftPanel={
               <>
                 {/* 改造为“参考视窗 (Reference Window)” */}
-                <div className="p-4 shrink-0 bg-slate-50/50 border-b border-slate-100 flex flex-col items-center justify-center gap-4 group">
+                <div className="p-3 md:p-4 shrink-0 bg-slate-50/60 border-b border-slate-100 flex flex-col items-center justify-center gap-3 md:gap-4 group">
                   <div className="w-full max-w-[300px] aspect-video rounded-xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.1)] ring-1 ring-slate-200/50 bg-black/5 overflow-hidden transition-transform duration-300 group-hover:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.12)]">
                     <VideoPlayer
                       ref={videoPlayerRef}
@@ -931,7 +980,7 @@ function WorkspaceContent() {
                     />
 
                   </div>
-                  <h1 className="text-[13px] md:text-sm font-semibold text-slate-800 line-clamp-2 md:line-clamp-3 leading-relaxed text-center flex-1 max-w-[400px]">
+                  <h1 className="text-[13px] md:text-sm font-semibold text-slate-800 line-clamp-2 md:line-clamp-3 leading-relaxed text-center flex-1 max-w-[420px]">
                     {currentVideo.title}
                   </h1>
                 </div>
@@ -949,6 +998,8 @@ function WorkspaceContent() {
                   onGenerateAiSummary={() => handleRequestAnalysis()}
                   hasAiSummary={!!summaryData}
                   isGeneratingAi={isAiLoading}
+                  isTranscriptLoading={isTranscriptLoading}
+                  isTranscriptReady={isTranscriptReady}
                   onTranslate={() => setShowTranslateModal(true)}
                 />
 
@@ -963,6 +1014,7 @@ function WorkspaceContent() {
                     initialSubtitleContent={initialSubtitleContent}
                     lang={transcriptLang}
                     onLangChange={setTranscriptLang}
+                    onTranscriptReadyChange={setIsTranscriptReady}
                   />
                 </div>
               </>
@@ -989,15 +1041,16 @@ function WorkspaceContent() {
       </div>
 
       {/* MOBILE BOTTOM NAV - P3 跨端一致性优化 */}
-      <MobileNavigation
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        hasAnalysis={!!summaryData}
-        isAnalyzing={isAiLoading}
-      />
+      {!showMobileUrlInput && (
+        <MobileNavigation
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          hasAnalysis={!!summaryData}
+          isAnalyzing={isAiLoading}
+        />
+      )}
 
       {/* P3.1: 键盘快捷键提示 */}
-      <KeyboardShortcuts />
 
       {/* P2: 键盘快捷键提示 */}
       <KeyboardShortcuts />
@@ -1006,23 +1059,32 @@ function WorkspaceContent() {
       {showMobileUrlInput && (
         <div className="fixed inset-0 z-[100] flex items-end sm:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowMobileUrlInput(false)} />
-          <div className="relative w-full bg-white rounded-t-2xl p-6 animate-in slide-in-from-bottom duration-300">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">Add Video</h3>
-            <UrlInput
-              value={inputUrl}
-              onChange={setInputUrl}
-              onSubmit={() => {
-                handleAnalyzeNewUrl();
-                setShowMobileUrlInput(false);
-              }}
-              isLoading={isAddingVideo}
-            />
-            <button
-              onClick={() => setShowMobileUrlInput(false)}
-              className="mt-4 w-full py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-            >
-              Cancel
-            </button>
+          <div
+            className="relative w-full overflow-hidden rounded-t-2xl bg-white shadow-2xl animate-in slide-in-from-bottom duration-300"
+            style={{
+              maxHeight: "calc(100dvh - 8px)",
+              marginBottom: mobileKeyboardInset > 0 ? `${mobileKeyboardInset}px` : undefined,
+            }}
+          >
+            <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-slate-200" />
+            <div className="overflow-y-auto px-5 pt-4 pb-[calc(env(safe-area-inset-bottom,0px)+14px)]">
+              <h3 className="mb-4 text-lg font-bold text-slate-900">Add Video</h3>
+              <UrlInput
+                value={inputUrl}
+                onChange={setInputUrl}
+                onSubmit={() => {
+                  handleAnalyzeNewUrl();
+                  setShowMobileUrlInput(false);
+                }}
+                isLoading={isAddingVideo}
+              />
+              <button
+                onClick={() => setShowMobileUrlInput(false)}
+                className="mt-4 w-full rounded-lg py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

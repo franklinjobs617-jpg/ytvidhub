@@ -22,6 +22,7 @@ export function TranscriptArea({
   initialSubtitleContent,
   lang = 'en',
   onLangChange,
+  onTranscriptReadyChange,
 }: {
   videoUrl: string;
   currentTime: number;
@@ -32,6 +33,7 @@ export function TranscriptArea({
   initialSubtitleContent?: string;
   lang?: string;
   onLangChange?: (lang: string) => void;
+  onTranscriptReadyChange?: (ready: boolean) => void;
 }) {
   const { user, refreshUser } = useAuth();
   const [transcriptVtt, setTranscriptVtt] = useState<string>(initialSubtitleContent || "");
@@ -97,6 +99,11 @@ export function TranscriptArea({
   const [isStreamLoading, setIsStreamLoading] = useState(false);
   const [streamProgress, setStreamProgress] = useState(0);
   const [streamStatus, setStreamStatus] = useState("");
+
+  useEffect(() => {
+    const ready = !loading && !isStreamLoading && transcriptVtt.trim().length > 0;
+    onTranscriptReadyChange?.(ready);
+  }, [loading, isStreamLoading, transcriptVtt, onTranscriptReadyChange]);
 
   // 检测是否为长视频，决定使用流式加载
   const isLongVideo = useMemo(() => {
@@ -515,20 +522,21 @@ export function TranscriptArea({
 
 
   return (
-    <div className="flex flex-col h-full bg-white border-r border-slate-100">
+    <div className="flex flex-col h-full bg-white md:border-r md:border-slate-100">
       {/* Tab Header — YouMind style */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 shrink-0 bg-white">
-        <div className="flex">
+      <div className="flex items-center justify-between gap-2 px-3 py-2.5 border-b border-slate-100 shrink-0 bg-white sm:px-4 sm:py-3">
+        <div className="flex min-w-0">
           {[{ label: "Paragraph View", value: true }, { label: "Timestamp View", value: false }].map(({ label, value }) => (
             <button
               key={label}
               onClick={() => setIsSmartMode(value)}
-              className={`px-4 py-2 text-xs font-medium border-b-2 transition-all duration-200 ${isSmartMode === value
+              className={`px-2.5 py-2 text-[11px] sm:px-4 sm:text-xs font-medium border-b-2 transition-all duration-200 ${isSmartMode === value
                 ? "border-violet-500 text-violet-600 bg-violet-50/50"
                 : "border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50"
                 }`}
             >
-              {label}
+              <span className="sm:hidden">{value ? "Paragraph" : "Timestamp"}</span>
+              <span className="hidden sm:inline">{label}</span>
             </button>
           ))}
         </div>
@@ -539,7 +547,7 @@ export function TranscriptArea({
             <select
               value={lang}
               onChange={(e) => onLangChange?.(e.target.value)}
-              className="appearance-none bg-white border border-slate-200 rounded-lg px-3 py-2 pr-8 text-sm font-medium text-slate-700 hover:border-violet-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 focus:outline-none transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md min-w-[140px] group-hover:bg-slate-50/50"
+              className="appearance-none bg-white border border-slate-200 rounded-lg px-2.5 py-2 pr-7 text-xs font-medium text-slate-700 hover:border-violet-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-100 focus:outline-none transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md min-w-[104px] sm:min-w-[140px] sm:px-3 sm:pr-8 sm:text-sm group-hover:bg-slate-50/50"
             >
               {availableLangs.map((l: any) => (
                 <option key={l.code} value={l.code} className="py-2 text-slate-700">
@@ -555,7 +563,7 @@ export function TranscriptArea({
             </div>
             {/* 语言数量指示器 */}
             {availableLangs.length > 1 && (
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-violet-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-sm">
+              <div className="absolute -top-1 -right-1 hidden h-5 w-5 items-center justify-center rounded-full bg-violet-500 text-xs font-bold text-white shadow-sm sm:flex">
                 {availableLangs.length}
               </div>
             )}
@@ -564,7 +572,7 @@ export function TranscriptArea({
       </div>
 
       {/* Search Bar - P1 优化 */}
-      <div className="px-4 py-2 border-b border-slate-100 shrink-0">
+      <div className="hidden md:block px-3 py-2 border-b border-slate-100 shrink-0 sm:px-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
           <input
@@ -572,7 +580,7 @@ export function TranscriptArea({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search transcript..."
-            className="w-full pl-9 pr-20 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
+            className="w-full pl-9 pr-20 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
           />
 
           {searchQuery && searchResults.total > 0 && (
@@ -663,7 +671,7 @@ export function TranscriptArea({
             </div>
           </div>
         ) : displayItems.length > 0 ? (
-          <div className="py-2 pb-24 md:pb-2">
+          <div className="py-2 pb-8 md:pb-2">
             {displayItems.map((item, i) => {
               const isActive = i === activeIndex;
               const isCurrentSearchResult = searchQuery && searchResults.total > 0 &&

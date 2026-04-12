@@ -9,7 +9,12 @@ interface VideoPlayerProps {
   onTimeUpdate?: (time: number) => void;
 }
 
-export const VideoPlayer = React.forwardRef<any, VideoPlayerProps>(({ videoId, seekTime, onTimeUpdate }, ref) => {
+export interface VideoPlayerHandle {
+  togglePlayPause: () => void;
+  seekTo: (time: number) => void;
+}
+
+export const VideoPlayer = React.forwardRef<VideoPlayerHandle, VideoPlayerProps>(({ videoId, seekTime, onTimeUpdate }, ref) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const lastUpdateRef = useRef<number>(0);
 
@@ -104,7 +109,6 @@ export const VideoPlayer = React.forwardRef<any, VideoPlayerProps>(({ videoId, s
         src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
         title="Video Player"
         frameBorder="0"
-        loading="lazy"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         onLoad={handleIframeLoad}

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Video, Sparkles } from "lucide-react";
+import { Video, Sparkles, Loader2 } from "lucide-react";
 
 interface MobileNavigationProps {
   activeTab: "video" | "analysis";
@@ -22,46 +21,41 @@ export function MobileNavigation({
   isAnalyzing
 }: MobileNavigationProps) {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-[70] safe-area-inset-bottom">
-      <div className="grid grid-cols-2 gap-0">
+    <nav
+      className="md:hidden fixed left-0 right-0 z-[70] px-4 pointer-events-none"
+      style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 10px)" }}
+    >
+      <div
+        className="pointer-events-auto mx-auto grid max-w-[360px] grid-cols-2 gap-1 rounded-2xl border border-slate-200/80 bg-white/95 p-1.5 shadow-[0_10px_36px_-20px_rgba(15,23,42,0.5)] backdrop-blur"
+      >
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
-          const isDisabled = tab.id === "analysis" && !hasAnalysis && !isAnalyzing;
+          const showPulse = tab.id === "analysis" && isAnalyzing;
+          const analysisReady = tab.id === "analysis" && hasAnalysis;
 
           return (
             <button
               key={tab.id}
-              onClick={() => !isDisabled && onTabChange(tab.id)}
-              disabled={isDisabled}
+              onClick={() => onTabChange(tab.id)}
               className={`
-                relative flex flex-col items-center justify-center gap-1 py-3 transition-colors
-                ${isDisabled ? "opacity-40" : ""}
+                relative flex items-center justify-center gap-1.5 rounded-xl px-2 py-2.5 transition-all
+                ${isActive
+                  ? "bg-violet-600 text-white shadow-sm"
+                  : "bg-transparent text-slate-600 hover:bg-slate-50"}
               `}
             >
-              <tab.icon
-                size={22}
-                className={`transition-colors ${
-                  isActive ? "text-violet-600" : "text-slate-400"
-                }`}
-                strokeWidth={isActive ? 2.5 : 2}
-              />
-              <span className={`
-                text-xs font-medium transition-colors
-                ${isActive ? "text-violet-600" : "text-slate-500"}
-              `}>
+              {showPulse ? (
+                <Loader2 size={16} className={`animate-spin ${isActive ? "text-white" : "text-violet-600"}`} />
+              ) : (
+                <tab.icon size={16} className={isActive ? "text-white" : "text-slate-500"} />
+              )}
+              <span className={`text-xs font-semibold tracking-tight ${isActive ? "text-white" : "text-slate-700"}`}>
                 {tab.label}
               </span>
-
-              {isActive && (
-                <motion.div
-                  layoutId="mobileActiveTab"
-                  className="absolute top-0 left-0 right-0 h-0.5 bg-violet-600"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
-              )}
-
-              {tab.id === "analysis" && isAnalyzing && (
-                <div className="absolute top-2 right-1/4 w-1.5 h-1.5 bg-violet-600 rounded-full animate-pulse" />
+              {!isActive && analysisReady && tab.id === "analysis" && (
+                <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-600">
+                  Ready
+                </span>
               )}
             </button>
           );
