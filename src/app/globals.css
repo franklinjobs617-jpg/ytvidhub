@@ -7,8 +7,12 @@
   50% { transform: translateX(250%); }
 }
 
+:root {
+  --font-cereal-stack: "Cereal", "Airbnb Cereal App", "Circular Std", "Avenir Next", var(--font-body), system-ui, sans-serif;
+}
+
 * {
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-cereal-stack);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -26,6 +30,14 @@
     background-color: #c1c1c1;
     border-radius: 10px;
   }
+}
+
+h1,
+h1.font-display,
+h1.font-sans,
+h1.font-serif {
+  font-family: var(--font-serif), "Arvo", Georgia, serif;
+  letter-spacing: -0.01em;
 }
 
 body {
