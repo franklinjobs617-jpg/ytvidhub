@@ -376,10 +376,14 @@ export function SummaryArea({
         </div>
       </header>
 
-      {/* Content Area - Decoupled View Modes */}
-      <div className="flex-1 overflow-hidden">
-        {viewMode === 'summary' ? (
-          !data && !isLoading ? (
+      {/* Content Area - Keep mounted to avoid remount/reload on tab switch */}
+      <div className="relative flex-1 overflow-hidden">
+        <div
+          className={`absolute inset-0 transition-opacity duration-150 ${
+            viewMode === 'summary' ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          {!data && !isLoading ? (
             <EmptyState onStartAnalysis={onStartAnalysis} />
           ) : (isLoading && !data) ? (
             <LoadingState title="Generating Summary" subtitle="Synthesizing video content" />
@@ -392,8 +396,14 @@ export function SummaryArea({
               hasCards={cardsData.length > 0}
               onViewCards={() => setViewMode('cards')}
             />
-          )
-        ) : (
+          )}
+        </div>
+
+        <div
+          className={`absolute inset-0 transition-opacity duration-150 ${
+            viewMode === 'cards' ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
           <CardsView
             cards={cardsData}
             isLoading={isLoading}
@@ -403,7 +413,7 @@ export function SummaryArea({
             videoUrl={videoUrl}
             onGenerateCards={generateCards}
           />
-        )}
+        </div>
       </div>
 
       <ToastContainer toasts={toasts} onRemove={removeToast} />
