@@ -25,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/guide/clean-transcript-no-timestamp', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/data-prep-toolkit', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/mastering-vtt-data-analysis', priority: 0.7, changeFreq: 'monthly' as const },
-        { path: '/tools/playlist-subtitles-bulk', priority: 0.7, changeFreq: 'monthly' as const },
+        { path: '/guide/playlist-subtitles-bulk', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/youtube-subtitles-api-free', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/guide/youtube-subtitles-for-llm-data', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/blog/creator-tutorials', priority: 0.7, changeFreq: 'monthly' as const },
