@@ -175,6 +175,8 @@ export default async function LocaleLayout({ children, params }: Props) {
           crossOrigin="anonymous"
         />
         <meta name="saashub-verification" content="myoi6jk5w99z" />
+
+    
         {/* Google AdSense 广告代码 */}
         <Script
           id="adsbygoogle-init"

@@ -10,13 +10,21 @@ import threading
 import zipfile
 import random
 import string 
+import hashlib
 import requests
 from concurrent.futures import ThreadPoolExecutor
 from flask import Flask, request, jsonify, send_file, redirect, after_this_request, Response, stream_with_context
 from flask_cors import CORS
+from urllib.parse import urlparse, parse_qs, urlencode
 from rembg import remove
 
 import yt_dlp
+from services.facebook_direct_link_routes import facebook_direct_link_bp
+from services.tiktok_direct_link_routes import tiktok_direct_link_bp
+from services.instagram_direct_link_routes import instagram_direct_link_bp
+from services.facebook_routes import facebook_transcript_bp
+from services.instagram_routes import instagram_transcript_bp
+from services.tiktok_routes import tiktok_transcript_bp
 
 # ==============================================================================
 # 0. 全局配置与初始化
@@ -24,15 +32,21 @@ import yt_dlp
 app = Flask(__name__)
 # 允许跨域，支持前端 main.js 的请求
 CORS(app, resources={r"/*": {"origins": "*"}})
+app.register_blueprint(facebook_transcript_bp)
+app.register_blueprint(instagram_transcript_bp)
+app.register_blueprint(tiktok_transcript_bp)
+app.register_blueprint(facebook_direct_link_bp)
+app.register_blueprint(instagram_direct_link_bp)
+app.register_blueprint(tiktok_direct_link_bp)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOWNLOAD_FOLDER = os.path.join(BASE_DIR, "downloads")
 BATCH_TEMP_FOLDER = os.path.join(BASE_DIR, "batch_temp") 
 SUBTITLE_TEMP_FOLDER = os.path.join(BASE_DIR, "subtitle_temp")
 
-ARK_API_KEY = "3a4b60e4-f692-4210-b26e-a03c636fc804"
-ARK_MODEL = "glm-4-7-251222"
-ARK_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
+ARK_API_KEY = "abf6868d-d37e-45c7-b778-41b3ed20c266"
+ARK_MODEL = os.getenv("ARK_MODEL", "deepseek-v3-2-251201").strip()
+ARK_URL = os.getenv("ARK_URL", "https://ark.cn-beijing.volces.com/api/v3/chat/completions").strip()
 
 # 确保文件夹存在
 for folder in [DOWNLOAD_FOLDER, BATCH_TEMP_FOLDER, SUBTITLE_TEMP_FOLDER]:
@@ -52,6 +66,111 @@ _SUMMARY_CACHE_TTL = 7200  # 2小时
 # 学习卡片缓存
 _cards_cache = {}
 _CARDS_CACHE_TTL = 7200  # 2小时
+
+# Chrome extension guest quota (server-side enforcement)
+_EXTENSION_GUEST_DAILY_LIMIT = max(1, int(os.getenv("YT_EXTENSION_GUEST_LIMIT", "2")))
+_EXTENSION_REDIRECT_URL = os.getenv("YT_EXTENSION_REDIRECT_URL", "https://ytvidhub.com")
+_EXTENSION_GUEST_USAGE = {}
+_EXTENSION_GUEST_USAGE_LOCK = threading.Lock()
+_EXTENSION_GUEST_USAGE_TTL = 2 * 24 * 60 * 60
+_YOUTUBE_WATCH_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com"}
+
+
+def _is_youtube_watch_url(video_url: str) -> bool:
+    if not video_url:
+        return False
+    try:
+        parsed = urlparse(video_url.strip())
+        if parsed.scheme not in ("http", "https"):
+            return False
+        if parsed.netloc.lower() not in _YOUTUBE_WATCH_HOSTS:
+            return False
+        if parsed.path != "/watch":
+            return False
+        query = parse_qs(parsed.query)
+        video_id = (query.get("v") or [""])[0].strip()
+        return bool(video_id)
+    except Exception:
+        return False
+
+
+def _current_quota_day() -> str:
+    return time.strftime("%Y-%m-%d", time.localtime())
+
+
+def _extract_client_ip(req) -> str:
+    xff = (req.headers.get("X-Forwarded-For") or "").strip()
+    if xff:
+        return xff.split(",")[0].strip()
+    xri = (req.headers.get("X-Real-IP") or "").strip()
+    if xri:
+        return xri
+    return (req.remote_addr or "0.0.0.0").strip()
+
+
+def _build_client_fingerprint(req) -> str:
+    ip_part = _extract_client_ip(req)
+    ua_part = (req.headers.get("User-Agent") or "").strip()
+    raw = f"{ip_part}|{ua_part}"
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def _cleanup_extension_usage_unlocked(now_ts: float):
+    stale_keys = []
+    for key, entry in _EXTENSION_GUEST_USAGE.items():
+        last_seen = float(entry.get("updated_at", 0))
+        if now_ts - last_seen > _EXTENSION_GUEST_USAGE_TTL:
+            stale_keys.append(key)
+    for key in stale_keys:
+        _EXTENSION_GUEST_USAGE.pop(key, None)
+
+
+def _reserve_extension_guest_attempt(fingerprint: str):
+    now_ts = time.time()
+    day = _current_quota_day()
+    with _EXTENSION_GUEST_USAGE_LOCK:
+        _cleanup_extension_usage_unlocked(now_ts)
+        record = _EXTENSION_GUEST_USAGE.get(fingerprint) or {
+            "day": day,
+            "count": 0,
+            "updated_at": now_ts
+        }
+        if record.get("day") != day:
+            record["day"] = day
+            record["count"] = 0
+        if int(record.get("count", 0)) >= _EXTENSION_GUEST_DAILY_LIMIT:
+            used = int(record.get("count", 0))
+            return False, {
+                "daily_limit": _EXTENSION_GUEST_DAILY_LIMIT,
+                "attempts_used": used,
+                "attempts_left": 0
+            }
+        record["count"] = int(record.get("count", 0)) + 1
+        record["updated_at"] = now_ts
+        _EXTENSION_GUEST_USAGE[fingerprint] = record
+        used = int(record["count"])
+        return True, {
+            "daily_limit": _EXTENSION_GUEST_DAILY_LIMIT,
+            "attempts_used": used,
+            "attempts_left": max(0, _EXTENSION_GUEST_DAILY_LIMIT - used)
+        }
+
+
+def _rollback_extension_guest_attempt(fingerprint: str):
+    now_ts = time.time()
+    day = _current_quota_day()
+    with _EXTENSION_GUEST_USAGE_LOCK:
+        record = _EXTENSION_GUEST_USAGE.get(fingerprint)
+        if not record:
+            return
+        if record.get("day") != day:
+            return
+        current_count = int(record.get("count", 0))
+        if current_count <= 0:
+            return
+        record["count"] = current_count - 1
+        record["updated_at"] = now_ts
+        _EXTENSION_GUEST_USAGE[fingerprint] = record
 
 # ==============================================================================
 # 1. 动态代理生成逻辑 (参考你提供的代码)
@@ -143,11 +262,17 @@ def get_video_info_core(video_url):
         'quiet': True, 
         'no_warnings': True, 
         'skip_download': True,
+        'writesubtitles': False,  # 不下载字幕文件，只获取信息
+        'writeautomaticsub': False,  # 不下载自动字幕，只获取信息
+        'listsubtitles': False,  # 不列出字幕，直接提取
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['ios', 'android', 'web'],
+                'skip': ['hls', 'dash']  # 跳过不需要的格式
+            }
+        },
         'socket_timeout': 30,
-        'retries': 3,
-        # 简化配置，移除可能导致问题的参数
-        'extract_flat': False,
-        'no_check_certificate': True
+        'retries': 3
     }
     try:
         print(f"🔍 Extracting video info for: {video_url}")
@@ -171,45 +296,24 @@ def get_video_info_core(video_url):
             if not manual_subs and not auto_subs:
                 print("⚠️ No subtitles found with current method, trying alternative extraction...")
                 
-                # 方法1：最简配置
-                try:
-                    simple_opts = {
-                        'proxy': proxy,
-                        'quiet': False,  # 显示详细信息
-                        'skip_download': True,
+                # 尝试更宽松的配置
+                alt_opts = ydl_opts.copy()
+                alt_opts['extractor_args'] = {
+                    'youtube': {
+                        'player_client': ['web', 'android', 'ios'],
+                        'skip': []
                     }
-                    
-                    with yt_dlp.YoutubeDL(simple_opts) as simple_ydl:
-                        simple_info = simple_ydl.extract_info(video_url, download=False)
-                        manual_subs = simple_info.get('subtitles', {})
-                        auto_subs = simple_info.get('automatic_captions', {})
-                        print(f"🔄 Simple extraction - Manual: {list(manual_subs.keys())}")
-                        print(f"🔄 Simple extraction - Auto: {list(auto_subs.keys())}")
-                        
-                        if manual_subs or auto_subs:
-                            print("✅ Found subtitles with simple method!")
-                        
-                except Exception as e:
-                    print(f"❌ Simple extraction failed: {str(e)}")
+                }
                 
-                # 方法2：无代理尝试
-                if not manual_subs and not auto_subs:
-                    try:
-                        no_proxy_opts = {
-                            'quiet': True,
-                            'skip_download': True,
-                            'socket_timeout': 15,
-                        }
-                        
-                        with yt_dlp.YoutubeDL(no_proxy_opts) as no_proxy_ydl:
-                            no_proxy_info = no_proxy_ydl.extract_info(video_url, download=False)
-                            manual_subs = no_proxy_info.get('subtitles', {})
-                            auto_subs = no_proxy_info.get('automatic_captions', {})
-                            print(f"🔄 No-proxy extraction - Manual: {list(manual_subs.keys())}")
-                            print(f"🔄 No-proxy extraction - Auto: {list(auto_subs.keys())}")
-                            
-                    except Exception as e:
-                        print(f"❌ No-proxy extraction failed: {str(e)}")
+                try:
+                    with yt_dlp.YoutubeDL(alt_opts) as alt_ydl:
+                        alt_info = alt_ydl.extract_info(video_url, download=False)
+                        manual_subs = alt_info.get('subtitles', {})
+                        auto_subs = alt_info.get('automatic_captions', {})
+                        print(f"🔄 Alternative extraction - Manual: {list(manual_subs.keys())}")
+                        print(f"🔄 Alternative extraction - Auto: {list(auto_subs.keys())}")
+                except Exception as e:
+                    print(f"❌ Alternative extraction failed: {str(e)}")
             
             # 处理字幕列表 - 智能排序，优先显示常用语言
             subtitles_list = []
@@ -1783,6 +1887,79 @@ def download_transcript():
 @app.route('/', methods=['GET'])
 def index():
     return "<h3>YouTube API Running (Full Support)</h3>"
+
+
+@app.route('/api/extension/youtube-subtitle', methods=['POST'])
+def api_extension_youtube_subtitle():
+    data = request.get_json(silent=True) or {}
+    video_url = (data.get('url') or '').strip()
+    lang = (data.get('lang') or 'en').strip() or 'en'
+
+    if not video_url:
+        return jsonify({
+            "status": 1,
+            "code": "MISSING_URL",
+            "message": "Missing YouTube URL."
+        }), 400
+
+    if not _is_youtube_watch_url(video_url):
+        return jsonify({
+            "status": 1,
+            "code": "INVALID_YOUTUBE_WATCH_URL",
+            "message": "Only YouTube watch URLs are supported.",
+            "example": "https://www.youtube.com/watch?v=VIDEO_ID"
+        }), 400
+
+    fingerprint = _build_client_fingerprint(request)
+    allowed, _quota_info = _reserve_extension_guest_attempt(fingerprint)
+    if not allowed:
+        query = urlencode({
+            "source": "youtube-subtitle-extractor",
+            "from": "extension"
+        })
+        return jsonify({
+            "status": 1,
+            "code": "QUOTA_EXCEEDED",
+            "message": "Please continue on website for free extraction.",
+            "redirect_url": f"{_EXTENSION_REDIRECT_URL}?{query}"
+        }), 429
+
+    try:
+        srt_content, srt_filename, error = get_subtitle_content_fast(video_url, lang, 'srt')
+        if error:
+            raise RuntimeError(error)
+
+        subtitle_txt = parse_srt_to_text(srt_content)
+        base_filename = "subtitle"
+        if srt_filename:
+            base_filename = srt_filename.rsplit('.', 1)[0]
+
+        return jsonify({
+            "status": 0,
+            "code": "OK",
+            "message": "Subtitle extracted successfully.",
+            "data": {
+                "url": video_url,
+                "lang": lang,
+                "filename_base": sanitize_filename(base_filename),
+                "subtitle_srt": srt_content,
+                "subtitle_txt": subtitle_txt
+            }
+        })
+    except Exception as e:
+        _rollback_extension_guest_attempt(fingerprint)
+        error_text = str(e)
+        if "No subtitles found" in error_text or "doesn't have any subtitles" in error_text:
+            return jsonify({
+                "status": 1,
+                "code": "SUBTITLE_NOT_AVAILABLE",
+                "message": "No subtitles found for this video or language."
+            }), 404
+        return jsonify({
+            "status": 1,
+            "code": "SUBTITLE_EXTRACTION_FAILED",
+            "message": error_text
+        }), 500
 
 
 

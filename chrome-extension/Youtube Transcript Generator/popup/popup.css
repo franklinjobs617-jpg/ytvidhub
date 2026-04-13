@@ -1,0 +1,99 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  width: 320px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #eaf0ff;
+  background: #0b0f20;
+}
+
+.popup {
+  padding: 14px;
+}
+
+.popup-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.popup-header h1 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.popup-header p {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #b7c2ff;
+}
+
+.status {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.pill.ok {
+  background: rgba(40, 199, 111, 0.2);
+  color: #72f3b1;
+}
+
+.pill.warn {
+  background: rgba(255, 180, 56, 0.2);
+  color: #ffd07f;
+}
+
+#status-text {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.actions {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.btn {
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.btn.primary {
+  color: white;
+  background: linear-gradient(120deg, #5b6cff, #7e45ff);
+}
+
+.btn.secondary {
+  color: #dbe2ff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

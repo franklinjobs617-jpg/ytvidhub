@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Subtitle Extractor</title>
+  <link rel="stylesheet" href="./popup.css" />
+</head>
+<body>
+  <main class="popup">
+    <header class="popup-header">
+      <img src="../icons/icon48.png" alt="ytvid icon" width="24" height="24" />
+      <div>
+        <h1>YouTube Subtitle Extractor</h1>
+        <p>ytvid extension</p>
+      </div>
+    </header>
+
+    <section class="status">
+      <span id="status-pill" class="pill">Checking...</span>
+      <p id="status-text">Detecting current tab...</p>
+    </section>
+
+    <div class="actions">
+      <button id="open-panel-btn" class="btn primary" type="button">Open Extractor Panel</button>
+      <button id="open-site-btn" class="btn secondary" type="button">Open ytvidhub</button>
+    </div>
+  </main>
+
+  <script src="./popup.js"></script>
+</body>
+</html>
