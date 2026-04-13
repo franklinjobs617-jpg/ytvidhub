@@ -17,9 +17,11 @@ export default function Footer() {
             <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
               {t('description')}
             </p>
+
             <a href="https://theresanaiforthat.com/ai/ytvidhub/?ref=featured&v=7340698" target="_blank" rel="nofollow"><Image width={300} height={54} src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600" alt="Featured on TAAFT" /></a>
-            <a href="https://openhunts.com" target="_blank" title="OpenHunts Club" > <Image alt="OpenHunts Club Member" height={105} src="https://cdn.openhunts.com/badges/club.webp"  width={486} /></a>
- 
+           <a href="https://openhunts.com" target="_blank" title="OpenHunts Club">
+  <Image alt="OpenHunts Club Member" height={105} src="https://cdn.openhunts.com/badges/club.webp" width={486} />
+</a>
 
           </div>
 
