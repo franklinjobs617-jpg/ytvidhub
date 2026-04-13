@@ -10,7 +10,6 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
       <div className="container mx-auto px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-x-8 gap-y-10">
-
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-xl font-bold text-white mb-4">
               YT<span className="text-violet-500">Vid</span>Hub
@@ -19,7 +18,7 @@ export default function Footer() {
               {t('description')}
             </p>
             <a href="https://theresanaiforthat.com/ai/ytvidhub/?ref=featured&v=7340698" target="_blank" rel="nofollow"><Image width={300} height={54} src="https://media.theresanaiforthat.com/featured-on-taaft.png?width=600" alt="Featured on TAAFT" /></a>
-            <a href="https://openhunts.com" target="_blank" title="OpenHunts Club"  rel="nofollow"> <Image alt="OpenHunts Club Member" height={105} src="https://cdn.openhunts.com/badges/club.webp"  width={486} /></a>
+            <a href="https://openhunts.com" target="_blank" title="OpenHunts Club" > <Image alt="OpenHunts Club Member" height={105} src="https://cdn.openhunts.com/badges/club.webp"  width={486} /></a>
  
 
           </div>
