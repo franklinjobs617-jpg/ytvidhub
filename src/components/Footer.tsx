@@ -5,16 +5,15 @@ import { useTranslations } from "next-intl";
 
 export default function Footer() {
   const t = useTranslations("footer");
-  const navT = useTranslations("navigation");
   return (
-    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800">
+    <footer className="bg-[var(--footer-bg)] text-[var(--footer-text)] border-t border-[var(--footer-border)]">
       <div className="container mx-auto px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-x-8 gap-y-10">
           <div className="col-span-2 md:col-span-1">
             <h3 className="text-xl font-bold text-white mb-4">
-              YT<span className="text-violet-500">Vid</span>Hub
+              YT<span className="text-[var(--brand-500)]">Vid</span>Hub
             </h3>
-            <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
+            <p className="text-sm leading-relaxed text-[var(--footer-muted)] max-w-xs">
               {t("description")}
             </p>
 
@@ -54,7 +53,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("home")}
                 </Link>
@@ -62,7 +61,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/youtube-subtitle-downloader"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("downloader")}
                 </Link>
@@ -70,7 +69,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/download-subs-from-youtube"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("downloadSubs")}
                 </Link>
@@ -78,7 +77,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/bulk-youtube-subtitle-downloader"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("bulkDownloader")}
                 </Link>
@@ -86,7 +85,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/pricing"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("pricing")}
                 </Link>
@@ -103,7 +102,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/how-to-download-youtube-subtitles-complete-guide"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("howToDownload")}
                 </Link>
@@ -111,7 +110,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/how-to-download-youtube-studio-subtitles"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("exportStudio")}
                 </Link>
@@ -119,7 +118,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/youtube-subtitles-for-llm-data"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("subsForAi")}
                 </Link>
@@ -127,7 +126,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/clean-transcript-no-timestamp"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("cleanText")}
                 </Link>
@@ -135,7 +134,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/srt-vs-vtt"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("srtVsVtt")}
                 </Link>
@@ -143,7 +142,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/mastering-vtt-data-analysis"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("analyzeData")}
                 </Link>
@@ -151,7 +150,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/youtube-subtitles-api-free"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("freeApi")}
                 </Link>
@@ -159,7 +158,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/data-prep-toolkit"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("prepareData")}
                 </Link>
@@ -167,7 +166,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/guide/playlist-subtitles-bulk"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("playlistBulk")}
                 </Link>
@@ -175,7 +174,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/data-prep-guide"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("aiDataPrep")}
                 </Link>
@@ -183,7 +182,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("faq")}
                 </Link>
@@ -191,7 +190,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/how-to-use"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("howToUse")}
                 </Link>
@@ -208,7 +207,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog/how-to-get-youtube-video-transcript"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("getTranscript")}
                 </Link>
@@ -216,7 +215,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog/ai-youtube-video-summarizer"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("aiSummarizer")}
                 </Link>
@@ -224,7 +223,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog/subtitle-accuracy-problem"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("whySubsWrong")}
                 </Link>
@@ -232,7 +231,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog/creator-tutorials"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("creatorTutorials")}
                 </Link>
@@ -240,7 +239,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog/spanish-yt-channels-subtitles"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("learnSpanish")}
                 </Link>
@@ -248,7 +247,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/youtube-subtitle-downloader"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("ytDownloader")}
                 </Link>
@@ -256,7 +255,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/youtube-transcript-for-chatgpt"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("chatgptTranscripts")}
                 </Link>
@@ -264,7 +263,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/what-is-an-srt-file"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("whatIsSrt")}
                 </Link>
@@ -272,7 +271,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/faq/subtitle-settings-guide"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("settingsGuide")}
                 </Link>
@@ -280,7 +279,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/tools/subtitle-extractor-online"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("onlineExtractor")}
                 </Link>
@@ -288,7 +287,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/support"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("support")}
                 </Link>
@@ -305,7 +304,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("aboutUs")}
                 </Link>
@@ -313,7 +312,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/privacy-policy"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("privacyPolicy")}
                 </Link>
@@ -321,7 +320,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms-of-service"
-                  className="hover:text-violet-400 transition-colors"
+                  className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("termsOfService")}
                 </Link>
@@ -331,10 +330,10 @@ export default function Footer() {
         </div>
 
         {/* 底部装饰线 */}
-        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col items-center">
+        <div className="mt-12 pt-8 border-t border-[var(--footer-border)] flex flex-col items-center">
           {/* 分享区块 */}
           <div className="mb-8 text-center">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-[0.2em] mb-4">
+            <p className="text-xs font-medium text-[var(--footer-muted)] uppercase tracking-[0.2em] mb-4">
               {t("share")}
             </p>
             <div className="flex justify-center bg-slate-800/50 p-3 rounded-2xl backdrop-blur-sm">
@@ -344,11 +343,11 @@ export default function Footer() {
 
           {/* 版权信息 */}
           <div className="text-center space-y-2">
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-[var(--footer-muted)]">
               &copy; {new Date().getFullYear()} YTVidHub Technologies.{" "}
               {t("rights")}.
             </p>
-            <p className="text-[10px] text-slate-600 uppercase tracking-tight">
+            <p className="text-[10px] text-slate-500 uppercase tracking-tight">
               {t("disclaimer")}
             </p>
           </div>

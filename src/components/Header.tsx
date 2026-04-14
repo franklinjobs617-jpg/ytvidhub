@@ -92,7 +92,7 @@ export default function Header() {
             <Link
               href="/"
               className={`text-sm font-semibold transition-colors ${isActive("/")
-                ? "text-blue-600"
+                ? "text-[var(--brand-600)]"
                 : "text-slate-600 hover:text-slate-900"
                 }`}
             >
@@ -102,7 +102,7 @@ export default function Header() {
             <div className="relative group h-20 flex items-center">
               <button
                 className={`flex items-center gap-1 text-sm font-semibold transition-colors ${isParentActive(toolLinks)
-                  ? "text-blue-600"
+                  ? "text-[var(--brand-600)]"
                   : "text-slate-600 group-hover:text-slate-900"
                   }`}
               >
@@ -119,7 +119,7 @@ export default function Header() {
                       key={item.key}
                       href={item.href}
                       className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                        ? "bg-blue-50 text-blue-600"
+                        ? "bg-[var(--brand-100)] text-[var(--brand-600)]"
                         : "text-slate-600 hover:bg-slate-50"
                         }`}
                     >
@@ -133,7 +133,7 @@ export default function Header() {
             <Link
               href="/pricing"
               className={`text-sm font-semibold transition-colors ${isActive("/pricing")
-                ? "text-blue-600"
+                ? "text-[var(--brand-600)]"
                 : "text-slate-600 hover:text-slate-900"
                 }`}
             >
@@ -143,7 +143,7 @@ export default function Header() {
             <Link
               href="/add-on"
               className={`text-sm font-semibold transition-colors ${isActive("/add-on")
-                ? "text-blue-600"
+                ? "text-[var(--brand-600)]"
                 : "text-slate-600 hover:text-slate-900"
                 }`}
             >
@@ -153,7 +153,7 @@ export default function Header() {
             <div className="relative group h-20 flex items-center">
               <button
                 className={`flex items-center gap-1 text-sm font-semibold transition-colors ${isParentActive(resourceLinks)
-                  ? "text-blue-600"
+                  ? "text-[var(--brand-600)]"
                   : "text-slate-600 group-hover:text-slate-900"
                   }`}
               >
@@ -170,7 +170,7 @@ export default function Header() {
                       key={item.key}
                       href={item.href}
                       className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                        ? "bg-blue-50 text-blue-600"
+                        ? "bg-[var(--brand-100)] text-[var(--brand-600)]"
                         : "text-slate-600 hover:bg-slate-50"
                         }`}
                     >
@@ -193,7 +193,7 @@ export default function Header() {
                 <LanguageSwitcher />
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 md:px-5 py-2 rounded-lg transition-all"
+                  className="bg-[var(--brand-600)] hover:bg-[var(--brand-700)] text-white text-sm font-semibold px-4 md:px-5 py-2 rounded-lg transition-all"
                 >
                   {t('login')}
                 </button>
@@ -227,7 +227,7 @@ export default function Header() {
                       <div className="p-2">
                         <div className="px-3 py-2 mb-1">
                           <div className="flex items-center gap-2">
-                            <Sparkles size={14} className="text-blue-500" />
+                            <Sparkles size={14} className="text-[var(--brand-600)]" />
                             <span className="text-sm font-semibold text-slate-800">{t('freePlan')}</span>
                           </div>
                         </div>
@@ -329,7 +329,7 @@ export default function Header() {
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             <Link
               href="/"
-              className={`block text-base font-semibold ${isActive("/") ? "text-blue-600" : "text-slate-900"}`}
+              className={`block text-base font-semibold ${isActive("/") ? "text-[var(--brand-600)]" : "text-slate-900"}`}
             >
               {t('home')}
             </Link>
@@ -342,7 +342,7 @@ export default function Header() {
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"}`}
+                  className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-[var(--brand-600)]" : "text-slate-600"}`}
                 >
                   {t(item.key)}
                 </Link>
@@ -351,13 +351,13 @@ export default function Header() {
 
             <Link
               href="/pricing"
-              className={`block text-base font-semibold ${isActive("/pricing") ? "text-blue-600" : "text-slate-900"}`}
+              className={`block text-base font-semibold ${isActive("/pricing") ? "text-[var(--brand-600)]" : "text-slate-900"}`}
             >
               {t('pricing')}
             </Link>
             <Link
               href="/add-on"
-              className={`block text-base font-semibold ${isActive("/add-on") ? "text-blue-600" : "text-slate-900"}`}
+              className={`block text-base font-semibold ${isActive("/add-on") ? "text-[var(--brand-600)]" : "text-slate-900"}`}
             >
               {t('extension')}
             </Link>
@@ -370,7 +370,7 @@ export default function Header() {
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-blue-600" : "text-slate-600"}`}
+                  className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-[var(--brand-600)]" : "text-slate-600"}`}
                 >
                   {footerT(item.key)}
                 </Link>
@@ -407,7 +407,7 @@ export default function Header() {
                   setMobileMenuOpen(false);
                   setShowLoginModal(true);
                 }}
-                className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                className="w-full bg-[var(--brand-600)] text-white font-semibold py-3 rounded-lg hover:bg-[var(--brand-700)] transition-colors"
               >
                 {t('login')}
               </button>
