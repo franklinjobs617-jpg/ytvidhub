@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Clean Subtitles: Remove Timestamps for Research & LLM Data",
-  description: "Learn the best method to remove timestamps and ASR noise from YouTube subtitles. Get research-ready, clean text data for your projects.",
+  title: "Download YouTube Transcript as Text (No Timestamps) | YTVidHub",
+  description: "Learn how to download YouTube transcript as text and remove timestamps in seconds. Create clean transcript files for AI, notes, and research workflows.",
   alternates: {
     canonical: "https://ytvidhub.com/guide/clean-transcript-no-timestamp/",
   },

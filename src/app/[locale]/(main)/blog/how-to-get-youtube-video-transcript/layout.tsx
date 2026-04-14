@@ -6,8 +6,8 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { locale } = await params;
   return {
-    title: "How to Get a Transcript of a YouTube Video: 3 Easy Ways in 2026 | YTVidHub",
-    description: "Learn how to get a transcript of a YouTube video using YouTube's built-in feature or automatically with YTVidHub. Download transcripts in multiple formats for AI training, content repurposing, and more.",
+    title: "How to Get Transcript of YouTube Video (2026 Guide) | YTVidHub",
+    description: "Learn how to get transcript of YouTube video using Show Transcript, manual copy, or instant download tools. Includes TXT, SRT, and fast workflow tips.",
     alternates: buildAlternates(locale, '/blog/how-to-get-youtube-video-transcript'),
   };
 }
@@ -15,3 +15,4 @@ export async function generateMetadata(
 export default function HowToGetYouTubeTranscriptLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
+

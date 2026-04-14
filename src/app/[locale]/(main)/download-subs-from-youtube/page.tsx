@@ -26,10 +26,10 @@ export default function DownloadSubsFromYoutubePage() {
                 <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16">
                     <p className="text-sm text-blue-600 font-medium mb-4">Professional Subtitle Tools</p>
                     <h1 className="font-serif text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">
-                        The Ultimate YouTube Subtitle Downloader
+                        YouTube Transcript Download Tool
                     </h1>
                     <p className="text-lg text-slate-500 leading-relaxed mb-8">
-                        Whether you&apos;re learning a new language, repurposing content, or training AI models, YTVidHub extracts high-accuracy SRT, VTT, and Text subtitles in seconds.
+                        Need a fast YouTube transcript download workflow? Paste any video URL and download YouTube transcript files as TXT, SRT, or VTT for AI training, research, and editing.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                         <Link href="/" onClick={handleAction} className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
@@ -113,10 +113,10 @@ export default function DownloadSubsFromYoutubePage() {
                     <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-8">Frequently Asked Questions</h2>
                     <div className="space-y-5">
                         {[
-                            { q: "Is it legal to download YouTube subtitles?", a: "Downloading for personal study, research, or accessibility is generally considered fair use. Always check the original creator's copyright for commercial projects." },
-                            { q: "What if a video has no subtitles?", a: "If the creator hasn't uploaded captions and YouTube hasn't auto-generated them, subtitles won't be available. Ensure 'CC' is visible on the YouTube player." },
-                            { q: "Do you support auto-generated captions?", a: "Yes! Our tool retrieves all implicit tracks, including AI-generated captions provided by YouTube's system." },
-                            { q: "Can I download an entire channel's subtitles?", a: "For large-scale needs, please use our Bulk Download tool which supports entire playlists or channel URLs for massive extraction." },
+                            { q: "How do I download YouTube transcript from a video URL?", a: "Paste the video URL, choose TXT, SRT, or VTT, then click download. This gives you a full YouTube transcript download in seconds." },
+                            { q: "Can I download YouTube transcript as text only?", a: "Yes. Choose TXT format to export clean transcript text. This is useful for AI prompts, notes, documentation, and content repurposing." },
+                            { q: "Do you support auto-generated captions?", a: "Yes. We support available auto-generated and creator-uploaded caption tracks, depending on what exists for that video and language." },
+                            { q: "Can I download transcripts from playlists or channels?", a: "Yes. Use the bulk downloader to process playlist and channel URLs when you need high-volume transcript extraction." },
                         ].map((item, i) => (
                             <div key={i} className="p-5 rounded-xl border border-slate-100 bg-slate-50">
                                 <h3 className="font-semibold text-slate-900 mb-2">{item.q}</h3>

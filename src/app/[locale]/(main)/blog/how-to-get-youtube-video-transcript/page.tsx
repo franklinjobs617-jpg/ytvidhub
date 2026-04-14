@@ -2,17 +2,53 @@ import Link from "next/link";
 import { CheckCircle2, Clock } from "lucide-react";
 
 export default function HowToGetYouTubeTranscriptPage() {
+  const faqItems = [
+    {
+      q: "How to get transcript of YouTube video for free?",
+      a: "Open the video on YouTube, click the three-dot menu, and choose Show transcript. For faster export, use YTVidHub to download transcript files directly as TXT, SRT, or VTT.",
+    },
+    {
+      q: "How to download transcript from YouTube instead of copying manually?",
+      a: "Use a transcript download tool, paste the YouTube URL, select TXT, SRT, or VTT, and export in one click. This is much faster than manual copy for repeated workflows.",
+    },
+    {
+      q: "Can I get transcripts in languages other than English?",
+      a: "Yes. You can access creator-uploaded or auto-generated tracks in many languages, depending on video availability and the language tracks provided by YouTube.",
+    },
+    {
+      q: "Can I remove timestamps and keep only clean text?",
+      a: "Yes. Export as plain text (TXT) or use a clean-transcript workflow to remove timestamps and non-speech noise for AI training, notes, and analysis.",
+    },
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map((item) => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  };
+
   return (
     <div className="bg-white min-h-screen font-sans antialiased text-slate-700">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <main>
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16">
-          <p className="text-sm text-blue-600 font-medium mb-4">SEO Guide 2025</p>
+          <p className="text-sm text-blue-600 font-medium mb-4">SEO Guide 2026</p>
           <h1 className="font-serif text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">
-            How to Get a Transcript of a YouTube Video: 3 Easy Ways in 2026
+            How to Get Transcript of YouTube Video: 3 Easy Ways in 2026
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            Whether you need transcripts for AI training, content repurposing, or language learning, this comprehensive guide covers all methods—from YouTube's built-in tools to automated solutions.
+            If you are wondering how to get transcript of YouTube video quickly, this guide compares YouTube&apos;s built-in method, manual copy, and fast download workflows for TXT, SRT, and VTT output.
           </p>
         </header>
 
@@ -38,12 +74,12 @@ export default function HowToGetYouTubeTranscriptPage() {
         {/* Method 1 */}
         <article className="max-w-3xl mx-auto px-6 mb-16">
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-            Method 1: Using YouTube's Built-in Feature
+            Method 1: Using YouTube&apos;s Built-in Feature
           </h2>
           <ol className="space-y-6 mb-8">
             {[
               { title: "Open the YouTube Video", desc: "Go to YouTube.com and navigate to the video you want a transcript for." },
-              { title: "Click on the Three Dots Menu", desc: "Below the video player, click on the three vertical dots (⋮) to open the menu options." },
+              { title: "Click on the Three Dots Menu", desc: "Below the video player, click on the three vertical dots (...) to open the menu options." },
               { title: 'Select "Show Transcript"', desc: "From the menu, select \"Show transcript\" to open the transcript panel on the right side." },
               { title: "Copy the Transcript", desc: "Use your mouse to select the entire transcript, then right-click and choose \"Copy\"." },
               { title: "Paste and Format", desc: "Paste the transcript into a text editor like Notepad or Google Docs and format as needed." },
@@ -157,12 +193,7 @@ export default function HowToGetYouTubeTranscriptPage() {
             Frequently Asked Questions
           </h2>
           <div className="space-y-5">
-            {[
-              { q: "Can I get transcripts for private YouTube videos?", a: "No, you can only get transcripts for public YouTube videos. For private videos, you need access and must use YouTube's built-in transcript feature while logged in." },
-              { q: "How accurate are YouTube transcripts?", a: "YouTube's automatic transcripts are generally 85-95% accurate for clear English audio. Accuracy varies for videos with background noise, multiple speakers, or non-English content." },
-              { q: "Can I get transcripts in languages other than English?", a: "Yes, both YouTube's built-in feature and YTVidHub support transcripts in multiple languages, including YouTube's automatic translations." },
-              { q: "Is there a limit to how many transcripts I can get?", a: "YouTube has no specific limit for manual extraction. YTVidHub's free version allows reasonable extractions, while premium plans offer higher limits for bulk processing." },
-            ].map((faq, i) => (
+            {faqItems.map((faq, i) => (
               <div key={i} className="p-5 rounded-xl border border-slate-100 bg-slate-50">
                 <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{faq.a}</p>
@@ -200,3 +231,4 @@ export default function HowToGetYouTubeTranscriptPage() {
     </div>
   );
 }
+

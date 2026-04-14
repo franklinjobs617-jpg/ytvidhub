@@ -1,25 +1,58 @@
 "use client";
 
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import LoginModal from "@/components/LoginModel";
 
 export default function CleanTranscriptGuidePage() {
-  const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const faqItems = [
+    {
+      q: "How to download YouTube transcript as text?",
+      a: "Use a transcript downloader, choose TXT output, and export the file. TXT gives you plain text without subtitle timing syntax.",
+    },
+    {
+      q: "How do I remove timestamps from a YouTube transcript?",
+      a: "Choose clean TXT export or run a timestamp-removal pipeline that strips timecodes, numbering, and subtitle tags from SRT/VTT.",
+    },
+    {
+      q: "Is no-timestamp transcript better for AI training?",
+      a: "Yes. Clean no-timestamp text reduces formatting noise, improves token quality, and is easier to use for RAG, summarization, and LLM fine-tuning.",
+    },
+    {
+      q: "Should I keep SRT or convert to TXT?",
+      a: "Keep SRT when you need subtitle timing for editing. Convert to TXT when you need readable text for analysis, notes, and AI workflows.",
+    },
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map((item) => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a,
+      },
+    })),
+  };
 
   return (
     <div className="bg-white min-h-screen font-sans antialiased text-slate-700">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <main>
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16">
           <p className="text-sm text-blue-600 font-medium mb-4">Data Science Guide</p>
           <h1 className="font-serif text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">
-            Clean Subtitles, Flawless Data
+            Download YouTube Transcript as Text Without Timestamps
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            Data quality is non-negotiable for LLM training and academic research. Learn the professional method to remove timestamps and ASR noise for truly pristine text data.
+            If you need to download YouTube transcript as text, this guide shows how to remove timestamps and ASR noise to create clean, analysis-ready transcript files for LLM and research use.
           </p>
         </header>
 
@@ -77,6 +110,21 @@ export default function CleanTranscriptGuidePage() {
               </li>
             ))}
           </ol>
+        </article>
+
+        {/* FAQ */}
+        <article className="max-w-3xl mx-auto px-6 mb-16">
+          <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-8">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-5">
+            {faqItems.map((item, i) => (
+              <div key={i} className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+                <h3 className="font-semibold text-slate-900 mb-2">{item.q}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
         </article>
 
         {/* CTA */}

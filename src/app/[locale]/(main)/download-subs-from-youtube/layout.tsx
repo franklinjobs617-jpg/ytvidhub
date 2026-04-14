@@ -6,12 +6,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const { locale } = await params;
     return {
-        title: 'Download Subtitles from YouTube Videos - Free Caption Extractor | YTVidHub',
-        description: 'Download subtitles from any YouTube video in SRT, VTT, or TXT format. Fast, free, and easy-to-use YouTube caption extractor for video editing, AI training, and content creation.',
-        keywords: ['download subtitles from youtube', 'download subs from youtube', 'youtube caption extractor', 'free caption downloader', 'youtube subtitle download free'],
+        title: 'YouTube Transcript Download - TXT, SRT, VTT Export | YTVidHub',
+        description: 'Download YouTube transcript in seconds. Paste a video URL and export transcript as TXT, SRT, or VTT. Fast online workflow for research, AI, and editing.',
+        keywords: ['youtube transcript download', 'download youtube transcript', 'transcript youtube download', 'download transcript youtube', 'how to download transcript from youtube'],
         openGraph: {
-            title: 'Download Subtitles from YouTube Videos - Free Caption Extractor',
-            description: 'Download subtitles from any YouTube video in SRT, VTT, or TXT format. Fast, free YouTube caption extractor.',
+            title: 'YouTube Transcript Download - Download YouTube Transcript as TXT, SRT',
+            description: 'Download YouTube transcript in seconds and export as TXT, SRT, or VTT format.',
             type: 'website',
         },
         alternates: buildAlternates(locale, '/download-subs-from-youtube'),
@@ -25,3 +25,4 @@ export default function DownloadSubsLayout({
 }) {
     return <>{children}</>;
 }
+

@@ -4,8 +4,8 @@ export default function DownloadSubsSchema() {
     const schemaData = {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "Download Subs from YouTube",
-        "description": "Free online YouTube subtitle downloader. Extract SRT, VTT, and plain text formats. Supports bulk extraction and AI summarization.",
+        "name": "YouTube Transcript Download Tool",
+        "description": "Free online YouTube transcript download tool. Export transcript files as TXT, SRT, and VTT in seconds.",
         "url": "https://ytvidhub.com/download-subs-from-youtube",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Web Browser",
@@ -16,9 +16,9 @@ export default function DownloadSubsSchema() {
             "availability": "https://schema.org/InStock"
         },
         "featureList": [
-            "Download YouTube SRT subtitles",
-            "Extract VTT web captions",
-            "Generate clean TXT transcripts",
+            "Download YouTube transcript as TXT",
+            "Download YouTube transcript as SRT",
+            "Download YouTube transcript as VTT",
             "Support for auto-generated captions",
             "Multi-language track support",
             "No registration required"
@@ -36,18 +36,34 @@ export default function DownloadSubsSchema() {
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "How to download YouTube subtitles?",
+                "name": "How to download YouTube transcript?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Simply paste the YouTube video link into YTVidHub, select your preferred format, and click download."
+                    "text": "Paste the YouTube video URL into YTVidHub, choose TXT, SRT, or VTT, then click download."
                 }
             },
             {
                 "@type": "Question",
-                "name": "What formats are supported?",
+                "name": "Can I download YouTube transcript as text?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "We support SRT, VTT, and AI-optimized plain text (TXT) formats."
+                    "text": "Yes. Select TXT format to export transcript text without subtitle timing syntax."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What formats are supported for transcript download?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "YTVidHub supports TXT, SRT, and VTT transcript export formats."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I download transcripts from playlists?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Use the bulk downloader for playlist and channel-level transcript extraction."
                 }
             }
         ]

@@ -5,7 +5,6 @@ import TranscriptGeneratorHero from "@/components/transcript/TranscriptGenerator
 import ScrollToTopButton from "@/components/transcript/ScrollToTopButton";
 import {
   Zap,
-  Globe2,
   FileText,
   Sparkles
 } from "lucide-react";
@@ -59,12 +58,7 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [1, 2, 3, 4, 10].map(i => {
-      // 这里的逻辑需要小心处理，因为 JSON 里定义的是 questions.what 等
-      // 为了保持代码简洁，我可以手动定义常用的 key
-      const keys = ['what', 'how', 'formats', 'free', 'accuracy'];
-      const key = keys[i - 1];
-      if (!key) return null;
+    "mainEntity": ['extract', 'what', 'formats', 'free', 'accuracy'].map((key) => {
       return {
         "@type": "Question",
         "name": faqT(`questions.${key}.question`),
@@ -73,7 +67,7 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
           "text": faqT(`questions.${key}.answer`)
         }
       };
-    }).filter(Boolean)
+    })
   };
 
   return (
@@ -88,7 +82,7 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
         <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-6xl py-12">
           <div className="max-w-4xl mx-auto">
             <p className="text-lg text-slate-700 leading-relaxed">
-              <strong>Looking for a reliable YouTube transcript generator?</strong> Our AI-powered tool converts any YouTube video to text in under 30 seconds with 99.5% accuracy. Whether you need transcripts for content creation, accessibility, or AI training, we support 100+ languages and export to SRT, VTT, or TXT formats—completely free, no registration required.
+              <strong>Need to get transcript of YouTube video quickly?</strong> Our free YouTube transcript generator converts any video to text in under 30 seconds. Download transcript outputs in TXT, SRT, or VTT for AI training, research, accessibility, and content workflows.
             </p>
           </div>
         </div>
@@ -308,10 +302,10 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                        {t(`howItWorks.step${i}.title` as any)}
+                        {t(`howItWorks.step${i}.title` as never)}
                       </h3>
                       <p className="text-slate-600 text-sm leading-relaxed">
-                        {t(`howItWorks.step${i}.description` as any)}
+                        {t(`howItWorks.step${i}.description` as never)}
                       </p>
                     </div>
                   </div>
@@ -358,3 +352,4 @@ export default async function YouTubeTranscriptGeneratorPage({ params }: Props) 
     </div>
   );
 }
+
