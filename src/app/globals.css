@@ -138,9 +138,12 @@ h3.font-serif {
   letter-spacing: -0.018em;
 }
 
-p,
-li {
+p {
   color: var(--text-secondary);
+}
+
+li {
+  color: inherit;
 }
 
 :lang(zh) h1,
