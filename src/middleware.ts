@@ -28,6 +28,9 @@ export default function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
+    if (pathname.startsWith('/startupranking')) {
+        return NextResponse.next();
+    }
     // Normalize double slashes: /path// → /path/
     if (/\/{2,}/.test(pathname)) {
         const newUrl = request.nextUrl.clone();
@@ -88,8 +91,6 @@ export default function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\..*).*)',
-        '/:path*.html',
-        '/:path*.html/',
         '/'
     ]
 };

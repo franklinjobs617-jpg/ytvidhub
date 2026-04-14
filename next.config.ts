@@ -1,28 +1,28 @@
-import createNextIntlPlugin from 'next-intl/plugin';
-import type { NextConfig } from 'next';
+import createNextIntlPlugin from "next-intl/plugin";
+import type { NextConfig } from "next";
 
-const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ['next-intl'],
+    optimizePackageImports: ["next-intl"],
   },
   serverExternalPackages: [],
 
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: process.env.NODE_ENV === "production",
   },
 
   trailingSlash: true,
 
   images: {
-    formats: ['image/webp', 'image/avif'],
+    formats: ["image/webp", "image/avif"],
     remotePatterns: [
-      { protocol: 'https', hostname: 'api.dicebear.com' },
-      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
-      { protocol: 'https', hostname: 'media.theresanaiforthat.com' },
-      { protocol: 'https', hostname: 'i.ytimg.com' },
-      { protocol: 'https', hostname: 'cdn.openhunts.com' },
+      { protocol: "https", hostname: "api.dicebear.com" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "media.theresanaiforthat.com" },
+      { protocol: "https", hostname: "i.ytimg.com" },
+      { protocol: "https", hostname: "cdn.openhunts.com" },
     ],
   },
 
@@ -36,21 +36,13 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+   
       {
         source: "/index.html/",
         destination: "/",
         permanent: true,
       },
-      {
-        source: "/:path*.html",
-        destination: "/:path*/",
-        permanent: true,
-      },
-      {
-        source: "/:path*.html/",
-        destination: "/:path*/",
-        permanent: true,
-      },
+      // NOTE: Do not globally redirect *.html, it breaks verification files in /public.
       {
         source: "/index",
         destination: "/",
@@ -68,7 +60,8 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/:locale/how-to-download-youtube-subtitles-complete-guide/",
-        destination: "/:locale/guide/how-to-download-youtube-subtitles-complete-guide/",
+        destination:
+          "/:locale/guide/how-to-download-youtube-subtitles-complete-guide/",
         permanent: true,
       },
       // Redirect non-English versions of all internal pages to English (only homepage is localized for now)
@@ -89,7 +82,7 @@ const nextConfig: NextConfig = {
 
       config.module.rules.push({
         test: /\.json$/,
-        type: 'json',
+        type: "json",
       });
     }
     return config;
