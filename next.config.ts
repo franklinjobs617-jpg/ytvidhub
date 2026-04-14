@@ -42,6 +42,16 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/:path*.html",
+        destination: "/:path*/",
+        permanent: true,
+      },
+      {
+        source: "/:path*.html/",
+        destination: "/:path*/",
+        permanent: true,
+      },
       // NOTE: Do not globally redirect *.html, it breaks verification files in /public.
       {
         source: "/index",
