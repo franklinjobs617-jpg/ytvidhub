@@ -10,7 +10,7 @@ import { Metadata } from "next";
 import LanguagePreloader from "@/components/LanguagePreloader";
 import SourceCapture from "@/components/SourceCapture";
 import { buildCanonicalUrl, SITE_ORIGIN } from "@/lib/url";
-import { Inter, Space_Grotesk, Arvo } from "next/font/google";
+import { Inter, Space_Grotesk, Noto_Sans_SC } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,11 +24,11 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-const arvo = Arvo({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-serif",
+const notoSansSC = Noto_Sans_SC({
+  weight: ["400", "500", "700"],
+  variable: "--font-heading-cjk",
   display: "swap",
+  preload: false,
 });
 
 type Props = {
@@ -164,7 +164,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${inter.variable} ${spaceGrotesk.variable} ${arvo.variable}`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${notoSansSC.variable}`}
     >
       <head>
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -219,7 +219,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
-            <NextTopLoader color="#7c3aed" showSpinner={false} />
+            <NextTopLoader color="#2563eb" showSpinner={false} />
             <LanguagePreloader />
             <SourceCapture />
             {children}

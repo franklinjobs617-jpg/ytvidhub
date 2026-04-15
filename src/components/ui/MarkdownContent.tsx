@@ -11,7 +11,7 @@ const components = {
   ),
   h2: ({ children }: any) => (
     <h2 className="flex items-center gap-2 text-slate-800 text-lg font-bold mt-10 mb-4">
-      <div className="w-1.5 h-5 bg-violet-500 rounded-full flex-shrink-0" />
+      <div className="w-1.5 h-5 bg-[var(--brand-500)] rounded-full flex-shrink-0" />
       {children}
     </h2>
   ),
@@ -19,8 +19,8 @@ const components = {
     <h3 className="text-slate-800 text-base font-semibold mt-6 mb-3">{children}</h3>
   ),
   blockquote: ({ children }: any) => (
-    <div className="relative my-6 p-5 bg-gradient-to-br from-violet-50 to-indigo-50 border-l-4 border-violet-500 rounded-r-2xl shadow-sm">
-      <div className="absolute top-2 right-4 text-4xl text-violet-200 font-serif opacity-30">"</div>
+    <div className="relative my-6 p-5 bg-gradient-to-br from-[var(--brand-50)] to-indigo-50 border-l-4 border-[var(--brand-500)] rounded-r-2xl shadow-sm">
+      <div className="absolute top-2 right-4 text-4xl text-[var(--brand-200)] font-serif opacity-30">"</div>
       <div className="text-slate-700 leading-relaxed italic font-medium">{children}</div>
     </div>
   ),
@@ -38,7 +38,7 @@ const components = {
   ),
   li: ({ children }: any) => (
     <li className="flex items-start gap-3 mb-2.5 text-slate-600 leading-relaxed group">
-      <div className="mt-2 w-1.5 h-1.5 rounded-full bg-violet-400 group-hover:scale-125 transition-transform flex-shrink-0" />
+      <div className="mt-2 w-1.5 h-1.5 rounded-full bg-[var(--brand-400)] group-hover:scale-125 transition-transform flex-shrink-0" />
       <div className="flex-1">{children}</div>
     </li>
   ),
@@ -56,7 +56,7 @@ const components = {
         {children}
       </code>
     ) : (
-      <code className="bg-slate-100 text-violet-700 rounded px-1.5 py-0.5 text-sm font-mono">
+      <code className="bg-slate-100 text-[var(--brand-700)] rounded px-1.5 py-0.5 text-sm font-mono">
         {children}
       </code>
     );
