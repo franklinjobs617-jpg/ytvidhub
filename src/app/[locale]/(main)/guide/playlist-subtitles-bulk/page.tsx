@@ -14,21 +14,16 @@ export default function PlaylistBulkDownloadGuide() {
   };
   return (
     <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      
       <main>
-        
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          
           <p className="text-sm text-blue-600 font-medium mb-4">
             Power User Guide
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            
             Download Every Playlist Subtitle in One Click
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            
             Stop wasting hours on manual downloads. Here&apos;s the definitive
             method to get every subtitle from any playlist as a single, clean
             ZIP file.
@@ -36,19 +31,15 @@ export default function PlaylistBulkDownloadGuide() {
         </header>
         {/* The Dilemma */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             The Data Collector&apos;s Dilemma
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Manually processing a 50-video playlist is a nightmare of
             inefficiency. It&apos;s slow, tedious, and delivers messy results.
             There is a better way.
           </p>
           <div className="space-y-5 mb-8">
-            
             {[
               {
                 title: "150+ Clicks",
@@ -67,7 +58,6 @@ export default function PlaylistBulkDownloadGuide() {
                 key={i}
                 className="p-5 rounded-xl border border-blue-100 bg-blue-50"
               >
-                
                 <h4 className="font-semibold text-blue-900 mb-1">
                   {item.title}
                 </h4>
@@ -78,7 +68,6 @@ export default function PlaylistBulkDownloadGuide() {
             ))}
           </div>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-            
             <img
               src="/image/youtube-playlist-subtitles-bulk-download-efficiency.webp"
               alt="Manual vs. YTVidHub: Efficiency comparison for bulk downloading all YouTube playlist subtitles in one ZIP file."
@@ -88,18 +77,14 @@ export default function PlaylistBulkDownloadGuide() {
         </article>
         {/* 3-Step Solution */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             The 3-Step Solution
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Our Bulk Engine transforms hours of work into seconds. Follow this
             simple workflow to get all your subtitles instantly.
           </p>
           <ol className="space-y-6 mb-8">
-            
             {[
               {
                 title: "Paste Your Playlist URL",
@@ -115,13 +100,10 @@ export default function PlaylistBulkDownloadGuide() {
               },
             ].map((step, i) => (
               <li key={i} className="flex gap-4">
-                
                 <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  
                   {i + 1}
                 </div>
                 <div>
-                  
                   <h3 className="font-semibold text-slate-900 mb-1">
                     {step.title}
                   </h3>
@@ -133,7 +115,6 @@ export default function PlaylistBulkDownloadGuide() {
             ))}
           </ol>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-            
             <img
               src="/image/ytvidhub-playlist-export-formats-clean-txt.webp"
               alt="Screenshot of YTVidHub's bulk export: Clean TXT, JSON, and SRT files contained within the single downloaded ZIP archive."
@@ -143,13 +124,10 @@ export default function PlaylistBulkDownloadGuide() {
         </article>
         {/* A Smarter Workflow */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            
             A Smarter Workflow
           </h2>
           <div className="grid sm:grid-cols-2 gap-5">
-            
             {[
               {
                 title: "Built for Speed",
@@ -172,7 +150,6 @@ export default function PlaylistBulkDownloadGuide() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <h4 className="font-semibold text-slate-900 mb-1">
                   {feature.title}
                 </h4>
@@ -185,13 +162,10 @@ export default function PlaylistBulkDownloadGuide() {
         </article>
         {/* FAQ */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            
             Technical Q&amp;A
           </h2>
           <div className="space-y-5">
-            
             {[
               {
                 q: "Does YTVidHub handle all languages in a playlist?",
@@ -206,10 +180,7 @@ export default function PlaylistBulkDownloadGuide() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
-                <h3 className="font-semibold text-slate-900 mb-2">
-                  {faq.q}
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">
                   {faq.a}
                 </p>
@@ -219,15 +190,11 @@ export default function PlaylistBulkDownloadGuide() {
         </article>
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
-          
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
-            
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
-              
               Ready for Pro Data Prep?
             </h2>
             <p className="text-slate-400 mb-8">
-              
               Downloading is just the start. Build a robust data pipeline for
               LLM training or advanced research with our industrial-strength
               extraction tools.
@@ -236,7 +203,6 @@ export default function PlaylistBulkDownloadGuide() {
               href="/data-prep-guide"
               className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
-              
               Read The Data Prep Guide
             </Link>
           </div>

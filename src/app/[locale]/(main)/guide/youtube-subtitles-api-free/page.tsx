@@ -14,21 +14,16 @@ export default function YouTubeApiAlternativeGuide() {
   };
   return (
     <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      
       <main>
-        
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          
           <p className="text-sm text-blue-600 font-medium mb-4">
             Developer Documentation
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            
             Ditch the API. Get Subtitles Directly.
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            
             API quotas and complexity are major hurdles for data projects.
             Discover a professional, no-API alternative to get structured JSON
             or clean TXT data instantly.
@@ -36,19 +31,15 @@ export default function YouTubeApiAlternativeGuide() {
         </header>
         {/* API Bottleneck */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             The YouTube API Bottleneck
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             The official YouTube Data API v3 is powerful but introduces
             significant friction for subtitle-focused projects. Here are the
             three biggest pain points developers face.
           </p>
           <div className="space-y-5 mb-8">
-            
             {[
               {
                 title: "High Quota Costs",
@@ -67,7 +58,6 @@ export default function YouTubeApiAlternativeGuide() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <h4 className="font-semibold text-slate-900 mb-1">
                   {item.title}
                 </h4>
@@ -78,7 +68,6 @@ export default function YouTubeApiAlternativeGuide() {
             ))}
           </div>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-            
             <img
               src="/image/youtube-api-quota-vs-export-cost.webp"
               alt="YouTube API quota costs vs direct export"
@@ -88,19 +77,15 @@ export default function YouTubeApiAlternativeGuide() {
         </article>
         {/* No-API Alternative */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             The No-API Alternative
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Skip the API entirely. Our tool extracts subtitle data directly and
             delivers it in developer-ready formats—no keys, no OAuth, no quota
             limits.
           </p>
           <div className="space-y-5 mb-8">
-            
             {[
               {
                 title: "Structured JSON Output",
@@ -119,7 +104,6 @@ export default function YouTubeApiAlternativeGuide() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <h4 className="font-semibold text-slate-900 mb-1">
                   {item.title}
                 </h4>
@@ -132,18 +116,14 @@ export default function YouTubeApiAlternativeGuide() {
         </article>
         {/* JSON Structure Preview */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             What Your Data Looks Like
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Every export delivers structured, machine-readable data. No parsing
             scripts required—just clean JSON ready for your pipeline.
           </p>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-8">
-            
             <img
               src="/image/clean-json-data-structure-for-llm.webp"
               alt="Clean JSON data structure for LLM ingestion"
@@ -151,9 +131,7 @@ export default function YouTubeApiAlternativeGuide() {
             />
           </div>
           <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-            
             <p className="text-sm text-slate-600 leading-relaxed">
-              
               <strong>Developer Tip:</strong> Use our JSON export with
               segment-level timestamps to build searchable video indexes, RAG
               knowledge bases, or fine-tuning datasets without any intermediate
@@ -163,13 +141,10 @@ export default function YouTubeApiAlternativeGuide() {
         </article>
         {/* FAQ */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            
             Developer Q&amp;A
           </h2>
           <div className="space-y-5">
-            
             {[
               {
                 q: "How does this avoid YouTube API rate limits?",
@@ -188,10 +163,7 @@ export default function YouTubeApiAlternativeGuide() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
-                <h3 className="font-semibold text-slate-900 mb-2">
-                  {faq.q}
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">
                   {faq.a}
                 </p>
@@ -201,15 +173,11 @@ export default function YouTubeApiAlternativeGuide() {
         </article>
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
-          
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
-            
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
-              
               Stop Fighting the API
             </h2>
             <p className="text-slate-400 mb-8">
-              
               Get structured subtitle data in seconds. No API key, no OAuth, no
               quota limits.
             </p>
@@ -218,11 +186,9 @@ export default function YouTubeApiAlternativeGuide() {
               onClick={handleAction}
               className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
-              
               Start Free Extraction
             </Link>
             <p className="mt-6 text-sm text-slate-500">
-              
               No credit card required · JSON, SRT, TXT exports · Bulk playlist
               support
             </p>

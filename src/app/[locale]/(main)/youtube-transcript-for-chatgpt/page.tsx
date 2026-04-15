@@ -2,21 +2,14 @@ import Link from "next/link";
 export default function YouTubeTranscriptForChatGPTPage() {
   return (
     <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      
       <main>
-        
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          
-          <p className="text-sm text-blue-600 font-medium mb-4">
-            Free Tool
-          </p>
+          <p className="text-sm text-blue-600 font-medium mb-4">Free Tool</p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            
             YouTube Transcript for ChatGPT
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            
             Extract the full transcript of any YouTube video and use it with
             ChatGPT, Claude, or Gemini. Summarize, translate, or analyze — in
             seconds, no login required.
@@ -25,7 +18,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
             href="/"
             className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
           >
-            
             Extract Transcript Free
           </Link>
           <p className="text-sm text-slate-400 mt-4">
@@ -34,7 +26,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
         </header>
         {/* How It Works */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             3 Steps to Use YouTube Videos with ChatGPT
           </h2>
@@ -43,9 +34,7 @@ export default function YouTubeTranscriptForChatGPTPage() {
             Here&apos;s how.
           </p>
           <div className="space-y-5">
-            
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              
               <h3 className="font-semibold text-slate-900 mb-1">
                 Step 1: Copy the YouTube URL
               </h3>
@@ -54,7 +43,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
               </p>
             </div>
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              
               <h3 className="font-semibold text-slate-900 mb-1">
                 Step 2: Extract on YTVidHub
               </h3>
@@ -64,7 +52,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
               </p>
             </div>
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              
               <h3 className="font-semibold text-slate-900 mb-1">
                 Step 3: Paste into ChatGPT
               </h3>
@@ -77,7 +64,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
         </article>
         {/* Use Cases */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             What Can You Do With a YouTube Transcript in ChatGPT?
           </h2>
@@ -85,7 +71,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
             Once you have the transcript, the possibilities are wide open.
           </p>
           <div className="grid sm:grid-cols-2 gap-5">
-            
             {[
               {
                 title: "Summarize Long Videos",
@@ -122,7 +107,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <h3 className="font-semibold text-slate-900 mb-2">
                   {item.title}
                 </h3>
@@ -138,12 +122,10 @@ export default function YouTubeTranscriptForChatGPTPage() {
         </article>
         {/* FAQ */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Frequently Asked Questions
           </h2>
           <div className="space-y-5">
-            
             {[
               {
                 q: "Can ChatGPT read YouTube videos directly?",
@@ -170,10 +152,7 @@ export default function YouTubeTranscriptForChatGPTPage() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
-                <h3 className="font-semibold text-slate-900 mb-2">
-                  {item.q}
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-2">{item.q}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">
                   {item.a}
                 </p>
@@ -183,17 +162,14 @@ export default function YouTubeTranscriptForChatGPTPage() {
         </article>
         {/* Related Guides */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-xl font-bold text-slate-900 mb-6 article-h2">
             Related Guides
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
-            
             <Link
               href="/guide/youtube-subtitles-for-llm-data"
               className="block p-4 rounded-xl border border-slate-100 bg-slate-50 hover:border-blue-200 transition-colors"
             >
-              
               <p className="font-semibold text-slate-900 text-sm">
                 YouTube Subtitles for LLM Training Data
               </p>
@@ -205,7 +181,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
               href="/bulk-youtube-subtitle-downloader"
               className="block p-4 rounded-xl border border-slate-100 bg-slate-50 hover:border-blue-200 transition-colors"
             >
-              
               <p className="font-semibold text-slate-900 text-sm">
                 Bulk YouTube Subtitle Downloader
               </p>
@@ -217,7 +192,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
               href="/what-is-an-srt-file"
               className="block p-4 rounded-xl border border-slate-100 bg-slate-50 hover:border-blue-200 transition-colors"
             >
-              
               <p className="font-semibold text-slate-900 text-sm">
                 What is an SRT File?
               </p>
@@ -229,9 +203,7 @@ export default function YouTubeTranscriptForChatGPTPage() {
         </article>
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
-          
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
-            
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Ready to Extract Your First Transcript?
             </h2>
@@ -242,7 +214,6 @@ export default function YouTubeTranscriptForChatGPTPage() {
               href="/"
               className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
-              
               Extract Transcript Now
             </Link>
           </div>

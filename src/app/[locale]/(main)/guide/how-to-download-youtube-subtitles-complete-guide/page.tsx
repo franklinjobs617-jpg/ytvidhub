@@ -96,58 +96,46 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
   ];
   return (
     <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <main>
-        
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          
           <div className="flex items-center gap-4 text-sm text-slate-500 mb-6 flex-wrap">
-            
             <span>2.4M+ Downloads</span> <span>4.9/5 Rating</span>
             <span>8 min read</span> <span>100% Safe &amp; Free</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            
             How to Download YouTube Subtitles: Complete Guide 2026
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            
             Learn how to download YouTube subtitles for free using 3 proven
             methods. This comprehensive guide covers everything from single
-            videos to bulk playlist downloads with SRT, VTT, and TXT
-            formats.
+            videos to bulk playlist downloads with SRT, VTT, and TXT formats.
           </p>
           <Link
             href="/youtube-subtitle-downloader"
             className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
           >
-            
             Try Our Free Subtitle Downloader
           </Link>
           <p className="text-sm text-slate-400 mt-3">
-            
             Skip the manual work · 5 free downloads daily · No registration
             required
           </p>
         </header>
         {/* Quick Navigation */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 article-h2">
             Quick Navigation
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
-            
             <a
               href="#method-1"
               className="p-4 rounded-xl border border-slate-100 bg-slate-50 hover:bg-slate-100 transition-colors"
             >
-              
               <div className="font-semibold text-slate-900">
                 1. YouTube Built-in
               </div>
@@ -157,7 +145,6 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
               href="#method-2"
               className="p-4 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors"
             >
-              
               <div className="font-semibold text-slate-900">
                 2. YTVidHub Tool
               </div>
@@ -169,30 +156,22 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
               href="#method-3"
               className="p-4 rounded-xl border border-slate-100 bg-slate-50 hover:bg-slate-100 transition-colors"
             >
-              
               <div className="font-semibold text-slate-900">
                 3. Browser Extensions
               </div>
-              <div className="text-sm text-slate-500">
-                Alternative method
-              </div>
+              <div className="text-sm text-slate-500">Alternative method</div>
             </a>
           </div>
         </article>
         {/* Method Comparison */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Choose Your Method
           </h2>
           <div className="rounded-xl border border-slate-200 overflow-x-auto">
-            
             <table className="w-full text-sm">
-              
               <thead>
-                
                 <tr className="border-b border-slate-200 bg-slate-50">
-                  
                   <th className="py-3 px-4 text-left font-semibold text-slate-900">
                     Method
                   </th>
@@ -211,7 +190,6 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                 </tr>
               </thead>
               <tbody className="text-slate-600">
-                
                 {[
                   ["YouTube Built-in", "Easy", "3-5 min", "×", "Text only"],
                   ["YTVidHub Tool", "Easy", "10-30 sec", "✓", "SRT, VTT, TXT"],
@@ -227,7 +205,6 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                     key={i}
                     className={`border-b border-slate-100 last:border-0 ${i === 1 ? "bg-blue-50" : ""}`}
                   >
-                    
                     <td className="py-3 px-4 font-medium text-slate-900">
                       {method}
                     </td>
@@ -243,18 +220,14 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
         </article>
         {/* Method 2: YTVidHub */}
         <article id="method-2" className="max-w-3xl mx-auto px-6 mb-16">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             Method 2: YTVidHub Batch Subtitle Downloader
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Automated bulk subtitle extraction with professional formats. The
             fastest way to download subtitles from any YouTube video.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            
             {[
               { value: "10-30s", label: "Per Video" },
               { value: "Bulk", label: "Downloads" },
@@ -265,18 +238,14 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                 key={i}
                 className="p-4 rounded-xl border border-slate-100 bg-slate-50 text-center"
               >
-                
                 <div className="text-xl font-bold text-slate-900">
                   {item.value}
                 </div>
-                <div className="text-xs text-slate-400 mt-1">
-                  {item.label}
-                </div>
+                <div className="text-xs text-slate-400 mt-1">{item.label}</div>
               </div>
             ))}
           </div>
           <div className="grid sm:grid-cols-2 gap-5 mb-8">
-            
             {[
               {
                 title: "Batch Processing",
@@ -307,7 +276,6 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <h4 className="font-semibold text-slate-900 mb-1">
                   {item.title}
                 </h4>
@@ -318,12 +286,10 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
             ))}
           </div>
           <div className="text-center">
-            
             <Link
               href="/"
               className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
-              
               Try YTVidHub Free Now
             </Link>
             <p className="text-sm text-slate-400 mt-3">
@@ -333,18 +299,14 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
         </article>
         {/* Method 1: YouTube Built-in */}
         <article id="method-1" className="max-w-3xl mx-auto px-6 mb-16">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             Method 1: YouTube Built-in Feature
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Free manual method using YouTube&apos;s native transcript feature.
             No tools needed.
           </p>
           <ol className="space-y-6 mb-8">
-            
             {[
               {
                 title: "Open the YouTube Video",
@@ -368,13 +330,10 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
               },
             ].map((step, i) => (
               <li key={i} className="flex gap-4">
-                
                 <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  
                   {i + 1}
                 </div>
                 <div>
-                  
                   <h3 className="font-semibold text-slate-900 mb-1">
                     {step.title}
                   </h3>
@@ -386,12 +345,10 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
             ))}
           </ol>
           <div className="p-5 rounded-xl border border-blue-200 bg-blue-50">
-            
             <h4 className="font-semibold text-blue-900 mb-2">
               Limitations of This Method
             </h4>
             <div className="text-sm text-blue-700 space-y-1">
-              
               <p>· Only works for one video at a time</p>
               <p>· Requires manual formatting and cleanup</p>
               <p>· No structured file formats (SRT, VTT)</p>
@@ -401,18 +358,14 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
         </article>
         {/* Method 3: Browser Extensions */}
         <article id="method-3" className="max-w-3xl mx-auto px-6 mb-16">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             Method 3: Browser Extensions
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Third-party browser extensions for subtitle extraction. Convenient
             but comes with trade-offs.
           </p>
           <ol className="space-y-6 mb-8">
-            
             {[
               {
                 title: "Install a Browser Extension",
@@ -432,13 +385,10 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
               },
             ].map((step, i) => (
               <li key={i} className="flex gap-4">
-                
                 <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  
                   {i + 1}
                 </div>
                 <div>
-                  
                   <h3 className="font-semibold text-slate-900 mb-1">
                     {step.title}
                   </h3>
@@ -450,36 +400,28 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
             ))}
           </ol>
           <div className="p-5 rounded-xl border border-blue-200 bg-blue-50">
-            
             <h4 className="font-semibold text-blue-900 mb-2">
               Important Security Considerations
             </h4>
             <div className="text-sm text-blue-700 space-y-1">
-              
               <p>· Browser extensions can access your browsing data</p>
               <p>· Some extensions may contain malware or tracking code</p>
               <p>· Extensions can slow down your browser performance</p>
               <p>· May stop working when YouTube updates its interface</p>
-              <p>
-                · Limited support for bulk downloads or advanced features
-              </p>
+              <p>· Limited support for bulk downloads or advanced features</p>
             </div>
           </div>
         </article>
         {/* Professional Use Cases */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             Professional Use Cases: Why Download YouTube Subtitles?
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             From our experience processing over 2.4 million subtitle downloads,
             here are the most common professional applications.
           </p>
           <div className="space-y-5 mb-8">
-            
             {[
               {
                 title: "AI & Machine Learning Training",
@@ -501,21 +443,17 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <h4 className="font-semibold text-slate-900 mb-1">
                   {item.title}
                 </h4>
                 <p className="text-sm text-slate-500 leading-relaxed mb-2">
                   {item.desc}
                 </p>
-                <p className="text-xs text-blue-600 font-medium">
-                  {item.tip}
-                </p>
+                <p className="text-xs text-blue-600 font-medium">{item.tip}</p>
               </div>
             ))}
           </div>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-8">
-            
             <Image
               src="/youtube-subtitle-formats-comparison-srt-vtt-txt.webp"
               alt="Comparison chart of YouTube subtitle formats SRT, VTT, and TXT for AI training and video editing."
@@ -528,13 +466,10 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
         </article>
         {/* Download Trends */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            
             Subtitle Download Trends
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            
             {[
               { value: "68%", label: "Use TXT for AI training" },
               { value: "24%", label: "Prefer SRT for editing" },
@@ -545,26 +480,20 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                 key={i}
                 className="p-4 rounded-xl border border-slate-100 bg-slate-50 text-center"
               >
-                
                 <div className="text-xl font-bold text-slate-900">
                   {item.value}
                 </div>
-                <div className="text-xs text-slate-400 mt-1">
-                  {item.label}
-                </div>
+                <div className="text-xs text-slate-400 mt-1">{item.label}</div>
               </div>
             ))}
           </div>
         </article>
         {/* Understanding Subtitle Formats */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            
             Understanding Subtitle Formats
           </h2>
           <div className="space-y-5">
-            
             {[
               {
                 title: "SRT Format",
@@ -598,7 +527,6 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <h4 className="font-semibold text-slate-900 mb-2">
                   {item.title}
                 </h4>
@@ -606,7 +534,6 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                   {item.desc}
                 </p>
                 <div className="space-y-1">
-                  
                   {item.points.map((p, j) => (
                     <p key={j} className="text-sm text-slate-600">
                       · {p}
@@ -619,13 +546,10 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
         </article>
         {/* FAQ */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            
             Frequently Asked Questions
           </h2>
           <div className="space-y-5">
-            
             {[
               {
                 q: "Can I download YouTube subtitles for free?",
@@ -652,10 +576,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
-                <h3 className="font-semibold text-slate-900 mb-2">
-                  {faq.q}
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">
                   {faq.a}
                 </p>
@@ -665,38 +586,29 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
         </article>
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
-          
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
-            
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
-              
               Ready to Download YouTube Subtitles?
             </h2>
             <p className="text-slate-400 mb-8">
-              
               Skip the manual work and use our automated tool to download
-              subtitles from YouTube videos, playlists, and channels in
-              seconds.
+              subtitles from YouTube videos, playlists, and channels in seconds.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              
               <Link
                 href="/"
                 className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
               >
-                
                 Start Downloading Free
               </Link>
               <Link
                 href="/bulk-youtube-subtitle-downloader"
                 className="inline-block px-8 py-3 bg-white hover:bg-slate-100 text-slate-900 rounded-lg font-medium transition-colors"
               >
-                
                 Learn About Bulk Downloads
               </Link>
             </div>
             <p className="mt-6 text-sm text-slate-500">
-              
               No registration required · Instant results · Multiple formats
             </p>
           </div>

@@ -8,21 +8,16 @@ import {
 export default function SrtFileGuidePage() {
   return (
     <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      
       <main>
-        
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          
           <p className="text-sm text-blue-600 font-medium mb-4">
             Technical Specification
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            
             What Is an SRT File? Complete Guide to Subtitle Format
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            
             An <strong>SRT (SubRip Text) file</strong> is the most popular
             subtitle format for videos. Learn the exact
             <strong>timestamp syntax</strong> (<code>HH:MM:SS,ms</code>), how to
@@ -30,7 +25,6 @@ export default function SrtFileGuidePage() {
           </p>
           <SrtCtaHero />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-            
             {[
               {
                 value: "99.9%",
@@ -57,38 +51,28 @@ export default function SrtFileGuidePage() {
                 key={i}
                 className="p-4 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
                 <div className="text-lg font-bold text-slate-900">
                   {item.value}
                 </div>
                 <div className="text-xs font-medium text-slate-700 mt-1">
                   {item.label}
                 </div>
-                <div className="text-xs text-slate-400 mt-1">
-                  {item.desc}
-                </div>
+                <div className="text-xs text-slate-400 mt-1">{item.desc}</div>
               </div>
             ))}
           </div>
         </header>
         {/* Main Layout with Sidebar */}
         <section className="py-10 bg-white">
-          
           <div className="max-w-7xl mx-auto px-6">
-            
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-              
               <aside className="hidden lg:block lg:col-span-3 sticky top-32">
-                
                 <SrtTocClient />
               </aside>
               <div className="lg:col-span-9">
-                
                 <article className="max-w-3xl article-shell article-section">
-                  
                   {/* Image 1 */}
                   <div className="mb-16 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
-                    
                     <img
                       src="/image/A graphic breakdown of the SRT file format.webp"
                       alt="Comprehensive technical breakdown of SRT file format showing sequence numbering, timestamp syntax with comma milliseconds, and subtitle block structure for video captioning"
@@ -101,16 +85,12 @@ export default function SrtFileGuidePage() {
                   </div>
                   {/* What is SRT */}
                   <div className="p-6 rounded-xl border border-blue-200 bg-blue-50 mb-16">
-                    
                     <h3 className="text-xl font-bold text-slate-900 mb-4">
                       What is an SRT File?
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
-                      
                       <div>
-                        
                         <p className="text-slate-700 leading-relaxed mb-4">
-                          
                           An <strong>SRT file (.srt extension)</strong> is a
                           plain-text subtitle format that stores synchronized
                           caption data with precise timing information.
@@ -126,7 +106,6 @@ export default function SrtFileGuidePage() {
                           as SRT files instantly with no software required.
                         </p>
                         <ul className="space-y-2 text-sm text-slate-600">
-                          
                           <li>
                             <strong>Human-readable:</strong> Can be edited with
                             any text editor
@@ -138,12 +117,10 @@ export default function SrtFileGuidePage() {
                         </ul>
                       </div>
                       <div className="p-5 rounded-xl bg-white border border-blue-100">
-                        
                         <h4 className="font-semibold text-slate-900 mb-3">
                           Common Use Cases
                         </h4>
                         <ul className="space-y-2 text-sm text-slate-600">
-                          
                           <li>· Video localization &amp; translation</li>
                           <li>· AI training data for speech recognition</li>
                           <li>· Accessibility compliance (ADA, WCAG)</li>
@@ -154,18 +131,13 @@ export default function SrtFileGuidePage() {
                   </div>
                   {/* Comparison Table */}
                   <div className="mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 article-h2">
                       SRT vs VTT vs ASS: Format Comparison
                     </h2>
                     <div className="overflow-x-auto">
-                      
                       <table className="w-full border-collapse">
-                        
                         <thead>
-                          
                           <tr className="bg-slate-900 text-white">
-                            
                             <th className="p-4 text-left">Feature</th>
                             <th className="p-4 text-left">SRT</th>
                             <th className="p-4 text-left">VTT</th>
@@ -173,12 +145,8 @@ export default function SrtFileGuidePage() {
                           </tr>
                         </thead>
                         <tbody className="text-sm">
-                          
                           <tr className="border-b border-slate-200">
-                            
-                            <td className="p-4 font-semibold">
-                              Compatibility
-                            </td>
+                            <td className="p-4 font-semibold">Compatibility</td>
                             <td className="p-4 text-blue-600">
                               ✓ Universal (99.9%)
                             </td>
@@ -188,7 +156,6 @@ export default function SrtFileGuidePage() {
                             <td className="p-4 text-slate-500">Limited</td>
                           </tr>
                           <tr className="border-b border-slate-200 bg-slate-50">
-                            
                             <td className="p-4 font-semibold">
                               Millisecond Separator
                             </td>
@@ -197,7 +164,6 @@ export default function SrtFileGuidePage() {
                             <td className="p-4">Dot (.)</td>
                           </tr>
                           <tr className="border-b border-slate-200">
-                            
                             <td className="p-4 font-semibold">
                               Styling Support
                             </td>
@@ -206,16 +172,12 @@ export default function SrtFileGuidePage() {
                             <td className="p-4">Advanced</td>
                           </tr>
                           <tr className="border-b border-slate-200 bg-slate-50">
-                            
-                            <td className="p-4 font-semibold">
-                              File Size
-                            </td>
+                            <td className="p-4 font-semibold">File Size</td>
                             <td className="p-4 text-blue-600">Smallest</td>
                             <td className="p-4">Small</td>
                             <td className="p-4">Larger</td>
                           </tr>
                           <tr className="border-b border-slate-200">
-                            
                             <td className="p-4 font-semibold">Best For</td>
                             <td className="p-4">Video players, AI training</td>
                             <td className="p-4">Web videos, HTML5</td>
@@ -227,7 +189,6 @@ export default function SrtFileGuidePage() {
                   </div>
                   {/* 1. Anatomy */}
                   <section id="anatomy" className="scroll-mt-32 mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
                       1. Complete SRT File Anatomy
                     </h2>
@@ -238,7 +199,6 @@ export default function SrtFileGuidePage() {
                       work across all video platforms and players.
                     </p>
                     <div className="grid sm:grid-cols-2 gap-5">
-                      
                       {[
                         {
                           t: "Sequence Number",
@@ -269,7 +229,6 @@ export default function SrtFileGuidePage() {
                           key={i}
                           className="p-5 rounded-xl border border-slate-100 bg-slate-50"
                         >
-                          
                           <p className="text-xs text-blue-600 font-medium mb-2">
                             Component 0{i + 1} · Required
                           </p>
@@ -282,16 +241,13 @@ export default function SrtFileGuidePage() {
                           <div className="p-3 bg-white rounded-lg font-mono text-sm text-slate-700 border border-slate-100 mb-3">
                             {box.code}
                           </div>
-                          <p className="text-xs text-blue-600">
-                            {box.tip}
-                          </p>
+                          <p className="text-xs text-blue-600">{box.tip}</p>
                         </div>
                       ))}
                     </div>
                   </section>
                   {/* 2. Syntax Deep Dive */}
                   <section id="interactive" className="scroll-mt-32 mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
                       2. SRT Syntax Deep Dive
                     </h2>
@@ -301,14 +257,11 @@ export default function SrtFileGuidePage() {
                       strict formatting rules.
                     </p>
                     <div className="bg-slate-900 rounded-2xl p-6 md:p-10 font-mono text-sm leading-loose">
-                      
                       <div className="text-xs text-slate-500 mb-6 text-right">
                         example.srt
                       </div>
                       <div className="space-y-6">
-                        
                         <div>
-                          
                           <span className="text-slate-500">1</span> <br />
                           <span className="text-blue-400">
                             00:00:01,000 --&gt; 00:00:03,450
@@ -319,7 +272,6 @@ export default function SrtFileGuidePage() {
                           </span>
                         </div>
                         <div>
-                          
                           <span className="text-slate-500">2</span> <br />
                           <span className="text-blue-400">
                             00:00:03,500 --&gt; 00:00:06,800
@@ -335,7 +287,6 @@ export default function SrtFileGuidePage() {
                         </div>
                       </div>
                       <div className="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-500 space-y-1">
-                        
                         <p>
                           <strong>Encoding:</strong> Always save as UTF-8 to
                           support special characters
@@ -356,7 +307,6 @@ export default function SrtFileGuidePage() {
                     id="advanced-formatting"
                     className="scroll-mt-32 mb-16"
                   >
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
                       3. Advanced SRT Formatting Rules
                     </h2>
@@ -364,7 +314,6 @@ export default function SrtFileGuidePage() {
                       Professional techniques for complex subtitle scenarios.
                     </p>
                     <div className="grid sm:grid-cols-2 gap-5">
-                      
                       {[
                         {
                           title: "Styling with HTML Tags",
@@ -398,7 +347,6 @@ export default function SrtFileGuidePage() {
                           key={i}
                           className="p-5 rounded-xl border border-slate-100 bg-slate-50"
                         >
-                          
                           <h3 className="font-semibold text-slate-900 mb-2">
                             {item.title}
                           </h3>
@@ -408,27 +356,20 @@ export default function SrtFileGuidePage() {
                           <div className="p-3 bg-white rounded-lg font-mono text-sm text-slate-700 border border-slate-100 mb-2">
                             {item.example}
                           </div>
-                          <p className="text-xs text-slate-400">
-                            {item.note}
-                          </p>
+                          <p className="text-xs text-slate-400">{item.note}</p>
                         </div>
                       ))}
                     </div>
                   </section>
                   {/* 4. Format Comparison */}
                   <section id="comparison" className="scroll-mt-32 mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
                       4. Format Comparison: SRT vs. VTT vs. TXT
                     </h2>
                     <div className="overflow-x-auto rounded-xl border border-slate-200 mb-8">
-                      
                       <table className="w-full text-left text-sm">
-                        
                         <thead className="bg-slate-50 border-b border-slate-100">
-                          
                           <tr>
-                            
                             <th className="p-4 font-semibold text-slate-900">
                               Feature
                             </th>
@@ -444,7 +385,6 @@ export default function SrtFileGuidePage() {
                           </tr>
                         </thead>
                         <tbody className="text-slate-600">
-                          
                           {[
                             {
                               feature: "Primary Use Case",
@@ -490,7 +430,6 @@ export default function SrtFileGuidePage() {
                             },
                           ].map((row, i) => (
                             <tr key={i} className="border-b border-slate-50">
-                              
                               <td className="p-4 font-medium text-slate-900">
                                 {row.feature}
                               </td>
@@ -503,42 +442,33 @@ export default function SrtFileGuidePage() {
                       </table>
                     </div>
                     <div className="grid sm:grid-cols-3 gap-5">
-                      
                       <div className="p-5 rounded-xl border border-blue-200 bg-blue-50">
-                        
                         <h4 className="font-semibold text-slate-900 mb-2">
                           Choose SRT When...
                         </h4>
                         <ul className="space-y-1 text-sm text-slate-600">
-                          
                           <li>
                             · Working with traditional video editing software
                           </li>
                           <li>· Need maximum compatibility across devices</li>
-                          <li>
-                            · Preparing data for speech recognition AI
-                          </li>
+                          <li>· Preparing data for speech recognition AI</li>
                         </ul>
                       </div>
                       <div className="p-5 rounded-xl border border-slate-200 bg-slate-50">
-                        
                         <h4 className="font-semibold text-slate-900 mb-2">
                           Choose VTT When...
                         </h4>
                         <ul className="space-y-1 text-sm text-slate-600">
-                          
                           <li>· Building modern web video experiences</li>
                           <li>· Need advanced styling and positioning</li>
                           <li>· Working with HTML5 video players</li>
                         </ul>
                       </div>
                       <div className="p-5 rounded-xl border border-slate-200 bg-slate-50">
-                        
                         <h4 className="font-semibold text-slate-900 mb-2">
                           Choose TXT When...
                         </h4>
                         <ul className="space-y-1 text-sm text-slate-600">
-                          
                           <li>· Training language models (LLMs)</li>
                           <li>· Need pure text without timing data</li>
                           <li>· Creating searchable transcripts</li>
@@ -548,19 +478,15 @@ export default function SrtFileGuidePage() {
                   </section>
                   {/* 5. Conversion Guide */}
                   <section id="conversion" className="scroll-mt-32 mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
                       5. SRT Format Conversion Guide
                     </h2>
                     <div className="grid sm:grid-cols-2 gap-8">
-                      
                       <div>
-                        
                         <h3 className="font-semibold text-slate-900 mb-4">
                           Converting SRT to Other Formats
                         </h3>
                         <div className="space-y-4">
-                          
                           {[
                             {
                               from: "SRT → VTT",
@@ -585,7 +511,6 @@ export default function SrtFileGuidePage() {
                               key={i}
                               className="p-4 rounded-xl border border-slate-100 bg-slate-50"
                             >
-                              
                               <p className="font-semibold text-blue-600 text-sm mb-1">
                                 {conv.from}
                               </p>
@@ -600,14 +525,11 @@ export default function SrtFileGuidePage() {
                         </div>
                       </div>
                       <div>
-                        
                         <h3 className="font-semibold text-slate-900 mb-4">
                           Bulk Conversion Workflow
                         </h3>
                         <div className="bg-slate-900 text-white rounded-xl p-6">
-                          
                           <ol className="space-y-4 text-sm">
-                            
                             <li className="flex items-center gap-3">
                               <span className="bg-blue-600 w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0">
                                 1
@@ -639,12 +561,10 @@ export default function SrtFileGuidePage() {
                   </section>
                   {/* 6. Editing Tools */}
                   <section id="editing" className="scroll-mt-32 mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
                       6. Professional SRT Editing Tools
                     </h2>
                     <div className="space-y-5 mb-8">
-                      
                       {[
                         {
                           category: "Text Editors",
@@ -669,7 +589,6 @@ export default function SrtFileGuidePage() {
                           key={i}
                           className="p-5 rounded-xl border border-slate-100 bg-slate-50"
                         >
-                          
                           <h3 className="font-semibold text-slate-900 mb-1">
                             {item.category}
                           </h3>
@@ -679,16 +598,12 @@ export default function SrtFileGuidePage() {
                           <p className="text-xs text-slate-500 mb-1">
                             {item.useCase}
                           </p>
-                          <p className="text-xs text-blue-600">
-                            {item.tip}
-                          </p>
+                          <p className="text-xs text-blue-600">{item.tip}</p>
                         </div>
                       ))}
                     </div>
                     <div className="p-6 rounded-xl border border-blue-200 bg-blue-50 flex flex-col sm:flex-row items-center gap-6">
-                      
                       <div className="flex-grow">
-                        
                         <h4 className="font-semibold text-slate-900 mb-1">
                           Need Bulk SRT Files for AI Research?
                         </h4>
@@ -710,7 +625,6 @@ export default function SrtFileGuidePage() {
                   </section>
                   {/* 7. AI Use Cases */}
                   <section id="ai-use-cases" className="scroll-mt-32 mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
                       7. SRT Files for AI &amp; Machine Learning
                     </h2>
@@ -718,7 +632,6 @@ export default function SrtFileGuidePage() {
                       Why SRT is the preferred format for AI training data.
                     </p>
                     <div className="p-6 rounded-xl border border-blue-200 bg-blue-50 mb-8">
-                      
                       <h3 className="font-semibold text-slate-900 mb-3">
                         SRT File Format Benefits for AI Applications
                       </h3>
@@ -730,7 +643,6 @@ export default function SrtFileGuidePage() {
                         speech recognition systems.
                       </p>
                       <ul className="grid sm:grid-cols-2 gap-2 text-sm text-slate-600">
-                        
                         <li>· Easy parsing for AI training</li>
                         <li>· Consistent timestamp format</li>
                         <li>· Universal compatibility</li>
@@ -738,9 +650,7 @@ export default function SrtFileGuidePage() {
                       </ul>
                     </div>
                     <div className="grid sm:grid-cols-2 gap-5">
-                      
                       <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-                        
                         <h4 className="font-semibold text-slate-900 mb-2">
                           Clean Data for LLM Training
                         </h4>
@@ -751,7 +661,6 @@ export default function SrtFileGuidePage() {
                           recognition models.
                         </p>
                         <ul className="text-xs text-slate-500 space-y-1">
-                          
                           <li>
                             · Automatic noise filtering (timestamps removed)
                           </li>
@@ -760,7 +669,6 @@ export default function SrtFileGuidePage() {
                         </ul>
                       </div>
                       <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-                        
                         <h4 className="font-semibold text-slate-900 mb-2">
                           Bulk Processing Pipelines
                         </h4>
@@ -770,7 +678,6 @@ export default function SrtFileGuidePage() {
                           ensures data quality at scale.
                         </p>
                         <div className="grid grid-cols-2 gap-3 text-center">
-                          
                           {[
                             { value: "2.5M", label: "Monthly SRT Files" },
                             { value: "99.8%", label: "Parsing Success" },
@@ -778,7 +685,6 @@ export default function SrtFileGuidePage() {
                             { value: "10ms", label: "Processing Time" },
                           ].map((stat, i) => (
                             <div key={i}>
-                              
                               <div className="text-lg font-bold text-slate-900">
                                 {stat.value}
                               </div>
@@ -793,12 +699,10 @@ export default function SrtFileGuidePage() {
                   </section>
                   {/* 8. FAQ */}
                   <section id="faq" className="scroll-mt-32 mb-16">
-                    
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
                       8. SRT File Expert FAQ
                     </h2>
                     <div className="space-y-5">
-                      
                       {[
                         {
                           q: "What is the standard SRT file format structure?",
@@ -829,7 +733,6 @@ export default function SrtFileGuidePage() {
                           key={i}
                           className="p-5 rounded-xl border border-slate-100 bg-slate-50"
                         >
-                          
                           <h3 className="font-semibold text-slate-900 mb-2">
                             {faq.q}
                           </h3>
@@ -842,7 +745,6 @@ export default function SrtFileGuidePage() {
                   </section>
                   {/* Final CTA */}
                   <section className="text-center rounded-2xl bg-slate-900 p-12 md:p-16">
-                    
                     <h3 className="text-2xl font-bold text-white mb-4">
                       Ready to Master SRT Files?
                     </h3>

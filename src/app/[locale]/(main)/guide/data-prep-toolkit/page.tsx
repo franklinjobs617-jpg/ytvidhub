@@ -14,21 +14,16 @@ export default function DataPrepToolkitPage() {
   };
   return (
     <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      
       <main>
-        
         {/* Hero */}
         <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          
           <p className="text-sm text-blue-600 font-medium mb-4">
             Advanced Data Engineering
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            
             The Advanced Data Prep Toolkit
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            
             The definitive guide for researchers and developers. Master bulk
             processing, clean raw transcripts, and bypass API limits with
             structured JSON output.
@@ -36,15 +31,11 @@ export default function DataPrepToolkitPage() {
         </header>
         {/* Workflow Inefficiency */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             Why Your Current Workflow Is Inefficient
           </h2>
           <div className="space-y-4 text-lg text-slate-600 leading-relaxed mb-8">
-            
             <p>
-              
               If you&apos;re a developer, researcher, or data scientist, you
               know that raw subtitle data from YouTube is useless. It&apos;s a
               swamp of ASR errors, messy formatting, and broken timestamps. This
@@ -54,7 +45,6 @@ export default function DataPrepToolkitPage() {
               ready for LLMs, databases, and large-scale analysis.
             </p>
             <p>
-              
               You cannot manually clean thousands of files. You also can&apos;t
               afford the YouTube Data API quota limits. If you need data from
               50+ videos, you need <strong>batch processing</strong>. Our
@@ -62,12 +52,10 @@ export default function DataPrepToolkitPage() {
             </p>
           </div>
           <div className="p-5 rounded-xl border border-slate-100 bg-slate-50 mb-8">
-            
             <h4 className="font-semibold text-slate-900 mb-1">
               The Case for a Truly Clean Transcript
             </h4>
             <p className="text-sm text-slate-500 leading-relaxed">
-              
               A <strong>YouTube transcript without subtitles</strong> is often
               just raw output riddled with errors. Our method ensures the final
               output is 99% clean, standardized text, perfect for training AI
@@ -75,7 +63,6 @@ export default function DataPrepToolkitPage() {
             </p>
           </div>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-            
             <img
               src="/image/An infographic illustrating the advanced workflow.webp"
               alt="Workflow diagram illustrating advanced YouTube data preparation from a Playlist to structured output."
@@ -85,21 +72,16 @@ export default function DataPrepToolkitPage() {
         </article>
         {/* Batch Processing */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             The Power of Batch Processing
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Downloading subtitles from an entire playlist is the only way to
             scale your project. Manual URL-by-URL extraction creates
             insurmountable bottlenecks.
           </p>
           <div className="space-y-5 mb-8">
-            
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              
               <h4 className="font-semibold text-slate-900 mb-1">
                 Recursive Ingestion
               </h4>
@@ -109,7 +91,6 @@ export default function DataPrepToolkitPage() {
               </p>
             </div>
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              
               <h4 className="font-semibold text-slate-900 mb-1">
                 Structured Output
               </h4>
@@ -121,7 +102,6 @@ export default function DataPrepToolkitPage() {
             </div>
           </div>
           <ol className="space-y-6">
-            
             {[
               {
                 title: "Activate Bulk Mode",
@@ -137,13 +117,10 @@ export default function DataPrepToolkitPage() {
               },
             ].map((step, i) => (
               <li key={i} className="flex gap-4">
-                
                 <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  
                   {i + 1}
                 </div>
                 <div>
-                  
                   <h3 className="font-semibold text-slate-900 mb-1">
                     {step.title}
                   </h3>
@@ -157,39 +134,29 @@ export default function DataPrepToolkitPage() {
         </article>
         {/* API Bypassing */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             Bypassing API Limits
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            
             Why pay hundreds of dollars in API quota when you only need the
-            text? We provide superior output compared to raw extraction
-            methods.
+            text? We provide superior output compared to raw extraction methods.
           </p>
           <div className="space-y-5 mb-8">
-            
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              
               <h4 className="font-semibold text-slate-900 mb-1">
                 The yt-dlp Alternative
               </h4>
               <p className="text-sm text-slate-500 leading-relaxed">
-                
                 For power users, yt-dlp is excellent, but it still requires
                 cleaning scripts. Our tool automates the cleaning
-                <em>before</em> the download, saving days of manual
-                scripting.
+                <em>before</em> the download, saving days of manual scripting.
               </p>
             </div>
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              
               <h4 className="font-semibold text-slate-900 mb-2">
                 Real-World Impact
               </h4>
               <div className="grid grid-cols-3 gap-4 text-center">
-                
                 {[
                   {
                     val: "80%",
@@ -208,16 +175,13 @@ export default function DataPrepToolkitPage() {
                   },
                 ].map((item, i) => (
                   <div key={i}>
-                    
                     <div className="text-lg font-bold text-blue-600">
                       {item.val}
                     </div>
                     <div className="text-xs font-semibold text-slate-900">
                       {item.label}
                     </div>
-                    <div className="text-xs text-slate-400">
-                      {item.desc}
-                    </div>
+                    <div className="text-xs text-slate-400">{item.desc}</div>
                   </div>
                 ))}
               </div>
@@ -226,22 +190,17 @@ export default function DataPrepToolkitPage() {
         </article>
         {/* Summarizer Myth */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             The Summarizer Myth
           </h2>
           <div className="space-y-4 text-lg text-slate-600 leading-relaxed mb-8">
-            
             <p>
-              
               Many people search for a
               <strong>youtube video summarizer ai without subtitles</strong>.
               This logic is fundamentally flawed. Any AI summarizer is only as
               good as the input data.
             </p>
             <p>
-              
               If your input is a raw, ASR-generated transcript, your summary
               will be riddled with errors.
               <strong>
@@ -251,19 +210,16 @@ export default function DataPrepToolkitPage() {
             </p>
           </div>
           <div className="p-5 rounded-xl border border-blue-200 bg-blue-50 mb-8">
-            
             <h4 className="font-semibold text-blue-900 mb-1">
               Garbage In, Garbage Out
             </h4>
             <p className="text-sm text-blue-700 leading-relaxed italic">
-              
               &quot;When an AI summarizer is fed raw ASR transcripts, it cannot
               distinguish between meaningful content and noise. Misidentified
               terms and run-on sentences are interpreted as factual.&quot;
             </p>
           </div>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-            
             <img
               src="/image/ytvidhub-bulk-playlist-json-export-for-developers.webp"
               alt="JSON Export feature"
@@ -273,13 +229,10 @@ export default function DataPrepToolkitPage() {
         </article>
         {/* Conclusion */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            
             Conclusion
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed italic">
-            
             Data prep is the invisible 90% of any successful data project. Stop
             settling for messy output that costs you time and money. Our toolkit
             is designed by professionals, for professionals.
@@ -287,13 +240,10 @@ export default function DataPrepToolkitPage() {
         </article>
         {/* FAQ */}
         <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            
             Technical Q&amp;A
           </h2>
           <div className="space-y-5">
-            
             {[
               {
                 q: "What makes JSON better for developers?",
@@ -308,10 +258,7 @@ export default function DataPrepToolkitPage() {
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
               >
-                
-                <h3 className="font-semibold text-slate-900 mb-2">
-                  {faq.q}
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">
                   {faq.a}
                 </p>
@@ -321,15 +268,11 @@ export default function DataPrepToolkitPage() {
         </article>
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
-          
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
-            
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
-              
               Scale Your Data Pipeline
             </h2>
             <p className="text-slate-400 mb-8">
-              
               Stop wrestling with API quotas. Unlock advanced bulk and JSON
               features now.
             </p>
@@ -338,16 +281,13 @@ export default function DataPrepToolkitPage() {
               onClick={handleAction}
               className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
-              
               Unlock Pro Features
             </Link>
             <p className="mt-6 text-sm text-slate-500">
-              
               Export to: JSONL · CSV · TXT · PARQUET
             </p>
           </div>
           <p className="mt-6 text-sm text-slate-400">
-            
             <Link
               href="/data-prep-guide"
               className="text-blue-600 hover:underline"
