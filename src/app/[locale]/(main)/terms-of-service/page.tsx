@@ -20,7 +20,7 @@ export default function TermsOfServicePage() {
             Please read these terms carefully before using our service.
           </p>
           <p className="text-sm text-slate-400">
-            Last Updated: October 11, 2025
+            Last Updated: April 15, 2026
           </p>
         </header>
         {/* 1. Acceptance */}
@@ -69,6 +69,16 @@ export default function TermsOfServicePage() {
             </div>
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
               <h3 className="font-semibold text-slate-900 mb-1">
+                No Copyright License Granted
+              </h3>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                YTVidHub does not grant, transfer, or imply any copyright
+                license in third-party video or subtitle content. Use of
+                extracted material remains your legal responsibility.
+              </p>
+            </div>
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h3 className="font-semibold text-slate-900 mb-1">
                 Permitted Use
               </h3>
               <p className="text-sm text-slate-500 leading-relaxed">
@@ -85,6 +95,16 @@ export default function TermsOfServicePage() {
                 You agree not to misuse the Service. This includes attempting to
                 disrupt our servers, excessive scraping, or using the Service
                 for illegal activities.
+              </p>
+            </div>
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h3 className="font-semibold text-slate-900 mb-1">
+                No Unauthorized Redistribution
+              </h3>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                You may not republish, resell, or mass-distribute extracted
+                subtitle content without authorization from the rights holder or
+                another valid legal basis.
               </p>
             </div>
           </div>
@@ -136,6 +156,11 @@ export default function TermsOfServicePage() {
             any time, for any reason, without notice. We will not be liable to
             you or any third party for any modification.
           </p>
+          <p className="text-slate-600 leading-relaxed mt-4">
+            We may also suspend, restrict, or permanently terminate access for
+            accounts involved in repeated or serious copyright violations,
+            unauthorized redistribution, or misuse of the Service.
+          </p>
         </article>
         {/* 8. Changes */}
         <article className="max-w-3xl mx-auto px-6 mb-12 article-shell article-section">
@@ -160,6 +185,17 @@ export default function TermsOfServicePage() {
               regard to its conflict of law provisions.
             </p>
           </div>
+        </article>
+        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            10. Platform Relationship and Compliance
+          </h2>
+          <p className="text-slate-600 leading-relaxed">
+            YTVidHub is an independent service and is not affiliated with,
+            endorsed by, or sponsored by YouTube or Google LLC. Users must
+            comply with applicable laws, rights-holder permissions, and relevant
+            platform terms when using extracted subtitle content.
+          </p>
         </article>
       </main>
       <LoginModal

@@ -359,6 +359,11 @@ export default function Footer() {
             <p className="text-[10px] text-slate-500 uppercase tracking-tight">
               {t("disclaimer")}
             </p>
+            <p className="text-[11px] text-slate-400 max-w-3xl mx-auto leading-relaxed">
+              Users must ensure they have lawful rights to access and use subtitle
+              content. YTVidHub provides technical tools only, grants no
+              copyright license, and is not affiliated with YouTube.
+            </p>
           </div>
         </div>
       </div>
