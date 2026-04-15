@@ -93,27 +93,7 @@ const nextConfig: NextConfig = {
       },
 
       // Redirect HTML extensions to clean URLs
-      {
-        source: "/index.html",
-        destination: "/",
-        permanent: true,
-      },
-   
-      {
-        source: "/index.html/",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/:path*.html",
-        destination: "/:path*/",
-        permanent: true,
-      },
-      {
-        source: "/:path*.html/",
-        destination: "/:path*/",
-        permanent: true,
-      },
+    
       // NOTE: Do not globally redirect *.html, it breaks verification files in /public.
       {
         source: "/index",
