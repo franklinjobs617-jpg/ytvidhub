@@ -326,6 +326,14 @@ export default function Footer() {
                   {t("termsOfService")}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/dmca-policy"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  DMCA Policy
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

@@ -247,7 +247,7 @@ export default function PaymentChoiceModal({
           </button>
 
           {/* PayPal Button */}
-          <button
+          {/* <button
             onClick={() => handlePayment("paypal")}
             disabled={!!loadingProvider}
             className="w-full flex items-center justify-center gap-3 py-3 px-4 border border-slate-300 rounded-lg hover:bg-slate-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -273,7 +273,7 @@ export default function PaymentChoiceModal({
                 </span>
               </>
             )}
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

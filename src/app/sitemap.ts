@@ -40,6 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/faq/subtitle-settings-guide', priority: 0.6, changeFreq: 'monthly' as const },
         { path: '/privacy-policy', priority: 0.3, changeFreq: 'yearly' as const },
         { path: '/terms-of-service', priority: 0.3, changeFreq: 'yearly' as const },
+        { path: '/dmca-policy', priority: 0.3, changeFreq: 'yearly' as const },
     ]
 
     const multilingualPages = [
