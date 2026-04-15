@@ -83,6 +83,14 @@ export default function SubtitleDownloaderSchema() {
           "@type": "Answer", 
           "text": "Absolutely! If a YouTube video has subtitles available in multiple languages, you can select and download any available language track. This includes both original language subtitles and translated versions."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Where should I go for no-timestamp transcript text?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For clean transcript text without timestamps, use /download-youtube-transcript-as-text. This subtitle page is primarily for caption download workflows."
+        }
       }
     ]
   };

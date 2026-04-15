@@ -94,7 +94,7 @@ export default function ExtractYouTubeSubtitlesOnlineToolPage() {
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "YouTube Subtitle Extractor Online Tool",
-        "description": "Free online tool to extract YouTube subtitles in SRT, VTT, and TXT formats with batch processing capabilities",
+        "description": "Online workflow to extract YouTube subtitles and export SRT, VTT, or TXT formats quickly.",
         "url": "https://ytvidhub.com/extract-youtube-subtitles-online-tool",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Any",
@@ -117,7 +117,8 @@ export default function ExtractYouTubeSubtitlesOnlineToolPage() {
             { "@type": "Question", "name": "How do I extract YouTube subtitles online?", "acceptedAnswer": { "@type": "Answer", "text": "Simply paste your YouTube URL into our online tool, select your preferred format (SRT, VTT, or TXT), and click 'Extract Subtitles'. The process takes 10-30 seconds and requires no registration." } },
             { "@type": "Question", "name": "Is this YouTube subtitle extractor free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Our online YouTube subtitle extraction tool is completely free. You get 5 free extractions daily with no registration required. For unlimited access, check our premium plans." } },
             { "@type": "Question", "name": "What subtitle formats can I download?", "acceptedAnswer": { "@type": "Answer", "text": "Our tool supports three popular formats: SRT (SubRip) for video editing, VTT (WebVTT) for web players, and TXT (plain text) for analysis and AI training." } },
-            { "@type": "Question", "name": "Can I extract subtitles from YouTube playlists?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Our batch processing feature allows you to extract subtitles from entire YouTube playlists at once. Just paste the playlist URL and we'll process all videos automatically." } }
+            { "@type": "Question", "name": "Can I extract subtitles from YouTube playlists?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Our batch processing feature allows you to extract subtitles from entire YouTube playlists at once. Just paste the playlist URL and we'll process all videos automatically." } },
+            { "@type": "Question", "name": "Where do I get transcript text without timestamps?", "acceptedAnswer": { "@type": "Answer", "text": "Use /download-youtube-transcript-as-text when you need clean no-timestamp transcript text for AI and notes." } }
         ]
     };
 
@@ -131,9 +132,9 @@ export default function ExtractYouTubeSubtitlesOnlineToolPage() {
                 <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16">
                     <nav className="flex items-center gap-2 text-sm text-slate-400 mb-8">
                         <Link href="/" className="hover:text-slate-600">Home</Link>
-                        <span>›</span>
+                        <span>/</span>
                         <Link href="/tools" className="hover:text-slate-600">Tools</Link>
-                        <span>›</span>
+                        <span>/</span>
                         <span className="text-slate-700">Extract YouTube Subtitles Online</span>
                     </nav>
                     <p className="text-sm text-blue-600 font-medium mb-4">Free Online Tool</p>
@@ -141,7 +142,18 @@ export default function ExtractYouTubeSubtitlesOnlineToolPage() {
                         Extract YouTube Subtitles Online Tool
                     </h1>
                     <p className="text-lg text-slate-500 leading-relaxed">
-                        Free online tool to extract YouTube subtitles instantly. Download in SRT, VTT, or TXT format. Batch processing for playlists. No registration required.
+                        Use this page when you need an online subtitle extraction flow. Extract YouTube subtitles instantly and export in SRT, VTT, or TXT format.
+                    </p>
+                    <p className="text-sm text-slate-500 leading-relaxed mt-4">
+                        Want direct subtitle downloads? Go to {" "}
+                        <Link href="/youtube-subtitle-downloader" className="text-blue-600 hover:text-blue-700 font-semibold">
+                            YouTube Subtitle Downloader
+                        </Link>
+                        . Need no-timestamp transcript text? Use {" "}
+                        <Link href="/download-youtube-transcript-as-text" className="text-blue-600 hover:text-blue-700 font-semibold">
+                            Download YouTube Transcript as Text
+                        </Link>
+                        .
                     </p>
                 </header>
 
@@ -311,6 +323,20 @@ export default function ExtractYouTubeSubtitlesOnlineToolPage() {
                                 <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
+                    </div>
+                </article>
+
+                <article className="max-w-3xl mx-auto px-6 pb-16">
+                    <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-8">Need a Different Workflow?</h2>
+                    <div className="grid sm:grid-cols-2 gap-5">
+                        <Link href="/youtube-subtitle-downloader" className="block p-5 rounded-xl border border-slate-200 bg-slate-50 hover:shadow-sm transition-shadow">
+                            <h3 className="font-semibold text-slate-900 mb-1">Subtitle Downloader</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Use this for direct subtitle and caption download intent.</p>
+                        </Link>
+                        <Link href="/download-youtube-transcript-as-text" className="block p-5 rounded-xl border border-slate-200 bg-slate-50 hover:shadow-sm transition-shadow">
+                            <h3 className="font-semibold text-slate-900 mb-1">Transcript as Text</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Use this for no-timestamp TXT transcript output for AI and notes.</p>
+                        </Link>
                     </div>
                 </article>
             </main>

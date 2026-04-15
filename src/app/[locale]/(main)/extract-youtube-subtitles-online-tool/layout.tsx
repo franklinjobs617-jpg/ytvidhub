@@ -6,12 +6,12 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const { locale } = await params;
     return {
-        title: 'Extract YouTube Subtitles Online - Free Subtitle Extractor Tool | YTVidHub',
-        description: 'Extract subtitles from YouTube videos online for free. Get clean SRT, VTT, or TXT files instantly with our professional subtitle extraction tool. No software needed.',
-        keywords: ['extract youtube subtitles', 'youtube subtitle extractor', 'extract subtitles online', 'youtube caption extractor online', 'get subtitles from youtube'],
+        title: 'Extract YouTube Subtitles Online - Subtitle Extractor Workflow | YTVidHub',
+        description: 'Use our online subtitle extractor to parse YouTube videos and export SRT, VTT, or TXT. Best for extraction flow, quick checks, and format selection.',
+        keywords: ['extract youtube subtitles online', 'youtube subtitle extractor', 'subtitle extractor online tool', 'youtube caption extractor online', 'extract subtitles from youtube video'],
         openGraph: {
-            title: 'Extract YouTube Subtitles Online - Free Subtitle Extractor Tool',
-            description: 'Extract subtitles from YouTube videos online for free. Get clean SRT, VTT, or TXT files instantly.',
+            title: 'Extract YouTube Subtitles Online - Subtitle Extractor Workflow',
+            description: 'Parse YouTube subtitles online and export SRT, VTT, or TXT in a guided extraction workflow.',
             type: 'website',
         },
         alternates: buildAlternates(locale, '/extract-youtube-subtitles-online-tool'),

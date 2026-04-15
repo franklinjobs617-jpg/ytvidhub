@@ -17,6 +17,7 @@ export default function Footer() {
             <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
               {t("description")}
             </p>
+            <a href="https://startupfa.me/s/ytvidhub?utm_source=ytvidhub.com" target="_blank"><img src="https://startupfa.me/badges/featured-badge-small.webp" alt="YTVidHub - Featured on Startup Fame" width="224" height="36" /></a>
 
             <a
               href="https://theresanaiforthat.com/ai/ytvidhub/?ref=featured&v=7340698"
