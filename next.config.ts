@@ -30,6 +30,68 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // Legacy SEO URLs from old structure
+      {
+        source: "/ai-summarizer",
+        destination: "/blog/ai-youtube-video-summarizer/",
+        permanent: true,
+      },
+      {
+        source: "/ai-summarizer/",
+        destination: "/blog/ai-youtube-video-summarizer/",
+        permanent: true,
+      },
+      {
+        source: "/guide/bulk-youtube-subtitle-downloader",
+        destination: "/bulk-youtube-subtitle-downloader/",
+        permanent: true,
+      },
+      {
+        source: "/guide/bulk-youtube-subtitle-downloader/",
+        destination: "/bulk-youtube-subtitle-downloader/",
+        permanent: true,
+      },
+      {
+        source: "/guide/faq",
+        destination: "/faq/",
+        permanent: true,
+      },
+      {
+        source: "/guide/faq/",
+        destination: "/faq/",
+        permanent: true,
+      },
+      {
+        source: "/faq.html",
+        destination: "/faq/",
+        permanent: true,
+      },
+      {
+        source: "/faq.html/",
+        destination: "/faq/",
+        permanent: true,
+      },
+      {
+        source: "/faq.html/:path*.html",
+        destination: "/:path*/",
+        permanent: true,
+      },
+      {
+        source: "/faq.html/:path*.html/",
+        destination: "/:path*/",
+        permanent: true,
+      },
+      {
+        source: "/faq.html/:path*",
+        destination: "/:path*/",
+        permanent: true,
+      },
+      {
+        source: "/faq.html/:path*/",
+        destination: "/:path*/",
+        permanent: true,
+      },
+
       // Redirect HTML extensions to clean URLs
       {
         source: "/index.html",

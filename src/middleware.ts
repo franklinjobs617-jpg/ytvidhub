@@ -69,14 +69,17 @@ export default function middleware(request: NextRequest) {
     }
 
     // Handle migration of 'how-to-download-youtube-subtitles-complete-guide' to '/guide/...'
-    if (pathname === '/how-to-download-youtube-subtitles-complete-guide' || pathname.endsWith('/how-to-download-youtube-subtitles-complete-guide')) {
+    if (
+        pathname === '/how-to-download-youtube-subtitles-complete-guide' ||
+        pathname === '/how-to-download-youtube-subtitles-complete-guide/'
+    ) {
         const newUrl = request.nextUrl.clone();
-        newUrl.pathname = pathname.replace('/how-to-download-youtube-subtitles-complete-guide', '/guide/how-to-download-youtube-subtitles-complete-guide');
+        newUrl.pathname = '/guide/how-to-download-youtube-subtitles-complete-guide';
         return NextResponse.redirect(newUrl, 301);
     }
 
     // Handle localized migration for 'how-to-download-youtube-subtitles-complete-guide'
-    const guideMigrationMatch = pathname.match(/^\/([a-z]{2})\/how-to-download-youtube-subtitles-complete-guide$/);
+    const guideMigrationMatch = pathname.match(/^\/([a-z]{2})\/how-to-download-youtube-subtitles-complete-guide\/?$/);
     if (guideMigrationMatch) {
         const locale = guideMigrationMatch[1];
         const newUrl = request.nextUrl.clone();
