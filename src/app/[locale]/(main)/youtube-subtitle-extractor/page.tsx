@@ -100,9 +100,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <section className="article-shell article-hero">
-        <h1 className="article-h1 sr-only">{t("hero.title")}</h1>
-      </section>
+  
       <SubtitleExtractorHero /> {/* Main Content Area */}
       <main className="relative z-10 pb-24 pt-12 md:pt-16">
         {/* Subtle Background Elements */}

@@ -77,9 +77,7 @@ export default async function YouTubeTranscriptGeneratorPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <section className="article-shell article-hero">
-        <h1 className="article-h1 sr-only">{t("hero.title")}</h1>
-      </section>
+
       <TranscriptGeneratorHero />
       {/* BLUF Introduction - SEO Critical First 100 Words */}
       <section className="bg-white border-b border-slate-200">

@@ -19,9 +19,7 @@ export default async function BulkDownloaderPage({ params }: Props) {
   const { locale } = await params;
   return (
     <div className="article-body">
-      <section className="article-shell article-hero">
-        <h1 className="article-h1 sr-only">Bulk YouTube Subtitle Downloader</h1>
-      </section>
+  
       <BulkDownloaderClient locale={locale} />
     </div>
   );
