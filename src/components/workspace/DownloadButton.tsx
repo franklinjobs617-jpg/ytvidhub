@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
+import { CREDIT_COSTS } from "@/config/credits";
 
 interface DownloadButtonProps {
   videoUrl: string;
@@ -165,10 +166,9 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
       <InsufficientCreditsModal
         isOpen={isCreditsModalOpen}
         onClose={() => setIsCreditsModalOpen(false)}
-        requiredAmount={1}
+        requiredAmount={CREDIT_COSTS.download}
         featureName="Subtitle Download"
       />
     </>
   );
 }
-

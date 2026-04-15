@@ -11,6 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/download-subs-from-youtube', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/download-youtube-transcript-as-text', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/tools/subtitle-extractor-online', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/blog', priority: 0.85, changeFreq: 'weekly' as const },
+        { path: '/guide', priority: 0.85, changeFreq: 'weekly' as const },
         { path: '/guide/how-to-download-youtube-subtitles-complete-guide', priority: 0.9, changeFreq: 'monthly' as const },
         { path: '/guide/srt-vs-vtt', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/pricing', priority: 0.8, changeFreq: 'monthly' as const },

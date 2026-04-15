@@ -95,14 +95,14 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
     },
   ];
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
+    <div className="editorial-page article-body">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <main>
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
+        <header className="article-shell article-hero">
           <div className="flex items-center gap-4 text-sm text-slate-500 mb-6 flex-wrap">
             <span>2.4M+ Downloads</span> <span>4.9/5 Rating</span>
             <span>8 min read</span> <span>100% Safe &amp; Free</span>
@@ -127,7 +127,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </p>
         </header>
         {/* Quick Navigation */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 article-h2">
             Quick Navigation
           </h2>
@@ -164,7 +164,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* Method Comparison */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Choose Your Method
           </h2>
@@ -219,7 +219,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* Method 2: YTVidHub */}
-        <article id="method-2" className="max-w-3xl mx-auto px-6 mb-16">
+        <article id="method-2" className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Method 2: YTVidHub Batch Subtitle Downloader
           </h2>
@@ -298,7 +298,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* Method 1: YouTube Built-in */}
-        <article id="method-1" className="max-w-3xl mx-auto px-6 mb-16">
+        <article id="method-1" className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Method 1: YouTube Built-in Feature
           </h2>
@@ -357,7 +357,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* Method 3: Browser Extensions */}
-        <article id="method-3" className="max-w-3xl mx-auto px-6 mb-16">
+        <article id="method-3" className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Method 3: Browser Extensions
           </h2>
@@ -413,7 +413,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* Professional Use Cases */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Professional Use Cases: Why Download YouTube Subtitles?
           </h2>
@@ -465,7 +465,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* Download Trends */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Subtitle Download Trends
           </h2>
@@ -489,7 +489,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* Understanding Subtitle Formats */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Understanding Subtitle Formats
           </h2>
@@ -545,7 +545,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Frequently Asked Questions
           </h2>
@@ -585,7 +585,7 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Ready to Download YouTube Subtitles?

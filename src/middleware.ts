@@ -28,6 +28,23 @@ export default function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
 
+    // Temporary i18n guard:
+    // Currently only the homepage is intentionally localized.
+    // For non-default locales, redirect all non-home paths to the English route
+    // to avoid server errors on partially localized pages.
+    const localePrefixPattern = new RegExp(`^/(${routing.locales.join('|')})(/.*)?$`);
+    const localePrefixMatch = pathname.match(localePrefixPattern);
+    if (localePrefixMatch) {
+        const locale = localePrefixMatch[1];
+        const restPath = localePrefixMatch[2] ?? '';
+
+        if (locale !== routing.defaultLocale && restPath && restPath !== '/') {
+            const newUrl = request.nextUrl.clone();
+            newUrl.pathname = restPath;
+            return NextResponse.redirect(newUrl, 307);
+        }
+    }
+
     if (pathname.startsWith('/startupranking')) {
         return NextResponse.next();
     }

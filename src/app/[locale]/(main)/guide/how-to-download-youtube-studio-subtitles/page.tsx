@@ -4,11 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 export default function GuideYoutubeStudio() {
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      <main>
+    <div className="editorial-page article-body">
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          <p className="text-sm text-blue-600 font-medium mb-4">
+        <header className="article-shell article-hero">
+          <p className="article-kicker">
             Creator&apos;s Guide
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
@@ -20,7 +20,7 @@ export default function GuideYoutubeStudio() {
           </p>
         </header>
         {/* Quick Summary */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <div className="p-5 rounded-xl border border-blue-100 bg-blue-50">
             <h4 className="font-semibold text-blue-900 mb-3">Quick Summary</h4>
             <div className="space-y-2 text-sm text-blue-800">
@@ -36,7 +36,7 @@ export default function GuideYoutubeStudio() {
           </div>
         </article>
         {/* Method 1: Official Way */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Method 1: The Official Way (YouTube Studio)
           </h2>
@@ -105,7 +105,7 @@ export default function GuideYoutubeStudio() {
           </div>
         </article>
         {/* Pain Points */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <div className="p-5 rounded-xl border border-blue-200 bg-blue-50">
             <h4 className="font-semibold text-blue-900 mb-3">
               The Problem with YouTube Studio
@@ -119,7 +119,7 @@ export default function GuideYoutubeStudio() {
           </div>
         </article>
         {/* Method 2: YTVidHub */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Method 2: The Fast Way (Batch &amp; Any Video)
           </h2>
@@ -138,7 +138,7 @@ export default function GuideYoutubeStudio() {
           </div>
         </article>
         {/* Comparison Table */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Feature Comparison
           </h2>
@@ -181,7 +181,7 @@ export default function GuideYoutubeStudio() {
           </div>
         </article>
         {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Frequently Asked Questions
           </h2>
@@ -213,7 +213,7 @@ export default function GuideYoutubeStudio() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Skip the Studio. Download Instantly.

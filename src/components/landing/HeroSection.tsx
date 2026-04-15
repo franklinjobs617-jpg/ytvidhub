@@ -3,7 +3,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
-import { extractVideoId, normalizeYoutubeUrl } from "@/lib/youtube";
+import {
+  extractVideoId,
+  isPlaylistOrChannelUrl,
+  normalizeYoutubeUrl,
+} from "@/lib/youtube";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from "next-intl";
@@ -17,7 +21,6 @@ import {
   Download,
   Loader2
 } from "lucide-react";
-import { toast } from "sonner";
 
 import { PlaylistProcessingModal } from "@/components/playlist/PlaylistProcessingModal";
 import { RecentHistory } from "@/components/landing/RecentHistory";
@@ -38,6 +41,17 @@ interface HeroSectionProps {
   heroHeader?: React.ReactNode;
 }
 
+type PendingNavigationState = {
+  active: boolean;
+  mode: "download" | "summary";
+  targetUrls: string[];
+};
+
+type SummaryInputChoiceState = {
+  allUrls: string[];
+  summaryUrl: string | null;
+} | null;
+
 export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const router = useRouter();
   const { user, refreshUser } = useAuth();
@@ -53,7 +67,13 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
   const [isFirstSummaryFree, setIsFirstSummaryFree] = useState(true);
   const [hasHistory, setHasHistory] = useState(false);
-  const pendingAnalysisRef = useRef<{ active: boolean; mode: 'download' | 'summary' }>({ active: false, mode: 'download' });
+  const pendingNavigationRef = useRef<PendingNavigationState>({
+    active: false,
+    mode: "download",
+    targetUrls: [],
+  });
+  const [summaryInputChoice, setSummaryInputChoice] =
+    useState<SummaryInputChoiceState>(null);
   const [isNavigating, setIsNavigating] = useState(false);
   const [activeAction, setActiveAction] = useState<'download' | 'summary' | null>(null);
 
@@ -107,10 +127,14 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
         setHasHistory(data.length > 0);
       }).catch(() => {});
 
-      if (pendingAnalysisRef.current.active) {
-        const mode = pendingAnalysisRef.current.mode;
-        pendingAnalysisRef.current.active = false;
-        handleMainAction(mode);
+      if (pendingNavigationRef.current.active) {
+        const { mode, targetUrls } = pendingNavigationRef.current;
+        pendingNavigationRef.current = {
+          active: false,
+          mode: "download",
+          targetUrls: [],
+        };
+        navigateToWorkspace(mode, targetUrls);
       }
       const interval = setInterval(() => refreshCredits(), 30000);
       return () => clearInterval(interval);
@@ -122,6 +146,80 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     if (inputErrorKey) setInputErrorKey(null);
   };
 
+  const navigateToWorkspace = (
+    mode: "download" | "summary",
+    targetUrls: string[],
+  ) => {
+    const mergedUrls = targetUrls.map((url) => normalizeYoutubeUrl(url)).join(",");
+    setIsNavigating(true);
+    router.push(
+      `/workspace?urls=${encodeURIComponent(mergedUrls)}&from=home&mode=${mode}`,
+    );
+  };
+
+  const requireLoginForNavigation = (
+    mode: "download" | "summary",
+    targetUrls: string[],
+  ) => {
+    pendingNavigationRef.current = {
+      active: true,
+      mode,
+      targetUrls,
+    };
+    setShowLoginModal(true);
+    setActiveAction(null);
+  };
+
+  const resolveSummaryUrl = (rawUrl: string, normalizedUrl: string) => {
+    const idFromRaw = extractVideoId(rawUrl);
+    if (idFromRaw) return `https://www.youtube.com/watch?v=${idFromRaw}`;
+
+    const idFromNormalized = extractVideoId(normalizedUrl);
+    if (idFromNormalized) return `https://www.youtube.com/watch?v=${idFromNormalized}`;
+
+    return null;
+  };
+
+  const handleUseFirstVideoSummary = () => {
+    if (!summaryInputChoice?.summaryUrl) return;
+
+    const targetUrl = summaryInputChoice.summaryUrl;
+    setUrls(targetUrl);
+    setSummaryInputChoice(null);
+
+    if (!user) {
+      requireLoginForNavigation("summary", [targetUrl]);
+      return;
+    }
+
+    navigateToWorkspace("summary", [targetUrl]);
+  };
+
+  const handleSwitchToBatchWorkflow = () => {
+    if (!summaryInputChoice) return;
+
+    const targetUrls = summaryInputChoice.allUrls;
+    setSummaryInputChoice(null);
+
+    if (!user) {
+      requireLoginForNavigation("download", targetUrls);
+      return;
+    }
+
+    navigateToWorkspace("download", targetUrls);
+  };
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+    if (!user) {
+      pendingNavigationRef.current = {
+        active: false,
+        mode: "download",
+        targetUrls: [],
+      };
+    }
+  };
+
   const handleMainAction = async (targetMode: 'download' | 'summary') => {
     setActiveAction(targetMode);
     try {
@@ -131,23 +229,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
         return;
       }
 
-      let finalUrls = urls;
-      if (targetMode === 'summary') {
-        const firstLine = urls.split("\n")[0].trim();
-        let cleanId = null;
-        if (firstLine.includes("list=")) {
-          if (firstLine.includes("v=")) cleanId = firstLine.match(/[?&]v=([^&]+)/)?.[1];
-          else if (firstLine.includes("youtu.be/")) cleanId = firstLine.match(/youtu\.be\/([^?&]+)/)?.[1];
-          else cleanId = extractVideoId(firstLine);
-        }
-        if (cleanId) {
-          finalUrls = `https://www.youtube.com/watch?v=${cleanId}`;
-          setUrls(finalUrls);
-          toast.info("Playlist optimized to single video for AI Summary", { duration: 3000 });
-        }
-      }
-
-      const lines = finalUrls.split("\n").map((u) => u.trim()).filter(Boolean);
+      const lines = urls.split("\n").map((u) => u.trim()).filter(Boolean);
       const invalidLinks = lines.filter((link) => !isValidYoutubeUrl(link));
       
       if (invalidLinks.length > 0) {
@@ -156,16 +238,32 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
         return;
       }
 
+      const normalizedLines = lines.map((line) => normalizeYoutubeUrl(line));
+
+      if (targetMode === "summary") {
+        const hasBatchStyleInput =
+          normalizedLines.length > 1 ||
+          normalizedLines.some((line) => isPlaylistOrChannelUrl(line));
+
+        if (hasBatchStyleInput) {
+          setSummaryInputChoice({
+            allUrls: normalizedLines,
+            summaryUrl: resolveSummaryUrl(lines[0], normalizedLines[0]),
+          });
+          setActiveAction(null);
+          return;
+        }
+      }
+
+      const targetUrls =
+        targetMode === "summary" ? [normalizedLines[0]] : normalizedLines;
+
       if (!user) {
-        pendingAnalysisRef.current = { active: true, mode: targetMode };
-        setShowLoginModal(true);
-        setActiveAction(null);
+        requireLoginForNavigation(targetMode, targetUrls);
         return;
       }
 
-      const targetUrls = lines.map((u) => normalizeYoutubeUrl(u)).join(",");
-      setIsNavigating(true);
-      router.push(`/workspace?urls=${encodeURIComponent(targetUrls)}&from=home&mode=${targetMode}`);
+      navigateToWorkspace(targetMode, targetUrls);
       
     } catch {
       setActiveAction(null);
@@ -269,7 +367,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                   ) : (
                     <>
                       <Info size={14} className="text-slate-300" />
-                      No account required to test
+                      Sign in required for full workflow
                     </>
                   )}
                 </div>
@@ -291,7 +389,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                     className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/25"
                   >
                     {activeAction === 'summary' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles size={16} />}
-                    {isFirstSummaryFree ? "AI Summary (Free)" : "AI Summary"}
+                    {user && isFirstSummaryFree ? "AI Summary (Free)" : "AI Summary"}
                   </button>
                 </div>
               </div>
@@ -357,7 +455,45 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
         </div>
       </section>
 
-      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      {summaryInputChoice && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onClick={() => setSummaryInputChoice(null)}
+          />
+          <div className="relative z-10 w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+            <h3 className="text-xl font-bold text-slate-900">
+              Summary works best on a single video
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              Your input contains a playlist/channel or multiple links. Choose one path:
+            </p>
+
+            <div className="mt-5 space-y-3">
+              <button
+                onClick={handleUseFirstVideoSummary}
+                disabled={!summaryInputChoice.summaryUrl}
+                className="w-full rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-left text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Summarize first video only
+              </button>
+              <button
+                onClick={handleSwitchToBatchWorkflow}
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+              >
+                Switch to batch workflow
+              </button>
+              {!summaryInputChoice.summaryUrl && (
+                <p className="text-xs text-amber-600">
+                  Could not detect a single video from the first link. Please use batch workflow.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <LoginModal isOpen={showLoginModal} onClose={handleCloseLoginModal} />
       <PlaylistProcessingModal
         isOpen={showPlaylistModal}
         onClose={() => {}}

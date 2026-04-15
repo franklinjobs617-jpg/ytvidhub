@@ -13,11 +13,11 @@ export default function PlaylistBulkDownloadGuide() {
     }
   };
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      <main>
+    <div className="editorial-page article-body">
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          <p className="text-sm text-blue-600 font-medium mb-4">
+        <header className="article-shell article-hero">
+          <p className="article-kicker">
             Power User Guide
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
@@ -30,7 +30,7 @@ export default function PlaylistBulkDownloadGuide() {
           </p>
         </header>
         {/* The Dilemma */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             The Data Collector&apos;s Dilemma
           </h2>
@@ -76,7 +76,7 @@ export default function PlaylistBulkDownloadGuide() {
           </div>
         </article>
         {/* 3-Step Solution */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             The 3-Step Solution
           </h2>
@@ -123,7 +123,7 @@ export default function PlaylistBulkDownloadGuide() {
           </div>
         </article>
         {/* A Smarter Workflow */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             A Smarter Workflow
           </h2>
@@ -161,7 +161,7 @@ export default function PlaylistBulkDownloadGuide() {
           </div>
         </article>
         {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Technical Q&amp;A
           </h2>
@@ -189,7 +189,7 @@ export default function PlaylistBulkDownloadGuide() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Ready for Pro Data Prep?

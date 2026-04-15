@@ -29,15 +29,15 @@ export default function HowToGetYouTubeTranscriptPage() {
     })),
   };
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
+    <div className="editorial-page article-body">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <main>
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          <p className="text-sm text-blue-600 font-medium mb-4">
+        <header className="article-shell article-hero">
+          <p className="article-kicker">
             SEO Guide 2026
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
@@ -50,7 +50,7 @@ export default function HowToGetYouTubeTranscriptPage() {
           </p>
         </header>
         {/* Why You Need Transcripts */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Why You Need YouTube Transcripts
           </h2>
@@ -84,7 +84,7 @@ export default function HowToGetYouTubeTranscriptPage() {
           </div>
         </article>
         {/* Method 1 */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Method 1: Using YouTube&apos;s Built-in Feature
           </h2>
@@ -134,7 +134,7 @@ export default function HowToGetYouTubeTranscriptPage() {
           </div>
         </article>
         {/* Method 2 */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Method 2: The Fast Way with YTVidHub
           </h2>
@@ -214,7 +214,7 @@ export default function HowToGetYouTubeTranscriptPage() {
           </div>
         </article>
         {/* Comparison Table */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Comparison: Manual vs. Automatic
           </h2>
@@ -262,7 +262,7 @@ export default function HowToGetYouTubeTranscriptPage() {
           </div>
         </article>
         {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Frequently Asked Questions
           </h2>
@@ -281,7 +281,7 @@ export default function HowToGetYouTubeTranscriptPage() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Get YouTube Transcripts the Smart Way

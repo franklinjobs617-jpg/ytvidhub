@@ -1,4 +1,5 @@
 // lib/api.ts
+import { CREDIT_COSTS } from "@/config/credits";
 
 /**
  * 封装带认证的请求 - 使用Next.js代理API
@@ -217,7 +218,7 @@ export const subtitleApi = {
 
   // 10. AI总结完成后扣除积分
   async deductCreditsAfterSummary() {
-    return this.deductCredits(2, "AI Summary Generation");
+    return this.deductCredits(CREDIT_COSTS.summary, "AI Summary Generation");
   },
 
   // 11. 写入/更新历史记录

@@ -14,12 +14,12 @@ export default function SrtVsVttTechnicalMastery() {
     }
   };
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
+    <div className="editorial-page article-body">
       <SrtVsVttSchema />
-      <main>
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          <p className="text-sm text-blue-600 font-medium mb-4">
+        <header className="article-shell article-hero">
+          <p className="article-kicker">
             Technical Specification
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
@@ -57,7 +57,7 @@ export default function SrtVsVttTechnicalMastery() {
           </div>
         </header>
         {/* Overview */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             The DNA of Digital Captions: SRT &amp; WebVTT
           </h2>
@@ -101,7 +101,7 @@ export default function SrtVsVttTechnicalMastery() {
           </div>
         </article>
         {/* Syntax Laboratory */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Syntax Laboratory: Structural Analysis
           </h2>
@@ -146,7 +146,7 @@ export default function SrtVsVttTechnicalMastery() {
           </div>
         </article>
         {/* Technical Deep Dive */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Technical Deep Dive
           </h2>
@@ -209,7 +209,7 @@ export default function SrtVsVttTechnicalMastery() {
           </div>
         </article>
         {/* Comparison Matrix */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Technical Comparison Matrix
           </h2>
@@ -294,7 +294,7 @@ export default function SrtVsVttTechnicalMastery() {
           </div>
         </article>
         {/* AI Research Edge */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Clean Dialogue is Competitive Edge
           </h2>
@@ -345,7 +345,7 @@ export default function SrtVsVttTechnicalMastery() {
           </div>
         </article>
         {/* Extraction Workflow */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Industrial Bulk Workflow
           </h2>
@@ -385,7 +385,7 @@ export default function SrtVsVttTechnicalMastery() {
           </ol>
         </article>
         {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Expert Q&amp;A
           </h2>
@@ -425,7 +425,7 @@ export default function SrtVsVttTechnicalMastery() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Master Your Data Pipeline

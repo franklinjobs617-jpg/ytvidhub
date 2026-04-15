@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Download, CheckSquare, Square, Play, Loader2, Eye } from "lucide-react";
+import { CREDIT_COSTS } from "@/config/credits";
 
 interface Video {
   id: string;
@@ -167,7 +168,7 @@ export function BatchGridView({
   }, []);
 
   const selectedCount = selectedIds.size;
-  const requiredCredits = selectedCount;
+  const requiredCredits = selectedCount * CREDIT_COSTS.download;
   const shortfall =
     normalizedCredits === null
       ? 0

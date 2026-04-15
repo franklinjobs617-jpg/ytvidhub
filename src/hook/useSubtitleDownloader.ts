@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useTranslations } from 'next-intl';
 import { trackConversion } from "@/lib/analytics";
 import { useAuth } from "@/context/AuthContext";
+import { CREDIT_COSTS } from "@/config/credits";
 
 interface PlaylistProcessingState {
   phase: 'expanding' | 'checking' | 'completed' | 'error' | 'paused';
@@ -87,7 +88,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
   // 积分不足弹窗状态
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
-  const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
+  const [modalConfig, setModalConfig] = useState({
+    required: CREDIT_COSTS.download,
+    current: 0,
+    feature: "this feature",
+  });
   const [bulkCreditsGuard, setBulkCreditsGuard] = useState<BulkCreditsGuardState | null>(null);
   const [postPartialUpsell, setPostPartialUpsell] = useState<PostPartialUpsellState | null>(null);
 
@@ -397,9 +402,9 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           if (cachedFormat === format) {
             // 虽然是缓存，但依然需要扣除积分以保证公平性
             const userCredits = user?.credits ?? 0;
-            if (userCredits < 1) {
+            if (userCredits < CREDIT_COSTS.download) {
               setModalConfig({
-                required: 1,
+                required: CREDIT_COSTS.download,
                 current: userCredits,
                 feature: "Subtitle Download"
               });
@@ -409,7 +414,12 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
             }
 
             // 执行扣费 API
-            subtitleApi.deductCredits(1, `Subtitle Download (${format})`).then(() => {
+            subtitleApi
+              .deductCredits(
+                CREDIT_COSTS.download,
+                `Subtitle Download (${format})`
+              )
+              .then(() => {
               if (onCreditsChanged) onCreditsChanged();
             }).catch(() => {
               console.error("Failed to deduct credits for cached download");
@@ -506,7 +516,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         // 获取当前积分
         const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
         setModalConfig({
-          required: 1,
+          required: CREDIT_COSTS.download,
           current: currentCredits,
           feature: "Subtitle Download"
         });
@@ -542,7 +552,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     }
 
     const currentCredits = getCurrentCredits();
-    const requiredCredits = normalizedVideos.length;
+    const requiredCredits = normalizedVideos.length * CREDIT_COSTS.download;
 
     if (!options?.skipCreditPrecheck) {
       if (!user) {
@@ -582,8 +592,12 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           return;
         }
 
-        const downloadableNow = normalizedVideos.slice(0, currentCredits);
-        const remaining = normalizedVideos.slice(currentCredits);
+        const affordableCount = Math.max(
+          0,
+          Math.floor(currentCredits / CREDIT_COSTS.download)
+        );
+        const downloadableNow = normalizedVideos.slice(0, affordableCount);
+        const remaining = normalizedVideos.slice(affordableCount);
 
         savePendingBulkTask({
           videos: remaining,
@@ -642,7 +656,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           : getCurrentCredits();
         const required = Number(details.requiredCredits) > 0
           ? Number(details.requiredCredits)
-          : normalizedVideos.length;
+          : normalizedVideos.length * CREDIT_COSTS.download;
 
         setBulkCreditsGuard({
           videos: normalizedVideos,
@@ -650,7 +664,13 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
           lang,
           currentCredits: availableCredits,
           requiredCredits: required,
-          affordableCount: Math.max(0, Number(details.affordableCount ?? availableCredits)),
+          affordableCount: Math.max(
+            0,
+            Number(
+              details.affordableCount ??
+                Math.floor(availableCredits / CREDIT_COSTS.download)
+            )
+          ),
           shortfall: Math.max(0, required - availableCredits),
         });
         toast.info(`Not enough credits for full batch. You can continue with a partial download.`);
@@ -988,7 +1008,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         // 获取当前积分
         const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
         setModalConfig({
-          required: 2,
+          required: CREDIT_COSTS.summary,
           current: currentCredits,
           feature: "AI Summary"
         });

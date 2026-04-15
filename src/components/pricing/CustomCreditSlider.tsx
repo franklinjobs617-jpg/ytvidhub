@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { trackConversion } from "@/lib/analytics";
+import { CREDIT_COSTS, CREDIT_LABELS } from "@/config/credits";
 
 interface CustomCreditSliderProps {
   onRequestLogin?: () => void;
@@ -20,8 +21,8 @@ export default function CustomCreditSlider({
   const price = (quantity * 0.05).toFixed(2);
 
   // Calculate estimations
-  const downloadCount = quantity; // 1 credit per download
-  const aiCount = Math.floor(quantity / 2); // 2 credits per AI analysis
+  const downloadCount = Math.floor(quantity / CREDIT_COSTS.download);
+  const aiCount = Math.floor(quantity / CREDIT_COSTS.summary);
 
   const PRESETS = [100, 500, 1000, 2000];
   const MIN = 20;
@@ -127,7 +128,7 @@ export default function CustomCreditSlider({
                       Downloads
                     </p>
                     <p className="text-[10px] text-slate-400 font-medium">
-                      1 credit / video
+                      {CREDIT_LABELS.download}
                     </p>
                   </div>
                 </div>
@@ -159,7 +160,7 @@ export default function CustomCreditSlider({
                       AI Analyses
                     </p>
                     <p className="text-[10px] text-slate-400 font-medium">
-                      2 credits / video
+                      {CREDIT_LABELS.summary}
                     </p>
                   </div>
                 </div>

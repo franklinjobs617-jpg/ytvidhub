@@ -8,6 +8,7 @@ import LoginModal from "@/components/LoginModel";
 import PaymentChoiceModal from "@/components/pricing/PaymentChoiceModal";
 import FAQ from "@/components/landing/FAQ";
 import CustomCreditSlider from "@/components/pricing/CustomCreditSlider";
+import { CREDIT_COSTS } from "@/config/credits";
 
 const plans = [
   {
@@ -169,7 +170,7 @@ export default function PricingPage() {
           Stop wasting hours on manual downloads. Choose a professional plan and
           <br />
           <span className="text-slate-900 font-bold underline decoration-blue-500 decoration-2 underline-offset-4">
-            1 Download = 1 Credit | 1 AI Summary = 2 Credits
+            {`1 Download = ${CREDIT_COSTS.download} Credit | 1 AI Summary = ${CREDIT_COSTS.summary} Credits`}
           </span>
         </p>
 
@@ -396,13 +397,13 @@ export default function PricingPage() {
               </p>
             </div>
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
-              <p className="font-bold text-slate-900 text-lg mb-1">2 Credits</p>
+              <p className="font-bold text-slate-900 text-lg mb-1">{`${CREDIT_COSTS.summary} Credits`}</p>
               <p className="text-slate-600 text-sm">
                 AI Video Summary & Transcription for 1 URL.
               </p>
             </div>
             <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
-              <p className="font-bold text-slate-900 text-lg mb-1">1 Credit</p>
+              <p className="font-bold text-slate-900 text-lg mb-1">{`${CREDIT_COSTS.studyCards} Credit`}</p>
               <p className="text-slate-600 text-sm">
                 Generate 1 full set of AI Study Cards.
               </p>

@@ -116,12 +116,6 @@ const nextConfig: NextConfig = {
           "/:locale/guide/how-to-download-youtube-subtitles-complete-guide/",
         permanent: true,
       },
-      // Redirect non-English versions of all internal pages to English (only homepage is localized for now)
-      {
-        source: "/:locale(es|de|ko|ja|ru|tr|zh)/:slug+",
-        destination: "/:slug/",
-        permanent: true,
-      },
     ];
   },
 

@@ -9,11 +9,11 @@ import {
 } from "lucide-react";
 export default function AISummaryBlogPage() {
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      <main>
+    <div className="editorial-page article-body">
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          <p className="text-sm text-blue-600 font-medium mb-4">
+        <header className="article-shell article-hero">
+          <p className="article-kicker">
             AI Innovation
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
@@ -25,7 +25,7 @@ export default function AISummaryBlogPage() {
           </p>
         </header>
         {/* Feature image */}
-        <div className="max-w-4xl mx-auto px-6 mb-16">
+        <div className="article-shell article-section">
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
             <img
               src="/image/blog-ai-summary-interface.webp"
@@ -35,7 +35,7 @@ export default function AISummaryBlogPage() {
           </div>
         </div>
         {/* Features */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             AI-Powered Study Insights
           </h2>
@@ -83,7 +83,7 @@ export default function AISummaryBlogPage() {
           </div>
         </article>
         {/* Smart Transcripts */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-8">
             <img
               src="/image/blog-smart-transcript-search.webp"
@@ -127,7 +127,7 @@ export default function AISummaryBlogPage() {
           </div>
         </article>
         {/* Use Cases */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Who Benefits Most?
           </h2>
@@ -168,7 +168,7 @@ export default function AISummaryBlogPage() {
             ))}
           </div>
         </article>
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Frequently Asked Questions
           </h2>
@@ -200,7 +200,7 @@ export default function AISummaryBlogPage() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Ready to Master Any Video?

@@ -13,11 +13,11 @@ export default function MasteringVttAnalysisGuide() {
     }
   };
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      <main>
+    <div className="editorial-page article-body">
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          <p className="text-sm text-blue-600 font-medium mb-4">
+        <header className="article-shell article-hero">
+          <p className="article-kicker">
             Developer Technical Guide
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
@@ -30,7 +30,7 @@ export default function MasteringVttAnalysisGuide() {
           </p>
         </header>
         {/* VTT Quality Crisis */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             1. The VTT Data Quality Crisis
           </h2>
@@ -71,7 +71,7 @@ export default function MasteringVttAnalysisGuide() {
           </div>
         </article>
         {/* VTT vs SRT */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             2. WebVTT vs. SRT
           </h2>
@@ -136,7 +136,7 @@ export default function MasteringVttAnalysisGuide() {
           </div>
         </article>
         {/* Bulk Downloader Strategies */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             3. Bulk Downloader Strategies
           </h2>
@@ -165,7 +165,7 @@ export default function MasteringVttAnalysisGuide() {
           </div>
         </article>
         {/* Step-by-Step Guide */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             4. Step-by-Step Guide
           </h2>
@@ -205,7 +205,7 @@ export default function MasteringVttAnalysisGuide() {
           </ol>
         </article>
         {/* VTT Output */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             5. The VTT Output
           </h2>
@@ -246,7 +246,7 @@ export default function MasteringVttAnalysisGuide() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Stop Scrapers, Start Analyzing

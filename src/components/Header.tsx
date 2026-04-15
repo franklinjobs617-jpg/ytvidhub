@@ -19,6 +19,8 @@ import {
 import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 
 const resourceLinks = [
+  { key: "guides", href: "/guide" },
+  { key: "blog", href: "/blog" },
   { key: "subsForAi", href: "/guide/youtube-subtitles-for-llm-data" },
   { key: "cleanText", href: "/guide/clean-transcript-no-timestamp" },
   { key: "srtVsVtt", href: "/guide/srt-vs-vtt" },

@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { CREDIT_COSTS } from "@/config/credits";
 
 export function ControlBar({
   userCredits,
@@ -230,7 +231,12 @@ export function ControlBar({
           <div className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-l border-slate-200 pl-4 h-6">
             <Coins size={12} />
             <span>
-              {t("cost", { amount: mode === "summary" ? "7" : "1" })}
+              {t("cost", {
+                amount:
+                  mode === "summary"
+                    ? String(CREDIT_COSTS.summary)
+                    : String(CREDIT_COSTS.download),
+              })}
               {mode !== "summary" ? t("perVid") : ""}
             </span>
           </div>

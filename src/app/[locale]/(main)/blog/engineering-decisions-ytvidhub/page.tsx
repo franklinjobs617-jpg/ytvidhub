@@ -14,11 +14,11 @@ export default function EngineeringDecisionsBlogPage() {
     }
   };
   return (
-    <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
-      <main>
+    <div className="editorial-page article-body">
+      <main className="editorial-main">
         {/* Hero */}
-        <header className="max-w-3xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16 article-shell article-hero">
-          <p className="text-sm text-blue-600 font-medium mb-4">
+        <header className="article-shell article-hero">
+          <p className="article-kicker">
             Engineering Blog
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
@@ -33,7 +33,7 @@ export default function EngineeringDecisionsBlogPage() {
           </p>
         </header>
         {/* Intro */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
             When we introduced the concept of a dedicated
             <strong>Bulk YouTube Subtitle Downloader</strong>, the response was
@@ -47,7 +47,7 @@ export default function EngineeringDecisionsBlogPage() {
           </p>
         </article>
         {/* Section 1 */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             1. Scalability Meets Stability
           </h2>
@@ -76,7 +76,7 @@ export default function EngineeringDecisionsBlogPage() {
           </p>
         </article>
         {/* Section 2 */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             2. Data: More Than Just SRT
           </h2>
@@ -104,7 +104,7 @@ export default function EngineeringDecisionsBlogPage() {
           </p>
         </article>
         {/* Section 3 */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             3. The Accuracy Dilemma
           </h2>
@@ -142,7 +142,7 @@ export default function EngineeringDecisionsBlogPage() {
           </div>
         </article>
         {/* Conclusion */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             Conclusion
           </h2>
@@ -153,7 +153,7 @@ export default function EngineeringDecisionsBlogPage() {
           </p>
         </article>
         {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
+        <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Quick FAQ
           </h2>
@@ -181,7 +181,7 @@ export default function EngineeringDecisionsBlogPage() {
           </div>
         </article>
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
+        <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Automate Your Workflow
