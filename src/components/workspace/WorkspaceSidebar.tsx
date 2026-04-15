@@ -61,7 +61,7 @@ export function WorkspaceSidebar({
       <div className="p-4 border-b border-slate-200">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Video className="w-5 h-5 text-violet-600" />
+            <Video className="w-5 h-5 text-blue-600" />
             <span className="text-sm font-black tracking-tight text-slate-900">
               YTvidHub
             </span>
@@ -126,9 +126,7 @@ export function WorkspaceSidebar({
 
       {/* Footer */}
       <div className="p-3 border-t border-slate-200">
-        <div className="text-xs text-slate-400 text-center">
-          Workspace
-        </div>
+        <div className="text-xs text-slate-400 text-center">Workspace</div>
       </div>
     </div>
   );

@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Download, CheckSquare, Square, DownloadCloud, FileText, Clock } from "lucide-react";
+import {
+  Download,
+  CheckSquare,
+  Square,
+  DownloadCloud,
+  FileText,
+  Clock,
+} from "lucide-react";
 
 interface PlaylistManagerProps {
   videos: any[];
@@ -9,7 +16,11 @@ interface PlaylistManagerProps {
   onBatchDownload?: (videoIds: string[], format: string) => void;
 }
 
-export function PlaylistManager({ videos, onDownloadSingle, onBatchDownload }: PlaylistManagerProps) {
+export function PlaylistManager({
+  videos,
+  onDownloadSingle,
+  onBatchDownload,
+}: PlaylistManagerProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showFormatMenu, setShowFormatMenu] = useState<string | null>(null);
 
@@ -50,11 +61,13 @@ export function PlaylistManager({ videos, onDownloadSingle, onBatchDownload }: P
             className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
           >
             {selectedIds.size === videos.length ? (
-              <CheckSquare className="w-4 h-4 text-violet-600" />
+              <CheckSquare className="w-4 h-4 text-blue-600" />
             ) : (
               <Square className="w-4 h-4" />
             )}
-            {selectedIds.size > 0 ? `${selectedIds.size} selected` : "Select All"}
+            {selectedIds.size > 0
+              ? `${selectedIds.size} selected`
+              : "Select All"}
           </button>
 
           {selectedIds.size > 0 && (
@@ -85,14 +98,16 @@ export function PlaylistManager({ videos, onDownloadSingle, onBatchDownload }: P
             >
               <button onClick={() => toggleSelect(video.id)}>
                 {selectedIds.has(video.id) ? (
-                  <CheckSquare className="w-5 h-5 text-violet-600" />
+                  <CheckSquare className="w-5 h-5 text-blue-600" />
                 ) : (
                   <Square className="w-5 h-5 text-slate-400" />
                 )}
               </button>
 
               <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-slate-900 truncate">{video.title}</h3>
+                <h3 className="font-medium text-slate-900 truncate">
+                  {video.title}
+                </h3>
                 <div className="flex items-center gap-3 mt-1 text-sm text-slate-500">
                   <span className="flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5" />

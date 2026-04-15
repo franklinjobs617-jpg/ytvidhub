@@ -60,7 +60,7 @@ export function ResponsiveLayout({
         }
       });
     },
-    [isMobile, onLeftWidthChange]
+    [isMobile, onLeftWidthChange],
   );
 
   useEffect(() => {
@@ -152,18 +152,18 @@ export function ResponsiveLayout({
         onMouseDown={startResizing}
         className={`
           group relative z-20 -ml-0.5 flex w-1 shrink-0 cursor-col-resize items-center justify-center transition-all hover:w-2
-          ${isResizing ? "bg-violet-400/30" : "bg-transparent hover:bg-violet-400/20"}
+          ${isResizing ? "bg-blue-400/30" : "bg-transparent hover:bg-blue-400/20"}
         `}
       >
         <div
           className={`
             h-full w-px transition-colors
-            ${isResizing ? "bg-violet-500" : "bg-slate-200 group-hover:bg-violet-400"}
+            ${isResizing ? "bg-blue-500" : "bg-slate-200 group-hover:bg-blue-400"}
           `}
         />
 
         {isResizing && (
-          <div className="absolute left-2 top-1/2 z-[60] -translate-y-1/2 whitespace-nowrap rounded bg-violet-600 px-2 py-1 text-xs text-white">
+          <div className="absolute left-2 top-1/2 z-[60] -translate-y-1/2 whitespace-nowrap rounded bg-blue-600 px-2 py-1 text-xs text-white">
             {Math.round(leftWidth)}% / {Math.round(100 - leftWidth)}%
           </div>
         )}

@@ -10,7 +10,7 @@ import {
   Users,
   CheckCircle,
   Loader2,
-  Plus
+  Plus,
 } from "lucide-react";
 
 interface Video {
@@ -30,14 +30,20 @@ interface VideoSwitcherProps {
   onAddVideo?: () => void;
 }
 
-export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, onAddVideo }: VideoSwitcherProps) {
+export function VideoSwitcher({
+  videos,
+  activeId,
+  onSelect,
+  isLoading = false,
+  onAddVideo,
+}: VideoSwitcherProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   // 更新当前索引
   useEffect(() => {
-    const index = videos.findIndex(v => v.id === activeId);
+    const index = videos.findIndex((v) => v.id === activeId);
     if (index !== -1) {
       setCurrentIndex(index);
     }
@@ -48,7 +54,7 @@ export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, o
 
     setIsTransitioning(true);
     setCurrentIndex(index);
-    
+
     // 添加短暂延迟，让用户感知到切换动作
     setTimeout(() => {
       onSelect(video);
@@ -72,7 +78,7 @@ export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, o
     if (!seconds) return null;
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   if (videos.length <= 1) return null;
@@ -187,20 +193,24 @@ export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, o
                     }}
                     className={`
                       w-full flex items-center gap-3 p-2.5 rounded-lg transition-all text-left
-                      ${video.id === activeId
-                        ? 'bg-violet-50 border border-violet-200'
-                        : 'hover:bg-slate-50'
+                      ${
+                        video.id === activeId
+                          ? "bg-blue-50 border border-blue-200"
+                          : "hover:bg-slate-50"
                       }
                     `}
                   >
                     {/* 序号 */}
-                    <div className={`
+                    <div
+                      className={`
                       w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shrink-0
-                      ${video.id === activeId
-                        ? 'bg-violet-600 text-white'
-                        : 'bg-slate-100 text-slate-600'
+                      ${
+                        video.id === activeId
+                          ? "bg-blue-600 text-white"
+                          : "bg-slate-100 text-slate-600"
                       }
-                    `}>
+                    `}
+                    >
                       {index + 1}
                     </div>
 
@@ -214,7 +224,7 @@ export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, o
                         />
                       </div>
                       {video.id === activeId && (
-                        <div className="absolute inset-0 bg-violet-600/20 flex items-center justify-center rounded-md">
+                        <div className="absolute inset-0 bg-blue-600/20 flex items-center justify-center rounded-md">
                           <Play size={16} className="text-white fill-current" />
                         </div>
                       )}
@@ -222,10 +232,12 @@ export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, o
 
                     {/* 视频信息 */}
                     <div className="flex-1 min-w-0">
-                      <h4 className={`
+                      <h4
+                        className={`
                         text-sm font-medium line-clamp-2
-                        ${video.id === activeId ? 'text-violet-900' : 'text-slate-800'}
-                      `}>
+                        ${video.id === activeId ? "text-blue-900" : "text-slate-800"}
+                      `}
+                      >
                         {video.title}
                       </h4>
                       <div className="flex items-center gap-2 mt-1">
@@ -243,7 +255,10 @@ export function VideoSwitcher({ videos, activeId, onSelect, isLoading = false, o
                     </div>
 
                     {video.id === activeId && (
-                      <CheckCircle size={18} className="text-violet-600 shrink-0" />
+                      <CheckCircle
+                        size={18}
+                        className="text-blue-600 shrink-0"
+                      />
                     )}
                   </button>
                 ))}

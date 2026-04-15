@@ -17,7 +17,11 @@ const plans = [
     desc: "Experience our core AI extraction features.",
     features: [
       { text: "5 Daily Credits", highlight: true, disabled: false },
-      { text: "5 Downloads OR 2 AI Summaries", disabled: false, sub: "Usage per day" },
+      {
+        text: "5 Downloads OR 2 AI Summaries",
+        disabled: false,
+        sub: "Usage per day",
+      },
       { text: "Download up to 5 URLs", disabled: false },
       { text: "Standard SRT/VTT Output", disabled: false },
       { text: "API Access Not Included", disabled: true },
@@ -125,8 +129,8 @@ export default function PricingPage() {
   const handlePurchase = (planId: string | null) => {
     if (!planId) return;
 
-    const plan = plans.find(p => p.id === planId);
-    trackConversion('plan_click', {
+    const plan = plans.find((p) => p.id === planId);
+    trackConversion("plan_click", {
       plan_name: plan?.name,
       plan_price: plan?.price,
       plan_id: planId,
@@ -158,21 +162,33 @@ export default function PricingPage() {
           Trusted by 10,000+ Researchers
         </div>
         <h1 className="text-5xl md:text-7xl font-display font-black italic uppercase tracking-tight text-slate-900 mb-6 drop-shadow-sm leading-[0.85]">
-          The Perfect Plan <br /> For Your <span className="text-blue-600">Ambition</span>
+          The Perfect Plan <br /> For Your
+          <span className="text-blue-600">Ambition</span>
         </h1>
         <p className="text-base text-slate-500 max-w-xl mx-auto font-medium leading-normal mb-8">
-          Stop wasting hours on manual downloads. Choose a professional plan and <br />
-          <span className="text-slate-900 font-bold underline decoration-blue-500 decoration-2 underline-offset-4">1 Download = 1 Credit | 1 AI Summary = 2 Credits</span>
+          Stop wasting hours on manual downloads. Choose a professional plan and
+          <br />
+          <span className="text-slate-900 font-bold underline decoration-blue-500 decoration-2 underline-offset-4">
+            1 Download = 1 Credit | 1 AI Summary = 2 Credits
+          </span>
         </p>
 
         {hasBulkShortfallContext && (
           <div className="mx-auto mb-8 max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-left">
-            <p className="text-sm font-bold text-amber-900">Finish your batch with one top-up</p>
+            <p className="text-sm font-bold text-amber-900">
+              Finish your batch with one top-up
+            </p>
             <p className="mt-1 text-sm text-amber-800 leading-relaxed">
-              You selected <span className="font-semibold">{selectedCount} videos</span>, currently have{" "}
-              <span className="font-semibold">{currentCredits} credits</span>, and are only{" "}
-              <span className="font-semibold">{missingCredits} credits away</span> from completing everything.
-              After payment, we can take you back to resume the remaining downloads.
+              You selected
+              <span className="font-semibold">{selectedCount} videos</span>,
+              currently have
+              <span className="font-semibold">{currentCredits} credits</span>,
+              and are only
+              <span className="font-semibold">
+                {missingCredits} credits away
+              </span>
+              from completing everything. After payment, we can take you back to
+              resume the remaining downloads.
             </p>
           </div>
         )}
@@ -180,15 +196,51 @@ export default function PricingPage() {
         {/* Trust Bar - More Compact */}
         <div className="flex flex-wrap justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500 text-[10px] font-bold uppercase tracking-widest">
           <div className="flex items-center gap-1.5">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m17.236 0a11.955 11.955 0 01-14.717 9.917m14.717-9.917a11.955 11.955 0 01-4.88 15.688M12 20.944a11.955 11.955 0 01-8.618-3.04m17.236 0a11.955 11.955 0 01-4.88-15.688" /></svg>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m17.236 0a11.955 11.955 0 01-14.717 9.917m14.717-9.917a11.955 11.955 0 01-4.88 15.688M12 20.944a11.955 11.955 0 01-8.618-3.04m17.236 0a11.955 11.955 0 01-4.88-15.688"
+              />
+            </svg>
             Secure Payment
           </div>
           <div className="flex items-center gap-1.5">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
             Instant Delivery
           </div>
           <div className="flex items-center gap-1.5">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+              />
+            </svg>
             Global VAT Invoice
           </div>
         </div>
@@ -206,11 +258,12 @@ export default function PricingPage() {
               key={plan.name}
               className={`
                 relative flex flex-col p-8 rounded-3xl border transition-all duration-500 group
-                ${hasBulkShortfallContext && plan.id === "a"
-                  ? "bg-white border-amber-300 ring-[10px] ring-amber-500/10 shadow-[0_30px_60px_-20px_rgba(245,158,11,0.4)]"
-                  : plan.highlight
-                  ? "bg-white border-blue-200 ring-[12px] ring-blue-500/5 shadow-[0_40px_80px_-15px_rgba(59,130,246,0.15)] scale-105 z-10"
-                  : "bg-white/70 backdrop-blur-md border-slate-200/60 hover:border-blue-300 hover:shadow-2xl hover:bg-white"
+                ${
+                  hasBulkShortfallContext && plan.id === "a"
+                    ? "bg-white border-amber-300 ring-[10px] ring-amber-500/10 shadow-[0_30px_60px_-20px_rgba(245,158,11,0.4)]"
+                    : plan.highlight
+                      ? "bg-white border-blue-200 ring-[12px] ring-blue-500/5 shadow-[0_40px_80px_-15px_rgba(59,130,246,0.15)] scale-105 z-10"
+                      : "bg-white/70 backdrop-blur-md border-slate-200/60 hover:border-blue-300 hover:shadow-2xl hover:bg-white"
                 }
               `}
             >
@@ -232,12 +285,13 @@ export default function PricingPage() {
 
               <div className="mb-8">
                 <h3
-                  className={`text-sm font-black uppercase tracking-[0.15em] mb-4 ${plan.name === "Researcher"
-                    ? "text-purple-600"
-                    : plan.highlight
+                  className={`text-sm font-black uppercase tracking-[0.15em] mb-4 ${
+                    plan.name === "Researcher"
                       ? "text-blue-600"
-                      : "text-slate-400"
-                    }`}
+                      : plan.highlight
+                        ? "text-blue-600"
+                        : "text-slate-400"
+                  }`}
                 >
                   {plan.name}
                 </h3>
@@ -265,22 +319,32 @@ export default function PricingPage() {
                 {plan.features.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-start text-[13px] font-medium ${feature.disabled ? "text-slate-300 line-through opacity-50" : "text-slate-600"
-                      }`}
+                    className={`flex items-start text-[13px] font-medium ${
+                      feature.disabled
+                        ? "text-slate-300 line-through opacity-50"
+                        : "text-slate-600"
+                    }`}
                   >
                     <svg
-                      className={`w-5 h-5 mr-3 flex-shrink-0 ${feature.disabled ? "text-slate-200" : "text-blue-500"
-                        }`}
+                      className={`w-5 h-5 mr-3 flex-shrink-0 ${
+                        feature.disabled ? "text-slate-200" : "text-blue-500"
+                      }`}
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="3"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     <span className="leading-snug">
                       {feature.highlight ? (
-                        <strong className="text-slate-900 font-bold">{feature.text}</strong>
+                        <strong className="text-slate-900 font-bold">
+                          {feature.text}
+                        </strong>
                       ) : (
                         feature.text
                       )}
@@ -300,11 +364,12 @@ export default function PricingPage() {
                 disabled={!plan.id}
                 className={`
                   w-full py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all duration-300
-                  ${!plan.id
-                    ? "bg-slate-50 text-slate-300 cursor-default border border-slate-100"
-                    : plan.highlight
-                      ? "bg-blue-600 text-white hover:bg-blue-700 shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:-translate-y-1 active:scale-95"
-                      : "bg-slate-900 text-white hover:bg-black shadow-xl hover:-translate-y-1 active:scale-95"
+                  ${
+                    !plan.id
+                      ? "bg-slate-50 text-slate-300 cursor-default border border-slate-100"
+                      : plan.highlight
+                        ? "bg-blue-600 text-white hover:bg-blue-700 shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:-translate-y-1 active:scale-95"
+                        : "bg-slate-900 text-white hover:bg-black shadow-xl hover:-translate-y-1 active:scale-95"
                   }
                 `}
               >

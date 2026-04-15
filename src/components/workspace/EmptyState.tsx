@@ -51,8 +51,8 @@ export function EmptyState({ onUrlSubmit }: EmptyStateProps) {
         {/* 主图标 - 精致但简洁 */}
         <div className="text-center mb-8">
           <div className="relative inline-flex items-center justify-center w-16 h-16 mb-6">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-violet-600 rounded-2xl opacity-10"></div>
-            <div className="relative w-12 h-12 bg-gradient-to-br from-blue-500 to-violet-600 rounded-xl flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl opacity-10"></div>
+            <div className="relative w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
               <FileText size={24} className="text-white" />
             </div>
           </div>
@@ -142,7 +142,7 @@ export function EmptyState({ onUrlSubmit }: EmptyStateProps) {
               <span>Transcript</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+              <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
               <span>Study Cards</span>
             </div>
           </div>

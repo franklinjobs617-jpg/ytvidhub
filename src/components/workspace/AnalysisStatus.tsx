@@ -10,7 +10,7 @@ import {
   AlertCircle,
   Clock,
   Zap,
-  Target
+  Target,
 } from "lucide-react";
 
 interface AnalysisStatusProps {
@@ -22,10 +22,15 @@ interface AnalysisStatusProps {
 }
 
 const ANALYSIS_STEPS = [
-  { id: 'fetch', label: 'Fetching subtitles', icon: FileText, duration: 5000 },
-  { id: 'process', label: 'Processing content', icon: Brain, duration: 15000 },
-  { id: 'analyze', label: 'Generating insights', icon: Sparkles, duration: 25000 },
-  { id: 'finalize', label: 'Finalizing results', icon: Target, duration: 5000 },
+  { id: "fetch", label: "Fetching subtitles", icon: FileText, duration: 5000 },
+  { id: "process", label: "Processing content", icon: Brain, duration: 15000 },
+  {
+    id: "analyze",
+    label: "Generating insights",
+    icon: Sparkles,
+    duration: 25000,
+  },
+  { id: "finalize", label: "Finalizing results", icon: Target, duration: 5000 },
 ];
 
 export function AnalysisStatus({
@@ -33,7 +38,7 @@ export function AnalysisStatus({
   hasResult,
   error,
   onRetry,
-  estimatedTime = 45
+  estimatedTime = 45,
 }: AnalysisStatusProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -53,11 +58,17 @@ export function AnalysisStatus({
     if (!isAnalyzing) return;
 
     const interval = setInterval(() => {
-      setElapsedTime(prev => prev + 1);
+      setElapsedTime((prev) => prev + 1);
 
       // 计算总体进度
-      const totalDuration = ANALYSIS_STEPS.reduce((sum, step) => sum + step.duration, 0);
-      const newProgress = Math.min((elapsedTime * 1000) / totalDuration * 100, 95);
+      const totalDuration = ANALYSIS_STEPS.reduce(
+        (sum, step) => sum + step.duration,
+        0,
+      );
+      const newProgress = Math.min(
+        ((elapsedTime * 1000) / totalDuration) * 100,
+        95,
+      );
       setProgress(newProgress);
 
       // 更新当前步骤
@@ -91,7 +102,7 @@ export function AnalysisStatus({
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="bg-gradient-to-r from-blue-50 to-violet-50 border border-blue-200 rounded-xl p-4 mx-4 mb-4"
+          className="bg-gradient-to-r from-blue-50 to-blue-50 border border-blue-200 rounded-xl p-4 mx-4 mb-4"
         >
           <div className="flex items-center gap-4">
             {/* 动画图标 */}
@@ -99,7 +110,7 @@ export function AnalysisStatus({
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="w-10 h-10 bg-gradient-to-br from-blue-500 to-violet-600 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center"
               >
                 <Sparkles size={20} className="text-white" />
               </motion.div>
@@ -120,17 +131,18 @@ export function AnalysisStatus({
                   animate={{ scale: 1, opacity: 1 }}
                   className="flex items-center gap-2"
                 >
-                  {currentStep < ANALYSIS_STEPS.length && (() => {
-                    const IconComponent = ANALYSIS_STEPS[currentStep].icon;
-                    return (
-                      <>
-                        <IconComponent size={16} className="text-blue-600" />
-                        <span className="text-sm font-medium text-blue-900">
-                          {ANALYSIS_STEPS[currentStep].label}
-                        </span>
-                      </>
-                    );
-                  })()}
+                  {currentStep < ANALYSIS_STEPS.length &&
+                    (() => {
+                      const IconComponent = ANALYSIS_STEPS[currentStep].icon;
+                      return (
+                        <>
+                          <IconComponent size={16} className="text-blue-600" />
+                          <span className="text-sm font-medium text-blue-900">
+                            {ANALYSIS_STEPS[currentStep].label}
+                          </span>
+                        </>
+                      );
+                    })()}
                 </motion.div>
 
                 <div className="flex items-center gap-1 ml-auto">
@@ -147,13 +159,17 @@ export function AnalysisStatus({
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="h-full bg-gradient-to-r from-blue-500 to-violet-600 rounded-full"
+                  className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
                 />
 
                 {/* 闪烁效果 */}
                 <motion.div
                   animate={{ x: [-20, 200] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                   className="absolute top-0 left-0 h-full w-5 bg-gradient-to-r from-transparent via-white/40 to-transparent"
                 />
               </div>
@@ -163,9 +179,13 @@ export function AnalysisStatus({
                 {ANALYSIS_STEPS.map((step, index) => (
                   <div
                     key={step.id}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${index < currentStep ? 'bg-green-500' :
-                        index === currentStep ? 'bg-blue-500 animate-pulse' : 'bg-slate-200'
-                      }`}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index < currentStep
+                        ? "bg-green-500"
+                        : index === currentStep
+                          ? "bg-blue-500 animate-pulse"
+                          : "bg-slate-200"
+                    }`}
                   />
                 ))}
               </div>
@@ -193,7 +213,9 @@ export function AnalysisStatus({
             </motion.div>
 
             <div>
-              <p className="text-sm font-medium text-green-900">Analysis Complete</p>
+              <p className="text-sm font-medium text-green-900">
+                Analysis Complete
+              </p>
               <p className="text-xs text-green-700">
                 Generated insights and study materials in {elapsedTime}s
               </p>

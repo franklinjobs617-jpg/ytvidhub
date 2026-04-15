@@ -8,12 +8,15 @@ interface LoadingTransitionProps {
   videoTitle?: string;
 }
 
-export function LoadingTransition({ stage, videoTitle }: LoadingTransitionProps) {
+export function LoadingTransition({
+  stage,
+  videoTitle,
+}: LoadingTransitionProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgress(prev => {
+      setProgress((prev) => {
         if (stage === "analyzing" && prev < 60) return prev + 2;
         if (stage === "preparing" && prev < 90) return prev + 3;
         if (stage === "ready") return 100;
@@ -26,20 +29,25 @@ export function LoadingTransition({ stage, videoTitle }: LoadingTransitionProps)
 
   const stages = [
     { id: "analyzing", label: "Analyzing Video", icon: Video, color: "blue" },
-    { id: "preparing", label: "Preparing AI Workspace", icon: Sparkles, color: "violet" },
-    { id: "ready", label: "Ready!", icon: Brain, color: "green" }
+    {
+      id: "preparing",
+      label: "Preparing AI Workspace",
+      icon: Sparkles,
+      color: "violet",
+    },
+    { id: "ready", label: "Ready!", icon: Brain, color: "green" },
   ];
 
-  const currentStageIndex = stages.findIndex(s => s.id === stage);
+  const currentStageIndex = stages.findIndex((s) => s.id === stage);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50/30">
       <div className="max-w-md w-full px-6">
         {/* 主要图标 */}
         <div className="relative mb-8 flex justify-center">
-          <div className="absolute inset-0 bg-violet-200 blur-2xl opacity-30 rounded-full"></div>
+          <div className="absolute inset-0 bg-blue-200 blur-2xl opacity-30 rounded-full"></div>
           <div className="relative w-20 h-20 bg-white rounded-3xl shadow-lg flex items-center justify-center">
-            <Sparkles size={40} className="text-violet-600 animate-pulse" />
+            <Sparkles size={40} className="text-blue-600 animate-pulse" />
           </div>
         </div>
 
@@ -53,8 +61,8 @@ export function LoadingTransition({ stage, videoTitle }: LoadingTransitionProps)
         {/* 进度条 */}
         <div className="mb-8">
           <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-blue-500 to-violet-600 transition-all duration-300 ease-out"
+            <div
+              className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -73,44 +81,59 @@ export function LoadingTransition({ stage, videoTitle }: LoadingTransitionProps)
             const IconComponent = stageItem.icon;
 
             return (
-              <div 
+              <div
                 key={stageItem.id}
                 className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                  isActive 
-                    ? "bg-white shadow-md ring-1 ring-slate-200" 
+                  isActive
+                    ? "bg-white shadow-md ring-1 ring-slate-200"
                     : isCompleted
-                    ? "bg-green-50"
-                    : "bg-slate-50"
+                      ? "bg-green-50"
+                      : "bg-slate-50"
                 }`}
               >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  isActive 
-                    ? "bg-violet-100 text-violet-600" 
-                    : isCompleted
-                    ? "bg-green-100 text-green-600"
-                    : "bg-slate-200 text-slate-400"
-                }`}>
-                  <IconComponent size={16} className={isActive ? "animate-pulse" : ""} />
+                <div
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                    isActive
+                      ? "bg-blue-100 text-blue-600"
+                      : isCompleted
+                        ? "bg-green-100 text-green-600"
+                        : "bg-slate-200 text-slate-400"
+                  }`}
+                >
+                  <IconComponent
+                    size={16}
+                    className={isActive ? "animate-pulse" : ""}
+                  />
                 </div>
-                <span className={`text-sm font-medium ${
-                  isActive 
-                    ? "text-slate-900" 
-                    : isCompleted
-                    ? "text-green-700"
-                    : "text-slate-500"
-                }`}>
+                <span
+                  className={`text-sm font-medium ${
+                    isActive
+                      ? "text-slate-900"
+                      : isCompleted
+                        ? "text-green-700"
+                        : "text-slate-500"
+                  }`}
+                >
                   {stageItem.label}
                 </span>
                 {isActive && (
                   <div className="ml-auto">
-                    <div className="w-4 h-4 border-2 border-violet-200 border-t-violet-600 rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
                   </div>
                 )}
                 {isCompleted && (
                   <div className="ml-auto">
                     <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <svg
+                        className="w-2.5 h-2.5 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                   </div>

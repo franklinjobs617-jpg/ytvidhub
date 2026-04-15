@@ -10,7 +10,7 @@ import {
   CheckCircle,
   ArrowRight,
   Clock,
-  Play
+  Play,
 } from "lucide-react";
 
 interface UrlInputProps {
@@ -21,20 +21,29 @@ interface UrlInputProps {
   className?: string;
 }
 
-export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" }: UrlInputProps) {
+export function UrlInput({
+  value,
+  onChange,
+  onSubmit,
+  isLoading,
+  className = "",
+}: UrlInputProps) {
   const [isFocused, setIsFocused] = useState(false);
-  const [validationState, setValidationState] = useState<'idle' | 'valid' | 'invalid'>('idle');
+  const [validationState, setValidationState] = useState<
+    "idle" | "valid" | "invalid"
+  >("idle");
   const inputRef = useRef<HTMLInputElement>(null);
 
   // URL 验证
   useEffect(() => {
     if (!value.trim()) {
-      setValidationState('idle');
+      setValidationState("idle");
       return;
     }
 
-    const isValidYouTubeUrl = value.includes("youtube.com") || value.includes("youtu.be");
-    setValidationState(isValidYouTubeUrl ? 'valid' : 'invalid');
+    const isValidYouTubeUrl =
+      value.includes("youtube.com") || value.includes("youtu.be");
+    setValidationState(isValidYouTubeUrl ? "valid" : "invalid");
   }, [value]);
 
   // 开始加载时自动失去焦点
@@ -45,17 +54,20 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
   }, [isLoading]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && validationState === 'valid' && !isLoading) {
+    if (e.key === "Enter" && validationState === "valid" && !isLoading) {
       onSubmit();
     }
   };
 
   const handlePaste = (e: React.ClipboardEvent) => {
-    const pastedText = e.clipboardData.getData('text');
-    if (pastedText && (pastedText.includes("youtube.com") || pastedText.includes("youtu.be"))) {
+    const pastedText = e.clipboardData.getData("text");
+    if (
+      pastedText &&
+      (pastedText.includes("youtube.com") || pastedText.includes("youtu.be"))
+    ) {
       // 自动提交有效的 YouTube URL
       setTimeout(() => {
-        if (validationState === 'valid') {
+        if (validationState === "valid") {
           onSubmit();
         }
       }, 100);
@@ -63,9 +75,12 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
   };
 
   const getStatusIcon = () => {
-    if (isLoading) return <Loader2 size={16} className="animate-spin text-blue-500" />;
-    if (validationState === 'valid') return <CheckCircle size={16} className="text-green-500" />;
-    if (validationState === 'invalid') return <AlertCircle size={16} className="text-red-500" />;
+    if (isLoading)
+      return <Loader2 size={16} className="animate-spin text-blue-500" />;
+    if (validationState === "valid")
+      return <CheckCircle size={16} className="text-green-500" />;
+    if (validationState === "invalid")
+      return <AlertCircle size={16} className="text-red-500" />;
     return <Link size={16} className="text-slate-400" />;
   };
 
@@ -76,18 +91,23 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
 
   return (
     <div className={`relative ${className} w-full`}>
-      <div className={`
+      <div
+        className={`
         relative flex items-center bg-slate-100 hover:bg-slate-200/50 rounded-lg transition-all duration-200 h-[36px] overflow-hidden group
-        ${isFocused ? 'bg-white ring-2 ring-violet-500/80 shadow-sm hover:bg-white' : 'ring-1 ring-slate-200/60'}
-        ${validationState === 'valid' && isFocused ? 'ring-emerald-500' : ''}
-        ${validationState === 'invalid' && isFocused ? 'ring-red-500' : ''}
-      `}>
+        ${isFocused ? "bg-white ring-2 ring-blue-500/80 shadow-sm hover:bg-white" : "ring-1 ring-slate-200/60"}
+        ${validationState === "valid" && isFocused ? "ring-emerald-500" : ""}
+        ${validationState === "invalid" && isFocused ? "ring-red-500" : ""}
+      `}
+      >
         {/* 状态图标 */}
         <div className="pl-3 pr-2 flex items-center justify-center">
           {isLoading ? (
             <Loader2 size={15} className="animate-spin text-slate-400" />
           ) : (
-            <Link size={15} className={`transition-colors ${isFocused ? 'text-violet-500' : 'text-slate-400 group-hover:text-slate-500'}`} />
+            <Link
+              size={15}
+              className={`transition-colors ${isFocused ? "text-blue-500" : "text-slate-400 group-hover:text-slate-500"}`}
+            />
           )}
         </div>
 
@@ -126,14 +146,14 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
               </motion.div>
             )}
 
-            {(value.trim() && validationState === 'valid') && (
+            {value.trim() && validationState === "valid" && (
               <motion.button
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 onClick={() => onSubmit()}
                 disabled={isLoading}
-                className="flex items-center justify-center gap-1.5 px-3 py-1 bg-violet-600 hover:bg-violet-700 disabled:opacity-65 text-white text-xs font-semibold rounded-md transition-all shadow-sm h-6"
+                className="flex items-center justify-center gap-1.5 px-3 py-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-65 text-white text-xs font-semibold rounded-md transition-all shadow-sm h-6"
               >
                 {isLoading ? (
                   <Loader2 size={12} className="animate-spin" />
@@ -150,7 +170,7 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
 
       {/* 验证提示 */}
       <AnimatePresence>
-        {validationState === 'invalid' && value.trim() && (
+        {validationState === "invalid" && value.trim() && (
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
@@ -160,7 +180,9 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
             <div className="flex items-start gap-2">
               <AlertCircle size={14} className="text-red-500 mt-0.5 shrink-0" />
               <div>
-                <p className="text-xs font-semibold text-red-700">Invalid YouTube URL</p>
+                <p className="text-xs font-semibold text-red-700">
+                  Invalid YouTube URL
+                </p>
                 <p className="text-[11px] text-red-600/80 mt-0.5 leading-tight">
                   Please enter a valid YouTube video, playlist, or channel URL
                 </p>
@@ -180,7 +202,9 @@ export function UrlInput({ value, onChange, onSubmit, isLoading, className = "" 
             className="absolute top-10 w-full p-3 bg-white border border-slate-200/60 rounded-lg shadow-xl shadow-slate-200/40 z-50"
           >
             <div className="space-y-2.5">
-              <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Input Guide</p>
+              <p className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">
+                Input Guide
+              </p>
               <div className="space-y-1.5 text-xs font-medium text-slate-600">
                 <div className="flex items-center gap-2 px-1 py-0.5 rounded-md hover:bg-slate-50 transition-colors">
                   <Play size={13} className="text-slate-400 shrink-0" />

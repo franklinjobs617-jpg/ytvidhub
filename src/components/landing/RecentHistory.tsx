@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { subtitleApi } from "@/lib/api";
-import { History, Sparkles, FileText, Play, ArrowRight, Zap } from "lucide-react";
+import {
+  History,
+  Sparkles,
+  FileText,
+  Play,
+  ArrowRight,
+  Zap,
+} from "lucide-react";
 
 interface HistoryItem {
   videoId: string;
@@ -22,7 +29,8 @@ function formatDuration(seconds?: number) {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
-  if (h > 0) return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  if (h > 0)
+    return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
@@ -62,12 +70,15 @@ export function RecentHistory() {
   const [loading, setLoading] = useState(!memoryCache && history.length === 0);
 
   useEffect(() => {
-    subtitleApi.getHistory(6).then((data) => {
-      setHistory(data);
-      memoryCache = data;
-      localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-      setLoading(false);
-    }).catch(() => setLoading(false));
+    subtitleApi
+      .getHistory(6)
+      .then((data) => {
+        setHistory(data);
+        memoryCache = data;
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   if (loading) {
@@ -75,7 +86,9 @@ export function RecentHistory() {
       <div className="w-full">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-px flex-1 bg-slate-100" />
-          <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Recently Analyzed</span>
+          <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">
+            Recently Analyzed
+          </span>
           <div className="h-px flex-1 bg-slate-100" />
         </div>
         <div className="flex gap-3">
@@ -125,13 +138,14 @@ export function RecentHistory() {
             key={item.videoId}
             onClick={() => {
               const params = new URLSearchParams({ urls: item.videoUrl });
-              if (item.lastAction === "ai_summary") params.set("mode", "summary");
+              if (item.lastAction === "ai_summary")
+                params.set("mode", "summary");
               router.push(`/workspace?${params.toString()}`);
             }}
             className="group flex-shrink-0 w-44 text-left focus:outline-none"
           >
             {/* 缩略图区域 */}
-            <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 ring-1 ring-slate-200/60 group-hover:ring-violet-300 transition-all duration-200">
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-100 ring-1 ring-slate-200/60 group-hover:ring-blue-300 transition-all duration-200">
               {item.thumbnail ? (
                 <img
                   src={item.thumbnail}
@@ -148,7 +162,9 @@ export function RecentHistory() {
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-all duration-200 flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1.5 shadow-sm">
                   <Play size={9} className="text-slate-700 fill-slate-700" />
-                  <span className="text-[10px] font-bold text-slate-700">Open</span>
+                  <span className="text-[10px] font-bold text-slate-700">
+                    Open
+                  </span>
                 </div>
               </div>
 
@@ -162,7 +178,7 @@ export function RecentHistory() {
               {/* 操作类型角标 */}
               <div className="absolute top-1.5 left-1.5">
                 {item.lastAction === "ai_summary" ? (
-                  <span className="flex items-center gap-0.5 text-[9px] font-bold bg-violet-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
+                  <span className="flex items-center gap-0.5 text-[9px] font-bold bg-blue-600/90 backdrop-blur-sm text-white px-1.5 py-0.5 rounded-full">
                     <Sparkles size={8} />
                     AI
                   </span>
@@ -185,7 +201,9 @@ export function RecentHistory() {
               <p className="text-[11px] font-semibold text-slate-500 group-hover:text-slate-800 line-clamp-2 leading-tight transition-colors duration-150">
                 {item.title}
               </p>
-              <p className="text-[10px] text-slate-400 mt-1">{timeAgo(item.updatedAt)}</p>
+              <p className="text-[10px] text-slate-400 mt-1">
+                {timeAgo(item.updatedAt)}
+              </p>
             </div>
           </button>
         ))}

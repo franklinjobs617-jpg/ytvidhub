@@ -28,7 +28,11 @@ import {
   Zap,
   Plus,
 } from "lucide-react";
-import { extractVideoId, normalizeYoutubeUrl, isPlaylistOrChannelUrl } from "@/lib/youtube";
+import {
+  extractVideoId,
+  normalizeYoutubeUrl,
+  isPlaylistOrChannelUrl,
+} from "@/lib/youtube";
 import { BatchGridView } from "@/components/workspace/BatchGridView";
 import { BatchProgressModal } from "@/components/workspace/BatchProgressModal";
 import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressModal";
@@ -54,13 +58,17 @@ function WorkspaceContent() {
     // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
     const handleKeyDown = (e: KeyboardEvent) => {
       // F12
-      if (e.key === 'F12') {
+      if (e.key === "F12") {
         e.preventDefault();
         e.stopPropagation();
         return false;
       }
       // Ctrl+Shift+I/J/C
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        e.shiftKey &&
+        (e.key === "I" || e.key === "J" || e.key === "C")
+      ) {
         e.preventDefault();
         e.stopPropagation();
         return false;
@@ -70,18 +78,18 @@ function WorkspaceContent() {
     // Disable right-click context menu on transcript area
     const handleContextMenu = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('.transcript-content-area')) {
+      if (target.closest(".transcript-content-area")) {
         e.preventDefault();
         return false;
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown, true);
-    document.addEventListener('contextmenu', handleContextMenu, true);
+    document.addEventListener("keydown", handleKeyDown, true);
+    document.addEventListener("contextmenu", handleContextMenu, true);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown, true);
-      document.removeEventListener('contextmenu', handleContextMenu, true);
+      document.removeEventListener("keydown", handleKeyDown, true);
+      document.removeEventListener("contextmenu", handleContextMenu, true);
     };
   }, []);
 
@@ -97,18 +105,21 @@ function WorkspaceContent() {
   const initialUrls = urlsParam ? decodeURIComponent(urlsParam).split(",") : [];
 
   // 检测是否为批量模式（多个视频或playlist/channel）
-  const shouldShowBatchMode = initialUrls.length > 1 || (initialUrls.length === 1 && isPlaylistOrChannelUrl(initialUrls[0]));
+  const shouldShowBatchMode =
+    initialUrls.length > 1 ||
+    (initialUrls.length === 1 && isPlaylistOrChannelUrl(initialUrls[0]));
 
   const [showBatchView, setShowBatchView] = useState(shouldShowBatchMode);
   const isBatchMode = shouldShowBatchMode && showBatchView;
   const [batchSelectedIds, setBatchSelectedIds] = useState<string[]>([]);
-  const [hasConfirmedPreviewLeave, setHasConfirmedPreviewLeave] = useState(false);
+  const [hasConfirmedPreviewLeave, setHasConfirmedPreviewLeave] =
+    useState(false);
   const [batchConfirmAction, setBatchConfirmAction] = useState<{
     mode: "leave_batch" | "open_preview";
     video?: any;
   } | null>(null);
 
-  const placeholderVideos = initialUrls.map(url => {
+  const placeholderVideos = initialUrls.map((url) => {
     const id = extractVideoId(url);
     return {
       id,
@@ -116,16 +127,18 @@ function WorkspaceContent() {
       title: "Loading video info...",
       uploader: "...",
       hasSubtitles: false,
-      thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+      thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
     };
   });
 
   const [videoList, setVideoList] = useState<any[]>(placeholderVideos);
-  const [currentVideo, setCurrentVideo] = useState<any>(placeholderVideos[0] || null);
+  const [currentVideo, setCurrentVideo] = useState<any>(
+    placeholderVideos[0] || null,
+  );
   const [currentTime, setCurrentTime] = useState(0);
   const [seekTime, setSeekTime] = useState<number | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<"video" | "analysis">(
-    isSummaryMode ? "analysis" : "video"
+    isSummaryMode ? "analysis" : "video",
   );
 
   const [leftWidth, setLeftWidth] = useState(40); // 调整默认比例分配 40:60，右侧留给功能区域更多空间
@@ -195,8 +208,17 @@ function WorkspaceContent() {
     nextParams.delete("resumeBulk");
     nextParams.delete("fromPayment");
     const nextQuery = nextParams.toString();
-    router.replace(nextQuery ? `/workspace?${nextQuery}` : "/workspace", { scroll: false });
-  }, [resumeBulkParam, user, resumePendingBulkDownload, hasPendingBulkDownload, router, searchParams]);
+    router.replace(nextQuery ? `/workspace?${nextQuery}` : "/workspace", {
+      scroll: false,
+    });
+  }, [
+    resumeBulkParam,
+    user,
+    resumePendingBulkDownload,
+    hasPendingBulkDownload,
+    router,
+    searchParams,
+  ]);
 
   useEffect(() => {
     if (!currentVideo?.id) return;
@@ -210,7 +232,8 @@ function WorkspaceContent() {
     }
   }, [currentVideo?.id]);
 
-  const [initialSubtitleContent, setInitialSubtitleContent] = useState<string>("");
+  const [initialSubtitleContent, setInitialSubtitleContent] =
+    useState<string>("");
 
   // --- 初始化逻辑 ---
   useEffect(() => {
@@ -236,45 +259,58 @@ function WorkspaceContent() {
 
       Promise.all([
         subtitleApi.getVideoInfo(urls[0]).catch(() => null),
-        subtitleApi.getHistoryContent(videoId).catch((): { summaryContent?: string; subtitleContent?: string } => ({})),
-      ]).then(([videoInfo, savedContent]) => {
-        if (isCancelled) return;
+        subtitleApi
+          .getHistoryContent(videoId)
+          .catch(
+            (): { summaryContent?: string; subtitleContent?: string } => ({}),
+          ),
+      ])
+        .then(([videoInfo, savedContent]) => {
+          if (isCancelled) return;
 
-        const vid = videoInfo?.id || videoId;
-        const enhancedVideo = {
-          id: vid,
-          url: urls[0],
-          title: videoInfo?.title || 'Loading...',
-          uploader: videoInfo?.uploader || '...',
-          hasSubtitles: videoInfo?.has_subtitles ?? true,
-          thumbnail: videoInfo?.thumbnail || `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
-          duration: videoInfo?.duration,
-        };
+          const vid = videoInfo?.id || videoId;
+          const enhancedVideo = {
+            id: vid,
+            url: urls[0],
+            title: videoInfo?.title || "Loading...",
+            uploader: videoInfo?.uploader || "...",
+            hasSubtitles: videoInfo?.has_subtitles ?? true,
+            thumbnail:
+              videoInfo?.thumbnail ||
+              `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
+            duration: videoInfo?.duration,
+          };
 
-        setCurrentVideo(enhancedVideo);
-        setVideoList([enhancedVideo]);
+          setCurrentVideo(enhancedVideo);
+          setVideoList([enhancedVideo]);
 
-        if (savedContent.summaryContent) {
-          setSummaryData(savedContent.summaryContent);
-          analysisCache.current.set(vid, savedContent.summaryContent);
-        }
+          if (savedContent.summaryContent) {
+            setSummaryData(savedContent.summaryContent);
+            analysisCache.current.set(vid, savedContent.summaryContent);
+          }
 
-        if (savedContent.subtitleContent) {
-          setInitialSubtitleContent(savedContent.subtitleContent);
-          try {
-            sessionStorage.setItem(`ytvidhub_transcript_${urls[0]}`, JSON.stringify({
-              text: savedContent.subtitleContent,
-              format: 'vtt'
-            }));
-          } catch (e) { }
-        }
+          if (savedContent.subtitleContent) {
+            setInitialSubtitleContent(savedContent.subtitleContent);
+            try {
+              sessionStorage.setItem(
+                `ytvidhub_transcript_${urls[0]}`,
+                JSON.stringify({
+                  text: savedContent.subtitleContent,
+                  format: "vtt",
+                }),
+              );
+            } catch (e) {}
+          }
 
-        const newParams = new URLSearchParams(searchParams.toString());
-        newParams.delete("from");
-        router.replace(`/workspace?${newParams.toString()}`, { scroll: false });
-      }).catch(() => {
-        if (!isCancelled) analyzeUrls(urls).then(handleAnalysisResults);
-      });
+          const newParams = new URLSearchParams(searchParams.toString());
+          newParams.delete("from");
+          router.replace(`/workspace?${newParams.toString()}`, {
+            scroll: false,
+          });
+        })
+        .catch(() => {
+          if (!isCancelled) analyzeUrls(urls).then(handleAnalysisResults);
+        });
     } else {
       analyzeUrls(urls).then(handleAnalysisResults);
     }
@@ -347,7 +383,7 @@ function WorkspaceContent() {
       const validIds = new Set(
         videoList
           .filter((video) => video.hasSubtitles !== false)
-          .map((video) => video.id)
+          .map((video) => video.id),
       );
       const filtered = previous.filter((id) => validIds.has(id));
       if (filtered.length === previous.length) return previous;
@@ -370,7 +406,7 @@ function WorkspaceContent() {
 
       const inset = Math.max(
         0,
-        Math.round(window.innerHeight - viewport.height - viewport.offsetTop)
+        Math.round(window.innerHeight - viewport.height - viewport.offsetTop),
       );
       setMobileKeyboardInset(inset);
     };
@@ -403,7 +439,10 @@ function WorkspaceContent() {
       return;
     }
 
-    if (batchConfirmAction.mode === "open_preview" && batchConfirmAction.video) {
+    if (
+      batchConfirmAction.mode === "open_preview" &&
+      batchConfirmAction.video
+    ) {
       setHasConfirmedPreviewLeave(true);
       toast.success(`Selection kept: ${selectedBatchCount} videos.`, {
         id: "batch-selection-kept",
@@ -433,13 +472,16 @@ function WorkspaceContent() {
         try {
           const blob = await subtitleApi.downloadSingle({
             url: video.url,
-            lang: 'en',
-            format: 'vtt',
+            lang: "en",
+            format: "vtt",
             title: video.title,
-            isPreview: true
+            isPreview: true,
           });
           const text = await blob.text();
-          sessionStorage.setItem(cacheKey, JSON.stringify({ text, format: 'vtt' }));
+          sessionStorage.setItem(
+            cacheKey,
+            JSON.stringify({ text, format: "vtt" }),
+          );
         } catch {
           // 静默失败
         }
@@ -455,9 +497,12 @@ function WorkspaceContent() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // 如果用户正在输入框中，不触发快捷键
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
         // 只允许 Ctrl+F 在输入框中也能工作
-        if (e.ctrlKey && e.key === 'f') {
+        if (e.ctrlKey && e.key === "f") {
           e.preventDefault();
           searchInputRef.current?.focus();
         }
@@ -465,23 +510,23 @@ function WorkspaceContent() {
       }
 
       switch (e.key) {
-        case ' ': // 空格键：播放/暂停
+        case " ": // 空格键：播放/暂停
           e.preventDefault();
           if (videoPlayerRef.current) {
             videoPlayerRef.current.togglePlayPause();
           }
           break;
-        case 'ArrowLeft': // 左箭头：快退5秒
+        case "ArrowLeft": // 左箭头：快退5秒
           e.preventDefault();
           if (currentTime > 0) {
             setSeekTime(Math.max(0, currentTime - 5));
           }
           break;
-        case 'ArrowRight': // 右箭头：快进5秒
+        case "ArrowRight": // 右箭头：快进5秒
           e.preventDefault();
           setSeekTime(currentTime + 5);
           break;
-        case 'f': // Ctrl+F：聚焦搜索框
+        case "f": // Ctrl+F：聚焦搜索框
           if (e.ctrlKey) {
             e.preventDefault();
             searchInputRef.current?.focus();
@@ -490,15 +535,15 @@ function WorkspaceContent() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentTime]);
 
   const handleRequestAnalysis = async (
     url?: string,
     videoId?: string,
     forceRegenerate = false,
-    videoMeta?: { title?: string; thumbnail?: string; duration?: number }
+    videoMeta?: { title?: string; thumbnail?: string; duration?: number },
   ) => {
     const targetUrl = url || currentVideo?.url;
     const targetId = videoId || currentVideo?.id;
@@ -528,7 +573,7 @@ function WorkspaceContent() {
     if (window.innerWidth < 768) setActiveTab("analysis");
 
     try {
-      const summaryText = await generateAiSummary(targetUrl, () => { });
+      const summaryText = await generateAiSummary(targetUrl, () => {});
       await refreshUser();
 
       // P3.1: 屏幕阅读器公告
@@ -599,26 +644,30 @@ function WorkspaceContent() {
       const newVideo = {
         id: videoId,
         url: normalizedUrl,
-        title: videoInfo.title || 'Unknown Video',
-        uploader: videoInfo.uploader || '...',
+        title: videoInfo.title || "Unknown Video",
+        uploader: videoInfo.uploader || "...",
         hasSubtitles: videoInfo.has_subtitles,
-        thumbnail: videoInfo.thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-        duration: videoInfo.duration
+        thumbnail:
+          videoInfo.thumbnail ||
+          `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+        duration: videoInfo.duration,
       };
 
       // 记录到数据库（成功获取视频信息）
-      subtitleApi.upsertHistory({
-        videoId,
-        videoUrl: normalizedUrl,
-        title: newVideo.title,
-        thumbnail: newVideo.thumbnail,
-        duration: newVideo.duration,
-        lastAction: "video_analyze",
-      }).catch(() => { });
+      subtitleApi
+        .upsertHistory({
+          videoId,
+          videoUrl: normalizedUrl,
+          title: newVideo.title,
+          thumbnail: newVideo.thumbnail,
+          duration: newVideo.duration,
+          lastAction: "video_analyze",
+        })
+        .catch(() => {});
 
       // 添加到列表并切换
-      setVideoList(prev => {
-        if (prev.some(v => v.id === videoId)) return prev;
+      setVideoList((prev) => {
+        if (prev.some((v) => v.id === videoId)) return prev;
         return [newVideo, ...prev];
       });
 
@@ -640,27 +689,26 @@ function WorkspaceContent() {
         setTimeout(() => setSummaryData(cachedResult), 100);
       }
       // AI 总结改为手动触发，用户需要点击按钮才开始分析
-
     } catch (error) {
       // 失败也记录到数据库
       const failedVideoId = extractVideoId(normalizedUrl);
       if (failedVideoId) {
-        subtitleApi.upsertHistory({
-          videoId: failedVideoId,
-          videoUrl: normalizedUrl,
-          title: "Failed to load",
-          lastAction: "video_analyze",
-        }).catch(() => { });
+        subtitleApi
+          .upsertHistory({
+            videoId: failedVideoId,
+            videoUrl: normalizedUrl,
+            title: "Failed to load",
+            lastAction: "video_analyze",
+          })
+          .catch(() => {});
       }
-      toast.error("Failed to fetch video info. Please check the URL and try again.");
+      toast.error(
+        "Failed to fetch video info. Please check the URL and try again.",
+      );
     } finally {
       setIsAddingVideo(false);
     }
   };
-
-
-
-
 
   const handleSeek = (timeStr: string) => {
     const parts = timeStr.split(":").map(Number);
@@ -678,12 +726,12 @@ function WorkspaceContent() {
         <header className="h-14 border-b border-slate-100 flex items-center justify-between px-2 sm:px-4 shrink-0 z-[60] bg-white gap-2 sm:gap-4">
           <div className="flex items-center gap-3 shrink-0">
             <button
-              onClick={() => window.location.href = "/"}
+              onClick={() => (window.location.href = "/")}
               className="p-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer"
             >
               <ArrowLeft size={18} className="text-slate-500" />
             </button>
-            <span className="hidden sm:inline text-lg font-black tracking-tighter text-violet-600 italic">
+            <span className="hidden sm:inline text-lg font-black tracking-tighter text-blue-600 italic">
               YTvidHub
             </span>
           </div>
@@ -701,7 +749,10 @@ function WorkspaceContent() {
               onClick={() => router.push("/pricing")}
               className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-slate-900 hover:bg-blue-600 text-white text-xs font-bold rounded-full transition-all shadow-sm group"
             >
-              <Sparkles size={12} className="text-amber-400 group-hover:scale-110 transition-transform" />
+              <Sparkles
+                size={12}
+                className="text-amber-400 group-hover:scale-110 transition-transform"
+              />
               <span className="hidden sm:inline">Upgrade</span>
             </button>
             <DailyRewardButton />
@@ -732,14 +783,16 @@ function WorkspaceContent() {
             >
               <ArrowLeft size={18} className="text-slate-500" />
             </button>
-            <span className="text-lg font-black tracking-tighter text-violet-600 italic">
+            <span className="text-lg font-black tracking-tighter text-blue-600 italic">
               YTvidHub
             </span>
             <span className="text-sm text-slate-500">Batch Download</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-50 border border-amber-100 rounded-full">
-              <span className="text-sm font-bold text-amber-700">{normalizedUserCredits}</span>
+              <span className="text-sm font-bold text-amber-700">
+                {normalizedUserCredits}
+              </span>
               <span className="text-xs text-amber-600">Credits</span>
             </div>
             <DailyRewardButton />
@@ -818,7 +871,7 @@ function WorkspaceContent() {
           />
           <PlaylistProgressModal
             isOpen={showPlaylistModal}
-            phase={playlistProcessing?.phase || 'expanding'}
+            phase={playlistProcessing?.phase || "expanding"}
             totalVideos={playlistProcessing?.totalVideos || 0}
             processedVideos={playlistProcessing?.processedVideos || 0}
             videosWithSubtitles={playlistProcessing?.videosWithSubtitles || 0}
@@ -865,9 +918,12 @@ function WorkspaceContent() {
               if (shouldShowBatchMode && !showBatchView) {
                 setShowBatchView(true);
                 if (selectedBatchCount > 0) {
-                  toast.success(`Restored ${selectedBatchCount} selected videos.`, {
-                    id: "batch-selection-restored",
-                  });
+                  toast.success(
+                    `Restored ${selectedBatchCount} selected videos.`,
+                    {
+                      id: "batch-selection-restored",
+                    },
+                  );
                 }
               } else {
                 window.location.href = "/";
@@ -878,7 +934,9 @@ function WorkspaceContent() {
             <ArrowLeft size={18} className="text-slate-500" />
           </button>
           {shouldShowBatchMode && !showBatchView && (
-            <span className="hidden sm:inline text-xs text-slate-500 font-medium">Back to Playlist</span>
+            <span className="hidden sm:inline text-xs text-slate-500 font-medium">
+              Back to Playlist
+            </span>
           )}
           <span className="hidden md:inline text-lg font-black tracking-tighter text-slate-800 italic">
             YTvidHub
@@ -900,7 +958,7 @@ function WorkspaceContent() {
         <div className="flex items-center gap-3 shrink-0 relative z-10">
           <button
             onClick={() => setShowMobileUrlInput(true)}
-            className="md:hidden inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-violet-200 hover:bg-violet-50 hover:text-violet-700"
+            className="md:hidden inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
           >
             <Plus size={14} />
             <span>Add Link</span>
@@ -918,7 +976,7 @@ function WorkspaceContent() {
 
           <button
             onClick={() => router.push("/pricing")}
-            className="hidden sm:flex items-center justify-center px-4 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-px"
+            className="hidden sm:flex items-center justify-center px-4 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-bold rounded-lg transition-all shadow-md hover:shadow-lg transform hover:-translate-y-px"
           >
             Upgrade
           </button>
@@ -978,7 +1036,6 @@ function WorkspaceContent() {
                       seekTime={seekTime}
                       onTimeUpdate={setCurrentTime}
                     />
-
                   </div>
                   <h1 className="text-[13px] md:text-sm font-semibold text-slate-800 line-clamp-2 md:line-clamp-3 leading-relaxed text-center flex-1 max-w-[420px]">
                     {currentVideo.title}
@@ -992,7 +1049,7 @@ function WorkspaceContent() {
                   lang={transcriptLang}
                   onCopyAll={() => {
                     // 触发 TranscriptArea 的复制功能
-                    const event = new CustomEvent('copyAllTranscript');
+                    const event = new CustomEvent("copyAllTranscript");
                     window.dispatchEvent(event);
                   }}
                   onGenerateAiSummary={() => handleRequestAnalysis()}
@@ -1021,22 +1078,22 @@ function WorkspaceContent() {
             }
             rightPanel={
               <div className="w-full h-full flex flex-col">
-
                 <div className="flex-1 overflow-hidden">
                   <SummaryArea
                     data={summaryData}
                     isLoading={isAiLoading}
                     onSeek={handleSeek}
                     onStartAnalysis={() => handleRequestAnalysis()}
-                    onRegenerate={() => handleRequestAnalysis(undefined, undefined, true)}
+                    onRegenerate={() =>
+                      handleRequestAnalysis(undefined, undefined, true)
+                    }
                     mobileSubTab={activeTab}
                     videoUrl={currentVideo.url}
                   />
                 </div>
               </div>
             }
-          >
-          </ResponsiveLayout>
+          ></ResponsiveLayout>
         </main>
       </div>
 
@@ -1058,17 +1115,25 @@ function WorkspaceContent() {
       {/* 移动端 URL 输入弹窗 */}
       {showMobileUrlInput && (
         <div className="fixed inset-0 z-[100] flex items-end sm:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setShowMobileUrlInput(false)} />
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setShowMobileUrlInput(false)}
+          />
           <div
             className="relative w-full overflow-hidden rounded-t-2xl bg-white shadow-2xl animate-in slide-in-from-bottom duration-300"
             style={{
               maxHeight: "calc(100dvh - 8px)",
-              marginBottom: mobileKeyboardInset > 0 ? `${mobileKeyboardInset}px` : undefined,
+              marginBottom:
+                mobileKeyboardInset > 0
+                  ? `${mobileKeyboardInset}px`
+                  : undefined,
             }}
           >
             <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-slate-200" />
             <div className="overflow-y-auto px-5 pt-4 pb-[calc(env(safe-area-inset-bottom,0px)+14px)]">
-              <h3 className="mb-4 text-lg font-bold text-slate-900">Add Video</h3>
+              <h3 className="mb-4 text-lg font-bold text-slate-900">
+                Add Video
+              </h3>
               <UrlInput
                 value={inputUrl}
                 onChange={setInputUrl}
@@ -1118,7 +1183,7 @@ function WorkspaceContent() {
       {/* Playlist Progress Modal */}
       <PlaylistProgressModal
         isOpen={showPlaylistModal}
-        phase={playlistProcessing?.phase || 'expanding'}
+        phase={playlistProcessing?.phase || "expanding"}
         totalVideos={playlistProcessing?.totalVideos || 0}
         processedVideos={playlistProcessing?.processedVideos || 0}
         videosWithSubtitles={playlistProcessing?.videosWithSubtitles || 0}
@@ -1148,8 +1213,10 @@ export default function WorkspacePage() {
               YTvidHub
             </div>
             <div className="w-48 h-1 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full animate-[loading_1.5s_ease-in-out_infinite]"
-                style={{ width: '40%' }} />
+              <div
+                className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full animate-[loading_1.5s_ease-in-out_infinite]"
+                style={{ width: "40%" }}
+              />
             </div>
           </div>
         </div>

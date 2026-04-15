@@ -14,7 +14,9 @@ export function KeyboardShortcuts() {
   };
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1024px) and (hover: hover) and (pointer: fine)");
+    const mediaQuery = window.matchMedia(
+      "(min-width: 1024px) and (hover: hover) and (pointer: fine)",
+    );
     const update = () => setIsDesktop(mediaQuery.matches);
     update();
 
@@ -63,15 +65,18 @@ export function KeyboardShortcuts() {
       </button>
 
       {showTooltip && (
-        <div className="fixed bottom-20 right-6 z-50 rounded-lg bg-violet-600 px-3 py-2 text-sm text-white shadow-lg animate-in fade-in slide-in-from-bottom-2">
+        <div className="fixed bottom-20 right-6 z-50 rounded-lg bg-blue-600 px-3 py-2 text-sm text-white shadow-lg animate-in fade-in slide-in-from-bottom-2">
           <div className="flex items-center gap-2">
             <Keyboard size={14} />
             <span>Try keyboard shortcuts!</span>
-            <button onClick={handleDismissTooltip} className="ml-1 rounded p-0.5 hover:bg-violet-700">
+            <button
+              onClick={handleDismissTooltip}
+              className="ml-1 rounded p-0.5 hover:bg-blue-700"
+            >
               <X size={12} />
             </button>
           </div>
-          <div className="absolute bottom-0 right-6 h-0 w-0 translate-y-full border-l-4 border-r-4 border-t-4 border-transparent border-t-violet-600" />
+          <div className="absolute bottom-0 right-6 h-0 w-0 translate-y-full border-l-4 border-r-4 border-t-4 border-transparent border-t-blue-600" />
         </div>
       )}
 
@@ -79,7 +84,9 @@ export function KeyboardShortcuts() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="mx-4 w-full max-w-sm animate-in zoom-in-95 rounded-xl bg-white p-6 shadow-2xl duration-200">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-slate-800">Keyboard Shortcuts</h3>
+              <h3 className="text-lg font-bold text-slate-800">
+                Keyboard Shortcuts
+              </h3>
               <button
                 onClick={() => setIsVisible(false)}
                 className="rounded-lg p-1 transition-colors hover:bg-slate-100"
@@ -91,7 +98,9 @@ export function KeyboardShortcuts() {
             <div className="space-y-3">
               {shortcuts.map((shortcut, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">{shortcut.description}</span>
+                  <span className="text-sm text-slate-600">
+                    {shortcut.description}
+                  </span>
                   <kbd className="rounded border border-slate-200 bg-slate-100 px-2 py-1 font-mono text-xs text-slate-700">
                     {shortcut.key}
                   </kbd>

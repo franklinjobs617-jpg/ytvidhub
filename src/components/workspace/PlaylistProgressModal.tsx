@@ -32,7 +32,7 @@ export function PlaylistProgressModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-        <div className="p-5 sm:p-6 bg-gradient-to-r from-purple-600 to-indigo-600">
+        <div className="p-5 sm:p-6 bg-gradient-to-r from-blue-600 to-indigo-600">
           <h2 className="text-xl sm:text-2xl font-bold text-white">
             {phase === "expanding" && "Analyzing Playlist"}
             {phase === "checking" && "Checking Subtitles"}
@@ -40,7 +40,7 @@ export function PlaylistProgressModal({
             {phase === "error" && "Analysis Failed"}
           </h2>
           {playlistTitle && (
-            <p className="text-sm text-purple-100 mt-1 truncate">
+            <p className="text-sm text-blue-100 mt-1 truncate">
               {playlistTitle}
             </p>
           )}
@@ -49,7 +49,7 @@ export function PlaylistProgressModal({
         <div className="p-5 sm:p-6">
           {phase === "expanding" && (
             <div className="flex flex-col items-center justify-center py-8">
-              <Loader2 className="w-12 h-12 text-purple-600 animate-spin mb-4" />
+              <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
               <p className="text-sm text-slate-600 font-medium">
                 Fetching playlist videos...
               </p>
@@ -67,7 +67,7 @@ export function PlaylistProgressModal({
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-300 rounded-full"
+                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 rounded-full"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -101,13 +101,13 @@ export function PlaylistProgressModal({
               </div>
 
               {currentVideoTitle && (
-                <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 flex items-start gap-3">
-                  <Loader2 className="w-5 h-5 text-purple-600 animate-spin flex-shrink-0 mt-0.5" />
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+                  <Loader2 className="w-5 h-5 text-blue-600 animate-spin flex-shrink-0 mt-0.5" />
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-semibold text-purple-900 uppercase tracking-wide">
+                    <div className="text-xs font-semibold text-blue-900 uppercase tracking-wide">
                       Checking
                     </div>
-                    <div className="text-sm text-purple-700 truncate mt-1">
+                    <div className="text-sm text-blue-700 truncate mt-1">
                       {currentVideoTitle}
                     </div>
                   </div>

@@ -134,7 +134,7 @@ function NotebookLMCard({ card, index, onSeek }: any) {
               w-10 h-10 rounded-xl flex items-center justify-center
               ${cardType.color === 'blue' ? 'bg-blue-100 text-blue-600' : ''}
               ${cardType.color === 'green' ? 'bg-green-100 text-green-600' : ''}
-              ${cardType.color === 'purple' ? 'bg-purple-100 text-purple-600' : ''}
+              ${cardType.color === 'purple' ? 'bg-blue-100 text-blue-600' : ''}
               ${cardType.color === 'orange' ? 'bg-orange-100 text-orange-600' : ''}
             `}>
               <IconComponent size={20} />
@@ -145,7 +145,7 @@ function NotebookLMCard({ card, index, onSeek }: any) {
                   text-xs font-bold px-2 py-1 rounded-full
                   ${cardType.color === 'blue' ? 'bg-blue-100 text-blue-700' : ''}
                   ${cardType.color === 'green' ? 'bg-green-100 text-green-700' : ''}
-                  ${cardType.color === 'purple' ? 'bg-purple-100 text-purple-700' : ''}
+                  ${cardType.color === 'purple' ? 'bg-blue-100 text-blue-700' : ''}
                   ${cardType.color === 'orange' ? 'bg-orange-100 text-orange-700' : ''}
                 `}>
                   {cardType.label}

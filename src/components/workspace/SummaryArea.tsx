@@ -20,10 +20,10 @@ import {
   Loader2,
   MoreHorizontal,
   Zap,
-  X
+  X,
 } from "lucide-react";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
-import { InsufficientCreditsModal } from './InsufficientCreditsModal';
+import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 import { extractVideoId } from "@/lib/youtube";
 
 // 学习卡片缓存
@@ -32,7 +32,7 @@ const cardsCache = new Map<string, StudyCard[]>();
 interface StudyCard {
   question: string;
   answer: string;
-  type: 'concept' | 'definition' | 'insight' | 'action' | string;
+  type: "concept" | "definition" | "insight" | "action" | string;
   category?: string;
   time?: string;
 }
@@ -60,7 +60,11 @@ interface CardsViewProps {
 interface BrowseCardsProps {
   cards: StudyCard[];
   onSeek: (time: string) => void;
-  toast: { success: (msg: string) => void; error: (msg: string) => void; info: (msg: string) => void };
+  toast: {
+    success: (msg: string) => void;
+    error: (msg: string) => void;
+    info: (msg: string) => void;
+  };
   masteredCards: Set<number>;
   onToggleMastered: (index: number) => void;
 }
@@ -87,13 +91,20 @@ interface EnhancedCardItemProps {
   card: StudyCard;
   index: number;
   onSeek: (time: string) => void;
-  toast: { success: (msg: string) => void; error: (msg: string) => void; info: (msg: string) => void };
+  toast: {
+    success: (msg: string) => void;
+    error: (msg: string) => void;
+    info: (msg: string) => void;
+  };
   isMastered: boolean;
   onToggleMastered: () => void;
 }
 
 // Parse complete card blocks from streamed text
-function extractCards(text: string, isFinal = false): { cards: StudyCard[]; remaining: string } {
+function extractCards(
+  text: string,
+  isFinal = false,
+): { cards: StudyCard[]; remaining: string } {
   const cards: StudyCard[] = [];
   const blockRegex = /---\n([\s\S]*?)\n---/g;
   let match;
@@ -110,12 +121,14 @@ function extractCards(text: string, isFinal = false): { cards: StudyCard[]; rema
 
 function parseCardBlock(block: string): StudyCard | null {
   const card: Partial<StudyCard> = {};
-  for (const line of block.split('\n')) {
-    if (line.startsWith('Q: ')) card.question = line.substring(3).trim();
-    else if (line.startsWith('A: ')) card.answer = line.substring(3).trim();
-    else if (line.startsWith('Type: ')) card.type = line.substring(6).trim();
-    else if (line.startsWith('Category: ')) card.category = line.substring(10).trim();
-    else if (line.startsWith('T: ') && line.substring(3).trim() !== 'null') card.time = line.substring(3).trim();
+  for (const line of block.split("\n")) {
+    if (line.startsWith("Q: ")) card.question = line.substring(3).trim();
+    else if (line.startsWith("A: ")) card.answer = line.substring(3).trim();
+    else if (line.startsWith("Type: ")) card.type = line.substring(6).trim();
+    else if (line.startsWith("Category: "))
+      card.category = line.substring(10).trim();
+    else if (line.startsWith("T: ") && line.substring(3).trim() !== "null")
+      card.time = line.substring(3).trim();
   }
   if (!card.question || !card.answer) return null;
   return card as StudyCard;
@@ -131,14 +144,24 @@ export function SummaryArea({
   videoUrl,
 }: SummaryAreaProps) {
   const [copied, setCopied] = useState(false);
-  const [viewMode, setViewMode] = useState<'summary' | 'cards'>('summary');
+  const [viewMode, setViewMode] = useState<"summary" | "cards">("summary");
   const [cardsData, setCardsData] = useState<StudyCard[]>([]);
   const [isCardsLoading, setIsCardsLoading] = useState(false);
-  const [cardsStatus, setCardsStatus] = useState('');
-  const { toasts, removeToast, success, error: showError, info: showInfo } = useToast();
+  const [cardsStatus, setCardsStatus] = useState("");
+  const {
+    toasts,
+    removeToast,
+    success,
+    error: showError,
+    info: showInfo,
+  } = useToast();
 
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
-  const [modalConfig, setModalConfig] = useState({ required: 1, current: 0, feature: "this feature" });
+  const [modalConfig, setModalConfig] = useState({
+    required: 1,
+    current: 0,
+    feature: "this feature",
+  });
 
   // 视频切换时检查缓存和数据库历史
   useEffect(() => {
@@ -154,19 +177,22 @@ export function SummaryArea({
     // 2. 再查数据库历史
     const videoId = extractVideoId(videoUrl);
     if (videoId) {
-      subtitleApi.getHistoryContent(videoId).then(content => {
-        if (content.studyCards) {
-          try {
-            const parsed = JSON.parse(content.studyCards);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              setCardsData(parsed);
-              cardsCache.set(videoUrl, parsed);
+      subtitleApi
+        .getHistoryContent(videoId)
+        .then((content) => {
+          if (content.studyCards) {
+            try {
+              const parsed = JSON.parse(content.studyCards);
+              if (Array.isArray(parsed) && parsed.length > 0) {
+                setCardsData(parsed);
+                cardsCache.set(videoUrl, parsed);
+              }
+            } catch (e) {
+              console.error("Failed to parse study cards from history:", e);
             }
-          } catch (e) {
-            console.error("Failed to parse study cards from history:", e);
           }
-        }
-      }).catch(() => { });
+        })
+        .catch(() => {});
     }
   }, [videoUrl]);
 
@@ -184,50 +210,65 @@ export function SummaryArea({
     const cached = cardsCache.get(videoUrl);
     if (cached && cached.length > 0) {
       setCardsData(cached);
-      setViewMode('cards');
+      setViewMode("cards");
       return;
     }
 
     setIsCardsLoading(true);
     setCardsData([]);
-    setCardsStatus('');
+    setCardsStatus("");
 
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      const token =
+        typeof window !== "undefined"
+          ? localStorage.getItem("auth_token")
+          : null;
       if (!token) {
-        showError('Authentication Required', 'Authentication is required to perform this action.');
+        showError(
+          "Authentication Required",
+          "Authentication is required to perform this action.",
+        );
         return;
       }
 
-      const res = await fetch('/api/study-cards', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      const res = await fetch("/api/study-cards", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ url: videoUrl, transcript: data }),
       });
 
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
         if (res.status === 402) {
-          const currentCredits = typeof window !== 'undefined' ? parseInt(localStorage.getItem('user_credits') || "0") : 0;
+          const currentCredits =
+            typeof window !== "undefined"
+              ? parseInt(localStorage.getItem("user_credits") || "0")
+              : 0;
           setModalConfig({
             required: 1,
             current: currentCredits,
-            feature: "Study Cards"
+            feature: "Study Cards",
           });
           setIsCreditsModalOpen(true);
         } else {
-          showError('Generation Failed', json.error || 'An error occurred. Please try again later.');
+          showError(
+            "Generation Failed",
+            json.error || "An error occurred. Please try again later.",
+          );
         }
         return;
       }
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
-      if (!reader) throw new Error('No response body');
+      if (!reader) throw new Error("No response body");
 
-      let buffer = '';
+      let buffer = "";
       let allParsedCards: StudyCard[] = [];
-      setViewMode('cards');
+      setViewMode("cards");
 
       while (true) {
         const { done, value } = await reader.read();
@@ -235,13 +276,13 @@ export function SummaryArea({
 
         const chunk = decoder.decode(value, { stream: true });
 
-        if (chunk.includes('__STATUS__:')) {
-          const parts = chunk.split('__STATUS__:');
+        if (chunk.includes("__STATUS__:")) {
+          const parts = chunk.split("__STATUS__:");
           for (let i = 0; i < parts.length; i++) {
             const part = parts[i];
             if (!part) continue;
             if (i > 0) {
-              const lineEnd = part.indexOf('\n');
+              const lineEnd = part.indexOf("\n");
               if (lineEnd !== -1) {
                 setCardsStatus(part.substring(0, lineEnd).trim());
                 buffer += part.substring(lineEnd + 1);
@@ -250,8 +291,10 @@ export function SummaryArea({
               buffer += part;
             }
           }
-        } else if (chunk.includes('__ERROR__:')) {
-          showError(chunk.split('__ERROR__:')[1] || 'Failed to generate study cards');
+        } else if (chunk.includes("__ERROR__:")) {
+          showError(
+            chunk.split("__ERROR__:")[1] || "Failed to generate study cards",
+          );
           return;
         } else {
           buffer += chunk;
@@ -278,21 +321,26 @@ export function SummaryArea({
         const videoId = extractVideoId(videoUrl);
         if (videoId) {
           // 尝试获取视频标题（从 DOM 或状态中获取并不总是可靠，这里简单处理，后台会有标题保护）
-          const title = document.title.split(' - ')[0] || "Unknown Video";
+          const title = document.title.split(" - ")[0] || "Unknown Video";
 
-          subtitleApi.upsertHistory({
-            videoId,
-            videoUrl,
-            title,
-            lastAction: "ai_summary", // 复用 ai_summary 动作，或可以用一个新的动作类型
-            studyCards: JSON.stringify(allParsedCards)
-          }).catch(() => { });
+          subtitleApi
+            .upsertHistory({
+              videoId,
+              videoUrl,
+              title,
+              lastAction: "ai_summary", // 复用 ai_summary 动作，或可以用一个新的动作类型
+              studyCards: JSON.stringify(allParsedCards),
+            })
+            .catch(() => {});
         }
       }
 
-      setCardsStatus('');
+      setCardsStatus("");
     } catch (err: any) {
-      showError('Generation Failed', 'An error occurred. Please try again later.');
+      showError(
+        "Generation Failed",
+        "An error occurred. Please try again later.",
+      );
     } finally {
       setIsCardsLoading(false);
     }
@@ -303,47 +351,59 @@ export function SummaryArea({
       <header className="flex h-[52px] border-b border-slate-100 bg-white items-center justify-between shrink-0 sticky top-0 z-30 px-2 lg:px-4">
         <div className="flex items-center h-full">
           <button
-            onClick={() => setViewMode('summary')}
+            onClick={() => setViewMode("summary")}
             className={`
               relative flex items-center h-full px-4 lg:px-6 text-[13px] lg:text-sm font-semibold transition-all duration-300
-              ${viewMode === 'summary' ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'}
+              ${viewMode === "summary" ? "text-slate-900" : "text-slate-400 hover:text-slate-600"}
             `}
           >
-            {viewMode === 'summary' && (
+            {viewMode === "summary" && (
               <motion.div
                 layoutId="summaryActiveTabIndicator"
                 className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-full shadow-[0_-1px_10px_rgba(37,99,235,0.3)]"
               />
             )}
-            <FileText size={16} className={`mr-2.5 transition-transform duration-300 ${viewMode === 'summary' ? 'scale-110 text-blue-600' : 'text-slate-400'}`} />
+            <FileText
+              size={16}
+              className={`mr-2.5 transition-transform duration-300 ${viewMode === "summary" ? "scale-110 text-blue-600" : "text-slate-400"}`}
+            />
             Summary
           </button>
 
           {/* Study (Cards) Tab */}
           <button
-            onClick={() => setViewMode('cards')}
+            onClick={() => setViewMode("cards")}
             disabled={!videoUrl}
             className={`
               relative flex items-center h-full px-4 lg:px-6 text-[13px] lg:text-sm font-semibold transition-all duration-300
-              ${!videoUrl
-                ? 'text-slate-200 cursor-not-allowed opacity-50'
-                : viewMode === 'cards'
-                  ? 'text-slate-900'
-                  : 'text-slate-400 hover:text-slate-600'
+              ${
+                !videoUrl
+                  ? "text-slate-200 cursor-not-allowed opacity-50"
+                  : viewMode === "cards"
+                    ? "text-slate-900"
+                    : "text-slate-400 hover:text-slate-600"
               }
             `}
           >
-            {viewMode === 'cards' && (
+            {viewMode === "cards" && (
               <motion.div
                 layoutId="summaryActiveTabIndicator"
                 className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t-full shadow-[0_-1px_10px_rgba(37,99,235,0.3)]"
               />
             )}
-            <BookOpen size={16} className={`mr-2.5 transition-transform duration-300 ${viewMode === 'cards' ? 'scale-110 text-blue-600' : 'text-slate-400'}`} />
+            <BookOpen
+              size={16}
+              className={`mr-2.5 transition-transform duration-300 ${viewMode === "cards" ? "scale-110 text-blue-600" : "text-slate-400"}`}
+            />
             Study
             {cardsData.length > 0 && (
-              <span className={`ml-2 px-1.5 py-0.5 rounded-md text-[10px] font-bold shadow-sm ${viewMode === 'cards' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500'
-                }`}>
+              <span
+                className={`ml-2 px-1.5 py-0.5 rounded-md text-[10px] font-bold shadow-sm ${
+                  viewMode === "cards"
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-100 text-slate-500"
+                }`}
+              >
                 {cardsData.length}
               </span>
             )}
@@ -351,9 +411,11 @@ export function SummaryArea({
         </div>
 
         <div className="flex items-center gap-3">
-
           {data && !isLoading && (
-            <ReAnalyzeButton onRegenerate={onRegenerate} toast={{ success, error: showError, info: showInfo }} />
+            <ReAnalyzeButton
+              onRegenerate={onRegenerate}
+              toast={{ success, error: showError, info: showInfo }}
+            />
           )}
 
           {data && (
@@ -370,7 +432,10 @@ export function SummaryArea({
                 {copied ? "Copied!" : "Copy"}
               </button>
 
-              <ExportDropdown data={data} toast={{ success, error: showError, info: showInfo }} />
+              <ExportDropdown
+                data={data}
+                toast={{ success, error: showError, info: showInfo }}
+              />
             </>
           )}
         </div>
@@ -380,13 +445,18 @@ export function SummaryArea({
       <div className="relative flex-1 overflow-hidden">
         <div
           className={`absolute inset-0 transition-opacity duration-150 ${
-            viewMode === 'summary' ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            viewMode === "summary"
+              ? "opacity-100"
+              : "opacity-0 pointer-events-none"
           }`}
         >
           {!data && !isLoading ? (
             <EmptyState onStartAnalysis={onStartAnalysis} />
-          ) : (isLoading && !data) ? (
-            <LoadingState title="Generating Summary" subtitle="Synthesizing video content" />
+          ) : isLoading && !data ? (
+            <LoadingState
+              title="Generating Summary"
+              subtitle="Synthesizing video content"
+            />
           ) : (
             <SummaryContent
               data={data}
@@ -394,14 +464,16 @@ export function SummaryArea({
               onGenerateCards={generateCards}
               isCardsLoading={isCardsLoading}
               hasCards={cardsData.length > 0}
-              onViewCards={() => setViewMode('cards')}
+              onViewCards={() => setViewMode("cards")}
             />
           )}
         </div>
 
         <div
           className={`absolute inset-0 transition-opacity duration-150 ${
-            viewMode === 'cards' ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            viewMode === "cards"
+              ? "opacity-100"
+              : "opacity-0 pointer-events-none"
           }`}
         >
           <CardsView
@@ -429,7 +501,13 @@ export function SummaryArea({
 }
 
 // 加载状态组件 - 具体化、工程化风格 (Deterministic & Practical)
-function LoadingState({ title = "Processing", subtitle = "Extracting and structuring" }: { title?: string, subtitle?: string }) {
+function LoadingState({
+  title = "Processing",
+  subtitle = "Extracting and structuring",
+}: {
+  title?: string;
+  subtitle?: string;
+}) {
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
@@ -449,7 +527,9 @@ function LoadingState({ title = "Processing", subtitle = "Extracting and structu
               <Loader2 size={18} className="text-blue-600 animate-spin" />
             </div>
             <div>
-              <h2 className="text-[13px] font-semibold text-slate-900">{title}</h2>
+              <h2 className="text-[13px] font-semibold text-slate-900">
+                {title}
+              </h2>
               <p className="text-[11px] text-slate-500">{subtitle}</p>
             </div>
           </div>
@@ -478,9 +558,12 @@ function LoadingState({ title = "Processing", subtitle = "Extracting and structu
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center text-xs">
               <span className="font-medium text-slate-900 flex items-center gap-2">
-                <Loader2 size={14} className="text-blue-600 animate-spin" /> Heavy Processing
+                <Loader2 size={14} className="text-blue-600 animate-spin" />
+                Heavy Processing
               </span>
-              <span className="text-blue-600 font-medium">{Math.min(99, Math.floor((elapsed / 45) * 100))}%</span>
+              <span className="text-blue-600 font-medium">
+                {Math.min(99, Math.floor((elapsed / 45) * 100))}%
+              </span>
             </div>
             <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
               <motion.div
@@ -495,7 +578,8 @@ function LoadingState({ title = "Processing", subtitle = "Extracting and structu
           <div className="flex flex-col gap-2 opacity-40">
             <div className="flex justify-between items-center text-xs">
               <span className="font-medium text-slate-700 flex items-center gap-2">
-                <div className="w-3.5 h-3.5 border border-slate-300 rounded-full" /> Finalizing Result
+                <div className="w-3.5 h-3.5 border border-slate-300 rounded-full" />
+                Finalizing Result
               </span>
               <span className="text-slate-400">Waiting</span>
             </div>
@@ -511,7 +595,6 @@ function EmptyState({ onStartAnalysis }: any) {
   return (
     <div className="h-full flex flex-col items-center justify-center p-8 bg-white relative overflow-hidden text-center">
       <div className="w-full max-w-[420px] flex flex-col items-center relative z-10">
-
         {/* 实用图标容器 */}
         <div className="w-14 h-14 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center mb-5 shadow-sm">
           <FileText size={22} className="text-slate-600" />
@@ -522,7 +605,8 @@ function EmptyState({ onStartAnalysis }: any) {
           Study Notes Ready to Generate
         </h2>
         <p className="text-[13px] text-slate-500 leading-relaxed mb-8 max-w-[320px]">
-          Convert this video into structured notes and interactive flashcards to accelerate your learning.
+          Convert this video into structured notes and interactive flashcards to
+          accelerate your learning.
         </p>
 
         {/* CTA 按钮: 更明确的动作与时间 */}
@@ -544,14 +628,20 @@ function EmptyState({ onStartAnalysis }: any) {
 }
 
 // P1: 流式显示优化组件
-function StreamingText({ content, isLoading }: { content: string; isLoading: boolean }) {
-  const [displayedContent, setDisplayedContent] = useState('');
+function StreamingText({
+  content,
+  isLoading,
+}: {
+  content: string;
+  isLoading: boolean;
+}) {
+  const [displayedContent, setDisplayedContent] = useState("");
   const [wordCount, setWordCount] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
     if (!content) {
-      setDisplayedContent('');
+      setDisplayedContent("");
       setWordCount(0);
       setIsComplete(false);
       return;
@@ -572,10 +662,15 @@ function StreamingText({ content, isLoading }: { content: string; isLoading: boo
     const interval = setInterval(() => {
       if (currentIndex < targetLength) {
         // 每次显示1-3个字符，模拟真实的流式效果
-        const charsToAdd = Math.min(Math.floor(Math.random() * 3) + 1, targetLength - currentIndex);
+        const charsToAdd = Math.min(
+          Math.floor(Math.random() * 3) + 1,
+          targetLength - currentIndex,
+        );
         const newContent = content.slice(0, currentIndex + charsToAdd);
         setDisplayedContent(newContent);
-        setWordCount(newContent.split(/\s+/).filter(word => word.length > 0).length);
+        setWordCount(
+          newContent.split(/\s+/).filter((word) => word.length > 0).length,
+        );
         currentIndex += charsToAdd;
       } else {
         setIsComplete(true);
@@ -628,13 +723,20 @@ function StreamingText({ content, isLoading }: { content: string; isLoading: boo
 }
 
 // 摘要内容组件 - P1 优化：使用流式显示
-function SummaryContent({ data, isLoading, onGenerateCards, isCardsLoading, hasCards, onViewCards }: any) {
+function SummaryContent({
+  data,
+  isLoading,
+  onGenerateCards,
+  isCardsLoading,
+  hasCards,
+  onViewCards,
+}: any) {
   return (
     <div className="h-full overflow-y-auto bg-slate-50">
       <div className="max-w-3xl mx-auto p-6">
         <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
           {/* P1: 使用流式显示组件 */}
-          <StreamingText content={data || ''} isLoading={isLoading} />
+          <StreamingText content={data || ""} isLoading={isLoading} />
 
           {/* Generate Study Cards 按钮 - 仅在摘要完成后显示 */}
           {!isLoading && data && (
@@ -696,14 +798,22 @@ function LoadingSkeleton() {
 }
 
 // 卡片视图组件 - NotebookLM风格重设计
-function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, videoUrl, onGenerateCards }: any) {
-  const [selectedType, setSelectedType] = useState<string>('all');
-  const [studyMode, setStudyMode] = useState<'browse' | 'study'>('browse');
+function CardsView({
+  cards,
+  isLoading,
+  isCardsLoading,
+  cardsStatus,
+  onSeek,
+  videoUrl,
+  onGenerateCards,
+}: any) {
+  const [selectedType, setSelectedType] = useState<string>("all");
+  const [studyMode, setStudyMode] = useState<"browse" | "study">("browse");
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const { success, error: showError, info: showInfo } = useToast();
 
   const [masteredCards, setMasteredCards] = useState<Set<number>>(() => {
-    if (typeof window === 'undefined' || !videoUrl) return new Set();
+    if (typeof window === "undefined" || !videoUrl) return new Set();
     try {
       const saved = localStorage.getItem(`study-progress-${videoUrl}`);
       return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -713,28 +823,35 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
   });
 
   const toggleMastered = (index: number) => {
-    setMasteredCards(prev => {
+    setMasteredCards((prev) => {
       const next = new Set(prev);
       if (next.has(index)) next.delete(index);
       else next.add(index);
       if (videoUrl) {
         try {
-          localStorage.setItem(`study-progress-${videoUrl}`, JSON.stringify([...next]));
-        } catch { }
+          localStorage.setItem(
+            `study-progress-${videoUrl}`,
+            JSON.stringify([...next]),
+          );
+        } catch {}
       }
       return next;
     });
   };
 
   if (isCardsLoading && cards.length === 0) {
-    return <LoadingState title="Generating Study Cards" subtitle={cardsStatus || "Creating contextual flashcards"} />;
+    return (
+      <LoadingState
+        title="Generating Study Cards"
+        subtitle={cardsStatus || "Creating contextual flashcards"}
+      />
+    );
   }
 
   if (cards.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center bg-white relative overflow-hidden">
         <div className="w-full max-w-[420px] flex flex-col items-center relative z-10">
-
           {/* 实用图标容器 - 与 Summary 保持一致 */}
           <div className="w-14 h-14 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center mb-5 shadow-sm">
             <BookOpen size={22} className="text-slate-600" />
@@ -745,7 +862,8 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
             Study Cards Ready to Generate
           </h2>
           <p className="text-[13px] text-slate-500 leading-relaxed mb-8 max-w-[320px]">
-            Generate AI flashcards to test your knowledge and retain key concepts from this video.
+            Generate AI flashcards to test your knowledge and retain key
+            concepts from this video.
           </p>
 
           {/* CTA 按钮 - 与 Summary 保持一致的蓝色 */}
@@ -759,7 +877,9 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
             ) : (
               <Sparkles size={16} className="opacity-90" />
             )}
-            <span>{isCardsLoading ? "Generating Cards..." : "Generate Study Cards"}</span>
+            <span>
+              {isCardsLoading ? "Generating Cards..." : "Generate Study Cards"}
+            </span>
           </button>
 
           <p className="text-[11px] text-slate-500 mt-4 flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
@@ -773,13 +893,14 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
 
   // 按类型分组卡片
   const cardsByType = cards.reduce((acc: any, card: any) => {
-    const type = card.type || 'general';
+    const type = card.type || "general";
     if (!acc[type]) acc[type] = [];
     acc[type].push(card);
     return acc;
   }, {});
 
-  const filteredCards = selectedType === 'all' ? cards : cardsByType[selectedType] || [];
+  const filteredCards =
+    selectedType === "all" ? cards : cardsByType[selectedType] || [];
 
   return (
     <div className="h-full flex flex-col bg-slate-50">
@@ -790,31 +911,41 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
             <h2 className="text-lg font-bold text-slate-900">Study Cards</h2>
             <p className="text-xs text-slate-500 mt-0.5">
               {isCardsLoading ? (
-                <span className="text-violet-600 font-medium animate-pulse">
+                <span className="text-blue-600 font-medium animate-pulse">
                   {cardsStatus || `${cards.length} cards generated...`}
                 </span>
               ) : (
-                <><span className="text-green-600 font-semibold">{masteredCards.size}</span> mastered · {cards.length - masteredCards.size} remaining</>
+                <>
+                  <span className="text-green-600 font-semibold">
+                    {masteredCards.size}
+                  </span>
+                  mastered · {cards.length - masteredCards.size} remaining
+                </>
               )}
             </p>
           </div>
 
           <div className="flex items-center bg-slate-100 rounded-lg p-1">
             <button
-              onClick={() => setStudyMode('browse')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${studyMode === 'browse'
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-800'
-                }`}
+              onClick={() => setStudyMode("browse")}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                studyMode === "browse"
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
             >
               Browse
             </button>
             <button
-              onClick={() => { setStudyMode('study'); setCurrentCardIndex(0); }}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${studyMode === 'study'
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-800'
-                }`}
+              onClick={() => {
+                setStudyMode("study");
+                setCurrentCardIndex(0);
+              }}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                studyMode === "study"
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
             >
               Study
             </button>
@@ -826,7 +957,7 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
           {cards.map((_: StudyCard, i: number) => (
             <div
               key={i}
-              className={`h-1 flex-1 rounded-full transition-colors duration-300 ${masteredCards.has(i) ? 'bg-green-500' : 'bg-slate-200'}`}
+              className={`h-1 flex-1 rounded-full transition-colors duration-300 ${masteredCards.has(i) ? "bg-green-500" : "bg-slate-200"}`}
             />
           ))}
         </div>
@@ -834,36 +965,40 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
         {/* Type Filters */}
         <div className="flex items-center gap-2 flex-wrap">
           <button
-            onClick={() => setSelectedType('all')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedType === 'all'
-              ? 'bg-slate-900 text-white'
-              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+            onClick={() => setSelectedType("all")}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+              selectedType === "all"
+                ? "bg-slate-900 text-white"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+            }`}
           >
             All ({cards.length})
           </button>
-          {Object.entries(cardsByType).map(([type, typeCards]: [string, any]) => {
-            const typeInfo = getTypeInfo(type);
-            return (
-              <button
-                key={type}
-                onClick={() => setSelectedType(type)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${selectedType === type
-                  ? `${typeInfo.bgActive} ${typeInfo.textActive}`
-                  : `${typeInfo.bg} ${typeInfo.text}`
+          {Object.entries(cardsByType).map(
+            ([type, typeCards]: [string, any]) => {
+              const typeInfo = getTypeInfo(type);
+              return (
+                <button
+                  key={type}
+                  onClick={() => setSelectedType(type)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                    selectedType === type
+                      ? `${typeInfo.bgActive} ${typeInfo.textActive}`
+                      : `${typeInfo.bg} ${typeInfo.text}`
                   }`}
-              >
-                <span>{typeInfo.icon}</span>
-                {typeInfo.label} ({typeCards.length})
-              </button>
-            );
-          })}
+                >
+                  <span>{typeInfo.icon}</span>
+                  {typeInfo.label} ({typeCards.length})
+                </button>
+              );
+            },
+          )}
         </div>
       </div>
 
       {/* Content Area */}
       <div className="flex-1 overflow-hidden">
-        {studyMode === 'browse' ? (
+        {studyMode === "browse" ? (
           <BrowseCards
             cards={filteredCards}
             onSeek={onSeek}
@@ -887,7 +1022,13 @@ function CardsView({ cards, isLoading, isCardsLoading, cardsStatus, onSeek, vide
 }
 
 // 浏览模式 - 显示所有卡片
-function BrowseCards({ cards, onSeek, toast, masteredCards, onToggleMastered }: BrowseCardsProps) {
+function BrowseCards({
+  cards,
+  onSeek,
+  toast,
+  masteredCards,
+  onToggleMastered,
+}: BrowseCardsProps) {
   return (
     <div className="h-full overflow-y-auto">
       <div className="max-w-3xl mx-auto p-6 space-y-3">
@@ -908,7 +1049,14 @@ function BrowseCards({ cards, onSeek, toast, masteredCards, onToggleMastered }: 
 }
 
 // 学习模式 - 专注单卡片学习，支持3D翻牌 + 掌握标记
-function StudyCards({ cards, currentIndex, setCurrentIndex, onSeek, masteredCards, onToggleMastered }: StudyCardsProps) {
+function StudyCards({
+  cards,
+  currentIndex,
+  setCurrentIndex,
+  onSeek,
+  masteredCards,
+  onToggleMastered,
+}: StudyCardsProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   // 切换卡片时重置翻转状态
@@ -956,14 +1104,15 @@ function StudyCards({ cards, currentIndex, setCurrentIndex, onSeek, masteredCard
             {cards.map((_: StudyCard, i: number) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${masteredCards.has(i)
-                  ? 'bg-green-500'
-                  : i < currentIndex
-                    ? 'bg-slate-300'
-                    : i === currentIndex
-                      ? 'bg-blue-400'
-                      : 'bg-slate-200'
-                  }`}
+                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
+                  masteredCards.has(i)
+                    ? "bg-green-500"
+                    : i < currentIndex
+                      ? "bg-slate-300"
+                      : i === currentIndex
+                        ? "bg-blue-400"
+                        : "bg-slate-200"
+                }`}
               />
             ))}
           </div>
@@ -1003,7 +1152,15 @@ function StudyCards({ cards, currentIndex, setCurrentIndex, onSeek, masteredCard
 }
 
 // 完成屏
-function CompletionScreen({ cards, masteredCards, onRestart }: { cards: StudyCard[]; masteredCards: Set<number>; onRestart: () => void }) {
+function CompletionScreen({
+  cards,
+  masteredCards,
+  onRestart,
+}: {
+  cards: StudyCard[];
+  masteredCards: Set<number>;
+  onRestart: () => void;
+}) {
   const total = cards.length;
   const mastered = masteredCards.size;
   const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
@@ -1019,13 +1176,13 @@ function CompletionScreen({ cards, masteredCards, onRestart }: { cards: StudyCar
         <div className="w-20 h-20 bg-green-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
           <Check size={36} className="text-green-600" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">Session Complete</h2>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">
+          Session Complete
+        </h2>
         <p className="text-slate-500 mb-2">
-          You mastered{' '}
-          <span className="font-bold text-green-600">{mastered}</span>
-          {' '}of{' '}
-          <span className="font-bold text-slate-700">{total}</span>
-          {' '}cards
+          You mastered
+          <span className="font-bold text-green-600">{mastered}</span> of
+          <span className="font-bold text-slate-700">{total}</span> cards
         </p>
         <p className="text-4xl font-black text-slate-900 mb-8">{pct}%</p>
 
@@ -1033,7 +1190,7 @@ function CompletionScreen({ cards, masteredCards, onRestart }: { cards: StudyCar
           {cards.map((_: StudyCard, i: number) => (
             <div
               key={i}
-              className={`h-2 flex-1 rounded-full ${masteredCards.has(i) ? 'bg-green-500' : 'bg-slate-200'}`}
+              className={`h-2 flex-1 rounded-full ${masteredCards.has(i) ? "bg-green-500" : "bg-slate-200"}`}
             />
           ))}
         </div>
@@ -1052,81 +1209,95 @@ function CompletionScreen({ cards, masteredCards, onRestart }: { cards: StudyCar
 // 获取类型信息的辅助函数 - NotebookLM简洁风格
 function getTypeInfo(type: string) {
   switch (type) {
-    case 'concept':
+    case "concept":
       return {
-        icon: '●',
-        label: 'Concept',
-        bg: 'bg-blue-50',
-        text: 'text-blue-700',
-        bgHover: 'bg-blue-100',
-        bgActive: 'bg-blue-600',
-        textActive: 'text-white'
+        icon: "●",
+        label: "Concept",
+        bg: "bg-blue-50",
+        text: "text-blue-700",
+        bgHover: "bg-blue-100",
+        bgActive: "bg-blue-600",
+        textActive: "text-white",
       };
-    case 'definition':
+    case "definition":
       return {
-        icon: '◆',
-        label: 'Definition',
-        bg: 'bg-green-50',
-        text: 'text-green-700',
-        bgHover: 'bg-green-100',
-        bgActive: 'bg-green-600',
-        textActive: 'text-white'
+        icon: "◆",
+        label: "Definition",
+        bg: "bg-green-50",
+        text: "text-green-700",
+        bgHover: "bg-green-100",
+        bgActive: "bg-green-600",
+        textActive: "text-white",
       };
-    case 'insight':
+    case "insight":
       return {
-        icon: '◐',
-        label: 'Insight',
-        bg: 'bg-purple-50',
-        text: 'text-purple-700',
-        bgHover: 'bg-purple-100',
-        bgActive: 'bg-purple-600',
-        textActive: 'text-white'
+        icon: "◐",
+        label: "Insight",
+        bg: "bg-blue-50",
+        text: "text-blue-700",
+        bgHover: "bg-blue-100",
+        bgActive: "bg-blue-600",
+        textActive: "text-white",
       };
-    case 'action':
+    case "action":
       return {
-        icon: '▶',
-        label: 'Action',
-        bg: 'bg-orange-50',
-        text: 'text-orange-700',
-        bgHover: 'bg-orange-100',
-        bgActive: 'bg-orange-600',
-        textActive: 'text-white'
+        icon: "▶",
+        label: "Action",
+        bg: "bg-orange-50",
+        text: "text-orange-700",
+        bgHover: "bg-orange-100",
+        bgActive: "bg-orange-600",
+        textActive: "text-white",
       };
     default:
       return {
-        icon: '○',
-        label: 'General',
-        bg: 'bg-slate-50',
-        text: 'text-slate-700',
-        bgHover: 'bg-slate-100',
-        bgActive: 'bg-slate-600',
-        textActive: 'text-white'
+        icon: "○",
+        label: "General",
+        bg: "bg-slate-50",
+        text: "text-slate-700",
+        bgHover: "bg-slate-100",
+        bgActive: "bg-slate-600",
+        textActive: "text-white",
       };
   }
 }
 
 // 增强版卡片组件 - 浏览模式
-function EnhancedCardItem({ card, index, onSeek, toast, isMastered, onToggleMastered }: EnhancedCardItemProps) {
+function EnhancedCardItem({
+  card,
+  index,
+  onSeek,
+  toast,
+  isMastered,
+  onToggleMastered,
+}: EnhancedCardItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const typeInfo = getTypeInfo(card.type);
-  const questionPreview = card.question.length > 80 ? card.question.slice(0, 80) + '…' : card.question;
+  const questionPreview =
+    card.question.length > 80
+      ? card.question.slice(0, 80) + "…"
+      : card.question;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04 }}
-      className={`bg-white rounded-xl border shadow-sm hover:shadow-md transition-all overflow-hidden ${isMastered ? 'border-green-200' : 'border-slate-200'}`}
+      className={`bg-white rounded-xl border shadow-sm hover:shadow-md transition-all overflow-hidden ${isMastered ? "border-green-200" : "border-slate-200"}`}
     >
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3 flex-1 min-w-0">
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5 ${typeInfo.bg}`}>
+            <div
+              className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5 ${typeInfo.bg}`}
+            >
               {typeInfo.icon}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${typeInfo.bg} ${typeInfo.text}`}>
+                <span
+                  className={`px-2 py-0.5 text-xs font-semibold rounded-full ${typeInfo.bg} ${typeInfo.text}`}
+                >
                   {typeInfo.label}
                 </span>
                 {isMastered && (
@@ -1136,7 +1307,9 @@ function EnhancedCardItem({ card, index, onSeek, toast, isMastered, onToggleMast
                   </span>
                 )}
               </div>
-              <p className="text-sm font-medium text-slate-800 leading-relaxed">{questionPreview}</p>
+              <p className="text-sm font-medium text-slate-800 leading-relaxed">
+                {questionPreview}
+              </p>
             </div>
           </div>
 
@@ -1151,8 +1324,8 @@ function EnhancedCardItem({ card, index, onSeek, toast, isMastered, onToggleMast
             )}
             <button
               onClick={onToggleMastered}
-              className={`p-1.5 rounded-lg transition-all ${isMastered ? 'text-green-600 bg-green-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}
-              title={isMastered ? 'Mark as not mastered' : 'Mark as mastered'}
+              className={`p-1.5 rounded-lg transition-all ${isMastered ? "text-green-600 bg-green-50" : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"}`}
+              title={isMastered ? "Mark as not mastered" : "Mark as mastered"}
             >
               <Check size={15} />
             </button>
@@ -1160,7 +1333,10 @@ function EnhancedCardItem({ card, index, onSeek, toast, isMastered, onToggleMast
               onClick={() => setIsExpanded(!isExpanded)}
               className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-all"
             >
-              <ChevronRight size={15} className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+              <ChevronRight
+                size={15}
+                className={`transition-transform ${isExpanded ? "rotate-90" : ""}`}
+              />
             </button>
           </div>
         </div>
@@ -1170,20 +1346,26 @@ function EnhancedCardItem({ card, index, onSeek, toast, isMastered, onToggleMast
         {isExpanded && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
+            animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="overflow-hidden border-t border-slate-100"
           >
             <div className="p-5 pt-4 bg-slate-50/60">
               <div className="mb-4">
-                <span className="text-xs font-semibold text-green-700 uppercase tracking-wide">Answer</span>
-                <p className="mt-2 text-slate-700 leading-relaxed text-sm">{card.answer}</p>
+                <span className="text-xs font-semibold text-green-700 uppercase tracking-wide">
+                  Answer
+                </span>
+                <p className="mt-2 text-slate-700 leading-relaxed text-sm">
+                  {card.answer}
+                </p>
               </div>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(`Q: ${card.question}\n\nA: ${card.answer}`);
-                  toast.success('Card copied to clipboard');
+                  navigator.clipboard.writeText(
+                    `Q: ${card.question}\n\nA: ${card.answer}`,
+                  );
+                  toast.success("Card copied to clipboard");
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg text-xs font-medium transition-all"
               >
@@ -1199,34 +1381,55 @@ function EnhancedCardItem({ card, index, onSeek, toast, isMastered, onToggleMast
 }
 
 // 学习模式专用卡片组件 - CSS 3D 翻牌
-function StudyCardItem({ card, isFlipped, onFlip, onMastered, onStillLearning, isMastered }: StudyCardItemProps) {
+function StudyCardItem({
+  card,
+  isFlipped,
+  onFlip,
+  onMastered,
+  onStillLearning,
+  isMastered,
+}: StudyCardItemProps) {
   const typeInfo = getTypeInfo(card.type);
 
   return (
-    <div style={{ perspective: '1200px' }} className="w-full">
+    <div style={{ perspective: "1200px" }} className="w-full">
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
-        style={{ transformStyle: 'preserve-3d', position: 'relative', minHeight: '300px' }}
+        style={{
+          transformStyle: "preserve-3d",
+          position: "relative",
+          minHeight: "300px",
+        }}
         className="w-full"
       >
         {/* Front - Question */}
         <div
-          style={{ backfaceVisibility: 'hidden' }}
+          style={{ backfaceVisibility: "hidden" }}
           className="absolute inset-0 bg-white rounded-2xl border border-slate-200 shadow-lg p-8 flex flex-col items-center justify-center cursor-pointer group"
           onClick={onFlip}
         >
           {isMastered && (
             <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 bg-green-50 border border-green-200 rounded-full">
               <Check size={12} className="text-green-600" />
-              <span className="text-xs font-semibold text-green-600">Mastered</span>
+              <span className="text-xs font-semibold text-green-600">
+                Mastered
+              </span>
             </div>
           )}
-          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${typeInfo.bg} mb-6`}>
-            <span className={`text-sm font-bold ${typeInfo.text}`}>{typeInfo.icon}</span>
-            <span className={`text-xs font-semibold ${typeInfo.text}`}>{typeInfo.label}</span>
+          <div
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${typeInfo.bg} mb-6`}
+          >
+            <span className={`text-sm font-bold ${typeInfo.text}`}>
+              {typeInfo.icon}
+            </span>
+            <span className={`text-xs font-semibold ${typeInfo.text}`}>
+              {typeInfo.label}
+            </span>
           </div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Question</p>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">
+            Question
+          </p>
           <h2 className="text-xl font-semibold text-slate-900 text-center leading-relaxed max-w-lg">
             {card.question}
           </h2>
@@ -1240,11 +1443,13 @@ function StudyCardItem({ card, isFlipped, onFlip, onMastered, onStillLearning, i
 
         {/* Back - Answer */}
         <div
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
           className="absolute inset-0 bg-white rounded-2xl border border-green-200 shadow-lg p-8 flex flex-col"
         >
           <div className="flex-1 flex flex-col items-center justify-center">
-            <p className="text-xs font-semibold text-green-600 uppercase tracking-widest mb-5">Answer</p>
+            <p className="text-xs font-semibold text-green-600 uppercase tracking-widest mb-5">
+              Answer
+            </p>
             <p className="text-lg text-slate-700 leading-relaxed text-center max-w-lg">
               {card.answer}
             </p>
@@ -1273,11 +1478,11 @@ function ExportDropdown({ data, toast }: any) {
   const [isOpen, setIsOpen] = useState(false);
 
   const exportAsText = () => {
-    const blob = new Blob([data], { type: 'text/plain' });
+    const blob = new Blob([data], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'ai-analysis.txt';
+    a.download = "ai-analysis.txt";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1287,11 +1492,11 @@ function ExportDropdown({ data, toast }: any) {
   };
 
   const exportAsMarkdown = () => {
-    const blob = new Blob([data], { type: 'text/markdown' });
+    const blob = new Blob([data], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'ai-analysis.md';
+    a.download = "ai-analysis.md";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1303,7 +1508,7 @@ function ExportDropdown({ data, toast }: any) {
   const exportAsPDF = async () => {
     try {
       // 使用浏览器的打印功能生成PDF
-      const printWindow = window.open('', '_blank');
+      const printWindow = window.open("", "_blank");
       if (!printWindow) return;
 
       printWindow.document.write(`
@@ -1313,7 +1518,7 @@ function ExportDropdown({ data, toast }: any) {
           <title>AI Analysis Report</title>
           <style>
             body { 
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              font-family: var(--font-body-stack), "Cereal", "Airbnb Cereal App", "Circular Std", "Avenir Next", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
               line-height: 1.6;
               max-width: 800px;
               margin: 0 auto;
@@ -1362,7 +1567,10 @@ function ExportDropdown({ data, toast }: any) {
       >
         <Download size={16} />
         Export
-        <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          size={14}
+          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
       {isOpen && (
@@ -1413,39 +1621,43 @@ function ExportDropdown({ data, toast }: any) {
 
 // 格式化数据用于PDF导出
 function formatDataForPDF(data: string): string {
-  if (!data) return '';
+  if (!data) return "";
 
   // 转换Markdown格式为HTML
   let html = data
     // 标题
-    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-    .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+    .replace(/^### (.*$)/gm, "<h3>$1</h3>")
+    .replace(/^## (.*$)/gm, "<h2>$1</h2>")
+    .replace(/^# (.*$)/gm, "<h1>$1</h1>")
     // 粗体
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
     // 斜体
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
     // 换行
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>');
+    .replace(/\n\n/g, "</p><p>")
+    .replace(/\n/g, "<br>");
 
   // 处理卡片格式
-  if (data.includes('---START_CARDS---')) {
-    const parts = data.split('---START_CARDS---');
+  if (data.includes("---START_CARDS---")) {
+    const parts = data.split("---START_CARDS---");
     const summary = parts[0];
-    const cardsSection = parts[1] || '';
+    const cardsSection = parts[1] || "";
 
-    let cardsHtml = '';
-    const cardBlocks = cardsSection.split(/\n---\n/).filter(block => block.trim());
+    let cardsHtml = "";
+    const cardBlocks = cardsSection
+      .split(/\n---\n/)
+      .filter((block) => block.trim());
 
     cardBlocks.forEach((block: string, index: number) => {
-      const lines = block.split('\n').filter(line => line.trim());
-      let question = '', answer = '', time = '';
+      const lines = block.split("\n").filter((line) => line.trim());
+      let question = "",
+        answer = "",
+        time = "";
 
       lines.forEach((line: string) => {
-        if (line.startsWith('Q: ')) question = line.substring(3);
-        if (line.startsWith('A: ')) answer = line.substring(3);
-        if (line.startsWith('T: ')) time = line.substring(3);
+        if (line.startsWith("Q: ")) question = line.substring(3);
+        if (line.startsWith("A: ")) answer = line.substring(3);
+        if (line.startsWith("T: ")) time = line.substring(3);
       });
 
       if (question && answer) {
@@ -1453,7 +1665,7 @@ function formatDataForPDF(data: string): string {
           <div class="card">
             <div class="question">Q${index + 1}: ${question}</div>
             <div class="answer">${answer}</div>
-            ${time ? `<div style="font-size: 0.9em; color: #6b7280; margin-top: 0.5em;">⏱️ ${time}</div>` : ''}
+            ${time ? `<div style="font-size: 0.9em; color: #6b7280; margin-top: 0.5em;">⏱️ ${time}</div>` : ""}
           </div>
         `;
       }
@@ -1497,9 +1709,12 @@ function ReAnalyzeButton({ onRegenerate, toast }: any) {
                 <Sparkles size={20} className="text-blue-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-slate-900 mb-1">Generate New Analysis?</h3>
+                <h3 className="font-semibold text-slate-900 mb-1">
+                  Generate New Analysis?
+                </h3>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                  This will create a fresh AI analysis of the video content. This action will consume credits.
+                  This will create a fresh AI analysis of the video content.
+                  This action will consume credits.
                 </p>
               </div>
             </div>
