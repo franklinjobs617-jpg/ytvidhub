@@ -88,11 +88,15 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
   // 积分不足弹窗状态
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
-  const [modalConfig, setModalConfig] = useState({
-    required: CREDIT_COSTS.download,
-    current: 0,
-    feature: "this feature",
-  });
+ const [modalConfig, setModalConfig] = useState<{
+  required: number;
+  current: number;
+  feature: string;
+}>({
+  required: CREDIT_COSTS.download,
+  current: 0,
+  feature: "this feature",
+});
   const [bulkCreditsGuard, setBulkCreditsGuard] = useState<BulkCreditsGuardState | null>(null);
   const [postPartialUpsell, setPostPartialUpsell] = useState<PostPartialUpsellState | null>(null);
 
