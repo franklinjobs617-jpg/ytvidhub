@@ -20,7 +20,7 @@ import { toast } from "sonner";
 const PATH_HISTORY_KEY = "ytvidhub_feedback_path_history";
 const LAST_SUBMIT_AT_KEY = "ytvidhub_feedback_last_submit_at";
 const MAX_PATH_HISTORY = 12;
-const NUDGE_DELAY_MS = 45_000;
+const NUDGE_DELAY_MS = 2_000;
 const NUDGE_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
 type QuickType = "bug" | "feature" | "content" | "other";
