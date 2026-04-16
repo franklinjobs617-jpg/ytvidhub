@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
   "name": "Free Youtube Transcript Generator",
-  "version": "0.1.0",
-  "description": "Free YouTube Transcript Generator: Instantly extract and download complete video transcripts in one click. The fastest, most accurate way to get YouTube text for free. Try it now!",
+  "version": "1.1.0",
+  "description": "Free YouTube Transcript Generator: Extract, download & copy full video transcripts in one click",
   "permissions": [
     "activeTab",
-    "tabs",
-    "storage"
+    "tabs"
   ],
   "host_permissions": [
     "https://www.youtube.com/*",
