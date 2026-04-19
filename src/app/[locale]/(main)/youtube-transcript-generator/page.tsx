@@ -3,7 +3,18 @@ import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import TranscriptGeneratorHero from "@/components/transcript/TranscriptGeneratorHero";
 import ScrollToTopButton from "@/components/transcript/ScrollToTopButton";
-import { Zap, FileText, Sparkles } from "lucide-react";
+import {
+  Zap,
+  FileText,
+  ShieldCheck,
+  PenSquare,
+  GraduationCap,
+  Bot,
+  Clapperboard,
+  Accessibility,
+  BarChart3,
+  ChevronDown,
+} from "lucide-react";
 type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -68,7 +79,7 @@ export default async function YouTubeTranscriptGeneratorPage({
     ),
   };
   return (
-    <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen article-body">
+    <div className="bg-white min-h-screen article-body">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -80,9 +91,9 @@ export default async function YouTubeTranscriptGeneratorPage({
 
       <TranscriptGeneratorHero />
       {/* BLUF Introduction - SEO Critical First 100 Words */}
-      <section className="bg-white border-b border-slate-200">
+      <section className="bg-white border-y border-slate-200">
         <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-6xl py-12">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto rounded-2xl border border-slate-200 bg-slate-50 px-6 py-6 md:px-8">
             <p className="text-lg text-slate-700 leading-relaxed">
               <strong>Need to get transcript of YouTube video quickly?</strong>
               Our free YouTube transcript generator converts any video to text
@@ -106,10 +117,10 @@ export default async function YouTubeTranscriptGeneratorPage({
                 {t("features.subtitle")}
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                  <Sparkles className="text-blue-600" size={24} />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
+                <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6">
+                  <ShieldCheck className="text-blue-600" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-slate-900 mb-3">
                   {t("features.ai.title")}
@@ -118,8 +129,8 @@ export default async function YouTubeTranscriptGeneratorPage({
                   {t("features.accurate.description")}
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
+                <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6">
                   <FileText className="text-blue-600" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-slate-900 mb-3">
@@ -129,8 +140,8 @@ export default async function YouTubeTranscriptGeneratorPage({
                   {t("features.formats.description")}
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
+                <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6">
                   <Zap className="text-blue-600" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-slate-900 mb-3">
@@ -145,7 +156,7 @@ export default async function YouTubeTranscriptGeneratorPage({
           {/* Product Demo GIF */}
           <section className="mb-32">
             <div className="max-w-5xl mx-auto">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-2xl p-8 border border-blue-100">
+              <div className="bg-slate-50 rounded-2xl p-8 border border-slate-200">
                 <div className="text-center mb-8">
                   <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3 article-h2">
                     See It In Action
@@ -178,83 +189,51 @@ export default async function YouTubeTranscriptGeneratorPage({
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-xl p-6 border border-blue-100">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">✍️</span>
+              {[
+                {
+                  title: "Content Creators",
+                  desc: "Repurpose video content into blog posts, social media, and SEO-optimized articles.",
+                  icon: <PenSquare size={22} className="text-blue-600" />,
+                },
+                {
+                  title: "Educators & Students",
+                  desc: "Create study materials, lecture notes, and accessible learning resources.",
+                  icon: <GraduationCap size={22} className="text-blue-600" />,
+                },
+                {
+                  title: "AI Researchers",
+                  desc: "Build training datasets for machine learning models and NLP applications.",
+                  icon: <Bot size={22} className="text-blue-600" />,
+                },
+                {
+                  title: "Video Editors",
+                  desc: "Generate accurate SRT/VTT subtitles for professional video production.",
+                  icon: <Clapperboard size={22} className="text-blue-600" />,
+                },
+                {
+                  title: "Accessibility Teams",
+                  desc: "Ensure content compliance with WCAG standards for hearing-impaired audiences.",
+                  icon: <Accessibility size={22} className="text-blue-600" />,
+                },
+                {
+                  title: "Market Researchers",
+                  desc: "Analyze video content, extract insights, and perform sentiment analysis.",
+                  icon: <BarChart3 size={22} className="text-blue-600" />,
+                },
+              ].map((item) => (
+                <div key={item.title} className="rounded-xl p-6 border border-slate-200 bg-white shadow-sm">
+                  <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
+                  <p className="text-slate-600 text-sm">{item.desc}</p>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  Content Creators
-                </h3>
-                <p className="text-slate-600 text-sm">
-                  Repurpose video content into blog posts, social media, and
-                  SEO-optimized articles
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-xl p-6 border border-blue-100">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🎓</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  Educators & Students
-                </h3>
-                <p className="text-slate-600 text-sm">
-                  Create study materials, lecture notes, and accessible learning
-                  resources
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-xl p-6 border border-blue-100">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🤖</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  AI Researchers
-                </h3>
-                <p className="text-slate-600 text-sm">
-                  Build training datasets for machine learning models and NLP
-                  applications
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-xl p-6 border border-blue-100">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">🎬</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  Video Editors
-                </h3>
-                <p className="text-slate-600 text-sm">
-                  Generate accurate SRT/VTT subtitles for professional video
-                  production
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 rounded-xl p-6 border border-blue-100">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">♿</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  Accessibility Teams
-                </h3>
-                <p className="text-slate-600 text-sm">
-                  Ensure content compliance with WCAG standards for
-                  hearing-impaired audiences
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-blue-50 to-red-50 rounded-xl p-6 border border-blue-100">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-2xl">📊</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                  Market Researchers
-                </h3>
-                <p className="text-slate-600 text-sm">
-                  Analyze video content, extract insights, and perform sentiment
-                  analysis
-                </p>
-              </div>
+              ))}
             </div>
           </section>
           {/* Performance Stats */}
           <section className="mb-32">
-            <div className="bg-slate-900 rounded-3xl p-12 md:p-16 text-white">
+            <div className="bg-slate-900 rounded-3xl p-12 md:p-16 text-white border border-slate-800">
               <div className="max-w-4xl mx-auto">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 article-h2">
                   {t("performance.title")}
@@ -302,8 +281,8 @@ export default async function YouTubeTranscriptGeneratorPage({
                 {t("comparison.subtitle")}
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-              <table className="w-full">
+            <div className="bg-white rounded-2xl border border-slate-200 overflow-x-auto">
+              <table className="w-full min-w-[640px]">
                 <thead className="bg-slate-50">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-slate-900">
@@ -377,7 +356,7 @@ export default async function YouTubeTranscriptGeneratorPage({
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200"
+                  className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors"
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold shrink-0">
@@ -414,9 +393,7 @@ export default async function YouTubeTranscriptGeneratorPage({
                 >
                   <summary className="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
                     {faqT(`questions.${key}.question`)}
-                    <span className="text-slate-400 group-open:rotate-180 transition-transform">
-                      ▼
-                    </span>
+                    <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
                   </summary>
                   <p className="mt-4 text-slate-600 leading-relaxed">
                     {faqT(`questions.${key}.answer`)}
@@ -427,11 +404,11 @@ export default async function YouTubeTranscriptGeneratorPage({
           </section>
           {/* Final CTA */}
           <section className="text-center">
-            <div className="bg-gradient-to-br from-blue-600 to-blue-600 rounded-3xl p-12 md:p-16 text-white">
+            <div className="bg-slate-900 rounded-3xl p-12 md:p-16 text-white border border-slate-800">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 article-h2">
                 {t("cta.title")}
               </h2>
-              <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+              <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
                 {t("cta.subtitle")}
               </p>
               <ScrollToTopButton> {t("cta.button")} </ScrollToTopButton>

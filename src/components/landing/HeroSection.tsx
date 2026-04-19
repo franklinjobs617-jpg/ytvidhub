@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
 import {
@@ -104,11 +104,11 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     };
   }, [placeholderIndex, isFocused, urls]);
 
-  const refreshCredits = async () => {
+  const refreshCredits = useCallback(async () => {
     if (user) {
       try { await refreshUser(); } catch {}
     }
-  };
+  }, [refreshUser, user]);
 
   const {
     playlistProcessing,
@@ -117,6 +117,17 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
     pauseProcessing,
     resumeProcessing,
   } = useSubtitleDownloader(refreshCredits);
+
+  const navigateToWorkspace = useCallback((
+    mode: "download" | "summary",
+    targetUrls: string[],
+  ) => {
+    const mergedUrls = targetUrls.map((url) => normalizeYoutubeUrl(url)).join(",");
+    setIsNavigating(true);
+    router.push(
+      `/workspace?urls=${encodeURIComponent(mergedUrls)}&from=home&mode=${mode}`,
+    );
+  }, [router]);
 
   useEffect(() => {
     if (user) {
@@ -139,22 +150,11 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
       const interval = setInterval(() => refreshCredits(), 30000);
       return () => clearInterval(interval);
     }
-  }, [user]);
+  }, [navigateToWorkspace, refreshCredits, user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUrls(e.target.value);
     if (inputErrorKey) setInputErrorKey(null);
-  };
-
-  const navigateToWorkspace = (
-    mode: "download" | "summary",
-    targetUrls: string[],
-  ) => {
-    const mergedUrls = targetUrls.map((url) => normalizeYoutubeUrl(url)).join(",");
-    setIsNavigating(true);
-    router.push(
-      `/workspace?urls=${encodeURIComponent(mergedUrls)}&from=home&mode=${mode}`,
-    );
   };
 
   const requireLoginForNavigation = (

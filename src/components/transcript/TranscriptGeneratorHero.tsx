@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
-import { extractVideoId, normalizeYoutubeUrl } from "@/lib/youtube";
+import { normalizeYoutubeUrl } from "@/lib/youtube";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from "next-intl";
 import LoginModal from "@/components/LoginModel";
 import {
   Youtube,
-  Sparkles,
   ArrowRight,
   Play,
   FileText,
@@ -33,14 +32,12 @@ export default function TranscriptGeneratorHero() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const t = useTranslations("transcriptPage");
-  const tActions = useTranslations("actions");
   const tErrors = useTranslations("errors");
   const tAuth = useTranslations("auth");
 
   const [url, setUrl] = useState("");
   const [inputError, setInputError] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [isActionClicked, setIsActionClicked] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pendingAnalysisRef = useRef(false);
 
@@ -95,8 +92,6 @@ export default function TranscriptGeneratorHero() {
   };
 
   const handleGenerateTranscript = async () => {
-    setIsActionClicked(true);
-
     try {
       if (!url.trim()) {
         setInputError(true);
@@ -128,10 +123,10 @@ export default function TranscriptGeneratorHero() {
       router.push(
         `/workspace?urls=${encodeURIComponent(normalizedUrl)}&from=transcript-generator&mode=download`,
       );
-    } finally {
-      setTimeout(() => {
-        setIsActionClicked(false);
-      }, 1000);
+    }
+    catch (error) {
+      console.error("Error generating transcript:", error);
+      toast.error(tErrors("generationFailed"), { position: "top-center" });
     }
   };
 
@@ -145,14 +140,16 @@ export default function TranscriptGeneratorHero() {
     <div className="relative isolate bg-white">
       <Toaster richColors closeButton position="top-center" />
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#f8fafc,white_45%)]" />
+        <div className="absolute left-1/2 top-[-180px] h-[360px] w-[720px] -translate-x-1/2 rounded-full bg-blue-100/35 blur-3xl" />
+      </div>
 
-      <section className="relative pt-16 pb-20 md:pt-20 md:pb-28 article-hero">
+      <section className="relative pt-16 pb-20 md:pt-20 md:pb-24 article-hero">
         <div className="container mx-auto px-4 md:px-6 lg:px-8 article-shell">
           {/* Hero Header */}
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-display uppercase tracking-wide text-slate-900 leading-tight mb-6 drop-shadow-sm article-h1">
+          <div className="max-w-4xl mx-auto text-center mb-14">
+            <h1 className="text-4xl md:text-6xl font-display tracking-tight text-slate-900 leading-tight mb-6 article-h1">
               {t("hero.title")}
             </h1>
 
@@ -161,20 +158,20 @@ export default function TranscriptGeneratorHero() {
             </p>
 
             {/* Key Benefits */}
-            <div className="flex flex-wrap justify-center gap-6 mb-12">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.free")}
               </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.accurate")}
               </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.fast")}
               </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.formats")}
               </div>
@@ -187,11 +184,11 @@ export default function TranscriptGeneratorHero() {
               className={`relative bg-white rounded-2xl border shadow-xl overflow-hidden transition-all duration-300 ${
                 inputError
                   ? "border-red-300 shadow-red-100 ring-4 ring-red-50"
-                  : "border-slate-200 shadow-blue-100/50"
+                  : "border-slate-200 shadow-slate-200/60"
               }`}
             >
               {/* Header */}
-              <div className="bg-slate-50/80 border-b border-slate-200 px-4 py-3">
+              <div className="bg-slate-50 border-b border-slate-200 px-4 py-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
                     <Youtube size={18} className="text-red-500" />
@@ -210,23 +207,12 @@ export default function TranscriptGeneratorHero() {
               {/* Input Area */}
               <div className="p-6 md:p-8">
                 <div className="relative group/input">
-                  {/* Glow Effect */}
-                  <div
-                    className={`absolute -inset-0.5 rounded-2xl transition-all duration-500 ${
-                      isFocused
-                        ? "bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 opacity-100"
-                        : inputError
-                          ? "bg-red-400 opacity-100"
-                          : "bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400 opacity-40 group-hover/input:opacity-70"
-                    } blur-sm`}
-                  />
-
                   {/* Input Container */}
                   <div
                     className={`relative flex items-center rounded-2xl border bg-white transition-all duration-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)] ${
                       isFocused
-                        ? "border-blue-400 shadow-xl shadow-blue-100/50"
-                        : inputError
+                        ? "border-blue-400 shadow-lg shadow-blue-100/50 ring-2 ring-blue-50"
+                      : inputError
                           ? "border-red-400"
                           : "border-slate-200 hover:border-slate-300"
                     }`}
@@ -260,9 +246,9 @@ export default function TranscriptGeneratorHero() {
                       <button
                         onClick={handleGenerateTranscript}
                         disabled={!url.trim() || isAnalyzing}
-                        className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all whitespace-nowrap ${
+                        className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-xs tracking-wide transition-all whitespace-nowrap ${
                           url.trim() && !isAnalyzing
-                            ? "bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5"
+                            ? "bg-slate-900 text-white hover:bg-slate-800 hover:shadow-md"
                             : "bg-blue-50 text-blue-300 cursor-not-allowed"
                         }`}
                       >

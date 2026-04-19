@@ -5,8 +5,7 @@ import { useRouter, usePathname, routing } from '@/i18n/routing';
 import { useState, useTransition, useCallback, useRef, useEffect, useMemo } from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import { globalCacheManager } from '@/lib/globalCacheManager';
-
-type Locale = (typeof routing.locales)[number];
+import { toast } from 'sonner';
 
 const languages = [
   { code: "en", label: "English" },
@@ -60,6 +59,7 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isHomePath = pathname === '/' || pathname === '';
 
   // 预加载所有语言包以确保即时可用
   useEffect(() => {
@@ -93,13 +93,18 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
 
     // 使用 startTransition 进行非阻塞更新
     startTransition(() => {
-      // 使用 router.replace 进行路由切换
-      router.replace(pathname, { locale: nextLocale });
+      // 当前策略：仅首页开放完整多语言。非首页选择非英文时，切换到该语言首页。
+      if (!isHomePath && nextLocale !== routing.defaultLocale) {
+        toast.info("当前仅首页支持多语言，已切换到对应语言首页。");
+        router.replace("/", { locale: nextLocale });
+      } else {
+        router.replace(pathname, { locale: nextLocale });
+      }
 
       // 结束性能计时
       performanceMonitor.endTiming(nextLocale);
     });
-  }, [locale, pathname, router]);
+  }, [isHomePath, locale, pathname, router]);
 
   const toggleDropdown = useCallback(() => {
     setIsOpen(prev => !prev);
@@ -147,6 +152,13 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
 
           {/* Dropdown */}
           <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-2 z-20 animate-in fade-in slide-in-from-top-2 duration-200">
+            {!isHomePath && (
+              <div className="px-4 pb-2 mb-1 border-b border-slate-100">
+                <p className="text-[11px] text-slate-500">
+                  非首页切换到其他语言时，会先进入对应语言首页。
+                </p>
+              </div>
+            )}
             {languages.map((lang) => (
               <button
                 key={lang.code}

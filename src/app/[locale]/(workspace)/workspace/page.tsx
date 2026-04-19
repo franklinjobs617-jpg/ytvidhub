@@ -195,6 +195,24 @@ function WorkspaceContent() {
   const [initialSubtitleContent, setInitialSubtitleContent] =
     useState<string>("");
 
+  const getReadableErrorMessage = (
+    error: unknown,
+    fallback = "Something went wrong. Please try again.",
+  ) => {
+    if (error instanceof Error && error.message?.trim()) return error.message;
+    if (typeof error === "string" && error.trim()) return error;
+    return fallback;
+  };
+
+  const showAnalysisError = (
+    error: unknown,
+    fallback = "Failed to analyze this video. Please try again.",
+  ) => {
+    const message = getReadableErrorMessage(error, fallback);
+    setAnalysisError(message);
+    toast.error(message);
+  };
+
   // --- 初始化逻辑 ---
   useEffect(() => {
     if (!urlsParam) return;
@@ -269,10 +287,21 @@ function WorkspaceContent() {
           });
         })
         .catch(() => {
-          if (!isCancelled) analyzeUrls(urls).then(handleAnalysisResults);
+          if (isCancelled) return;
+          analyzeUrls(urls)
+            .then(handleAnalysisResults)
+            .catch((analysisError) => {
+              if (isCancelled) return;
+              showAnalysisError(analysisError, "Failed to load video details.");
+            });
         });
     } else {
-      analyzeUrls(urls).then(handleAnalysisResults);
+      analyzeUrls(urls)
+        .then(handleAnalysisResults)
+        .catch((error) => {
+          if (isCancelled) return;
+          showAnalysisError(error, "Failed to analyze the provided URL.");
+        });
     }
     // ... (rest of the file logic continues correctly)
 
@@ -553,7 +582,7 @@ function WorkspaceContent() {
         });
       }
     } catch (error: any) {
-      setAnalysisError(error?.message || "Analysis failed. Please try again.");
+      showAnalysisError(error, "Analysis failed. Please try again.");
       // announceToScreenReader(`Analysis failed: ${error?.message || "Please try again"}`);
     } finally {
       isAnalyzing.current.delete(targetId);
@@ -583,13 +612,17 @@ function WorkspaceContent() {
     if (isPlaylistOrChannelUrl(normalizedUrl)) {
       toast.info("Analyzing playlist...");
       setInputUrl("");
-      const results = await analyzeUrls([normalizedUrl]);
-      if (results && results.length > 0) {
-        setVideoList(results);
-        setCurrentVideo(results[0]);
-        setSummaryData("");
-        setShowBatchView(true); // 切换到批量模式
-        toast.success(`Added ${results.length} videos!`);
+      try {
+        const results = await analyzeUrls([normalizedUrl]);
+        if (results && results.length > 0) {
+          setVideoList(results);
+          setCurrentVideo(results[0]);
+          setSummaryData("");
+          setShowBatchView(true); // 切换到批量模式
+          toast.success(`Added ${results.length} videos!`);
+        }
+      } catch (error) {
+        showAnalysisError(error, "Failed to analyze playlist/channel.");
       }
       return;
     }
@@ -662,7 +695,8 @@ function WorkspaceContent() {
           })
           .catch(() => {});
       }
-      toast.error(
+      showAnalysisError(
+        error,
         "Failed to fetch video info. Please check the URL and try again.",
       );
     } finally {

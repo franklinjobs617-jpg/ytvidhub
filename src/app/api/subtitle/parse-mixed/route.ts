@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
     try {
-        const token = request.headers.get('Authorization')?.replace('Bearer ', '');
+        const authHeader = request.headers.get('authorization') || request.headers.get('Authorization');
+        const token = authHeader?.replace('Bearer ', '');
         if (!token) {
             return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
         }
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(body),
         });

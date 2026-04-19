@@ -79,10 +79,25 @@ export async function POST(request: NextRequest) {
         });
 
         if (!backendResponse.ok) {
-            const errorData = await backendResponse.text().catch(() => 'Unknown error')
-            console.error('Backend API error:', errorData)
+            const rawError = await backendResponse.text().catch(() => '')
+            let backendMessage = ''
+
+            if (rawError) {
+                try {
+                    const parsed = JSON.parse(rawError)
+                    backendMessage = parsed?.error || parsed?.message || rawError
+                } catch {
+                    backendMessage = rawError
+                }
+            }
+
+            if (!backendMessage || /<!doctype html|<html/i.test(backendMessage)) {
+                backendMessage = 'Failed to download subtitle'
+            }
+
+            console.error('Backend API error:', backendMessage)
             return NextResponse.json(
-                { error: 'Failed to download subtitle' },
+                { error: backendMessage },
                 { status: backendResponse.status }
             )
         }

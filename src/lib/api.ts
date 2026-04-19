@@ -1,6 +1,89 @@
 // lib/api.ts
 import { CREDIT_COSTS } from "@/config/credits";
 
+type ApiError = Error & {
+  status?: number;
+  code?: string;
+  details?: any;
+  endpoint?: string;
+};
+
+function createApiError(
+  message: string,
+  extra: Partial<ApiError> = {},
+): ApiError {
+  const error = new Error(message) as ApiError;
+  Object.assign(error, extra);
+  return error;
+}
+
+function withHttpStatus(message: string, status: number): string {
+  if (!message) return `Request failed (HTTP ${status})`;
+  if (/HTTP\s*\d+/i.test(message)) return message;
+  return `${message} (HTTP ${status})`;
+}
+
+async function parseErrorPayload(response: Response): Promise<{
+  message: string;
+  code?: string;
+  details?: any;
+}> {
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+
+  if (isJson) {
+    const json = await response.json().catch(() => ({} as any));
+    const message =
+      json?.error ||
+      json?.message ||
+      json?.msg ||
+      json?.detail ||
+      json?.data?.message ||
+      "";
+    const details = json?.details ?? json?.data ?? json;
+    return { message, code: json?.code, details };
+  }
+
+  const rawText = (await response.text().catch(() => "")).trim();
+  const isHtml =
+    contentType.includes("text/html") || /^<!doctype html/i.test(rawText);
+  if (isHtml) return { message: "" };
+  return { message: rawText };
+}
+
+async function throwResponseError(
+  response: Response,
+  fallbackMessage: string,
+  endpoint?: string,
+): Promise<never> {
+  const payload = await parseErrorPayload(response);
+  let message = payload.message || fallbackMessage;
+
+  if (response.status === 401 && !payload.message) {
+    message = "Authentication required. Please login again.";
+  } else if (response.status === 404 && !payload.message) {
+    message = `${fallbackMessage}: endpoint not found.`;
+  } else if (response.status >= 500 && !payload.message) {
+    message = `${fallbackMessage}: server error.`;
+  }
+
+  throw createApiError(withHttpStatus(message, response.status), {
+    status: response.status,
+    code: payload.code,
+    details: payload.details,
+    endpoint,
+  });
+}
+
+async function ensureOk(
+  response: Response,
+  fallbackMessage: string,
+  endpoint?: string,
+): Promise<Response> {
+  if (response.ok) return response;
+  return throwResponseError(response, fallbackMessage, endpoint);
+}
+
 /**
  * 封装带认证的请求 - 使用Next.js代理API
  */
@@ -17,20 +100,32 @@ async function authenticatedFetch(endpoint: string, options: RequestInit = {}) {
     headers.append("Content-Type", "application/json");
   }
 
-  const response = await fetch(endpoint, {
-    ...options,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(endpoint, {
+      ...options,
+      headers,
+    });
+  } catch (error) {
+    const reason =
+      error instanceof Error && error.message ? error.message : "fetch failed";
+    throw createApiError(
+      `Network error: ${reason}. Please check your connection and try again.`,
+      {
+        code: "NETWORK_ERROR",
+        endpoint,
+      },
+    );
+  }
 
   if (response.status === 402) {
-    const errorData = await response.json().catch(() => ({}));
-    const creditError = new Error(
-      errorData.message || errorData.error || "Insufficient credits."
-    ) as Error & { code?: string; details?: any };
-
-    creditError.code = errorData.code || "INSUFFICIENT_CREDITS";
-    creditError.details = errorData;
-    throw creditError;
+    const payload = await parseErrorPayload(response);
+    throw createApiError(payload.message || "Insufficient credits.", {
+      code: payload.code || "INSUFFICIENT_CREDITS",
+      details: payload.details,
+      status: response.status,
+      endpoint,
+    });
   }
 
   return response;
@@ -39,54 +134,53 @@ async function authenticatedFetch(endpoint: string, options: RequestInit = {}) {
 export const subtitleApi = {
   // 1. 批量检查视频信息
   async batchCheck(urls: string[]) {
-    const res = await authenticatedFetch("/api/subtitle/batch-check", {
+    const endpoint = "/api/subtitle/batch-check";
+    const res = await authenticatedFetch(endpoint, {
       method: "POST",
       body: JSON.stringify({ urls }),
     });
-    if (!res.ok) throw new Error("Batch check failed");
+    await ensureOk(res, "Batch check failed", endpoint);
     return res.json();
   },
 
   // 新增：智能混合URL解析
   async parseMixedUrls(urls: string[]) {
-    const res = await authenticatedFetch("/api/subtitle/parse-mixed", {
+    const endpoint = "/api/subtitle/parse-mixed";
+    const res = await authenticatedFetch(endpoint, {
       method: "POST",
       body: JSON.stringify({ urls }),
     });
-    if (!res.ok) throw new Error("Mixed URL parsing failed");
+    await ensureOk(res, "Mixed URL parsing failed", endpoint);
     return res.json();
   },
 
   // 新增：解析playlist/channel
   async parsePlaylist(url: string, maxVideos: number = 50) {
-    const res = await authenticatedFetch("/api/subtitle/parse-playlist", {
+    const endpoint = "/api/subtitle/parse-playlist";
+    const res = await authenticatedFetch(endpoint, {
       method: "POST",
       body: JSON.stringify({ url, max_videos: maxVideos }),
     });
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.error || "Playlist parsing failed");
-    }
+    await ensureOk(res, "Playlist parsing failed", endpoint);
     return res.json();
   },
 
   // 2. 提交批量下载任务 (通过代理API，已包含积分检查和扣除)
   async submitBulkTask(videos: any[], lang: string, format: string) {
-    const res = await authenticatedFetch("/api/subtitle/batch-submit", {
+    const endpoint = "/api/subtitle/batch-submit";
+    const res = await authenticatedFetch(endpoint, {
       method: "POST",
       body: JSON.stringify({ videos, lang, format }),
     });
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.error || "Bulk submission failed");
-    }
+    await ensureOk(res, "Bulk submission failed", endpoint);
     return res.json();
   },
 
   // 3. 检查任务状态
   async checkTaskStatus(taskId: string) {
-    const res = await authenticatedFetch(`/api/subtitle/task-status?task_id=${taskId}`);
-    if (!res.ok) throw new Error("Status check failed");
+    const endpoint = `/api/subtitle/task-status?task_id=${taskId}`;
+    const res = await authenticatedFetch(endpoint);
+    await ensureOk(res, "Status check failed", endpoint);
     return res.json();
   },
 
@@ -98,34 +192,34 @@ export const subtitleApi = {
     title: string;
     isPreview?: boolean;
   }) {
-    const res = await authenticatedFetch("/api/subtitle/download-single", {
+    const endpoint = "/api/subtitle/download-single";
+    const res = await authenticatedFetch(endpoint, {
       method: "POST",
       body: JSON.stringify(payload),
     });
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.error || "Download failed");
-    }
+    await ensureOk(res, "Download failed", endpoint);
     return res.blob();
   },
 
   // 5. 下载最终的 ZIP 包
   async downloadZip(taskId: string) {
-    const res = await authenticatedFetch("/api/subtitle/download-zip", {
+    const endpoint = "/api/subtitle/download-zip";
+    const res = await authenticatedFetch(endpoint, {
       method: "POST",
       body: JSON.stringify({ task_id: taskId }),
     });
-    if (!res.ok) throw new Error("ZIP download failed");
+    await ensureOk(res, "ZIP download failed", endpoint);
     return res.blob();
   },
 
   // 6. 获取视频基本信息（快速）
   async getVideoInfo(url: string) {
-    const res = await authenticatedFetch("/api/subtitle/video-info", {
+    const endpoint = "/api/subtitle/video-info";
+    const res = await authenticatedFetch(endpoint, {
       method: "POST",
       body: JSON.stringify({ url }),
     });
-    if (!res.ok) throw new Error("Video info fetch failed");
+    await ensureOk(res, "Video info fetch failed", endpoint);
     return res.json();
   },
 
@@ -186,9 +280,17 @@ export const subtitleApi = {
     });
 
     if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      console.error('Deduct-credits API error:', errorData);
-      throw new Error(errorData.error || "Failed to deduct credits");
+      const payload = await parseErrorPayload(res);
+      console.error("Deduct-credits API error:", payload);
+      throw createApiError(
+        withHttpStatus(payload.message || "Failed to deduct credits", res.status),
+        {
+          code: payload.code,
+          details: payload.details,
+          status: res.status,
+          endpoint: "/api/deduct-credits",
+        },
+      );
     }
 
     const result = await res.json();
@@ -288,15 +390,13 @@ export const subtitleApi = {
 
   // 14. 访客单次下载（无需登录）
   async guestDownload(url: string, lang: string = 'en', format: string = 'srt') {
-    const res = await fetch("/api/subtitle/guest-download", {
+    const endpoint = "/api/subtitle/guest-download";
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url, lang, format }),
     });
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.error || "Guest download failed");
-    }
+    await ensureOk(res, "Guest download failed", endpoint);
     return res.blob();
   },
 

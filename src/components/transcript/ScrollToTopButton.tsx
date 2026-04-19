@@ -4,7 +4,7 @@ export default function ScrollToTopButton({ children }: { children: React.ReactN
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      className="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-slate-100 transition-all shadow-xl active:scale-95 relative z-10 hover:shadow-white/10"
+      className="inline-flex items-center justify-center rounded-xl bg-white px-8 py-3 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-100"
     >
       {children}
     </button>

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "better-icons": {
+      "source": "better-auth/better-icons",
+      "sourceType": "github",
+      "computedHash": "656a618d6d5d5e9c567253eff57a06bee3be5d4fb983bdc401a46a209c5b76de"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "0a413bf988d06481f69bb81df2070741c3ba12dd9f1be2706d57f259c905992d"
+    }
+  }
+}
