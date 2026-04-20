@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslations } from 'next-intl';
+import LandingSectionHeader from "@/components/landing/LandingSectionHeader";
 
 export default function ComparisonSlider() {
   const t = useTranslations('comparisonSlider');
@@ -48,20 +49,15 @@ export default function ComparisonSlider() {
     <section className="relative overflow-hidden bg-white py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.14),rgba(37,99,235,0)_70%)]" />
       <div className="container relative z-10 mx-auto my-6 max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-16 max-w-3xl text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
-            {t('before')} / {t('after')}
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-            {t.rich('title', {
-              br: () => <br className="hidden md:inline" />,
-              highlight: (chunks) => <span className="text-[var(--brand-600)]">{chunks}</span>
-            })}
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-slate-600">
-            {t('description')}
-          </p>
-        </div>
+        <LandingSectionHeader
+          className="mb-16"
+          badge={`${t('before')} / ${t('after')}`}
+          title={t.rich('title', {
+            br: () => <br className="hidden md:inline" />,
+            highlight: (chunks) => <span className="text-[var(--brand-600)]">{chunks}</span>,
+          })}
+          description={t('description')}
+        />
 
         <div className="relative mx-auto max-w-5xl px-4 md:px-0">
           <div className="relative aspect-[4/3] w-full select-none overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-[0_32px_70px_-48px_rgba(15,23,42,0.78)] md:aspect-[16/9] md:rounded-3xl">

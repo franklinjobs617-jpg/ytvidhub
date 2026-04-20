@@ -520,10 +520,10 @@ function WorkspaceContent() {
               : currentVideo.duration,
         };
 
-        setCurrentVideo((prev) =>
+        setCurrentVideo((prev: any) =>
           prev?.url === currentVideo.url ? { ...prev, ...hydratedPatch } : prev,
         );
-        setVideoList((prev) =>
+        setVideoList((prev: any[]) =>
           prev.map((video) =>
             video.url === currentVideo.url ? { ...video, ...hydratedPatch } : video,
           ),
@@ -852,8 +852,8 @@ function WorkspaceContent() {
         const results = await analyzeUrls([normalizedUrl]);
         if (results && results.length > 0) {
           setVideoList((prev) => {
-            const resultIds = new Set(results.map((video) => video.id));
-            return [...results, ...prev.filter((video) => !resultIds.has(video.id))];
+            const resultIds = new Set(results.map((video: any) => video.id));
+            return [...results, ...prev.filter((video: any) => !resultIds.has(video.id))];
           });
           setCurrentVideo(results[0]);
           setSummaryData("");
@@ -1073,7 +1073,7 @@ function WorkspaceContent() {
                   payload: {
                     videoUrl: video.url,
                     title: video.title || "subtitle",
-                    format,
+                    format: format as "srt" | "vtt" | "txt",
                     lang: transcriptLang,
                   },
                 });
@@ -1091,7 +1091,7 @@ function WorkspaceContent() {
                   type: "download_bulk",
                   payload: {
                     videos,
-                    format,
+                    format: format as string,
                     lang: transcriptLang,
                   },
                 });

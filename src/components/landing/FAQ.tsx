@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import LandingSectionHeader from "@/components/landing/LandingSectionHeader";
 
 export default function FAQ() {
   const t = useTranslations("faq");
@@ -9,11 +10,7 @@ export default function FAQ() {
   return (
     <section className="bg-[var(--surface-page)] py-24" id="faq">
       <div className="container mx-auto max-w-4xl px-6 lg:px-8">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-            {t("title")}
-          </h2>
-        </div>
+        <LandingSectionHeader className="mb-12" title={t("title")} />
 
         <div className="space-y-4">
           {keys.map((key) => (

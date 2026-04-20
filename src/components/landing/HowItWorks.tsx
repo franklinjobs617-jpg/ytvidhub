@@ -2,6 +2,7 @@
 
 import { Link2, Sparkles, Download } from "lucide-react";
 import { useTranslations } from "next-intl";
+import LandingSectionHeader from "@/components/landing/LandingSectionHeader";
 
 const STEP_ICONS = [Link2, Sparkles, Download];
 
@@ -12,14 +13,7 @@ export default function HowItWorks() {
     <section className="relative overflow-hidden bg-white py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.13),rgba(37,99,235,0)_72%)]" />
       <div className="container mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-20 max-w-3xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-            {t("title")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-            {t("description")}
-          </p>
-        </div>
+        <LandingSectionHeader className="mb-20" title={t("title")} description={t("description")} />
 
         <div className="relative grid gap-8 md:grid-cols-3">
           <div className="pointer-events-none absolute left-[16%] right-[16%] top-14 hidden h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent md:block" />

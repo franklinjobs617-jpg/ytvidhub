@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import LandingSectionHeader from "@/components/landing/LandingSectionHeader";
 
 type ReviewItem = {
   name: string;
@@ -27,14 +28,7 @@ export default function Testimonials() {
   return (
     <section className="bg-[var(--surface-page)] py-24">
       <div className="container mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto mb-16 max-w-3xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-            {t("title")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-            {t("description")}
-          </p>
-        </div>
+        <LandingSectionHeader className="mb-16" title={t("title")} description={t("description")} />
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((review, index) => (

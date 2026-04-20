@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import LandingSectionHeader from "@/components/landing/LandingSectionHeader";
 
 export default function CoreCapabilities() {
   const t = useTranslations("coreCapabilities");
@@ -9,17 +10,12 @@ export default function CoreCapabilities() {
     <section className="relative overflow-hidden bg-white py-24">
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[radial-gradient(ellipse_at_bottom,rgba(37,99,235,0.12),rgba(37,99,235,0)_70%)]" />
       <div className="container relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mb-16 text-center">
-          <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
-            {t("badge")}
-          </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-            {t("title")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
-            {t("description")}
-          </p>
-        </div>
+        <LandingSectionHeader
+          className="mb-16"
+          badge={t("badge")}
+          title={t("title")}
+          description={t("description")}
+        />
 
         <div className="space-y-10">
           <article className="grid gap-10 rounded-3xl border border-slate-200 bg-[linear-gradient(160deg,#ffffff_0%,#f8fbff_100%)] p-6 shadow-[0_28px_50px_-40px_rgba(15,23,42,0.52)] md:p-9 lg:grid-cols-2 lg:items-center">
