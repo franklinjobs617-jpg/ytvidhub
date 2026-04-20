@@ -16,7 +16,6 @@ export default function Footer() {
             <p className="text-sm leading-relaxed text-[var(--footer-muted)] max-w-xs">
               {t("description")}
             </p>
-            <a href="https://startupfa.me/s/ytvidhub?utm_source=ytvidhub.com" target="_blank"><img src="https://startupfa.me/badges/featured-badge-small.webp" alt="YTVidHub - Featured on Startup Fame" width="224" height="36" /></a>
 
             <a
               href="https://theresanaiforthat.com/ai/ytvidhub/?ref=featured&v=7340698"
@@ -31,18 +30,7 @@ export default function Footer() {
                 alt="Featured on TAAFT"
               />
             </a>
-            <a
-              href="https://openhunts.com"
-              target="_blank"
-              title="OpenHunts Club"
-            >
-              <Image
-                alt="OpenHunts Club Member"
-                height={105}
-                src="https://cdn.openhunts.com/badges/club.webp"
-                width={486}
-              />
-            </a>
+          
           </div>
 
           {/* Product Column */}

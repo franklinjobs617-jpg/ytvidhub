@@ -1,6 +1,16 @@
 import Link from "next/link";
+import { buildCanonicalUrl } from "@/lib/url";
 
-export default function SpanishYTChannelsBlogPage() {
+type Props = {
+  params: { locale: string };
+};
+
+export default function SpanishYTChannelsBlogPage({ params }: Props) {
+  const canonicalUrl = buildCanonicalUrl({
+    locale: params.locale,
+    pathname: "/blog/spanish-yt-channels-subtitles",
+  });
+
   const channels = [
     {
       title: "Easy Spanish",
@@ -77,7 +87,7 @@ export default function SpanishYTChannelsBlogPage() {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: "Top Spanish Immersion Channels on YouTube",
     author: {
       "@type": "Organization",
@@ -87,9 +97,11 @@ export default function SpanishYTChannelsBlogPage() {
       "@type": "Organization",
       name: "YTVidHub",
     },
+    url: canonicalUrl,
+    inLanguage: params.locale,
+    datePublished: "2025-10-20",
     dateModified: "2025-10-20",
-    mainEntityOfPage:
-      "https://ytvidhub.com/blog/spanish-yt-channels-subtitles/",
+    mainEntityOfPage: canonicalUrl,
   };
 
   return (

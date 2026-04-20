@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "SEO 外链发布辅助插件 (Semi-Auto Backlink Submitter)",
+  "version": "0.1.0",
+  "description": "半自动 SEO 外链发布助手：自动寻址/填表 + 人工过盾/发布决策。",
+  "minimum_chrome_version": "114",
+  "permissions": [
+    "storage",
+    "tabs",
+    "downloads",
+    "sidePanel",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "action": {
+    "default_title": "SEO 外链发布助手"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

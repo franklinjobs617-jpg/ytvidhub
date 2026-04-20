@@ -1,13 +1,48 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
+import { buildAlternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Creator Tutorials: Mastering YouTube Subtitles for Content Creation",
-  description: "Learn how to leverage YouTube subtitles for content creation, repurposing, and audience engagement with YTVidHub's comprehensive tutorials.",
-  alternates: {
-    canonical: "https://ytvidhub.com/blog/creator-tutorials/",
-  },
+type Props = {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 };
 
-export default function CreatorTutorialsLayout({ children }: { children: React.ReactNode }) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = buildAlternates(locale, "/blog/creator-tutorials");
+  const canonicalUrl = alternates.canonical;
+
+  const title =
+    "Creator Tutorials: Mastering YouTube Subtitles for Content Creation | YTVidHub";
+  const description =
+    "Learn how to leverage YouTube subtitles for content creation, repurposing, and audience engagement with YTVidHub's comprehensive tutorials.";
+
+  return {
+    title,
+    description,
+    alternates,
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      type: "article",
+      images: [
+        {
+          url: "/image/og-image.webp",
+          width: 1200,
+          height: 630,
+          alt: "YTVidHub Blog",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/image/og-image.webp"],
+    },
+  };
+}
+
+export default function CreatorTutorialsLayout({ children }: Props) {
   return children;
 }

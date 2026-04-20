@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { buildCanonicalUrl } from "@/lib/url";
 import {
   Brain,
   Search,
@@ -8,7 +9,16 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export default function AISummaryBlogPage() {
+type Props = {
+  params: { locale: string };
+};
+
+export default function AISummaryBlogPage({ params }: Props) {
+  const canonicalUrl = buildCanonicalUrl({
+    locale: params.locale,
+    pathname: "/blog/ai-youtube-video-summarizer",
+  });
+
   const faqItems = [
     {
       q: "How does the AI YouTube summarizer help with study?",
@@ -36,7 +46,7 @@ export default function AISummaryBlogPage() {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: "Decode YouTube Videos With AI Intelligence",
     author: {
       "@type": "Organization",
@@ -46,8 +56,11 @@ export default function AISummaryBlogPage() {
       "@type": "Organization",
       name: "YTVidHub",
     },
+    url: canonicalUrl,
+    inLanguage: params.locale,
+    datePublished: "2025-12-02",
     dateModified: "2025-12-02",
-    mainEntityOfPage: "https://ytvidhub.com/blog/ai-youtube-video-summarizer/",
+    mainEntityOfPage: canonicalUrl,
   };
 
   return (

@@ -12,8 +12,9 @@ import random
 import string 
 import hashlib
 import requests
+from functools import wraps
 from concurrent.futures import ThreadPoolExecutor
-from flask import Flask, request, jsonify, send_file, redirect, after_this_request, Response, stream_with_context
+from flask import Flask, request, jsonify, send_file, redirect, after_this_request, Response, stream_with_context, g
 from flask_cors import CORS
 from urllib.parse import urlparse, parse_qs, urlencode
 from rembg import remove
@@ -25,6 +26,7 @@ from services.instagram_direct_link_routes import instagram_direct_link_bp
 from services.facebook_routes import facebook_transcript_bp
 from services.instagram_routes import instagram_transcript_bp
 from services.tiktok_routes import tiktok_transcript_bp
+from services.tattoo_flux_routes import tattoo_flux_bp
 
 # ==============================================================================
 # 0. 全局配置与初始化
@@ -38,6 +40,7 @@ app.register_blueprint(tiktok_transcript_bp)
 app.register_blueprint(facebook_direct_link_bp)
 app.register_blueprint(instagram_direct_link_bp)
 app.register_blueprint(tiktok_direct_link_bp)
+app.register_blueprint(tattoo_flux_bp)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOWNLOAD_FOLDER = os.path.join(BASE_DIR, "downloads")
@@ -73,7 +76,17 @@ _EXTENSION_REDIRECT_URL = os.getenv("YT_EXTENSION_REDIRECT_URL", "https://ytvidh
 _EXTENSION_GUEST_USAGE = {}
 _EXTENSION_GUEST_USAGE_LOCK = threading.Lock()
 _EXTENSION_GUEST_USAGE_TTL = 2 * 24 * 60 * 60
+_GUEST_PREVIEW_LIMIT = max(1, int(os.getenv("YT_GUEST_PREVIEW_LIMIT", "2")))
+_GUEST_PREVIEW_WINDOW_SECONDS = max(60, int(os.getenv("YT_GUEST_PREVIEW_WINDOW_SECONDS", str(24 * 60 * 60))))
+_GUEST_PREVIEW_USAGE = {}
+_GUEST_PREVIEW_USAGE_LOCK = threading.Lock()
+_GUEST_PREVIEW_USAGE_TTL = _GUEST_PREVIEW_WINDOW_SECONDS * 2
 _YOUTUBE_WATCH_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com"}
+_AUTH_VERIFY_URL = os.getenv("AUTH_VERIFY_URL", "https://api.ytvidhub.com/prod-api/g/getUser").strip()
+_AUTH_VERIFY_TIMEOUT = max(2, int(os.getenv("AUTH_VERIFY_TIMEOUT", "8")))
+_AUTH_TOKEN_CACHE_TTL = max(30, int(os.getenv("AUTH_TOKEN_CACHE_TTL", "120")))
+_AUTH_TOKEN_CACHE = {}
+_AUTH_TOKEN_CACHE_LOCK = threading.Lock()
 
 
 def _is_youtube_watch_url(video_url: str) -> bool:
@@ -171,6 +184,163 @@ def _rollback_extension_guest_attempt(fingerprint: str):
         record["count"] = current_count - 1
         record["updated_at"] = now_ts
         _EXTENSION_GUEST_USAGE[fingerprint] = record
+
+
+def _cleanup_guest_preview_usage_unlocked(now_ts: float):
+    stale_keys = []
+    for key, entry in _GUEST_PREVIEW_USAGE.items():
+        last_seen = float(entry.get("updated_at", 0))
+        if now_ts - last_seen > _GUEST_PREVIEW_USAGE_TTL:
+            stale_keys.append(key)
+    for key in stale_keys:
+        _GUEST_PREVIEW_USAGE.pop(key, None)
+
+
+def _reserve_guest_preview_attempt(fingerprint: str):
+    now_ts = time.time()
+    threshold = now_ts - _GUEST_PREVIEW_WINDOW_SECONDS
+    with _GUEST_PREVIEW_USAGE_LOCK:
+        _cleanup_guest_preview_usage_unlocked(now_ts)
+        record = _GUEST_PREVIEW_USAGE.get(fingerprint) or {
+            "timestamps": [],
+            "updated_at": now_ts
+        }
+        timestamps = [
+            float(ts) for ts in (record.get("timestamps") or [])
+            if float(ts) >= threshold
+        ]
+
+        if len(timestamps) >= _GUEST_PREVIEW_LIMIT:
+            oldest = min(timestamps) if timestamps else now_ts
+            reset_in_seconds = max(0, int(_GUEST_PREVIEW_WINDOW_SECONDS - (now_ts - oldest)))
+            quota = {
+                "daily_limit": _GUEST_PREVIEW_LIMIT,
+                "attempts_used": len(timestamps),
+                "attempts_left": 0,
+                "reset_in_seconds": reset_in_seconds
+            }
+            record["timestamps"] = timestamps
+            record["updated_at"] = now_ts
+            _GUEST_PREVIEW_USAGE[fingerprint] = record
+            return False, quota
+
+        timestamps.append(now_ts)
+        record["timestamps"] = timestamps
+        record["updated_at"] = now_ts
+        _GUEST_PREVIEW_USAGE[fingerprint] = record
+        quota = {
+            "daily_limit": _GUEST_PREVIEW_LIMIT,
+            "attempts_used": len(timestamps),
+            "attempts_left": max(0, _GUEST_PREVIEW_LIMIT - len(timestamps)),
+            "reset_in_seconds": 0
+        }
+        return True, quota
+
+
+def _rollback_guest_preview_attempt(fingerprint: str):
+    now_ts = time.time()
+    threshold = now_ts - _GUEST_PREVIEW_WINDOW_SECONDS
+    with _GUEST_PREVIEW_USAGE_LOCK:
+        record = _GUEST_PREVIEW_USAGE.get(fingerprint)
+        if not record:
+            return
+        timestamps = [
+            float(ts) for ts in (record.get("timestamps") or [])
+            if float(ts) >= threshold
+        ]
+        if timestamps:
+            timestamps.pop()
+        record["timestamps"] = timestamps
+        record["updated_at"] = now_ts
+        _GUEST_PREVIEW_USAGE[fingerprint] = record
+
+
+def _extract_bearer_token(req) -> str:
+    auth_header = (req.headers.get("Authorization") or req.headers.get("authorization") or "").strip()
+    if not auth_header.lower().startswith("bearer "):
+        return ""
+    return auth_header[7:].strip()
+
+
+def _get_cached_user_by_token(token_hash: str):
+    now_ts = time.time()
+    with _AUTH_TOKEN_CACHE_LOCK:
+        record = _AUTH_TOKEN_CACHE.get(token_hash)
+        if not record:
+            return None
+        if now_ts >= float(record.get("expire_at", 0)):
+            _AUTH_TOKEN_CACHE.pop(token_hash, None)
+            return None
+        return record.get("user") or {}
+
+
+def _set_cached_user_by_token(token_hash: str, user_data):
+    expire_at = time.time() + _AUTH_TOKEN_CACHE_TTL
+    with _AUTH_TOKEN_CACHE_LOCK:
+        _AUTH_TOKEN_CACHE[token_hash] = {
+            "user": user_data or {},
+            "expire_at": expire_at
+        }
+
+
+def _verify_user_token(token: str):
+    if not token:
+        return None, "missing_token", "Authentication required"
+
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    cached_user = _get_cached_user_by_token(token_hash)
+    if cached_user is not None:
+        return cached_user, None, None
+
+    try:
+        resp = requests.get(
+            _AUTH_VERIFY_URL,
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=_AUTH_VERIFY_TIMEOUT
+        )
+    except requests.RequestException:
+        return None, "auth_service_unavailable", "Auth service unavailable"
+
+    if not resp.ok:
+        return None, "invalid_token", "Invalid token"
+
+    user_data = {}
+    try:
+        payload = resp.json()
+        if isinstance(payload, dict):
+            user_data = payload.get("data") or {}
+    except ValueError:
+        user_data = {}
+
+    _set_cached_user_by_token(token_hash, user_data)
+    return user_data, None, None
+
+
+def require_auth(methods=None):
+    allowed_methods = {m.upper() for m in methods} if methods else None
+
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            if request.method == "OPTIONS":
+                return fn(*args, **kwargs)
+            if allowed_methods and request.method.upper() not in allowed_methods:
+                return fn(*args, **kwargs)
+
+            token = _extract_bearer_token(request)
+            user_data, err_code, err_message = _verify_user_token(token)
+            if err_code == "auth_service_unavailable":
+                return jsonify({"error": err_message}), 503
+            if err_code:
+                return jsonify({"error": err_message}), 401
+
+            g.current_user = user_data or {}
+            g.auth_token = token
+            return fn(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 # ==============================================================================
 # 1. 动态代理生成逻辑 (参考你提供的代码)
@@ -971,6 +1141,7 @@ def get_subtitle_content(video_url, lang_code, output_format='srt'):
 # 2. 核心解析接口
 # ==============================================================================
 @app.route('/api/get-parse', methods=['POST', 'OPTIONS'])
+@require_auth()
 def get_parse_video():
     # 处理 CORS 预检请求
     if request.method == 'OPTIONS':
@@ -1061,6 +1232,7 @@ def get_parse_video():
 # 3. 批量解析接口 (支持最多 3 个视频)
 # ==============================================================================
 @app.route('/api/get-parse-batch', methods=['POST', 'OPTIONS'])
+@require_auth()
 def get_parse_batch():
     if request.method == 'OPTIONS':
         return '', 204
@@ -1313,6 +1485,7 @@ def deduplicate_videos(all_videos):
     return unique_videos
 
 @app.route('/api/parse-playlist', methods=['POST', 'OPTIONS'])
+@require_auth()
 def parse_playlist():
     """解析playlist或channel，返回视频列表"""
     if request.method == 'OPTIONS':
@@ -1365,6 +1538,7 @@ def parse_playlist():
     })
 
 @app.route('/api/parse-mixed', methods=['POST', 'OPTIONS'])
+@require_auth()
 def parse_mixed_urls():
     """智能解析混合URL：自动识别单个视频、playlist、channel，支持去重和分级处理"""
     # 处理 CORS 预检请求
@@ -1486,6 +1660,7 @@ def parse_mixed_urls():
 # 5. 音频直链解析接口 (伪装模式：强制使用 format 18)
 # ==============================================================================
 @app.route('/api/get-audio-parse', methods=['POST', 'OPTIONS'])
+@require_auth()
 def get_audio_parse():
     if request.method == 'OPTIONS':
         return '', 204
@@ -1655,6 +1830,7 @@ def parse_vtt_to_segments(vtt_content):
 # ==============================================================================
 
 @app.route('/api/transcript/info', methods=['POST'])
+@require_auth()
 def get_transcript_info():
     """ 1. 获取字幕元数据：语言列表 """
     data = request.get_json()
@@ -1705,6 +1881,7 @@ def get_transcript_info():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/transcript/content', methods=['POST'])
+@require_auth()
 def get_transcript_content():
     """ 2. 获取清洗后的字幕内容 """
     data = request.get_json()
@@ -1911,7 +2088,7 @@ def api_extension_youtube_subtitle():
         }), 400
 
     fingerprint = _build_client_fingerprint(request)
-    allowed, _quota_info = _reserve_extension_guest_attempt(fingerprint)
+    allowed, quota_info = _reserve_extension_guest_attempt(fingerprint)
     if not allowed:
         query = urlencode({
             "source": "youtube-subtitle-extractor",
@@ -1920,8 +2097,9 @@ def api_extension_youtube_subtitle():
         return jsonify({
             "status": 1,
             "code": "QUOTA_EXCEEDED",
-            "message": "Please continue on website for free extraction.",
-            "redirect_url": f"{_EXTENSION_REDIRECT_URL}?{query}"
+            "message": "Free guest attempts reached. Please continue on website.",
+            "redirect_url": f"{_EXTENSION_REDIRECT_URL}?{query}",
+            "data": quota_info
         }), 429
 
     try:
@@ -1943,7 +2121,8 @@ def api_extension_youtube_subtitle():
                 "lang": lang,
                 "filename_base": sanitize_filename(base_filename),
                 "subtitle_srt": srt_content,
-                "subtitle_txt": subtitle_txt
+                "subtitle_txt": subtitle_txt,
+                "quota": quota_info
             }
         })
     except Exception as e:
@@ -1968,6 +2147,7 @@ def api_extension_youtube_subtitle():
 
 
 @app.route('/api/download', methods=['GET', 'POST'])
+@require_auth(methods=['POST'])
 def api_download_merged():
     """
     GET: 旧版视频下载
@@ -2180,7 +2360,60 @@ def api_download_merged():
                 traceback.print_exc()
                 return jsonify({"status": 1, "message": f"Internal error: {str(e)}"}), 500
 
+
+@app.route('/api/subtitle/guest-download', methods=['POST', 'OPTIONS'])
+def api_subtitle_guest_download():
+    """
+    Guest subtitle preview endpoint for frontend compatibility.
+    - Path: /api/subtitle/guest-download
+    - Method: POST
+    - Quota: 2 attempts per rolling 24 hours (configurable via env)
+    """
+    if request.method == "OPTIONS":
+        return ("", 204)
+
+    data = request.get_json(silent=True) or {}
+    url = (data.get("url") or "").strip()
+    lang = (data.get("lang") or "en").strip() or "en"
+    fmt = (data.get("format") or "vtt").strip().lower() or "vtt"
+
+    if not url:
+        return jsonify({"error": "URL is required"}), 400
+
+    fingerprint = _build_client_fingerprint(request)
+    allowed, quota = _reserve_guest_preview_attempt(fingerprint)
+    if not allowed:
+        return jsonify({
+            "code": "GUEST_LIMIT_REACHED",
+            "error": "Guest preview limit reached. Please login to continue.",
+            "quota": quota
+        }), 429
+
+    try:
+        content, _filename, err = get_subtitle_content_fast(url, lang, fmt)
+        if err:
+            _rollback_guest_preview_attempt(fingerprint)
+            err_text = str(err)
+            if "No subtitles found" in err_text or "doesn't have any subtitles" in err_text:
+                return jsonify({"error": err_text}), 404
+            return jsonify({"error": err_text}), 500
+
+        if not content:
+            _rollback_guest_preview_attempt(fingerprint)
+            return jsonify({"error": "Subtitle preview is empty"}), 500
+
+        return jsonify({
+            "text": content,
+            "format": fmt,
+            "lang": lang,
+            "quota": quota
+        }), 200
+    except Exception as e:
+        _rollback_guest_preview_attempt(fingerprint)
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
+
 @app.route('/api/batch_check', methods=['POST'])
+@require_auth()
 def api_batch_check():
     data = request.get_json() or {}
     urls = data.get('urls', [])
@@ -2190,6 +2423,7 @@ def api_batch_check():
     return jsonify({"status": "completed", "results": results})
 
 @app.route('/api/batch_submit', methods=['POST'])
+@require_auth()
 def api_batch_submit():
     data = request.get_json() or {}
     videos = data.get('videos', [])
@@ -2202,6 +2436,7 @@ def api_batch_submit():
     return jsonify({"status": "pending", "task_id": task_id})
 
 @app.route('/api/batch-download', methods=['POST'])
+@require_auth()
 def api_batch_download_legacy():
     task_id = str(uuid.uuid4())
     videos = request.get_json().get('videos', [])
@@ -2210,6 +2445,7 @@ def api_batch_download_legacy():
     return jsonify({"code": 0, "task_id": task_id})
 
 @app.route('/api/task_status', methods=['GET'])
+@require_auth()
 def api_task_status_merged():
     task_id = request.args.get('task_id')
     task = tasks.get(task_id)
@@ -2217,6 +2453,7 @@ def api_task_status_merged():
     return jsonify({"code": 0, "status": task['status'], "progress": task['progress'], "data": task})
 
 @app.route('/api/download_zip', methods=['GET', 'POST'])
+@require_auth()
 def api_download_zip_merged():
     if request.method == 'POST':
         task_id = request.get_json().get('task_id')
@@ -2237,6 +2474,7 @@ def api_download_zip_merged():
     return send_file(zip_path, as_attachment=True, download_name=zip_name)
 
 @app.route('/api/subtitle_stream', methods=['POST'])
+@require_auth()
 def api_subtitle_stream():
     """流式字幕下载 - 专为长视频优化"""
     data = request.get_json() or {}
@@ -2417,6 +2655,7 @@ def api_subtitle_stream():
     )
 
 @app.route('/api/video_info', methods=['POST'])
+@require_auth()
 def api_video_info():
     """快速获取视频基本信息，包含可用字幕语言列表"""
     data = request.get_json() or {}

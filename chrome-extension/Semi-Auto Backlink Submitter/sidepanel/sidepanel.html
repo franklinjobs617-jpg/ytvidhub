@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEO 外链发布助手</title>
+    <link rel="stylesheet" href="./sidepanel.css" />
+  </head>
+  <body>
+    <main class="panel">
+      <header class="panel__header">
+        <h1>SEO 外链发布助手</h1>
+        <p>机器自动填充，人工完成发布决策</p>
+      </header>
+
+      <section class="card controls">
+        <h2>控制区</h2>
+        <input id="csvFileInput" type="file" accept=".csv,text/csv" hidden />
+        <div class="button-row">
+          <button id="importBtn" class="btn btn--primary">导入 CSV</button>
+          <button id="runToggleBtn" class="btn btn--accent">开始任务</button>
+          <button id="exportBtn" class="btn btn--ghost">导出结果 CSV</button>
+        </div>
+      </section>
+
+      <section class="card status">
+        <h2>当前状态</h2>
+        <div class="status-grid">
+          <div>
+            <span class="status-label">进度</span>
+            <strong id="progressText">0 / 0</strong>
+          </div>
+          <div>
+            <span class="status-label">当前域名</span>
+            <strong id="domainText">-</strong>
+          </div>
+          <div>
+            <span class="status-label">运行状态</span>
+            <strong id="runStateText">待命中</strong>
+          </div>
+          <div>
+            <span class="status-label">任务标题</span>
+            <strong id="taskTitleText">-</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="card toolbox">
+        <h2>人工兜底工具箱</h2>
+        <div class="button-row">
+          <button id="copyTitleBtn" class="btn btn--ghost">一键复制标题</button>
+          <button id="copyBodyBtn" class="btn btn--ghost">一键复制正文 (HTML)</button>
+        </div>
+      </section>
+
+      <section class="card markers">
+        <h2>状态标记区</h2>
+        <div class="button-row">
+          <button id="markSuccessBtn" class="btn btn--success">✅ 标记成功</button>
+          <button id="markFailBtn" class="btn btn--danger">❌ 标记失败</button>
+          <button id="markSkipBtn" class="btn btn--warning">⏭️ 跳过下一条</button>
+        </div>
+      </section>
+
+      <section class="card logs">
+        <h2>任务概览</h2>
+        <ul id="taskList"></ul>
+      </section>
+
+      <footer id="toast" class="toast">准备就绪</footer>
+    </main>
+    <script src="./sidepanel.js"></script>
+  </body>
+</html>

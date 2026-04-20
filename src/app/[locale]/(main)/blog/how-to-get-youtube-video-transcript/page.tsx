@@ -1,6 +1,17 @@
 import Link from "next/link";
 import { CheckCircle2, Clock } from "lucide-react";
-export default function HowToGetYouTubeTranscriptPage() {
+import { buildCanonicalUrl } from "@/lib/url";
+
+type Props = {
+  params: { locale: string };
+};
+
+export default function HowToGetYouTubeTranscriptPage({ params }: Props) {
+  const canonicalUrl = buildCanonicalUrl({
+    locale: params.locale,
+    pathname: "/blog/how-to-get-youtube-video-transcript",
+  });
+
   const faqItems = [
     {
       q: "How to get transcript of YouTube video for free?",
@@ -30,7 +41,7 @@ export default function HowToGetYouTubeTranscriptPage() {
   };
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: "How to Get Transcript of YouTube Video: 3 Easy Ways in 2026",
     author: {
       "@type": "Organization",
@@ -40,9 +51,11 @@ export default function HowToGetYouTubeTranscriptPage() {
       "@type": "Organization",
       name: "YTVidHub",
     },
+    url: canonicalUrl,
+    inLanguage: params.locale,
+    datePublished: "2026-01-08",
     dateModified: "2026-01-08",
-    mainEntityOfPage:
-      "https://ytvidhub.com/blog/how-to-get-youtube-video-transcript/",
+    mainEntityOfPage: canonicalUrl,
   };
   return (
     <div className="editorial-page article-body">

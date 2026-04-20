@@ -3,10 +3,19 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import { buildCanonicalUrl } from "@/lib/url";
 
-export default function EngineeringDecisionsBlogPage() {
+type Props = {
+  params: { locale: string };
+};
+
+export default function EngineeringDecisionsBlogPage({ params }: Props) {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const canonicalUrl = buildCanonicalUrl({
+    locale: params.locale,
+    pathname: "/blog/engineering-decisions-ytvidhub",
+  });
 
   const handleAction = (e: React.MouseEvent) => {
     if (!user) {
@@ -38,7 +47,7 @@ export default function EngineeringDecisionsBlogPage() {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: "From Pain Point to Production",
     author: {
       "@type": "Organization",
@@ -48,9 +57,11 @@ export default function EngineeringDecisionsBlogPage() {
       "@type": "Organization",
       name: "YTVidHub",
     },
+    url: canonicalUrl,
+    inLanguage: params.locale,
+    datePublished: "2025-10-26",
     dateModified: "2025-10-26",
-    mainEntityOfPage:
-      "https://ytvidhub.com/blog/engineering-decisions-ytvidhub/",
+    mainEntityOfPage: canonicalUrl,
   };
 
   return (

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { Link } from "@/i18n/routing";
-import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 import { blogEntries } from "@/lib/content-index";
 
 type Props = {
@@ -9,21 +9,35 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const canonicalUrl = buildCanonicalUrl({ locale, pathname: "/blog" });
+  const alternates = buildAlternates(locale, "/blog");
+  const canonicalUrl = alternates.canonical;
 
   return {
     title: "YTVidHub Blog | Product Notes, Workflows, and Engineering",
     description:
       "Read practical articles about subtitle workflows, transcript quality, and engineering decisions behind YTVidHub.",
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates,
     openGraph: {
       title: "YTVidHub Blog",
       description:
         "Workflow notes and engineering write-ups for subtitle extraction and transcript operations.",
       url: canonicalUrl,
       type: "website",
+      images: [
+        {
+          url: "/image/og-image.webp",
+          width: 1200,
+          height: 630,
+          alt: "YTVidHub Blog",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "YTVidHub Blog",
+      description:
+        "Workflow notes and engineering write-ups for subtitle extraction and transcript operations.",
+      images: ["/image/og-image.webp"],
     },
   };
 }

@@ -1,7 +1,17 @@
 "use client";
 import Link from "next/link";
+import { buildCanonicalUrl } from "@/lib/url";
 
-export default function SubtitleAccuracyBlogPage() {
+type Props = {
+  params: { locale: string };
+};
+
+export default function SubtitleAccuracyBlogPage({ params }: Props) {
+  const canonicalUrl = buildCanonicalUrl({
+    locale: params.locale,
+    pathname: "/blog/subtitle-accuracy-problem",
+  });
+
   const faqItems = [
     {
       q: "Why are auto-generated subtitles often inaccurate in some languages?",
@@ -25,7 +35,7 @@ export default function SubtitleAccuracyBlogPage() {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: "The Hidden Problem in Your Data Pipeline",
     author: {
       "@type": "Organization",
@@ -35,8 +45,11 @@ export default function SubtitleAccuracyBlogPage() {
       "@type": "Organization",
       name: "YTVidHub",
     },
+    url: canonicalUrl,
+    inLanguage: params.locale,
+    datePublished: "2025-11-15",
     dateModified: "2025-11-15",
-    mainEntityOfPage: "https://ytvidhub.com/blog/subtitle-accuracy-problem/",
+    mainEntityOfPage: canonicalUrl,
   };
 
   return (

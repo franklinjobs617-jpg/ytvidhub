@@ -1,0 +1,82 @@
+#seo-backlink-assistant {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2147483645;
+  width: 286px;
+  color: #f7f7ff;
+  background: linear-gradient(145deg, rgba(7, 8, 18, 0.92), rgba(23, 13, 43, 0.92));
+  border: 1px solid rgba(108, 105, 255, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(15, 9, 31, 0.5);
+  backdrop-filter: blur(8px);
+  font-family: "Noto Sans SC", "Segoe UI Variable", "PingFang SC", sans-serif;
+  overflow: hidden;
+}
+
+#seo-backlink-assistant .assist-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#seo-backlink-assistant .assist-title {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(226, 228, 255, 0.9);
+}
+
+#seo-backlink-assistant .assist-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #56ffd4;
+  box-shadow: 0 0 0 0 rgba(86, 255, 212, 0.9);
+}
+
+#seo-backlink-assistant .assist-body {
+  padding: 10px 14px 14px;
+}
+
+#seo-backlink-assistant .assist-status {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+#seo-backlink-assistant .assist-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(224, 225, 255, 0.78);
+  line-height: 1.5;
+}
+
+#seo-backlink-assistant.assist-warn {
+  border-color: rgba(255, 106, 125, 0.7);
+  box-shadow: 0 18px 48px rgba(65, 13, 25, 0.55);
+}
+
+#seo-backlink-assistant.assist-warn .assist-dot {
+  background: #ff6a7d;
+  animation: assistPulse 1.2s infinite;
+}
+
+#seo-backlink-assistant.assist-info .assist-dot {
+  background: #7da5ff;
+}
+
+#seo-backlink-assistant.assist-ok .assist-dot {
+  background: #56ffd4;
+}
+
+@keyframes assistPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 106, 125, 0.72);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(255, 106, 125, 0);
+  }
+}
