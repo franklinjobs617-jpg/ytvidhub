@@ -4,15 +4,17 @@ const API_BASE_CANDIDATES = [
   "http://localhost:5000"
 ];
 
-const API_PATH = "/api/extension/youtube-subtitle";
+const SUBTITLE_API_PATH = "/api/extension/youtube-subtitle";
+const VIDEO_INFO_API_PATH = "/api/video_info";
 
-async function callSubtitleApi(payload) {
+async function callApi(path, payload, options = {}) {
+  const { treatAnyOkAsSuccess = false } = options;
   let lastNetworkError = "Network error";
 
   for (let index = 0; index < API_BASE_CANDIDATES.length; index += 1) {
     const base = API_BASE_CANDIDATES[index];
     try {
-      const response = await fetch(`${base}${API_PATH}`, {
+      const response = await fetch(`${base}${path}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -22,10 +24,13 @@ async function callSubtitleApi(payload) {
 
       const responseJson = await response.json().catch(() => ({}));
 
-      if (response.ok && responseJson?.status === 0) {
+      const isSubtitleSuccess = response.ok && responseJson?.status === 0;
+      const isGenericSuccess = response.ok && treatAnyOkAsSuccess && !responseJson?.error;
+
+      if (isSubtitleSuccess || isGenericSuccess) {
         return {
           ok: true,
-          data: responseJson.data,
+          data: isSubtitleSuccess ? responseJson.data : responseJson,
           base
         };
       }
@@ -57,9 +62,30 @@ async function callSubtitleApi(payload) {
   };
 }
 
+async function callSubtitleApi(payload) {
+  return callApi(SUBTITLE_API_PATH, payload);
+}
+
+async function callVideoInfoApi(payload) {
+  return callApi(VIDEO_INFO_API_PATH, payload, { treatAnyOkAsSuccess: true });
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type === "YT_SUBTITLE_FETCH") {
     callSubtitleApi(message.payload)
+      .then((result) => sendResponse(result))
+      .catch((error) => {
+        sendResponse({
+          ok: false,
+          code: "UNEXPECTED_ERROR",
+          message: error?.message || "Unexpected background error"
+        });
+      });
+    return true;
+  }
+
+  if (message?.type === "YT_SUBTITLE_VIDEO_INFO") {
+    callVideoInfoApi(message.payload)
       .then((result) => sendResponse(result))
       .catch((error) => {
         sendResponse({

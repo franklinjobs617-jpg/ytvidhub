@@ -1,117 +1,151 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
 import LoginModal from "@/components/LoginModel";
+
 export default function EngineeringDecisionsBlogPage() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+
   const handleAction = (e: React.MouseEvent) => {
     if (!user) {
       e.preventDefault();
       setShowLoginModal(true);
     }
   };
+
+  const faqItems = [
+    {
+      q: "What is the main benefit of a decoupled queue architecture?",
+      a: "It isolates failures and allows high concurrency. One failing video job does not collapse the full batch.",
+    },
+    {
+      q: "Why does clean TXT matter for LLM pipelines?",
+      a: "Removing timestamps and structural subtitle noise improves chunking quality and reduces preprocessing overhead.",
+    },
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "From Pain Point to Production",
+    author: {
+      "@type": "Organization",
+      name: "YTVidHub Engineering",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "YTVidHub",
+    },
+    dateModified: "2025-10-26",
+    mainEntityOfPage:
+      "https://ytvidhub.com/blog/engineering-decisions-ytvidhub/",
+  };
+
   return (
     <div className="editorial-page article-body">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <main className="editorial-main">
-        {/* Hero */}
         <header className="article-shell article-hero">
-          <p className="article-kicker">
-            Engineering Blog
-          </p>
+          <p className="article-kicker">Engineering Blog</p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
             From Pain Point to Production
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            The core architectural decisions that transformed a simple idea into
-            the YTVidHub you use today.
+            The architectural decisions that moved YTVidHub from a simple idea
+            to a resilient subtitle operation pipeline.
           </p>
           <p className="text-sm text-slate-400 mt-4">
-            By YTVidHub Engineering · Updated Oct 26, 2025
+            By YTVidHub Engineering | Updated Oct 26, 2025
           </p>
         </header>
-        {/* Intro */}
+
         <article className="article-shell article-section">
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            When we introduced the concept of a dedicated
-            <strong>Bulk YouTube Subtitle Downloader</strong>, the response was
-            immediate. Researchers, data analysts, and AI builders confirmed a
-            universal pain point: gathering transcripts for large projects is a
-            &quot;massive time sink.&quot;
+            When we introduced a dedicated
+            <strong> bulk YouTube subtitle downloader</strong>, user feedback
+            was immediate: collecting transcript data at scale was still too
+            manual and fragile.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
-            This is the story of how community feedback and tough engineering
-            choices shaped YTVidHub.
+            This write-up covers the engineering choices that addressed
+            reliability, throughput, and data usability.
           </p>
         </article>
-        {/* Section 1 */}
+
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
             1. Scalability Meets Stability
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            The primary hurdle for a true bulk downloader isn&apos;t just
-            downloading one file; it&apos;s reliably processing hundreds or
-            thousands simultaneously without failure.
+            Bulk subtitle extraction is not only about speed. It requires
+            predictable behavior under bursty loads and partial failures.
           </p>
           <div className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-8">
             <img
               src="/image/ytvidhub-bulk-downloader-architecture-flow.png"
               alt="Conceptual diagram of YTVidHub architecture for parallel batch processing"
               className="w-full h-auto"
+              loading="lazy"
             />
           </div>
           <p className="text-xs text-slate-400 text-center mb-8">
-            Figure 1: Decoupled Backend Parallel Processing
+            Figure 1: Decoupled backend workers with queue-based orchestration.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
-            Our solution involves a
-            <strong>decoupled, asynchronous job queue</strong>. When you submit
-            a list, our front-end sends video IDs to a message broker. A fleet
-            of backend workers then picks up these jobs independently and
-            processes them in parallel. This ensures that even if one video
-            fails, it doesn&apos;t crash the entire batch.
+            We use an asynchronous queue and worker fleet. Client requests push
+            video IDs into a broker; workers fetch jobs independently and run in
+            parallel. This isolates faults and avoids all-or-nothing failure
+            behavior.
           </p>
         </article>
-        {/* Section 2 */}
+
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            2. Data: More Than Just SRT
+            2. Data: More Than SRT
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            For most analysts, raw SRT files—with timestamps and sequence
-            numbers—are actually &quot;dirty data.&quot; They require an extra,
-            tedious pre-processing step before they can be used in analysis
-            tools or RAG systems.
+            Raw SRT often behaves like dirty data for analysis tasks. It carries
+            timing scaffolding and formatting that add cleanup overhead.
           </p>
           <blockquote className="border-l-4 border-blue-600 pl-6 py-2 mb-8">
             <p className="text-slate-800 text-lg italic leading-relaxed">
-              &quot;I don&apos;t need timestamps 99% of the time. I just want a
-              clean block of text to feed into my model. Having to write a
-              Python script to clean every single SRT file is a huge waste of
-              time.&quot;
+              “I just need clean text for model input. Writing another cleanup
+              script for every batch wastes time.”
             </p>
           </blockquote>
           <p className="text-lg text-slate-600 leading-relaxed">
-            This direct feedback was a turning point. We made a crucial
-            decision: to treat the
-            <strong>TXT output as a first-class citizen</strong>. Our system
-            doesn&apos;t just convert SRT to TXT; it runs a dedicated cleaning
-            pipeline to strip all timestamps, metadata, empty lines, and
-            formatting tags.
+            That feedback changed the roadmap. We treated
+            <strong> clean TXT output as first-class</strong> and added a
+            dedicated cleaning stage for timestamp and metadata removal.
           </p>
         </article>
-        {/* Section 3 */}
+
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             3. The Accuracy Dilemma
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
-            YouTube&apos;s auto-generated (ASR) captions are a fantastic
-            baseline, but they often fall short for high-stakes research.
-            We&apos;ve adopted a two-pronged strategy:
+            Auto-generated captions provide baseline coverage but can underperform
+            on specialized or multilingual content. Our strategy runs in phases.
           </p>
           <div className="grid sm:grid-cols-2 gap-5">
             <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
@@ -122,8 +156,8 @@ export default function EngineeringDecisionsBlogPage() {
                 Free Baseline Data
               </h4>
               <p className="text-sm text-slate-500 leading-relaxed">
-                Unlimited bulk downloads of all official YouTube subtitles
-                (Manual + ASR) at unmatched speed.
+                Unlimited bulk downloads of official YouTube subtitle tracks
+                (manual + ASR) with fast queue execution.
               </p>
             </div>
             <div className="p-5 rounded-xl bg-slate-900 text-white">
@@ -134,40 +168,176 @@ export default function EngineeringDecisionsBlogPage() {
                 Pro Transcription
               </h4>
               <ul className="text-sm text-slate-400 leading-relaxed space-y-1">
-                <li>· OpenAI Whisper Integration</li>
-                <li>· Contextual Keyword Awareness</li>
-                <li>· Audio Silent-Segment Removal</li>
+                <li>• OpenAI Whisper integration</li>
+                <li>• Context-aware correction signals</li>
+                <li>• Silent-segment removal</li>
               </ul>
             </div>
           </div>
         </article>
-        {/* Conclusion */}
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Conclusion
+            Keyword Coverage: Bulk YouTube Subtitle Downloader Architecture
           </h2>
-          <p className="text-lg text-slate-600 leading-relaxed italic">
-            Our journey from a simple pain point to a robust production tool has
-            always been guided by the needs of the research community.
-            We&apos;re excited to continue building for you.
+          <p className="text-lg text-slate-600 leading-relaxed mb-4">
+            This engineering page supports technical search intents around
+            <strong> bulk YouTube subtitle downloader architecture</strong>,
+            queue reliability, and scalable transcript processing. Readers in
+            this segment care less about UI features and more about retry
+            strategy, fault isolation, and predictable throughput.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed mb-4">
+            To meet those intents, the article highlights three proof points:
+            asynchronous queue orchestration, clean TXT data shaping, and
+            accuracy trade-offs for ASR tracks. These are the elements that
+            usually decide whether a subtitle pipeline can be trusted in
+            high-volume analytics or model-ingestion workflows.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            We also position this content as a bridge between product and
+            engineering audiences: practical architecture language for builders,
+            with enough operational context for content and research teams.
           </p>
         </article>
-        {/* FAQ */}
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Operational Lessons From Production
+          </h2>
+          <ul className="space-y-3 text-slate-600">
+            <li>Keep retry logic idempotent to prevent duplicate exports.</li>
+            <li>
+              Separate queue health metrics from transcript quality metrics.
+            </li>
+            <li>
+              Store clean-text and timed-text outputs together for traceability.
+            </li>
+            <li>
+              Surface partial-failure states clearly so users can recover fast.
+            </li>
+          </ul>
+        </article>
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Retry, Idempotency, and Failure Budget
+          </h2>
+          <p className="text-lg text-slate-600 leading-relaxed mb-4">
+            For high-volume subtitle jobs, retries are inevitable. The key
+            design rule is idempotency: repeating the same job should not create
+            duplicate exports or inconsistent result states. We enforce this by
+            hashing job inputs, storing deterministic output keys, and applying
+            completion guards before write operations.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed mb-4">
+            We also operate with a failure budget mindset. Not every external
+            caption fetch error should page the team, but repeated upstream
+            failures in a region or language group should trigger degradation
+            mode and user-visible notices. This keeps reliability honest while
+            avoiding alert fatigue.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            In practice, this approach reduces hidden data corruption risk and
+            improves trust for users who rely on predictable batch outcomes.
+          </p>
+        </article>
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Observability Metrics That Matter
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h3 className="font-semibold text-slate-900 mb-2">Queue Metrics</h3>
+              <ul className="text-sm text-slate-600 space-y-2">
+                <li>Time-to-start per job batch</li>
+                <li>Retry rate by source and language</li>
+                <li>Worker saturation and wait depth</li>
+              </ul>
+            </div>
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h3 className="font-semibold text-slate-900 mb-2">
+                Data Quality Metrics
+              </h3>
+              <ul className="text-sm text-slate-600 space-y-2">
+                <li>Transcript completeness ratio</li>
+                <li>Noise density in clean TXT output</li>
+                <li>Low-confidence segment concentration</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Why This Matters for SEO and Content Systems
+          </h2>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            Reliable subtitle infrastructure is not only an engineering win. It
+            directly affects content velocity, update freshness, and trust in
+            AI-assisted publishing flows. Better pipeline stability means fewer
+            blocked drafts, faster refresh cycles, and stronger topical
+            authority over time.
+          </p>
+        </article>
+
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            End-to-End Request Lifecycle
+          </h2>
+          <p className="text-lg text-slate-600 leading-relaxed mb-4">
+            A request begins with one URL or a full playlist. The system
+            normalizes input, validates payload shape, and creates queue jobs
+            with deterministic identifiers. This keeps retries safe and reduces
+            accidental duplicate exports.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed mb-4">
+            Workers process each job in stages: caption retrieval, format
+            transformation, quality checks, and artifact persistence. Every
+            stage emits progress metadata so users can track status and recover
+            partial failures without rerunning completed tasks.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            The result is a traceable processing chain where each output can be
+            mapped to source, transformation stage, and quality flags.
+          </p>
+        </article>
+
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Design Principles We Keep Applying
+          </h2>
+          <ul className="space-y-3 text-slate-600">
+            <li>Prefer deterministic output contracts over implicit formatting.</li>
+            <li>Keep failure domains small and isolated.</li>
+            <li>Separate speed metrics from quality metrics.</li>
+            <li>Treat quality metadata as a core output artifact.</li>
+            <li>Build for replay and auditability at scale.</li>
+          </ul>
+        </article>
+
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Engineering Validation Notes
+          </h2>
+          <ul className="space-y-2 text-slate-600">
+            <li>
+              Architecture reflects production behavior under large batch
+              workloads.
+            </li>
+            <li>
+              Decisions prioritize fault isolation, throughput, and downstream
+              data usability.
+            </li>
+            <li>
+              Limitations of ASR-based tracks are documented instead of hidden
+              behind marketing claims.
+            </li>
+          </ul>
+        </article>
+
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
             Quick FAQ
           </h2>
           <div className="space-y-5">
-            {[
-              {
-                q: "What is the primary benefit of the decoupled architecture?",
-                a: "By using an asynchronous queue, YTVidHub can handle massive batch requests (1000+ URLs) without timing out, ensuring that transient YouTube API glitches don't fail your entire job.",
-              },
-              {
-                q: "Is the clean TXT output really ready for LLMs?",
-                a: "Yes. We specifically strip structural noise (ASR confidence scores, timestamps, line numbers) so your model focus remains 100% on semantic content.",
-              },
-            ].map((faq, i) => (
+            {faqItems.map((faq, i) => (
               <div
                 key={i}
                 className="p-5 rounded-xl border border-slate-100 bg-slate-50"
@@ -180,7 +350,46 @@ export default function EngineeringDecisionsBlogPage() {
             ))}
           </div>
         </article>
-        {/* CTA */}
+
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Related Reading
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {[
+              {
+                href: "/blog/subtitle-accuracy-problem",
+                title: "The Hidden Problem in Your Data Pipeline",
+                desc: "Review subtitle quality risks that influence the reliability of downstream systems.",
+              },
+              {
+                href: "/blog/creator-tutorials",
+                title: "Creator Tutorials",
+                desc: "See practical transcript-first workflows used by content teams after extraction.",
+              },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm"
+              >
+                <p className="text-xs font-semibold tracking-wide text-blue-600 uppercase">
+                  Related Article
+                </p>
+                <h3 className="mt-2 text-base font-semibold text-slate-900 group-hover:text-blue-700">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+                  {item.desc}
+                </p>
+                <span className="mt-3 inline-flex text-sm font-medium text-blue-600 transition-transform group-hover:translate-x-0.5">
+                  Read article -&gt;
+                </span>
+              </Link>
+            ))}
+          </div>
+        </article>
+
         <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
@@ -188,7 +397,7 @@ export default function EngineeringDecisionsBlogPage() {
             </h2>
             <p className="text-slate-400 mb-8">
               The unlimited bulk downloader and clean TXT output are live now.
-              Stop the manual work and start saving hours today.
+              Stop manual copy work and save hours.
             </p>
             <Link
               href="/"
@@ -200,6 +409,7 @@ export default function EngineeringDecisionsBlogPage() {
           </div>
         </section>
       </main>
+
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
