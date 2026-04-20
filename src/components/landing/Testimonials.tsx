@@ -49,7 +49,7 @@ export default function Testimonials() {
               </div>
 
               <blockquote className="flex-grow text-base leading-relaxed text-slate-600">
-                "{review.content}"
+                &ldquo;{review.content}&rdquo;
               </blockquote>
 
               <footer className="mt-8 flex items-center gap-3 border-t border-slate-200 pt-5">
