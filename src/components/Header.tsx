@@ -55,6 +55,10 @@ export default function Header() {
   const isParentActive = (items: { href: string }[]) => {
     return items.some((item) => normalizePath(pathname) === normalizePath(item.href));
   };
+  const closeFloatingMenus = () => {
+    setMobileMenuOpen(false);
+    setUserMenuOpen(false);
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -69,43 +73,42 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    setMobileMenuOpen(false);
-    setUserMenuOpen(false);
-  }, [pathname]);
-
   return (
     <>
-      <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-50 border-b border-slate-200/80 transition-all duration-300 supports-[backdrop-filter]:bg-white/60">
-        <nav className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
+      <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/92 backdrop-blur-xl supports-[backdrop-filter]:bg-white/72">
+        <nav className="container mx-auto flex h-16 items-center justify-between px-4 sm:h-[4.5rem] sm:px-6 lg:px-8">
           {/* === Logo === */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0">
+          <Link href="/" onClick={closeFloatingMenus} className="group flex shrink-0 items-center gap-2.5 rounded-full px-1.5 py-1 transition-colors hover:bg-slate-50">
             <Image
               src="/image/icon.webp"
               alt="YTVidHub Logo"
               width={36}
               height={36}
               priority
-              className="h-8 w-auto md:h-9 transition-transform duration-300 group-hover:rotate-[-5deg]"
+              className="h-8 w-auto transition-transform duration-300 group-hover:rotate-[-5deg] md:h-9"
             />
+            <span className="hidden text-sm font-semibold tracking-[0.02em] text-slate-900 sm:inline">
+              YTVidHub
+            </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden items-center gap-1 rounded-full border border-slate-200/80 bg-white px-2 py-1 shadow-[0_8px_30px_-24px_rgba(15,23,42,0.45)] lg:flex">
             <Link
               href="/"
-              className={`text-sm font-semibold transition-colors ${isActive("/")
-                ? "text-[var(--brand-600)]"
-                : "text-slate-600 hover:text-slate-900"
+              onClick={closeFloatingMenus}
+              className={`rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${isActive("/")
+                ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 }`}
             >
               {t('home')}
             </Link>
 
-            <div className="relative group h-20 flex items-center">
+            <div className="relative group flex items-center">
               <button
-                className={`flex items-center gap-1 text-sm font-semibold transition-colors ${isParentActive(toolLinks)
-                  ? "text-[var(--brand-600)]"
-                  : "text-slate-600 group-hover:text-slate-900"
+                className={`flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${isParentActive(toolLinks)
+                  ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
+                  : "text-slate-600 group-hover:bg-slate-50 group-hover:text-slate-900"
                   }`}
               >
                 <span>{t('tools')}</span>
@@ -114,14 +117,15 @@ export default function Header() {
                   className="transition-transform duration-200 group-hover:rotate-180"
                 />
               </button>
-              <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-2">
+              <div className="invisible absolute left-1/2 top-[92%] w-64 -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <div className="rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_22px_44px_-24px_rgba(15,23,42,0.45)] backdrop-blur">
                   {toolLinks.map((item) => (
                     <Link
                       key={item.key}
                       href={item.href}
-                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                        ? "bg-[var(--brand-100)] text-[var(--brand-600)]"
+                      onClick={closeFloatingMenus}
+                      className={`block rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${isActive(item.href)
+                        ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
                         : "text-slate-600 hover:bg-slate-50"
                         }`}
                     >
@@ -134,9 +138,10 @@ export default function Header() {
 
             <Link
               href="/pricing"
-              className={`text-sm font-semibold transition-colors ${isActive("/pricing")
-                ? "text-[var(--brand-600)]"
-                : "text-slate-600 hover:text-slate-900"
+              onClick={closeFloatingMenus}
+              className={`rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${isActive("/pricing")
+                ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 }`}
             >
               {t('pricing')}
@@ -144,19 +149,20 @@ export default function Header() {
 
             <Link
               href="/add-on"
-              className={`text-sm font-semibold transition-colors ${isActive("/add-on")
-                ? "text-[var(--brand-600)]"
-                : "text-slate-600 hover:text-slate-900"
+              onClick={closeFloatingMenus}
+              className={`rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${isActive("/add-on")
+                ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 }`}
             >
               {t('extension')}
             </Link>
 
-            <div className="relative group h-20 flex items-center">
+            <div className="relative group flex items-center">
               <button
-                className={`flex items-center gap-1 text-sm font-semibold transition-colors ${isParentActive(resourceLinks)
-                  ? "text-[var(--brand-600)]"
-                  : "text-slate-600 group-hover:text-slate-900"
+                className={`flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${isParentActive(resourceLinks)
+                  ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
+                  : "text-slate-600 group-hover:bg-slate-50 group-hover:text-slate-900"
                   }`}
               >
                 <span>{t('resources')}</span>
@@ -165,14 +171,15 @@ export default function Header() {
                   className="transition-transform duration-200 group-hover:rotate-180"
                 />
               </button>
-              <div className="absolute top-[80%] left-1/2 -translate-x-1/2 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-2">
+              <div className="invisible absolute left-1/2 top-[92%] w-64 -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <div className="rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_22px_44px_-24px_rgba(15,23,42,0.45)] backdrop-blur">
                   {resourceLinks.map((item) => (
                     <Link
                       key={item.key}
                       href={item.href}
-                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${isActive(item.href)
-                        ? "bg-[var(--brand-100)] text-[var(--brand-600)]"
+                      onClick={closeFloatingMenus}
+                      className={`block rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${isActive(item.href)
+                        ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
                         : "text-slate-600 hover:bg-slate-50"
                         }`}
                     >
@@ -195,7 +202,7 @@ export default function Header() {
                 <LanguageSwitcher />
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="bg-[var(--brand-600)] hover:bg-[var(--brand-700)] text-white text-sm font-semibold px-4 md:px-5 py-2 rounded-lg transition-all"
+                  className="rounded-full bg-[var(--brand-600)] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_24px_-16px_rgba(37,99,235,0.95)] transition-all hover:-translate-y-0.5 hover:bg-[var(--brand-700)] md:px-5"
                 >
                   {t('login')}
                 </button>
@@ -205,11 +212,11 @@ export default function Header() {
                 <div className="relative" ref={userMenuRef}>
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-50 transition-all"
+                    className="flex items-center gap-2 rounded-full p-1 transition-all hover:bg-slate-50"
                   >
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 border border-amber-200 rounded-full">
-                      <Coins size={14} className="text-amber-600" />
-                      <span className="text-sm font-bold text-amber-700">{user.credits}</span>
+                    <div className="flex items-center gap-1.5 rounded-full border border-[var(--brand-200)] bg-[var(--brand-50)] px-2.5 py-1">
+                      <Coins size={14} className="text-[var(--brand-600)]" />
+                      <span className="text-sm font-bold text-[var(--brand-700)]">{user.credits}</span>
                     </div>
                     <Image
                       src={user.picture || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"}
@@ -221,7 +228,7 @@ export default function Header() {
                   </button>
 
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white border border-slate-200 shadow-xl z-50">
+                    <div className="absolute right-0 z-50 mt-2 w-56 rounded-2xl border border-slate-200 bg-white shadow-[0_20px_45px_-25px_rgba(15,23,42,0.45)]">
                       <div className="px-4 py-3 border-b border-slate-100">
                         <p className="text-sm font-semibold text-slate-900">{user.name}</p>
                         <p className="text-xs text-slate-500 truncate">{user.email}</p>
@@ -235,12 +242,14 @@ export default function Header() {
                         </div>
                         <Link
                           href="/pricing"
+                          onClick={closeFloatingMenus}
                           className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
                         >
                           <Coins size={16} /> {t('buyCredits')}
                         </Link>
                         <Link
                           href="/history"
+                          onClick={closeFloatingMenus}
                           className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
                         >
                           <History size={16} /> {t('history')}
@@ -271,7 +280,7 @@ export default function Header() {
 
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+              className="rounded-lg p-2 text-slate-600 transition-colors hover:bg-slate-50 lg:hidden"
             >
               <Menu size={22} />
             </button>
@@ -290,12 +299,12 @@ export default function Header() {
         />
 
         <div
-          className={`relative w-[85%] max-w-sm h-full bg-white shadow-2xl transition-transform duration-300 flex flex-col ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          className={`relative flex h-full w-[85%] max-w-sm flex-col border-r border-slate-200 bg-white shadow-2xl transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
             }`}
         >
-          <div className="flex justify-between items-center px-6 h-16 border-b border-slate-100">
-            <span className="font-bold text-lg flex items-center gap-2">
-              <img src="/image/icon.webp" alt="Logo" className="h-7 w-auto" />
+          <div className="flex h-16 items-center justify-between border-b border-slate-100 px-6">
+            <span className="flex items-center gap-2 text-lg font-bold">
+              <Image src="/image/icon.webp" alt="Logo" width={28} height={28} className="h-7 w-auto" />
               YTVidHub
             </span>
             <button
@@ -331,6 +340,7 @@ export default function Header() {
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             <Link
               href="/"
+              onClick={closeFloatingMenus}
               className={`block text-base font-semibold ${isActive("/") ? "text-[var(--brand-600)]" : "text-slate-900"}`}
             >
               {t('home')}
@@ -344,6 +354,7 @@ export default function Header() {
                 <Link
                   key={item.key}
                   href={item.href}
+                  onClick={closeFloatingMenus}
                   className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-[var(--brand-600)]" : "text-slate-600"}`}
                 >
                   {t(item.key)}
@@ -353,12 +364,14 @@ export default function Header() {
 
             <Link
               href="/pricing"
+              onClick={closeFloatingMenus}
               className={`block text-base font-semibold ${isActive("/pricing") ? "text-[var(--brand-600)]" : "text-slate-900"}`}
             >
               {t('pricing')}
             </Link>
             <Link
               href="/add-on"
+              onClick={closeFloatingMenus}
               className={`block text-base font-semibold ${isActive("/add-on") ? "text-[var(--brand-600)]" : "text-slate-900"}`}
             >
               {t('extension')}
@@ -372,6 +385,7 @@ export default function Header() {
                 <Link
                   key={item.key}
                   href={item.href}
+                  onClick={closeFloatingMenus}
                   className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-[var(--brand-600)]" : "text-slate-600"}`}
                 >
                   {footerT(item.key)}
@@ -384,6 +398,7 @@ export default function Header() {
                 <div className="h-px bg-slate-200 my-4"></div>
                 <Link
                   href="/history"
+                  onClick={closeFloatingMenus}
                   className="flex items-center gap-2 text-base font-semibold text-slate-900"
                 >
                   <History size={18} /> {t('history')}

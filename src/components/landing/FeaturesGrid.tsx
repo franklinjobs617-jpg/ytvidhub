@@ -28,27 +28,24 @@ export default function FeaturesGrid() {
   ];
 
   return (
-    <section className="py-24 bg-slate-50">
-      <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
-
-        {/* Header Text */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900">
+    <section className="bg-[var(--surface-page)] py-24">
+      <div className="container mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto mb-16 max-w-3xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
             {t('title')}
           </h2>
-          <p className="mt-4 text-lg text-slate-500 leading-relaxed">
+          <p className="mt-4 text-lg leading-relaxed text-slate-600">
             {t('description')}
           </p>
         </div>
 
-        {/* Feature Cards Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((item, index) => (
             <div
               key={index}
-              className="group flex flex-col bg-white p-5 rounded-2xl border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+              className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_18px_34px_-28px_rgba(15,23,42,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_32px_48px_-34px_rgba(37,99,235,0.55)]"
             >
-              <div className="relative overflow-hidden rounded-xl bg-slate-100 mb-5 aspect-[4/3]">
+              <div className="relative mb-5 aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
                 <img
                   src={item.image}
                   alt={item.alt}
@@ -58,22 +55,21 @@ export default function FeaturesGrid() {
               <h3 className="text-xl font-bold text-slate-900">
                 {item.title}
               </h3>
-              <p className="mt-2 text-slate-500 leading-relaxed text-sm">
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
                 {item.description}
               </p>
             </div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
         <div className="mt-20 text-center">
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-slate-600">
             {t('cta.text')}
           </p>
 
           <Link
             href="/data-prep-guide"
-            className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 font-bold py-3.5 px-8 rounded-xl text-lg shadow-sm transition-all hover:bg-blue-50 hover:border-blue-300 hover:shadow-md"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-8 py-3.5 text-lg font-bold text-white shadow-[0_22px_30px_-20px_rgba(37,99,235,0.92)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
           >
             {t('cta.button')}
             <svg

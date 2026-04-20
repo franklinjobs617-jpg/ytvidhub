@@ -1,38 +1,30 @@
 "use client";
 
-import React from "react";
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 export default function CoreCapabilities() {
-  const t = useTranslations('coreCapabilities');
+  const t = useTranslations("coreCapabilities");
 
   return (
-    <section className="py-24 bg-slate-50">
-      <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
-        {/* Header */}
-        <div className="text-center mb-20">
-          <span className="text-sm font-bold uppercase text-blue-600 tracking-wider">
-            {t('badge')}
+    <section className="relative overflow-hidden bg-white py-24">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[radial-gradient(ellipse_at_bottom,rgba(37,99,235,0.12),rgba(37,99,235,0)_70%)]" />
+      <div className="container relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mb-16 text-center">
+          <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+            {t("badge")}
           </span>
-          <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900 mt-3">
-            {t('title')}
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+            {t("title")}
           </h2>
-          <p className="mt-4 text-lg text-slate-500 max-w-3xl mx-auto leading-relaxed">
-            {t('description')}
+          <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
+            {t("description")}
           </p>
         </div>
 
-        <div className="space-y-24">
-          {/* Feature Block 1: Video Demo */}
-          <div className="grid lg:grid-cols-2 items-center gap-12">
-            <div className="p-2 bg-white rounded-xl shadow-lg border border-slate-200">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto rounded-lg"
-              >
+        <div className="space-y-10">
+          <article className="grid gap-10 rounded-3xl border border-slate-200 bg-[linear-gradient(160deg,#ffffff_0%,#f8fbff_100%)] p-6 shadow-[0_28px_50px_-40px_rgba(15,23,42,0.52)] md:p-9 lg:grid-cols-2 lg:items-center">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <video autoPlay loop muted playsInline className="h-auto w-full">
                 <source
                   src="/image/5ed5628e-810f-48c8-a171-35c94fbb7e57-ezgif.com-gif-to-webm-converter.webm"
                   type="video/webm"
@@ -40,130 +32,56 @@ export default function CoreCapabilities() {
               </video>
             </div>
             <div className="text-left">
-              <span className="text-blue-600 font-bold text-sm tracking-wide">
-                {t('action')}
+              <span className="text-sm font-bold uppercase tracking-[0.1em] text-blue-600">
+                {t("action")}
               </span>
-              <h3 className="mt-2 text-3xl font-bold text-slate-900 tracking-tight">
-                {t('actionTitle')}
+              <h3 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">
+                {t("actionTitle")}
               </h3>
-              <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-                {t('actionDescription')}
+              <p className="mt-4 text-lg leading-relaxed text-slate-600">
+                {t("actionDescription")}
               </p>
             </div>
-          </div>
+          </article>
 
-          {/* Feature Block 2: Adaptive Output (SVG) */}
-          <div className="grid lg:grid-cols-2 items-center gap-12">
-            <div className="lg:order-last px-6 flex justify-center">
-              <svg
-                viewBox="0 0 200 150"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full max-w-md"
-              >
-                <circle
-                  cx="60"
-                  cy="75"
-                  r="20"
-                  fill="none"
-                  stroke="#3B82F6"
-                  strokeWidth="3"
-                />
+          <article className="grid gap-10 rounded-3xl border border-slate-200 bg-[linear-gradient(160deg,#ffffff_0%,#f8fbff_100%)] p-6 shadow-[0_28px_50px_-40px_rgba(15,23,42,0.52)] md:p-9 lg:grid-cols-2 lg:items-center">
+            <div className="order-2 text-left lg:order-1">
+              <span className="text-sm font-bold uppercase tracking-[0.1em] text-blue-600">
+                {t("adaptive")}
+              </span>
+              <h3 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">
+                {t("adaptiveTitle")}
+              </h3>
+              <p className="mt-4 text-lg leading-relaxed text-slate-600">
+                {t("adaptiveDescription")}
+              </p>
+            </div>
+
+            <div className="order-1 flex justify-center rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:order-2">
+              <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" className="w-full max-w-md">
+                <circle cx="60" cy="75" r="20" fill="none" stroke="#3B82F6" strokeWidth="3" />
                 <path d="M 55 68 L 70 75 L 55 82 Z" fill="#3B82F6" />
-                <path
-                  d="M 80 75 L 120 40"
-                  fill="none"
-                  stroke="#93C5FD"
-                  strokeWidth="2"
-                  strokeDasharray="5 3"
-                />
-                <path
-                  d="M 80 75 L 120 75"
-                  fill="none"
-                  stroke="#93C5FD"
-                  strokeWidth="2"
-                  strokeDasharray="5 3"
-                />
-                <path
-                  d="M 80 75 L 120 110"
-                  fill="none"
-                  stroke="#93C5FD"
-                  strokeWidth="2"
-                  strokeDasharray="5 3"
-                />
+                <path d="M 80 75 L 120 40" fill="none" stroke="#93C5FD" strokeWidth="2" strokeDasharray="5 3" />
+                <path d="M 80 75 L 120 75" fill="none" stroke="#93C5FD" strokeWidth="2" strokeDasharray="5 3" />
+                <path d="M 80 75 L 120 110" fill="none" stroke="#93C5FD" strokeWidth="2" strokeDasharray="5 3" />
 
-                <rect
-                  x="130"
-                  y="25"
-                  width="50"
-                  height="30"
-                  rx="5"
-                  fill="#EFF6FF"
-                  stroke="#BFDBFE"
-                  strokeWidth="2"
-                />
-                <text
-                  x="141"
-                  y="44"
-                  fontFamily="monospace"
-                  fontSize="10"
-                  fill="#3B82F6"
-                >
+                <rect x="130" y="25" width="50" height="30" rx="5" fill="#EFF6FF" stroke="#BFDBFE" strokeWidth="2" />
+                <text x="141" y="44" fontFamily="monospace" fontSize="10" fill="#3B82F6">
                   .SRT
                 </text>
 
-                <rect
-                  x="130"
-                  y="60"
-                  width="50"
-                  height="30"
-                  rx="5"
-                  fill="#EFF6FF"
-                  stroke="#BFDBFE"
-                  strokeWidth="2"
-                />
-                <text
-                  x="141"
-                  y="79"
-                  fontFamily="monospace"
-                  fontSize="10"
-                  fill="#3B82F6"
-                >
+                <rect x="130" y="60" width="50" height="30" rx="5" fill="#EFF6FF" stroke="#BFDBFE" strokeWidth="2" />
+                <text x="141" y="79" fontFamily="monospace" fontSize="10" fill="#3B82F6">
                   .VTT
                 </text>
 
-                <rect
-                  x="130"
-                  y="95"
-                  width="50"
-                  height="30"
-                  rx="5"
-                  fill="#EFF6FF"
-                  stroke="#BFDBFE"
-                  strokeWidth="2"
-                />
-                <text
-                  x="141"
-                  y="114"
-                  fontFamily="monospace"
-                  fontSize="10"
-                  fill="#3B82F6"
-                >
+                <rect x="130" y="95" width="50" height="30" rx="5" fill="#EFF6FF" stroke="#BFDBFE" strokeWidth="2" />
+                <text x="141" y="114" fontFamily="monospace" fontSize="10" fill="#3B82F6">
                   .TXT
                 </text>
               </svg>
             </div>
-            <div className="text-left">
-              <span className="text-blue-600 font-bold text-sm tracking-wide">
-                {t('adaptive')}
-              </span>
-              <h3 className="mt-2 text-3xl font-bold text-slate-900 tracking-tight">
-                {t('adaptiveTitle')}
-              </h3>
-              <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-                {t('adaptiveDescription')}
-              </p>
-            </div>
-          </div>
+          </article>
         </div>
       </div>
     </section>

@@ -388,16 +388,23 @@ export const subtitleApi = {
     }
   },
 
-  // 14. 访客单次下载（无需登录）
-  async guestDownload(url: string, lang: string = 'en', format: string = 'srt') {
+  // 14. 访客字幕解析（无需登录，后端按 24h 配额限制）
+  async guestPreviewSubtitle(url: string, lang: string = "en", format: string = "vtt") {
     const endpoint = "/api/subtitle/guest-download";
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url, lang, format }),
     });
-    await ensureOk(res, "Guest download failed", endpoint);
-    return res.blob();
+    await ensureOk(res, "Guest subtitle preview failed", endpoint);
+    return res.json();
+  },
+
+  // 兼容保留：历史调用仍可拿到 Blob
+  async guestDownload(url: string, lang: string = "en", format: string = "vtt") {
+    const preview = await this.guestPreviewSubtitle(url, lang, format);
+    const text = typeof preview?.text === "string" ? preview.text : "";
+    return new Blob([text], { type: "text/plain;charset=utf-8" });
   },
 
   // 15. 获取批量任务历史

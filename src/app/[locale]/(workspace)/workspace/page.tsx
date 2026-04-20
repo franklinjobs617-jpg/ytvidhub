@@ -33,6 +33,11 @@ import {
   normalizeYoutubeUrl,
   isPlaylistOrChannelUrl,
 } from "@/lib/youtube";
+import {
+  clearPendingAction,
+  getPendingAction,
+  savePendingAction,
+} from "@/lib/pendingAction";
 import { BatchGridView } from "@/components/workspace/BatchGridView";
 import { BatchProgressModal } from "@/components/workspace/BatchProgressModal";
 import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressModal";
@@ -47,7 +52,7 @@ import { BatchActionConfirmModal } from "@/components/workspace/BatchActionConfi
 function WorkspaceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, refreshUser } = useAuth();
+  const { user, refreshUser, login } = useAuth();
   const normalizedUserCredits =
     typeof user?.credits === "number"
       ? user.credits
@@ -105,9 +110,11 @@ function WorkspaceContent() {
 
   const analysisCache = useRef<Map<string, string>>(new Map());
   const isAnalyzing = useRef<Set<string>>(new Set());
+  const metadataHydratedUrlRef = useRef<Set<string>>(new Set());
   const videoPlayerRef = useRef<any>(null);
   const searchInputRef = useRef<HTMLInputElement>(null!);
   const hasTriedResumeRef = useRef(false);
+  const isResumingPendingActionRef = useRef(false);
 
   const [inputUrl, setInputUrl] = useState("");
   const [isAddingVideo, setIsAddingVideo] = useState(false);
@@ -194,6 +201,80 @@ function WorkspaceContent() {
 
   const [initialSubtitleContent, setInitialSubtitleContent] =
     useState<string>("");
+  const guestLimitLoginLastTriggerRef = useRef(0);
+
+  type GuestQuotaInfo = {
+    attempts_left?: number;
+    attempts_used?: number;
+    daily_limit?: number;
+    reset_in_seconds?: number;
+  };
+
+  type ApiLikeError = {
+    code?: string;
+    message?: string;
+    details?: unknown;
+  };
+
+  const getErrorCode = (error: unknown): string | undefined => {
+    if (!error || typeof error !== "object") return undefined;
+    return (error as ApiLikeError).code;
+  };
+
+  const getErrorMessage = (error: unknown): string => {
+    if (!error || typeof error !== "object") return "";
+    return (error as ApiLikeError).message || "";
+  };
+
+  const getGuestQuota = (error: unknown): GuestQuotaInfo | null => {
+    if (!error || typeof error !== "object") return null;
+    const details = (error as ApiLikeError).details;
+    if (!details || typeof details !== "object") return null;
+    const detailsRecord = details as Record<string, unknown>;
+
+    const quota = detailsRecord.quota;
+    if (quota && typeof quota === "object") {
+      return quota as GuestQuotaInfo;
+    }
+    return detailsRecord as GuestQuotaInfo;
+  };
+
+  const formatResetTime = (seconds: number): string => {
+    if (seconds <= 0) return "less than 1 minute";
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.ceil((seconds % 3600) / 60);
+    if (hours > 0) return `${hours}h ${Math.max(minutes, 1)}m`;
+    return `${Math.max(minutes, 1)}m`;
+  };
+
+  const maybePromptLoginForGuestLimit = (error: unknown): boolean => {
+    if (user) return false;
+
+    const code = getErrorCode(error);
+    const message = getErrorMessage(error).toLowerCase();
+    const isGuestLimit =
+      code === "GUEST_LIMIT_REACHED" ||
+      message.includes("guest preview limit reached");
+
+    if (!isGuestLimit) return false;
+
+    const quota = getGuestQuota(error);
+    const now = Date.now();
+    if (now - guestLimitLoginLastTriggerRef.current < 1500) {
+      return true;
+    }
+    guestLimitLoginLastTriggerRef.current = now;
+
+    const guestMessage =
+      quota?.reset_in_seconds && quota.reset_in_seconds > 0
+        ? `Guest preview limit reached. Reset in ${formatResetTime(quota.reset_in_seconds)}. Please login to continue.`
+        : "Guest preview limit reached. Please login to continue.";
+
+    setAnalysisError(guestMessage);
+    toast.error(guestMessage);
+    login();
+    return true;
+  };
 
   const getReadableErrorMessage = (
     error: unknown,
@@ -208,9 +289,31 @@ function WorkspaceContent() {
     error: unknown,
     fallback = "Failed to analyze this video. Please try again.",
   ) => {
+    if (maybePromptLoginForGuestLimit(error)) return;
     const message = getReadableErrorMessage(error, fallback);
     setAnalysisError(message);
     toast.error(message);
+  };
+
+  const shouldHydrateMetadata = (
+    video:
+      | { url?: string; title?: string; uploader?: string }
+      | null
+      | undefined,
+  ) => {
+    if (!video?.url) return false;
+    const title = String(video.title || "").trim();
+    const uploader = String(video.uploader || "").trim();
+
+    const titleNeedsHydration =
+      !title ||
+      title === "YouTube Video" ||
+      title === "Loading video info..." ||
+      title === "Unknown Video";
+    const uploaderNeedsHydration =
+      !uploader || uploader === "Guest Preview" || uploader === "...";
+
+    return titleNeedsHydration || uploaderNeedsHydration;
   };
 
   // --- 初始化逻辑 ---
@@ -380,6 +483,62 @@ function WorkspaceContent() {
     });
   }, [videoList]);
 
+  // 登录后：如果当前视频还是游客占位信息，主动拉取 video-info 回填标题/作者
+  useEffect(() => {
+    if (!user) {
+      metadataHydratedUrlRef.current.clear();
+      return;
+    }
+    if (!currentVideo?.url) return;
+    if (!shouldHydrateMetadata(currentVideo)) return;
+    if (metadataHydratedUrlRef.current.has(currentVideo.url)) return;
+
+    metadataHydratedUrlRef.current.add(currentVideo.url);
+    let cancelled = false;
+
+    subtitleApi
+      .getVideoInfo(currentVideo.url)
+      .then((videoInfo) => {
+        if (cancelled || !videoInfo) return;
+        const videoId = videoInfo.id || extractVideoId(currentVideo.url);
+
+        const hydratedPatch = {
+          id: videoId,
+          title: videoInfo.title || currentVideo.title || "YouTube Video",
+          uploader: videoInfo.uploader || currentVideo.uploader || "...",
+          hasSubtitles:
+            typeof videoInfo.has_subtitles === "boolean"
+              ? videoInfo.has_subtitles
+              : currentVideo.hasSubtitles,
+          thumbnail:
+            videoInfo.thumbnail ||
+            currentVideo.thumbnail ||
+            `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+          duration:
+            typeof videoInfo.duration === "number"
+              ? videoInfo.duration
+              : currentVideo.duration,
+        };
+
+        setCurrentVideo((prev) =>
+          prev?.url === currentVideo.url ? { ...prev, ...hydratedPatch } : prev,
+        );
+        setVideoList((prev) =>
+          prev.map((video) =>
+            video.url === currentVideo.url ? { ...video, ...hydratedPatch } : video,
+          ),
+        );
+      })
+      .catch(() => {
+        // 失败允许后续再次尝试
+        metadataHydratedUrlRef.current.delete(currentVideo.url);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, currentVideo, currentVideo?.url, currentVideo?.title, currentVideo?.uploader]);
+
   useEffect(() => {
     if (!showMobileUrlInput) {
       setMobileKeyboardInset(0);
@@ -539,6 +698,19 @@ function WorkspaceContent() {
 
     if (!targetUrl || !targetId) return;
 
+    if (!user) {
+      savePendingAction({
+        type: "ai_summary",
+        payload: {
+          videoUrl: targetUrl,
+          videoId: targetId,
+        },
+      });
+      toast.info("Please login. We will continue AI Summary automatically.");
+      login();
+      return;
+    }
+
     if (isAiLoading && !forceRegenerate) return;
     if (isAnalyzing.current.has(targetId) && !forceRegenerate) return;
 
@@ -589,6 +761,73 @@ function WorkspaceContent() {
     }
   };
 
+  useEffect(() => {
+    if (!user || isResumingPendingActionRef.current) return;
+    const pending = getPendingAction();
+    if (!pending) return;
+
+    const resume = async () => {
+      try {
+        isResumingPendingActionRef.current = true;
+        clearPendingAction();
+
+        if (pending.type === "ai_summary") {
+          await handleRequestAnalysis(
+            pending.payload.videoUrl,
+            pending.payload.videoId,
+          );
+          return;
+        }
+
+        if (pending.type === "download_single") {
+          const matchedVideo =
+            videoList.find((video) => video.url === pending.payload.videoUrl) ||
+            (currentVideo?.url === pending.payload.videoUrl ? currentVideo : null);
+
+          const targetVideo =
+            matchedVideo || {
+              id: extractVideoId(pending.payload.videoUrl),
+              url: pending.payload.videoUrl,
+              title: pending.payload.title || "subtitle",
+              thumbnail: `https://i.ytimg.com/vi/${extractVideoId(pending.payload.videoUrl)}/hqdefault.jpg`,
+            };
+
+          await startSingleDownload(
+            targetVideo,
+            pending.payload.format,
+            pending.payload.lang,
+          );
+          return;
+        }
+
+        if (pending.type === "download_bulk") {
+          await startBulkDownload(
+            pending.payload.videos || [],
+            pending.payload.format,
+            pending.payload.lang,
+          );
+        }
+      } catch (error) {
+        const message =
+          error instanceof Error && error.message
+            ? error.message
+            : "Failed to resume your previous action.";
+        toast.error(message);
+      } finally {
+        isResumingPendingActionRef.current = false;
+      }
+    };
+
+    resume();
+  }, [
+    user,
+    videoList,
+    currentVideo,
+    startSingleDownload,
+    startBulkDownload,
+    handleRequestAnalysis,
+  ]);
+
   // 新增：处理新 URL 分析
   const handleAnalyzeNewUrl = async (urlToAnalyze?: string) => {
     const targetUrl = urlToAnalyze || inputUrl.trim();
@@ -607,6 +846,25 @@ function WorkspaceContent() {
 
     // 标准化 URL：watch?v=xxx&list=PLxxx → playlist?list=PLxxx
     const normalizedUrl = normalizeYoutubeUrl(targetUrl);
+
+    if (!user) {
+      try {
+        const results = await analyzeUrls([normalizedUrl]);
+        if (results && results.length > 0) {
+          setVideoList((prev) => {
+            const resultIds = new Set(results.map((video) => video.id));
+            return [...results, ...prev.filter((video) => !resultIds.has(video.id))];
+          });
+          setCurrentVideo(results[0]);
+          setSummaryData("");
+          setInputUrl("");
+          toast.success("Video analyzed in guest mode.");
+        }
+      } catch (error) {
+        showAnalysisError(error, "Guest parsing failed. Please login to continue.");
+      }
+      return;
+    }
 
     // 如果是 playlist/channel，走批量流程
     if (isPlaylistOrChannelUrl(normalizedUrl)) {
@@ -809,9 +1067,40 @@ function WorkspaceContent() {
               });
             }}
             onDownloadSingle={(video, format) => {
+              if (!user) {
+                savePendingAction({
+                  type: "download_single",
+                  payload: {
+                    videoUrl: video.url,
+                    title: video.title || "subtitle",
+                    format,
+                    lang: transcriptLang,
+                  },
+                });
+                toast.info(
+                  "Please login. We will continue your download automatically.",
+                );
+                login();
+                return;
+              }
               startSingleDownload(video, format, transcriptLang);
             }}
             onDownloadBatch={(videos, format) => {
+              if (!user) {
+                savePendingAction({
+                  type: "download_bulk",
+                  payload: {
+                    videos,
+                    format,
+                    lang: transcriptLang,
+                  },
+                });
+                toast.info(
+                  "Please login. We will continue your download automatically.",
+                );
+                login();
+                return;
+              }
               startBulkDownload(videos, format, transcriptLang);
             }}
             onVideoClick={(video) => {

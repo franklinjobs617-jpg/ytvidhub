@@ -4,9 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { normalizeYoutubeUrl } from "@/lib/youtube";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from "next-intl";
-import LoginModal from "@/components/LoginModel";
 import {
   Youtube,
   ArrowRight,
@@ -26,33 +24,29 @@ const isValidYoutubeUrl = (url: string) => {
   );
 };
 
+const PLACEHOLDER_EXAMPLES = [
+  "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "https://youtu.be/jNQXAC9IVRw",
+  "https://www.youtube.com/watch?v=9bZkp7q19f0",
+];
+
 export default function TranscriptGeneratorHero() {
   const router = useRouter();
-  const { user } = useAuth();
-  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const t = useTranslations("transcriptPage");
   const tErrors = useTranslations("errors");
-  const tAuth = useTranslations("auth");
 
   const [url, setUrl] = useState("");
   const [inputError, setInputError] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const pendingAnalysisRef = useRef(false);
 
-  // 动态 placeholder 打字效果
-  const placeholderExamples = [
-    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "https://youtu.be/jNQXAC9IVRw",
-    "https://www.youtube.com/watch?v=9bZkp7q19f0",
-  ];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [typedPlaceholder, setTypedPlaceholder] = useState("");
 
   useEffect(() => {
     if (isFocused || url) return;
-    const target = placeholderExamples[placeholderIndex];
+    const target = PLACEHOLDER_EXAMPLES[placeholderIndex];
     let charIndex = 0;
     let pauseTimer: ReturnType<typeof setTimeout>;
     setTypedPlaceholder("");
@@ -64,7 +58,7 @@ export default function TranscriptGeneratorHero() {
         clearInterval(typeInterval);
         pauseTimer = setTimeout(() => {
           setPlaceholderIndex(
-            (prev) => (prev + 1) % placeholderExamples.length,
+            (prev) => (prev + 1) % PLACEHOLDER_EXAMPLES.length,
           );
         }, 2000);
       }
@@ -77,13 +71,6 @@ export default function TranscriptGeneratorHero() {
   }, [placeholderIndex, isFocused, url]);
 
   const { isAnalyzing } = useSubtitleDownloader();
-
-  useEffect(() => {
-    if (user && pendingAnalysisRef.current) {
-      pendingAnalysisRef.current = false;
-      handleGenerateTranscript();
-    }
-  }, [user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value;
@@ -102,13 +89,6 @@ export default function TranscriptGeneratorHero() {
       if (!isValidYoutubeUrl(url.trim())) {
         setInputError(true);
         toast.error(tErrors("invalidUrl"), { position: "top-center" });
-        return;
-      }
-
-      if (!user) {
-        toast.success(tAuth("signupMessage"), { position: "top-center" });
-        pendingAnalysisRef.current = true;
-        setShowLoginModal(true);
         return;
       }
 
@@ -352,12 +332,6 @@ export default function TranscriptGeneratorHero() {
         </div>
       </section>
 
-      {showLoginModal && (
-        <LoginModal
-          isOpen={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
-        />
-      )}
     </div>
   );
 }

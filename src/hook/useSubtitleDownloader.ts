@@ -186,6 +186,41 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       // 智能识别URL类型：单个视频、playlist、channel
       const hasPlaylistOrChannel = urls.some(url => isPlaylistOrChannelUrl(url));
 
+      // 未登录用户：仅支持单链接访客解析（后端 24h 限额 2 次）
+      if (!user) {
+        if (hasPlaylistOrChannel || urls.length !== 1) {
+          throw new Error("Please login to analyze playlists or multiple URLs.");
+        }
+
+        const targetUrl = urls[0];
+        const preview = await subtitleApi.guestPreviewSubtitle(targetUrl, "en", "vtt");
+        const text = preview?.text || "";
+
+        if (!text) {
+          throw new Error("Guest subtitle preview is empty. Please try another video.");
+        }
+
+        try {
+          sessionStorage.setItem(
+            `ytvidhub_transcript_${targetUrl}_en`,
+            JSON.stringify({ text, format: "vtt" }),
+          );
+        } catch {}
+
+        const id = extractVideoId(targetUrl);
+        return [
+          {
+            id,
+            url: targetUrl,
+            title: "YouTube Video",
+            uploader: "Guest Preview",
+            thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+            hasSubtitles: true,
+            subtitleStatus: "available",
+          },
+        ];
+      }
+
       if (hasPlaylistOrChannel) {
         // 显示处理模态框
         setShowPlaylistModal(true);

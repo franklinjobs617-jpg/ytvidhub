@@ -5,6 +5,8 @@ export type ContentEntry = {
   updatedAt: string;
   readTime: string;
   tag: string;
+  coverImage?: string;
+  coverAlt?: string;
 };
 
 export const blogEntries: ContentEntry[] = [
@@ -16,6 +18,9 @@ export const blogEntries: ContentEntry[] = [
     updatedAt: "2026-01-08",
     readTime: "8 min",
     tag: "Workflow",
+    coverImage: "/image/blog/youtube-transcript-workflow-comparison.webp",
+    coverAlt:
+      "Workflow comparison graphic for getting YouTube video transcripts faster",
   },
   {
     slug: "ai-youtube-video-summarizer",
@@ -25,6 +30,9 @@ export const blogEntries: ContentEntry[] = [
     updatedAt: "2025-12-02",
     readTime: "7 min",
     tag: "AI",
+    coverImage: "/image/blog/ai-youtube-summary-quality-workflow.webp",
+    coverAlt:
+      "Illustration about AI YouTube summarizer quality driven by transcript quality",
   },
   {
     slug: "subtitle-accuracy-problem",
@@ -34,6 +42,9 @@ export const blogEntries: ContentEntry[] = [
     updatedAt: "2025-11-15",
     readTime: "6 min",
     tag: "Quality",
+    coverImage: "/image/blog/youtube-subtitle-accuracy-error-diagnosis.webp",
+    coverAlt:
+      "Visual about diagnosing YouTube subtitle accuracy issues and ASR errors",
   },
   {
     slug: "creator-tutorials",
@@ -43,6 +54,10 @@ export const blogEntries: ContentEntry[] = [
     updatedAt: "2025-10-28",
     readTime: "7 min",
     tag: "Engineering",
+    coverImage:
+      "/image/blog/subtitle-workflow-from-pain-point-to-production.webp",
+    coverAlt:
+      "Diagram showing subtitle pipeline progress from manual pain points to production workflow",
   },
   {
     slug: "engineering-decisions-ytvidhub",
@@ -52,6 +67,10 @@ export const blogEntries: ContentEntry[] = [
     updatedAt: "2025-10-26",
     readTime: "9 min",
     tag: "System Design",
+    coverImage:
+      "/image/blog/ytvidhub-engineering-system-architecture-decisions.webp",
+    coverAlt:
+      "System architecture concept for YTVidHub engineering decisions under load",
   },
   {
     slug: "spanish-yt-channels-subtitles",
@@ -61,6 +80,10 @@ export const blogEntries: ContentEntry[] = [
     updatedAt: "2025-10-20",
     readTime: "6 min",
     tag: "Use Case",
+    coverImage:
+      "/image/blog/learn-spanish-with-youtube-subtitles-workflow.webp",
+    coverAlt:
+      "Language-learning setup using YouTube subtitles for Spanish listening and replay practice",
   },
 ];
 
@@ -73,6 +96,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2026-01-12",
     readTime: "10 min",
     tag: "Beginner",
+    coverImage:
+      "/image/guides/youtube-subtitles-complete-download-guide-cover.webp",
+    coverAlt:
+      "Complete guide cover for downloading YouTube subtitles across formats and workflows",
   },
   {
     slug: "srt-vs-vtt",
@@ -82,6 +109,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2026-02-01",
     readTime: "9 min",
     tag: "Technical",
+    coverImage:
+      "/image/guides/srt-vs-vtt-technical-comparison-guide-cover.webp",
+    coverAlt:
+      "Technical SRT vs VTT comparison cover showing subtitle format differences",
   },
   {
     slug: "clean-transcript-no-timestamp",
@@ -91,6 +122,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2025-12-22",
     readTime: "7 min",
     tag: "Data Cleaning",
+    coverImage:
+      "/image/guides/clean-transcript-remove-timestamps-guide-cover.webp",
+    coverAlt:
+      "Guide cover about cleaning transcripts and removing subtitle timestamps",
   },
   {
     slug: "youtube-subtitles-for-llm-data",
@@ -100,6 +135,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2025-12-06",
     readTime: "8 min",
     tag: "LLM",
+    coverImage:
+      "/image/guides/youtube-subtitles-for-llm-data-preparation-guide-cover.webp",
+    coverAlt:
+      "LLM data preparation guide cover using YouTube subtitles for training pipelines",
   },
   {
     slug: "youtube-subtitles-api-free",
@@ -109,6 +148,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2025-11-28",
     readTime: "7 min",
     tag: "API",
+    coverImage:
+      "/image/guides/youtube-subtitles-api-alternative-guide-cover.webp",
+    coverAlt:
+      "Guide cover for YouTube subtitles API alternatives and extraction workflows",
   },
   {
     slug: "playlist-subtitles-bulk",
@@ -118,6 +161,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2025-11-14",
     readTime: "6 min",
     tag: "Bulk",
+    coverImage:
+      "/image/guides/playlist-subtitles-bulk-download-guide-cover.webp",
+    coverAlt:
+      "Bulk playlist subtitle download guide cover for high-volume extraction",
   },
   {
     slug: "mastering-vtt-data-analysis",
@@ -127,6 +174,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2025-11-03",
     readTime: "9 min",
     tag: "Analytics",
+    coverImage:
+      "/image/guides/mastering-vtt-data-analysis-guide-cover.webp",
+    coverAlt:
+      "Mastering VTT data analysis guide cover for subtitle analytics workflows",
   },
   {
     slug: "data-prep-toolkit",
@@ -136,6 +187,10 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2025-10-30",
     readTime: "10 min",
     tag: "Toolkit",
+    coverImage:
+      "/image/guides/advanced-data-prep-toolkit-guide-cover.webp",
+    coverAlt:
+      "Advanced data preparation toolkit guide cover for transcript processing pipelines",
   },
   {
     slug: "how-to-download-youtube-studio-subtitles",
@@ -145,5 +200,9 @@ export const guideEntries: ContentEntry[] = [
     updatedAt: "2025-10-18",
     readTime: "7 min",
     tag: "Studio",
+    coverImage:
+      "/image/guides/youtube-studio-subtitles-download-guide-cover.webp",
+    coverAlt:
+      "YouTube Studio subtitles download guide cover for channel-owner workflow",
   },
 ];

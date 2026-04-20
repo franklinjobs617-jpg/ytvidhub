@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { Link } from "@/i18n/routing";
 import { buildCanonicalUrl } from "@/lib/url";
 import { guideEntries } from "@/lib/content-index";
+import EditorialCardList from "@/components/editorial/EditorialCardList";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -30,11 +30,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function GuideIndexPage({ params }: Props) {
   const { locale } = await params;
-  const dateFormatter = new Intl.DateTimeFormat(locale, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
 
   return (
     <div className="editorial-hub">
@@ -47,27 +42,13 @@ export default async function GuideIndexPage({ params }: Props) {
             repeatable workflows, and predictable output quality.
           </p>
         </section>
-
-        <section className="editorial-card-grid">
-          {guideEntries.map((entry) => (
-            <Link
-              key={entry.slug}
-              href={`/guide/${entry.slug}`}
-              className="editorial-card"
-            >
-              <div className="editorial-card-head">
-                <span className="editorial-card-tag">{entry.tag}</span>
-                <span className="editorial-card-time">{entry.readTime}</span>
-              </div>
-              <h2 className="editorial-card-title">{entry.title}</h2>
-              <p className="editorial-card-excerpt">{entry.excerpt}</p>
-              <div className="editorial-card-foot">
-                <span>{dateFormatter.format(new Date(entry.updatedAt))}</span>
-                <span className="editorial-card-cta">Open guide</span>
-              </div>
-            </Link>
-          ))}
-        </section>
+        <EditorialCardList
+          entries={guideEntries}
+          basePath="/guide"
+          ctaLabel="Open guide"
+          locale={locale}
+          filterAriaLabel="Guide categories"
+        />
       </main>
     </div>
   );

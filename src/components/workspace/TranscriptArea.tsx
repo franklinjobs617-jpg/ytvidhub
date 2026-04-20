@@ -7,12 +7,8 @@ import {
   Copy,
   Check,
   ClipboardCopy,
-  Download,
   ChevronUp,
   ChevronDown,
-  Lock,
-  Unlock,
-  Download as DownloadIcon,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
@@ -46,7 +42,7 @@ export function TranscriptArea({
   onLangChange?: (lang: string) => void;
   onTranscriptReadyChange?: (ready: boolean) => void;
 }) {
-  const { user, refreshUser } = useAuth();
+  const { user, login } = useAuth();
   const [transcriptVtt, setTranscriptVtt] = useState<string>(
     initialSubtitleContent || "",
   );
@@ -58,14 +54,71 @@ export function TranscriptArea({
   const [availableLangs, setAvailableLangs] = useState<
     { code: string; label: string }[]
   >([]);
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [unlockLoading, setUnlockLoading] = useState(false);
+  const guestLimitLoginLastTriggerRef = useRef(0);
   const internalSearchRef = useRef<HTMLInputElement>(null);
   const searchRef = searchInputRef || internalSearchRef;
 
+  type GuestQuotaInfo = {
+    reset_in_seconds?: number;
+  };
+
+  type ApiLikeError = {
+    code?: string;
+    message?: string;
+    details?: unknown;
+  };
+
+  const getGuestQuota = (error: unknown): GuestQuotaInfo | null => {
+    if (!error || typeof error !== "object") return null;
+    const details = (error as ApiLikeError).details;
+    if (!details || typeof details !== "object") return null;
+    const detailsRecord = details as Record<string, unknown>;
+
+    const quota = detailsRecord.quota;
+    if (quota && typeof quota === "object") {
+      return quota as GuestQuotaInfo;
+    }
+    return detailsRecord as GuestQuotaInfo;
+  };
+
+  const formatResetTime = (seconds: number): string => {
+    if (seconds <= 0) return "less than 1 minute";
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.ceil((seconds % 3600) / 60);
+    if (hours > 0) return `${hours}h ${Math.max(minutes, 1)}m`;
+    return `${Math.max(minutes, 1)}m`;
+  };
+
+  const maybePromptLoginForGuestLimit = (error: unknown): boolean => {
+    if (user || !error || typeof error !== "object") return false;
+    const maybe = error as ApiLikeError;
+    const message = (maybe.message || "").toLowerCase();
+    const isGuestLimit =
+      maybe.code === "GUEST_LIMIT_REACHED" ||
+      message.includes("guest preview limit reached");
+    if (!isGuestLimit) return false;
+
+    const now = Date.now();
+    if (now - guestLimitLoginLastTriggerRef.current < 1500) return true;
+    guestLimitLoginLastTriggerRef.current = now;
+
+    const quota = getGuestQuota(error);
+    const friendlyMessage =
+      quota?.reset_in_seconds && quota.reset_in_seconds > 0
+        ? `Guest preview limit reached. Reset in ${formatResetTime(quota.reset_in_seconds)}. Please login to continue.`
+        : "Guest preview limit reached. Please login to continue.";
+
+    toast.error(friendlyMessage);
+    login();
+    return true;
+  };
+
   // 获取可用语言列表
   useEffect(() => {
-    if (!videoUrl) return;
+    if (!videoUrl || !user) {
+      setAvailableLangs([]);
+      return;
+    }
     subtitleApi
       .getVideoInfo(videoUrl)
       .then((info) => {
@@ -131,7 +184,7 @@ export function TranscriptArea({
         }
       })
       .catch(console.error);
-  }, [videoUrl]);
+  }, [videoUrl, user]);
 
   const [isStreamLoading, setIsStreamLoading] = useState(false);
   const [streamProgress, setStreamProgress] = useState(0);
@@ -177,7 +230,7 @@ export function TranscriptArea({
     } else {
       handleNormalSubtitleLoad();
     }
-  }, [videoUrl, lang, onLoadingChange]);
+  }, [videoUrl, lang, onLoadingChange, user]);
 
   const handleStreamSubtitleLoad = async () => {
     setIsStreamLoading(true);
@@ -302,17 +355,24 @@ export function TranscriptArea({
       setTranscriptVtt("");
     }, 45000); // 45秒超时，给长视频更多时间
 
-    subtitleApi
-      .downloadSingle({
-        url: videoUrl,
-        lang: lang,
-        format: "vtt",
-        title: "transcript",
-        isPreview: true,
-      })
+    const requestPromise = user
+      ? subtitleApi
+          .downloadSingle({
+            url: videoUrl,
+            lang: lang,
+            format: "vtt",
+            title: "transcript",
+            isPreview: true,
+          })
+          .then((blob) => blob.text())
+      : subtitleApi
+          .guestPreviewSubtitle(videoUrl, lang, "vtt")
+          .then((result: any) => result?.text || "");
+
+    requestPromise
       .then(async (blob) => {
         clearTimeout(timeoutId);
-        const text = await blob.text();
+        const text = typeof blob === "string" ? blob : await blob.text();
         if (text.trim().startsWith("{") && text.includes('"error"')) {
           console.error(`❌ Error response for language ${lang}:`, text);
           setTranscriptVtt("");
@@ -334,6 +394,8 @@ export function TranscriptArea({
           err,
         );
         setTranscriptVtt("");
+
+        if (maybePromptLoginForGuestLimit(err)) return;
 
         // 显示更友好的错误信息
         if (err.message && err.message.includes("No subtitles found")) {
@@ -471,119 +533,13 @@ export function TranscriptArea({
       ? groupTranscriptByTime(rawItems)
       : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
 
-    // Apply content restriction if not unlocked
-    if (!isUnlocked && !searchQuery) {
-      const previewCount = Math.ceil(finalItems.length * 0.4);
-      return finalItems.slice(0, previewCount);
-    }
-
     if (searchQuery) {
       return finalItems.filter((i) =>
         i.text.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
     return finalItems;
-  }, [transcriptVtt, isSmartMode, searchQuery, isUnlocked]);
-
-  // Check if video is in history (already unlocked or downloaded)
-  const checkHistoryStatus = async () => {
-    if (!user) return;
-
-    try {
-      const history = await subtitleApi.getHistory(20); // Get recent history
-      const videoIdToCheck =
-        videoId || videoUrl.split("v=")[1]?.split("&")[0] || videoUrl;
-
-      // Check if this video exists in history
-      const isInHistory = history.some(
-        (item: any) =>
-          item.videoId === videoIdToCheck || item.videoUrl === videoUrl,
-      );
-
-      if (isInHistory) {
-        setIsUnlocked(true);
-        console.log("Video found in history, content automatically unlocked");
-      }
-    } catch (error) {
-      console.error("Error checking history:", error);
-    }
-  };
-
-  // Check history status when component mounts or video changes
-  useEffect(() => {
-    if (user && (videoUrl || videoId)) {
-      checkHistoryStatus();
-    }
-  }, [user, videoUrl, videoId]);
-
-  // Unlock full content function
-  const unlockContent = async () => {
-    if (!user) {
-      toast.error("Please login to unlock full content");
-      return;
-    }
-
-    // Get token from localStorage
-    const token = localStorage.getItem("auth_token");
-    if (!token) {
-      toast.error("Please login again to unlock content");
-      return;
-    }
-
-    // Handle credits type - user.credits could be number or string
-    const userCredits =
-      typeof user.credits === "number"
-        ? user.credits
-        : parseInt(user.credits || "0") || 0;
-
-    if (userCredits < 1) {
-      toast.error(
-        "Insufficient credits. You need 1 credit to unlock full content.",
-      );
-      return;
-    }
-
-    setUnlockLoading(true);
-    try {
-      // Call API to deduct credits
-      const response = await fetch(
-        `${window.location.origin}/api/deduct-credits`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ amount: 1, reason: "Unlock Full Subtitle" }),
-        },
-      );
-
-      if (response.ok) {
-        setIsUnlocked(true);
-        await refreshUser();
-        toast.success("Content unlocked successfully!");
-
-        // 添加到历史记录
-        subtitleApi
-          .upsertHistory({
-            videoId:
-              videoId || videoUrl.split("v=")[1]?.split("&")[0] || videoUrl,
-            videoUrl: videoUrl,
-            title: document.title || "YouTube Video",
-            lastAction: "subtitle_download",
-          })
-          .catch(() => {});
-      } else {
-        const errorData = await response.json();
-        toast.error(`Failed to unlock: ${errorData.error || "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("Unlock error:", error);
-      toast.error("Failed to unlock content. Please try again.");
-    } finally {
-      setUnlockLoading(false);
-    }
-  };
+  }, [transcriptVtt, isSmartMode, searchQuery]);
 
   // P1: 搜索结果统计和导航
   const searchResults = useMemo(() => {
@@ -904,65 +860,6 @@ export function TranscriptArea({
                 </div>
               );
             })}
-
-            {/* Preview overlay - shown when content is not unlocked */}
-            {!isUnlocked &&
-              transcriptVtt &&
-              parseVtt(transcriptVtt).length > 0 && (
-                <div className="relative">
-                  {/* Fade overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/90 pointer-events-none"></div>
-
-                  {/* Unlock prompt */}
-                  <div className="relative mx-4 mb-8 p-6 bg-white border border-slate-200 rounded-xl shadow-lg text-center">
-                    <div className="mb-4">
-                      <Lock className="w-8 h-8 mx-auto text-blue-500 mb-2" />
-                      <h3 className="text-sm font-semibold text-slate-800 mb-2">
-                        Preview Mode
-                      </h3>
-                      <p className="text-xs text-slate-500 mb-4">
-                        You're viewing the first 40% of the transcript. Unlock
-                        the full content or download the subtitle file.
-                      </p>
-                      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <button
-                          onClick={unlockContent}
-                          disabled={unlockLoading}
-                          className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {unlockLoading ? (
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          ) : (
-                            <Unlock className="w-4 h-4" />
-                          )}
-                          {unlockLoading
-                            ? "Unlocking..."
-                            : "Unlock Full Content"}
-                        </button>
-                        <button
-                          onClick={() => {
-                            // Trigger download (this should be handled by the DownloadButton component)
-                            const downloadEvent = new CustomEvent(
-                              "trigger-download",
-                              {
-                                detail: { url: videoUrl, lang: lang },
-                              },
-                            );
-                            window.dispatchEvent(downloadEvent);
-                          }}
-                          className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors"
-                        >
-                          <DownloadIcon className="w-4 h-4" />
-                          Download Subtitle
-                        </button>
-                      </div>
-                      <p className="text-xs text-slate-400 mt-3">
-                        Both options require 1 credit per video
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
 
             <div className="h-10" />
           </div>

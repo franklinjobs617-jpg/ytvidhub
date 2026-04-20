@@ -8,7 +8,6 @@ export default function ComparisonSlider() {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [showScrollBtns, setShowScrollBtns] = useState(false);
 
   const handleMove = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -16,12 +15,6 @@ export default function ComparisonSlider() {
     const x = clientX - rect.left;
     const percentage = Math.min(Math.max((x / rect.width) * 100, 0), 100);
     setSliderPosition(percentage);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => setShowScrollBtns(window.scrollY > 300);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const onMouseDown = () => setIsDragging(true);
@@ -52,27 +45,29 @@ export default function ComparisonSlider() {
   }, [isDragging, handleMove]);
 
   return (
-    <section className="relative py-18 bg-white overflow-hidden">
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-
-      <div className="container mx-auto px-6 lg:px-8 max-w-7xl relative z-10 my-6">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900">
+    <section className="relative overflow-hidden bg-white py-24">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.14),rgba(37,99,235,0)_70%)]" />
+      <div className="container relative z-10 mx-auto my-6 max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto mb-16 max-w-3xl text-center">
+          <span className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-blue-700">
+            {t('before')} / {t('after')}
+          </span>
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
             {t.rich('title', {
               br: () => <br className="hidden md:inline" />,
-              highlight: (chunks) => <span className="text-blue-600">{chunks}</span>
+              highlight: (chunks) => <span className="text-[var(--brand-600)]">{chunks}</span>
             })}
           </h2>
-          <p className="mt-4 text-lg text-slate-500 leading-relaxed">
+          <p className="mt-4 text-lg leading-relaxed text-slate-600">
             {t('description')}
           </p>
         </div>
 
         <div className="relative mx-auto max-w-5xl px-4 md:px-0">
-          <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 select-none aspect-[4/3] md:aspect-[16/9]">
+          <div className="relative aspect-[4/3] w-full select-none overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-[0_32px_70px_-48px_rgba(15,23,42,0.78)] md:aspect-[16/9] md:rounded-3xl">
             <div
               ref={containerRef}
-              className="relative w-full h-full cursor-ew-resize group"
+              className="group relative h-full w-full cursor-ew-resize"
               onMouseDown={onMouseDown}
               onTouchStart={onTouchStart}
             >
@@ -84,7 +79,7 @@ export default function ComparisonSlider() {
                   draggable={false}
                 />
 
-                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6 px-3 py-1.5 md:px-4 md:py-2 bg-slate-900/90 backdrop-blur-sm rounded-lg text-white text-xs md:text-sm font-bold shadow-lg border border-white/10 z-10">
+                <div className="absolute bottom-4 left-4 z-10 rounded-lg border border-white/10 bg-slate-900/90 px-3 py-1.5 text-xs font-bold text-white shadow-lg backdrop-blur-sm md:bottom-6 md:left-6 md:px-4 md:py-2 md:text-sm">
                   {t('before')}
                 </div>
               </div>
@@ -102,18 +97,18 @@ export default function ComparisonSlider() {
                   draggable={false}
                 />
 
-                <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 px-3 py-1.5 md:px-4 md:py-2 bg-blue-600/90 backdrop-blur-sm rounded-lg text-white text-xs md:text-sm font-bold shadow-lg border border-white/20 z-10">
+                <div className="absolute bottom-4 right-4 z-10 rounded-lg border border-white/20 bg-blue-600/90 px-3 py-1.5 text-xs font-bold text-white shadow-lg backdrop-blur-sm md:bottom-6 md:right-6 md:px-4 md:py-2 md:text-sm">
                   {t('after')}
                 </div>
               </div>
 
               <div
-                className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-20 shadow-[0_0_20px_rgba(0,0,0,0.3)]"
+                className="absolute bottom-0 top-0 z-20 w-1 cursor-ew-resize bg-white shadow-[0_0_20px_rgba(0,0,0,0.3)]"
                 style={{ left: `${sliderPosition}%` }}
               >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center border-4 border-blue-500 transition-transform group-hover:scale-110">
+                <div className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-blue-500 bg-white shadow-lg transition-transform group-hover:scale-110 md:h-12 md:w-12">
                   <svg
-                    className="w-5 h-5 md:w-6 md:h-6 text-blue-600"
+                    className="h-5 w-5 text-blue-600 md:h-6 md:w-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -127,7 +122,6 @@ export default function ComparisonSlider() {
                   </svg>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

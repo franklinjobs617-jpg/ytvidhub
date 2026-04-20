@@ -1,31 +1,30 @@
 "use client";
 
-import React from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from "next-intl";
 
 export default function FAQ() {
-  const t = useTranslations('faq');
-
-  const keys = ['legal', 'transcript', 'formats', 'bulk', 'languages', 'limits'] as const;
+  const t = useTranslations("faq");
+  const keys = ["legal", "transcript", "formats", "bulk", "languages", "limits"] as const;
 
   return (
-    <section className="py-24 bg-white" id="faq">
-      <div className="container mx-auto px-6 lg:px-8 max-w-4xl">
-        <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900 mb-12 text-center">
-          {t('title')}
-        </h2>
+    <section className="bg-[var(--surface-page)] py-24" id="faq">
+      <div className="container mx-auto max-w-4xl px-6 lg:px-8">
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+            {t("title")}
+          </h2>
+        </div>
 
         <div className="space-y-4">
           {keys.map((key) => (
             <details
               key={key}
-              className="group p-6 bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer transition-all duration-200 hover:border-blue-400 hover:shadow-md open:bg-slate-50/50"
+              className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_14px_26px_-24px_rgba(15,23,42,0.45)] transition-all duration-300 open:border-blue-200 open:shadow-[0_20px_34px_-28px_rgba(37,99,235,0.42)]"
             >
-              <summary className="flex justify-between items-center font-semibold text-lg text-slate-800 focus:outline-none list-none select-none">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-slate-800 md:px-6 md:py-5 md:text-lg">
                 <span>{t(`questions.${key}.question`)}</span>
-                {/* 箭头图标：利用 group-open 实现旋转 */}
                 <svg
-                  className="w-5 h-5 text-slate-400 transition-transform duration-300 transform group-open:rotate-180 group-open:text-blue-600"
+                  className="h-5 w-5 shrink-0 text-slate-400 transition-transform duration-300 group-open:rotate-180 group-open:text-blue-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -34,13 +33,17 @@ export default function FAQ() {
                 </svg>
               </summary>
 
-              <div className="mt-4 pt-4 border-t border-slate-100 text-slate-600 leading-relaxed text-base">
+              <div className="border-t border-slate-100 px-5 py-4 text-sm leading-relaxed text-slate-600 md:px-6 md:py-5 md:text-base">
                 {t.rich(`questions.${key}.answer`, {
-                  code: (chunks) => <code>{chunks}</code>,
-                  strong: (chunks) => <strong>{chunks}</strong>,
-                  ul: (chunks) => <ul className="list-decimal list-inside space-y-2 mt-2">{chunks}</ul>,
+                  code: (chunks) => (
+                    <code className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[0.92em] text-slate-700">
+                      {chunks}
+                    </code>
+                  ),
+                  strong: (chunks) => <strong className="font-semibold text-slate-900">{chunks}</strong>,
+                  ul: (chunks) => <ul className="mt-2 list-inside list-decimal space-y-2">{chunks}</ul>,
                   li: (chunks) => <li>{chunks}</li>,
-                  br: () => <br />
+                  br: () => <br />,
                 })}
               </div>
             </details>

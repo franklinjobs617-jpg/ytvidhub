@@ -69,17 +69,24 @@ export default async function Home({ params }: Props) {
   };
 
   const heroHeader = (
-    <div className="max-w-4xl mx-auto mb-12">
-      <h1 className="text-4xl md:text-6xl font-display uppercase tracking-wide text-slate-900 leading-tight mb-4 drop-shadow-sm">
+    <div className="mx-auto mb-12 max-w-4xl">
+      <h1 className="mb-4 text-4xl font-display leading-[1.05] tracking-[-0.025em] text-slate-900 md:text-6xl">
         {t('title')}
       </h1>
-      <h2 className="text-base md:text-lg font-medium text-slate-600 max-w-2xl mx-auto italic mb-4">
+      <h2 className="mx-auto mb-5 max-w-2xl text-base font-medium text-slate-600 md:text-lg">
         {t.rich('subtitle', {
-          highlight: (chunks) => <span className="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-md font-semibold">{chunks}</span>
+          highlight: (chunks) => (
+            <span className="rounded-md bg-[var(--brand-50)] px-1.5 py-0.5 font-semibold text-[var(--brand-700)]">
+              {chunks}
+            </span>
+          )
         })}
       </h2>
-      <div className="text-xs text-slate-500 max-w-3xl mx-auto leading-relaxed">
-        <span className="font-medium">{t('ticker.subtitles')}</span> • <span className="font-medium">{t('ticker.caption')}</span> • <span className="font-medium">{t('ticker.transcript')}</span> • <span className="font-medium">{t('ticker.bulk')}</span>
+      <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
+        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.subtitles')}</span>
+        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.caption')}</span>
+        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.transcript')}</span>
+        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.bulk')}</span>
       </div>
     </div>
   );

@@ -1,128 +1,49 @@
 "use client";
 
-import React from "react";
-import { useTranslations } from 'next-intl';
+import { Link2, Sparkles, Download } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+const STEP_ICONS = [Link2, Sparkles, Download];
 
 export default function HowItWorks() {
-  const t = useTranslations('howItWorks');
+  const t = useTranslations("howItWorks");
 
   return (
-    <section className="relative py-20 bg-white overflow-hidden">
-      {/* 装饰性背景：淡蓝色的模糊圆球，呼应 HeroSection */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50 rounded-full blur-3xl -z-10 opacity-60"></div>
-      <div className="container mx-auto px-6 lg:px-8">
-        <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-5xl font-display uppercase tracking-wide text-slate-900">
-            {t('title')}
+    <section className="relative overflow-hidden bg-white py-24">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.13),rgba(37,99,235,0)_72%)]" />
+      <div className="container mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto mb-20 max-w-3xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+            {t("title")}
           </h2>
-          <p className="mt-4 text-lg text-slate-500 max-w-2xl mx-auto">
-            {t('description')}
+          <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+            {t("description")}
           </p>
         </div>
 
-        <div className="relative grid md:grid-cols-3 gap-8">
-          {/* 连接线 (仅在桌面端显示) */}
-          <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-blue-100 via-indigo-100 to-blue-100 -z-10"></div>
+        <div className="relative grid gap-8 md:grid-cols-3">
+          <div className="pointer-events-none absolute left-[16%] right-[16%] top-14 hidden h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent md:block" />
+          {[1, 2, 3].map((step, index) => {
+            const Icon = STEP_ICONS[index];
 
-          {/* Step 1 */}
-          <div className="relative group">
-            <div className="relative z-10 flex flex-col items-center text-center bg-white p-6 rounded-2xl border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              {/* Icon Circle */}
-              <div className="w-20 h-20 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-blue-600">
-                <svg
-                  className="w-10 h-10"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                  ></path>
-                </svg>
+            return (
+              <div
+                key={step}
+                className="group relative rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_16px_30px_-28px_rgba(15,23,42,0.52)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_28px_40px_-30px_rgba(37,99,235,0.5)]"
+              >
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-slate-500 shadow-sm">
+                  {t(`steps.${step}.badge`)}
+                </div>
+                <div className="mx-auto mb-6 mt-3 flex h-16 w-16 items-center justify-center rounded-2xl border border-blue-100 bg-blue-50 text-blue-600 transition-transform duration-300 group-hover:scale-105">
+                  <Icon className="h-8 w-8" strokeWidth={1.9} />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">{t(`steps.${step}.title`)}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {t(`steps.${step}.description`)}
+                </p>
               </div>
-
-              {/* Step Number Badge */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider shadow-sm">
-                {t('steps.1.badge')}
-              </div>
-
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {t('steps.1.title')}
-              </h3>
-              <p className="text-slate-500 leading-relaxed text-sm">
-                {t('steps.1.description')}
-              </p>
-            </div>
-          </div>
-
-          {/* Step 2 */}
-          <div className="relative group">
-            <div className="relative z-10 flex flex-col items-center text-center bg-white p-6 rounded-2xl border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              {/* Icon Circle */}
-              <div className="w-20 h-20 rounded-2xl bg-indigo-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-indigo-600">
-                <svg
-                  className="w-10 h-10"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-                  ></path>
-                </svg>
-              </div>
-
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider shadow-sm">
-                {t('steps.2.badge')}
-              </div>
-
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {t('steps.2.title')}
-              </h3>
-              <p className="text-slate-500 leading-relaxed text-sm">
-                {t('steps.2.description')}
-              </p>
-            </div>
-          </div>
-
-          {/* Step 3 */}
-          <div className="relative group">
-            <div className="relative z-10 flex flex-col items-center text-center bg-white p-6 rounded-2xl border border-slate-100 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              {/* Icon Circle */}
-              <div className="w-20 h-20 rounded-2xl bg-teal-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 text-teal-600">
-                <svg
-                  className="w-10 h-10"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  ></path>
-                </svg>
-              </div>
-
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider shadow-sm">
-                {t('steps.3.badge')}
-              </div>
-
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                {t('steps.3.title')}
-              </h3>
-              <p className="text-slate-500 leading-relaxed text-sm">
-                {t('steps.3.description')}
-              </p>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

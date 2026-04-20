@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { subtitleApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { LoginPromptModal } from "./LoginPromptModal";
+import { savePendingAction } from "@/lib/pendingAction";
 
 interface QuickActionsProps {
   videoUrl: string;
@@ -35,9 +35,8 @@ export function QuickActions({
 }: QuickActionsProps) {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number; width: number } | null>(null);
-  const { user, refreshUser } = useAuth();
+  const { user, refreshUser, login } = useAuth();
   const router = useRouter();
   const canDownload = isTranscriptReady && !isTranscriptLoading;
   const downloadButtonRef = useRef<HTMLButtonElement>(null);
@@ -70,35 +69,28 @@ export function QuickActions({
     };
   }, [isDownloadOpen]);
 
-  const checkGuestDownloadLimit = () => {
-    if (user) return true;
-
-    const guestDownloads = parseInt(localStorage.getItem("ytvidhub_guest_downloads") || "0", 10);
-    if (guestDownloads >= 1) {
-      setShowLoginPrompt(true);
-      return false;
-    }
-    return true;
-  };
-
-  const incrementGuestDownload = () => {
-    if (!user) {
-      const current = parseInt(localStorage.getItem("ytvidhub_guest_downloads") || "0", 10);
-      localStorage.setItem("ytvidhub_guest_downloads", String(current + 1));
-    }
-  };
-
   const handleDownload = async (format: "srt" | "vtt" | "txt") => {
     if (!canDownload) {
       toast.info("Subtitles are still generating. Please wait.");
       return;
     }
 
-    if (!checkGuestDownloadLimit()) {
+    if (!user) {
+      savePendingAction({
+        type: "download_single",
+        payload: {
+          videoUrl,
+          title: videoTitle,
+          format,
+          lang,
+        },
+      });
+      toast.info("Please login. We will continue your download automatically.");
+      login();
       return;
     }
 
-    if (user && (user.credits || 0) <= 0) {
+    if ((user.credits || 0) <= 0) {
       toast.error("Insufficient credits", {
         action: { label: "Get Credits", onClick: () => router.push("/pricing") },
       });
@@ -111,17 +103,12 @@ export function QuickActions({
     try {
       toast.info(`Preparing ${format.toUpperCase()} download...`);
 
-      let blob;
-      if (user) {
-        blob = await subtitleApi.downloadSingle({
-          url: videoUrl,
-          lang,
-          format,
-          title: videoTitle,
-        });
-      } else {
-        blob = await subtitleApi.guestDownload(videoUrl, lang, format);
-      }
+      const blob = await subtitleApi.downloadSingle({
+        url: videoUrl,
+        lang,
+        format,
+        title: videoTitle,
+      });
 
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
@@ -134,12 +121,9 @@ export function QuickActions({
 
       toast.success(`${format.toUpperCase()} downloaded successfully!`);
 
-      incrementGuestDownload();
-      if (user) {
-        refreshUser();
-        setTimeout(() => refreshUser(), 1000);
-        setTimeout(() => refreshUser(), 2000);
-      }
+      refreshUser();
+      setTimeout(() => refreshUser(), 1000);
+      setTimeout(() => refreshUser(), 2000);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "";
       if (message.includes("Insufficient credits") || message.includes("credit")) {
@@ -262,7 +246,6 @@ export function QuickActions({
         </p>
       )}
 
-      <LoginPromptModal isOpen={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
     </div>
   );
 }

@@ -1,8 +1,53 @@
-"use client";
-import React from "react";
+import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-export default function GuideYoutubeStudio() {
+import { buildCanonicalUrl } from "@/lib/url";
+
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const pathname = "/guide/how-to-download-youtube-studio-subtitles";
+  const canonicalUrl = buildCanonicalUrl({ locale, pathname });
+  const title =
+    "How to Download YouTube Studio Subtitles (Step-by-Step Guide) | YTVidHub";
+  const description =
+    "Learn how to download subtitles from YouTube Studio with a clear step-by-step workflow, plus a faster method for batch subtitle extraction and export.";
+
+  return {
+    title,
+    description,
+    keywords:
+      "how to download youtube studio subtitles, youtube studio subtitle export, youtube caption download guide, subtitle workflow for creators",
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      type: "article",
+      images: [
+        {
+          url: "/image/guides/youtube-studio-subtitles-download-guide-cover.webp",
+          width: 1536,
+          height: 1024,
+          alt: "How to download subtitles from YouTube Studio guide",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/image/guides/youtube-studio-subtitles-download-guide-cover.webp"],
+    },
+  };
+}
+
+export default async function GuideYoutubeStudio() {
   return (
     <div className="editorial-page article-body">
       <main className="editorial-main">
