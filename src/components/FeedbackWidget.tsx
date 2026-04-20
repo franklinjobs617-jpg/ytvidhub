@@ -141,6 +141,7 @@ export default function FeedbackWidget() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [showNudge, setShowNudge] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [message, setMessage] = useState("");
   const [contact, setContact] = useState("");
   const [includeScreenshot, setIncludeScreenshot] = useState(false);
@@ -191,6 +192,17 @@ export default function FeedbackWidget() {
       window.removeEventListener("error", onError);
       window.removeEventListener("unhandledrejection", onError);
     };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(max-width: 767px)");
+    const onChange = (event: MediaQueryListEvent) => {
+      setIsMobile(event.matches);
+    };
+    setIsMobile(media.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
   }, []);
 
   const buildContext = async (): Promise<FeedbackContextPayload> => {
@@ -288,8 +300,8 @@ export default function FeedbackWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-3">
-      {showNudge && !isOpen && (
+    <div className="fixed right-3 bottom-[calc(env(safe-area-inset-bottom)+12px)] md:bottom-6 md:right-6 z-[100] flex flex-col items-end gap-3">
+      {showNudge && !isOpen && !isMobile && (
         <div className="w-72 rounded-xl border border-slate-200 bg-white shadow-xl p-3">
           <div className="flex items-start justify-between gap-2">
             <p className="text-xs text-slate-600">
@@ -325,7 +337,7 @@ export default function FeedbackWidget() {
       )}
 
       {isOpen && (
-        <div className="w-88 max-w-[92vw] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden animate-in slide-in-from-bottom-5 fade-in zoom-in-95 origin-bottom-right">
+        <div className="w-[min(22rem,calc(100vw-1rem))] md:w-88 max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-slate-100 animate-in slide-in-from-bottom-5 fade-in zoom-in-95 origin-bottom-right">
           <div className="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center">
             <h3 className="font-bold text-slate-700 text-sm">Send Feedback</h3>
             <button
@@ -449,10 +461,10 @@ export default function FeedbackWidget() {
 
       <button
         onClick={openByManualClick}
-        className="group inline-flex items-center gap-2 h-12 rounded-full bg-slate-900 px-4 text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-blue-200/50"
+        className="group inline-flex items-center justify-center md:justify-start gap-2 h-11 w-11 md:h-12 md:w-auto rounded-full bg-slate-900 md:px-4 text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-blue-200/50"
       >
-        <MessageSquarePlus size={20} />
-        <span className="text-sm font-medium">Feedback</span>
+        <MessageSquarePlus size={18} />
+        <span className="hidden md:inline text-sm font-medium">Feedback</span>
       </button>
     </div>
   );
