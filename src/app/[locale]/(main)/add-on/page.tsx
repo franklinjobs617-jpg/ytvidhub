@@ -1,175 +1,273 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Metadata } from 'next';
-import { Sparkles } from "lucide-react";
+import { Metadata } from "next";
+import {
+  CheckCircle2,
+  Chrome,
+  Languages,
+  ListVideo,
+  Lock,
+  MousePointerClick,
+  ScanSearch,
+  Sparkles,
+} from "lucide-react";
 
 export const metadata: Metadata = {
-  title: 'YouTube Subtitle Downloader Chrome Extension - YTVidHub',
-  description: 'Download YouTube subtitles directly from the video page with the YTVidHub Chrome Extension. Supports SRT, VTT, and clean TXT formats with one click.',
+  title: "YouTube Subtitle Downloader Chrome Extension - YTVidHub",
+  description:
+    "Download YouTube subtitles directly from the video page with the YTVidHub Chrome Extension. Supports SRT, VTT, and clean TXT formats with one click.",
 };
 
 const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/ytvidhub-youtube-subtitle/jdkjibjlihlmpcjppdgiejgoiamogdoj";
 
+const STEPS = [
+  {
+    index: "01",
+    title: "Install Extension",
+    desc: "Add YTVidHub from the Chrome Web Store once, then keep it enabled in your browser.",
+    img: "/image/chorme/ytvidhub-extension-step-install.png",
+    alt: "Install YTVidHub extension from Chrome Web Store",
+    icon: Chrome,
+  },
+  {
+    index: "02",
+    title: "Open Any Video",
+    desc: "When a YouTube page loads, YTVidHub detects subtitle tracks automatically.",
+    img: "/image/chorme/ytvidhub-extension-step-video.png",
+    alt: "YTVidHub extension detects subtitles on YouTube video page",
+    icon: ScanSearch,
+  },
+  {
+    index: "03",
+    title: "Export in One Click",
+    desc: "Download SRT, VTT, or clean TXT instantly without switching tabs.",
+    img: "/image/chorme/ytvidhub-extension-step-download.png",
+    alt: "YTVidHub extension subtitle export formats SRT VTT TXT",
+    icon: MousePointerClick,
+  },
+];
+
+const FEATURES = [
+  {
+    title: "One-Click Interface",
+    desc: "A clean download entry is placed directly where subtitle actions happen.",
+    icon: MousePointerClick,
+  },
+  {
+    title: "Smart Export",
+    desc: "Use SRT, VTT, and clean TXT for publishing, analysis, or LLM workflows.",
+    icon: Sparkles,
+  },
+  {
+    title: "Language Support",
+    desc: "Supports manual, auto-generated, and translated subtitle tracks.",
+    icon: Languages,
+  },
+  {
+    title: "Playlist Friendly",
+    desc: "Works with playlist workflows and keeps bulk subtitle collection simple.",
+    icon: ListVideo,
+  },
+  {
+    title: "Privacy Focused",
+    desc: "Runs on YouTube pages only and does not track browsing across websites.",
+    icon: Lock,
+  },
+  {
+    title: "Chromium Compatible",
+    desc: "Use the same extension on Chrome, Edge, Brave, Arc, and similar browsers.",
+    icon: CheckCircle2,
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: "Is it really free?",
+    a: "Yes. The extension is free to install. It uses the same daily credit balance as your YTVidHub account.",
+  },
+  {
+    q: "Does it work on Microsoft Edge?",
+    a: "Yes. Edge is Chromium-based, so it supports this Chrome Web Store extension.",
+  },
+  {
+    q: "Which subtitle formats are supported?",
+    a: "You can export SRT, VTT, and clean TXT for AI workflows or plain reading.",
+  },
+  {
+    q: "Will it track my browsing data?",
+    a: "No. The extension only activates on YouTube pages and does not collect unrelated browsing history.",
+  },
+];
+
 export default function AddOnPage() {
   return (
-    <div className="bg-white min-h-screen font-sans antialiased text-slate-700">
+    <div className="min-h-screen bg-[var(--surface-page)] text-slate-700">
       <main>
-        {/* Simple, Professional Hero */}
-        <header className="border-b border-slate-100 bg-slate-50/50">
-          <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center gap-16">
+        <header className="relative overflow-hidden border-b border-slate-200 bg-white">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.14),rgba(37,99,235,0)_72%)]" />
+          <div className="relative mx-auto flex max-w-6xl flex-col gap-14 px-6 py-16 md:py-24 lg:flex-row lg:items-center">
             <div className="flex-1">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-8">
-                Official Extension
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-700">
+                <Chrome className="h-3.5 w-3.5" />
+                Official Browser Extension
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-slate-900 leading-[1.1] mb-8">
-                The fastest way to <br />
-                <span className="text-blue-600">save YouTube subtitles.</span>
+              <h1 className="mb-6 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
+                Download YouTube subtitles
+                <span className="block text-[var(--brand-600)]">directly inside YouTube</span>
               </h1>
-              <p className="text-lg text-slate-500 leading-relaxed mb-10 max-w-xl">
-                No copy-pasting required. Our browser extension adds a simple download button directly to the YouTube interface.
+              <p className="mb-10 max-w-xl text-lg leading-relaxed text-slate-600">
+                Skip manual copy and paste. Install YTVidHub once and export subtitles in SRT, VTT, or clean TXT from the video page.
               </p>
-              <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a
                   href={CHROME_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-10 py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-bold transition-all shadow-md active:scale-95 text-center"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_20px_30px_-20px_rgba(37,99,235,1)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
                 >
-                  Add to Chrome — Free
+                  <Chrome className="h-4 w-4" />
+                  Add to Chrome
                 </a>
-                <Link href="/" className="text-sm text-slate-400 hover:text-slate-900 font-semibold transition-colors flex items-center gap-2">
-                  Use web version <span>→</span>
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-[var(--brand-700)]"
+                >
+                  Use web version
+                  <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </div>
 
-            <div className="flex-1 w-full max-w-xl">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl ring-1 ring-slate-200">
+            <div className="w-full max-w-xl flex-1">
+              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_26px_50px_-34px_rgba(15,23,42,0.65)]">
                 <Image
                   src="/image/chorme/ytvidhub-chrome-store-listing.png"
-                  alt="YTVidHub Chrome Web Store Listing"
+                  alt="YTVidHub Chrome extension listing preview"
                   width={800}
                   height={500}
                   priority
-                  className="w-full h-auto"
+                  className="h-auto w-full"
                 />
               </div>
             </div>
           </div>
         </header>
 
-        {/* Clean, Numbered Steps */}
-        <section className="py-24 border-b border-slate-100">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="max-w-xl mb-20 md:mb-24">
-              <h2 className="text-3xl font-serif font-bold text-slate-900 mb-6 tracking-tight">How it works</h2>
-              <p className="text-slate-500">A seamless integration that takes moments to set up. Once installed, it works on every video you watch.</p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-16">
-              {[
-                {
-                  index: "01",
-                  title: "Installation",
-                  desc: "Add YTVidHub to your browser from the Chrome Web Store with one click.",
-                  img: "/image/chorme/ytvidhub-extension-step-install.png",
-                  alt: "Standard Chrome extension installation flow"
-                },
-                {
-                  index: "02",
-                  title: "Instant Detection",
-                  desc: "When watching any video, the extension automatically detects available subtitle tracks.",
-                  img: "/image/chorme/ytvidhub-extension-step-video.png",
-                  alt: "YouTube player with YTVidHub download button"
-                },
-                {
-                  index: "03",
-                  title: "Click to Save",
-                  desc: "Download directly in SRT, WebVTT, or clean text formats. No delay, no redirects.",
-                  img: "/image/chorme/ytvidhub-extension-step-download.png",
-                  alt: "Format selection and instant download"
-                }
-              ].map((item, i) => (
-                <div key={i} className="flex flex-col">
-                  <div className="aspect-[4/3] rounded-lg overflow-hidden mb-8 border border-slate-100 bg-slate-50 ring-1 ring-slate-100">
-                    <Image
-                      src={item.img}
-                      alt={item.alt}
-                      width={400}
-                      height={300}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex gap-4">
-                    <span className="text-xs font-mono font-bold text-blue-600 mt-1">{item.index}</span>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
-                      <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Minimalist Feature List */}
         <section className="py-24">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="grid md:grid-cols-3 gap-y-16 gap-x-12">
-              {[
-                { title: "One-Click Interface", desc: "A clean button placed right below the video player. It stays out of the way until you need it." },
-                { title: "Smart Export", desc: "Supports standard SRT and VTT formats, plus our custom 'Clean TXT' for reading and LLMs." },
-                { title: "Language Support", desc: "Captures manual, auto-generated, and translated subtitles in every language YouTube offers." },
-                { title: "Bulk Compatibility", desc: "Works on playlist pages too. Select multiple videos and download their tracks in a single batch." },
-                { title: "Private by Design", desc: "The extension only runs on YouTube. We never collect your browsing history or personal data." },
-                { title: "Universal", desc: "Built for Chrome, but fully compatible with Edge, Brave, Arc, and all Chromium browsers." }
-              ].map((item, i) => (
-                <div key={i}>
-                  <h3 className="text-base font-bold text-slate-900 mb-3">{item.title}</h3>
-                  <p className="text-slate-500 leading-relaxed text-sm">{item.desc}</p>
-                </div>
-              ))}
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+                How it works
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+                Three steps, no extra dashboard. Install once and keep your subtitle flow inside the YouTube player experience.
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-3">
+              {STEPS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <article
+                    key={item.index}
+                    className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_18px_35px_-30px_rgba(15,23,42,0.55)]"
+                  >
+                    <div className="mb-5 aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                      <Image
+                        src={item.img}
+                        alt={item.alt}
+                        width={480}
+                        height={360}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="rounded-md border border-blue-100 bg-blue-50 px-2 py-1 text-[11px] font-semibold tracking-[0.08em] text-blue-700">
+                        {item.index}
+                      </span>
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-blue-600">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* Newsletter-style CTA */}
-        <section className="pb-32 px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-slate-900 rounded-2xl p-12 md:p-20 text-center text-white">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Ready to simplify your workflow?</h2>
-              <p className="text-slate-400 max-w-xl mx-auto mb-10 text-lg">Join 10,000+ researchers and students using YTVidHub to save time on YouTube research.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <a
-                  href={CHROME_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-12 py-4 bg-white text-slate-900 rounded-lg font-bold hover:bg-slate-100 transition-all active:scale-95"
+        <section className="border-y border-slate-200 bg-white py-24">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto mb-16 max-w-3xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+                Why users install it
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+                Built for speed and clarity: practical controls, stable export formats, and minimal setup friction.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {FEATURES.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <article
+                    key={item.title}
+                    className="rounded-2xl border border-slate-200 bg-[var(--surface-page)] p-6 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.45)]"
+                  >
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-base font-semibold text-slate-900">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-24">
+          <div className="mx-auto max-w-6xl rounded-3xl border border-slate-200 bg-slate-900 px-8 py-14 text-center text-white md:px-12 md:py-16">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              Ready to simplify subtitle capture?
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-300">
+              Install the extension and keep your existing YTVidHub workflow while reducing click steps on every video.
+            </p>
+            <a
+              href={CHROME_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-900 transition-colors hover:bg-slate-100"
+            >
+              <Chrome className="h-4 w-4" />
+              Install for Chrome
+            </a>
+          </div>
+        </section>
+
+        <section className="border-t border-slate-200 bg-white py-24">
+          <div className="mx-auto max-w-4xl px-6">
+            <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+              Common Questions
+            </h2>
+            <div className="space-y-4">
+              {FAQ_ITEMS.map((item) => (
+                <details
+                  key={item.q}
+                  className="group overflow-hidden rounded-2xl border border-slate-200 bg-[var(--surface-page)]"
                 >
-                  Install for Chrome
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Simple FAQ */}
-        <section className="py-24 bg-slate-50/50 border-t border-slate-100">
-          <div className="max-w-3xl mx-auto px-6">
-            <h2 className="text-2xl font-serif font-bold text-slate-900 mb-12 text-center">Common Questions</h2>
-            <div className="divide-y divide-slate-200">
-              {[
-                { q: "Is it really free?", a: "Yes. The extension is free to install. It uses the same daily credit balance as your YTVidHub account." },
-                { q: "Is Edge supported?", a: "Yes. Since Edge is based on Chromium, it can run any extension from the Chrome Web Store." },
-                { q: "Which formats can I use?", a: "You can download in SRT (subtitles), VTT (web), and Clean TXT (plain text for AI and reading)." },
-                { q: "What about my privacy?", a: "We take privacy seriously. The extension only activates on YouTube and never tracks your browsing outside the platform." }
-              ].map((item, i) => (
-                <div key={i} className="py-6 first:pt-0">
-                  <h3 className="text-base font-bold text-slate-900 mb-2">{item.q}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{item.a}</p>
-                </div>
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-slate-800 md:px-6">
+                    <span>{item.q}</span>
+                    <span className="text-slate-400 transition-transform group-open:rotate-45">+</span>
+                  </summary>
+                  <div className="border-t border-slate-200 px-5 py-4 text-sm leading-relaxed text-slate-600 md:px-6">
+                    {item.a}
+                  </div>
+                </details>
               ))}
             </div>
           </div>

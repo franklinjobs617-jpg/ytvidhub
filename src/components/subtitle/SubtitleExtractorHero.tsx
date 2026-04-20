@@ -116,15 +116,15 @@ export default function SubtitleExtractorHero() {
   };
 
   return (
-    <div className="relative isolate bg-white">
+    <div className="relative isolate bg-[var(--surface-page)]">
       <Toaster richColors closeButton position="top-center" />
 
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.14),rgba(37,99,235,0)_75%)]" />
 
       <section className="relative pt-16 pb-20 md:pt-20 md:pb-28 article-hero">
         <div className="container mx-auto px-4 md:px-6 lg:px-8 article-shell">
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-display uppercase tracking-wide text-slate-900 leading-tight mb-6 drop-shadow-sm article-h1">
+            <h1 className="text-4xl md:text-6xl font-display tracking-tight text-slate-900 leading-tight mb-6 article-h1">
               {t("hero.title")}
             </h1>
 
@@ -132,20 +132,20 @@ export default function SubtitleExtractorHero() {
               {t("hero.subtitle")}
             </p>
 
-            <div className="flex flex-wrap justify-center gap-6 mb-12">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 shadow-[0_10px_18px_-16px_rgba(15,23,42,0.8)]">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.bulk")}
               </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 shadow-[0_10px_18px_-16px_rgba(15,23,42,0.8)]">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.formats")}
               </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 shadow-[0_10px_18px_-16px_rgba(15,23,42,0.8)]">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.languages")}
               </div>
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 shadow-[0_10px_18px_-16px_rgba(15,23,42,0.8)]">
                 <CheckCircle size={16} className="text-blue-600" />
                 {t("hero.benefits.instant")}
               </div>
@@ -157,10 +157,10 @@ export default function SubtitleExtractorHero() {
               className={`relative bg-white rounded-2xl border shadow-xl overflow-hidden transition-all duration-300 ${
                 inputError
                   ? "border-red-300 shadow-red-100 ring-4 ring-red-50"
-                  : "border-slate-200 shadow-blue-100/50"
+                  : "border-slate-200 shadow-[0_24px_44px_-32px_rgba(15,23,42,0.62)]"
               }`}
             >
-              <div className="bg-slate-50/80 border-b border-slate-200 px-4 py-3">
+              <div className="bg-slate-50 border-b border-slate-200 px-4 py-3">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
                     <Youtube size={18} className="text-red-500" />
@@ -181,10 +181,10 @@ export default function SubtitleExtractorHero() {
                   <div
                     className={`absolute -inset-0.5 rounded-2xl transition-all duration-500 ${
                       isFocused
-                        ? "bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500 opacity-100"
+                        ? "bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500 opacity-100"
                         : inputError
                           ? "bg-red-400 opacity-100"
-                          : "bg-gradient-to-r from-blue-400 via-slate-300 to-blue-400 opacity-40 group-hover/input:opacity-70"
+                          : "bg-gradient-to-r from-blue-300 via-slate-300 to-blue-300 opacity-30 group-hover/input:opacity-55"
                     } blur-sm`}
                   />
 
@@ -225,7 +225,7 @@ export default function SubtitleExtractorHero() {
                         disabled={!url.trim() || isAnalyzing}
                         className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all whitespace-nowrap ${
                           url.trim() && !isAnalyzing
-                            ? "bg-slate-900 text-white hover:bg-black hover:shadow-lg hover:-translate-y-0.5"
+                            ? "bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] text-white hover:from-[var(--brand-700)] hover:to-[var(--brand-700)] hover:shadow-lg hover:-translate-y-0.5"
                             : "bg-blue-50 text-blue-300 cursor-not-allowed"
                         }`}
                       >
@@ -259,7 +259,7 @@ export default function SubtitleExtractorHero() {
                           "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                         )
                       }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
                     >
                       <Play size={12} /> Single Video
                     </button>
@@ -269,7 +269,7 @@ export default function SubtitleExtractorHero() {
                           "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME",
                         )
                       }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
                     >
                       <FileText size={12} /> Playlist
                     </button>
@@ -277,7 +277,7 @@ export default function SubtitleExtractorHero() {
                       onClick={() =>
                         handleExampleClick("https://www.youtube.com/@Google")
                       }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
                     >
                       <Globe size={12} /> Channel
                     </button>
@@ -287,13 +287,13 @@ export default function SubtitleExtractorHero() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
+              <div className="text-center p-4 bg-white rounded-xl border border-slate-200 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.6)]">
                 <div className="text-2xl font-bold text-blue-600 mb-1">5M+</div>
                 <div className="text-xs text-slate-500 font-medium">
                   {t("stats.extracted")}
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
+              <div className="text-center p-4 bg-white rounded-xl border border-slate-200 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.6)]">
                 <div className="text-2xl font-bold text-blue-500 mb-1">
                   100+
                 </div>
@@ -301,13 +301,13 @@ export default function SubtitleExtractorHero() {
                   {t("stats.languages")}
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
+              <div className="text-center p-4 bg-white rounded-xl border border-slate-200 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.6)]">
                 <div className="text-2xl font-bold text-blue-600 mb-1">3</div>
                 <div className="text-xs text-slate-500 font-medium">
                   {t("stats.formats")}
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
+              <div className="text-center p-4 bg-white rounded-xl border border-slate-200 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.6)]">
                 <div className="text-2xl font-bold text-blue-700 mb-1">
                   &lt;5s
                 </div>

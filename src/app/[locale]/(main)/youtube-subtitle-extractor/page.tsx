@@ -3,19 +3,24 @@ import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import SubtitleExtractorHero from "@/components/subtitle/SubtitleExtractorHero";
 import {
+  ArrowRight,
   ShieldCheck,
   Zap,
   Layers,
-  Globe2,
-  DownloadIcon,
   Info,
   CheckCircle2,
   FileText,
   Clock,
   Layout,
-  Play,
 } from "lucide-react";
 type Props = { params: Promise<{ locale: string }> };
+
+type TestimonialItem = {
+  quote: string;
+  author: string;
+  role: string;
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({
@@ -30,6 +35,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t("title"),
     description: t("description"),
     keywords: t("keywords"),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      url: canonicalUrl,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+    },
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -90,8 +106,9 @@ export default async function SubtitleExtractorPage({ params }: Props) {
       },
     ],
   };
+  const testimonialItems = t.raw("testimonials.items") as TestimonialItem[];
   return (
-    <div className="bg-white min-h-screen article-body">
+    <div className="min-h-screen bg-[var(--surface-page)] article-body">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -103,15 +120,13 @@ export default async function SubtitleExtractorPage({ params }: Props) {
   
       <SubtitleExtractorHero /> {/* Main Content Area */}
       <main className="relative z-10 pb-24 pt-12 md:pt-16">
-        {/* Subtle Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-slate-50/30 to-transparent -z-10" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.1),rgba(37,99,235,0)_72%)] -z-10" />
         <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
-          {/* Developer Insight Section - Minimalist Floating Card */}
           <section className="mb-24 relative z-20">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/60 p-8 md:p-12 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.06)]">
+              <div className="bg-white border border-slate-200 p-8 md:p-12 rounded-3xl shadow-[0_26px_45px_-35px_rgba(15,23,42,0.65)]">
                 <div className="flex flex-col md:flex-row gap-8 items-start pt-2">
-                  <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100/50">
+                  <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100">
                     <Info className="text-blue-600" size={28} />
                   </div>
                   <div className="flex-1">
@@ -119,10 +134,10 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                       {t("insight.title")}
                     </h3>
                     <p className="text-slate-600 text-lg md:text-xl leading-relaxed italic mb-8">
-                      "{t("insight.content")}"
+                      &ldquo;{t("insight.content")}&rdquo;
                     </p>
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                      <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">
                         F
                       </div>
                       <div className="flex flex-col">
@@ -139,10 +154,9 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </div>
             </div>
           </section>
-          {/* Capabilities Grid */}
           <section className="mb-32">
             <div className="text-center mb-16">
-              <span className="px-4 py-1.5 rounded-full bg-slate-100 text-slate-500 text-xs font-black uppercase tracking-widest mb-4 inline-block">
+              <span className="px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold uppercase tracking-[0.12em] mb-4 inline-block">
                 Professional Grade
               </span>
               <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight article-h2">
@@ -150,8 +164,8 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </h2>
             </div>
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              <div className="group bg-slate-50/50 p-10 rounded-[2.5rem] border border-transparent hover:border-slate-200 transition-all duration-300">
-                <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-8 border border-slate-100 transition-transform group-hover:-rotate-3">
+              <div className="group bg-white p-10 rounded-3xl border border-slate-200 shadow-[0_18px_30px_-26px_rgba(15,23,42,0.55)] hover:border-blue-200 transition-all duration-300">
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl shadow-sm flex items-center justify-center mb-8 border border-blue-100">
                   <Zap className="text-blue-600" size={28} />
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-4">
@@ -160,14 +174,14 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                 <p className="text-slate-600 text-lg leading-relaxed">
                   {t("features.ai.description")}
                 </p>
-                <div className="mt-8 flex items-center gap-2 text-blue-600 font-bold text-sm">
+                <div className="mt-8 flex items-center gap-2 text-blue-600 font-semibold text-sm">
                   <span>Learn about AI Cleaning</span>
                   <ArrowRight size={16} />
                 </div>
               </div>
-              <div className="group bg-slate-50/50 p-10 rounded-[2.5rem] border border-transparent hover:border-slate-200 transition-all duration-300">
-                <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-8 border border-slate-100 transition-transform group-hover:rotate-3">
-                  <Layers className="text-red-500" size={28} />
+              <div className="group bg-white p-10 rounded-3xl border border-slate-200 shadow-[0_18px_30px_-26px_rgba(15,23,42,0.55)] hover:border-blue-200 transition-all duration-300">
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl shadow-sm flex items-center justify-center mb-8 border border-blue-100">
+                  <Layers className="text-blue-600" size={28} />
                 </div>
                 <h3 className="text-2xl font-bold text-slate-900 mb-4">
                   {t("features.bulk.title")}
@@ -175,15 +189,14 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                 <p className="text-slate-600 text-lg leading-relaxed">
                   {t("features.bulk.description")}
                 </p>
-                <div className="mt-8 flex items-center gap-2 text-red-500 font-bold text-sm">
+                <div className="mt-8 flex items-center gap-2 text-blue-600 font-semibold text-sm">
                   <span>Explore Bulk Mode</span> <ArrowRight size={16} />
                 </div>
               </div>
             </div>
           </section>
-          {/* Efficiency & Accuracy Benchmarks */}
           <section className="mb-32">
-            <div className="bg-slate-900 rounded-[3rem] p-8 md:p-16 text-white overflow-hidden relative">
+            <div className="bg-slate-900 rounded-3xl p-8 md:p-16 text-white overflow-hidden relative">
               <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-600/10 blur-[120px] rounded-full -mr-20 -mt-20" />
               <div className="relative z-10 flex flex-col lg:flex-row gap-16 items-center">
                 <div className="lg:w-1/3">
@@ -261,7 +274,6 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </div>
             </div>
           </section>
-          {/* Use Case Visual Interface */}
           <section className="mb-32">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               <div>
@@ -270,7 +282,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                 </h2>
                 <div className="space-y-8">
                   <div className="flex gap-6">
-                    <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0">
                       <FileText size={20} />
                     </div>
                     <div>
@@ -311,8 +323,8 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                 </div>
               </div>
               <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-tr from-blue-100 to-blue-50 rounded-[3rem] -rotate-2" />
-                <div className="relative bg-white rounded-[2.5rem] p-6 shadow-2xl border border-slate-100 overflow-hidden">
+                <div className="absolute -inset-4 bg-gradient-to-tr from-blue-100 to-blue-50 rounded-3xl -rotate-2" />
+                <div className="relative bg-white rounded-3xl p-6 shadow-[0_26px_50px_-32px_rgba(15,23,42,0.65)] border border-slate-200 overflow-hidden">
                   <div className="aspect-[4/3] rounded-2xl bg-slate-900 overflow-hidden border border-slate-800">
                     <img
                       src="/image/blog-ai-summary-interface.webp"
@@ -324,7 +336,6 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </div>
             </div>
           </section>
-          {/* Use Cases Section */}
           <section className="mb-32">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight article-h2">
@@ -332,7 +343,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </h2>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 p-8 rounded-3xl border border-blue-100">
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-[0_16px_30px_-26px_rgba(15,23,42,0.5)]">
                 <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
                   <Zap className="text-white" size={24} />
                 </div>
@@ -346,7 +357,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                   {t("useCases.ai.stats")}
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 p-8 rounded-3xl border border-blue-100">
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-[0_16px_30px_-26px_rgba(15,23,42,0.5)]">
                 <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
                   <FileText className="text-white" size={24} />
                 </div>
@@ -360,7 +371,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                   {t("useCases.research.stats")}
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-50 p-8 rounded-3xl border border-blue-100">
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-[0_16px_30px_-26px_rgba(15,23,42,0.5)]">
                 <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
                   <Layers className="text-white" size={24} />
                 </div>
@@ -376,7 +387,6 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </div>
             </div>
           </section>
-          {/* Testimonials Section */}
           <section className="mb-32">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
@@ -385,13 +395,13 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                 </h2>
               </div>
               <div className="grid md:grid-cols-3 gap-8">
-                {(t.raw("testimonials.items") as any[]).map((item, i) => (
+                {testimonialItems.map((item, i) => (
                   <div
                     key={i}
-                    className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm"
+                    className="bg-white p-8 rounded-3xl border border-slate-200 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.5)]"
                   >
                     <p className="text-slate-600 leading-relaxed mb-6 italic">
-                      "{item.quote}"
+                      &ldquo;{item.quote}&rdquo;
                     </p>
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
@@ -409,8 +419,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </div>
             </div>
           </section>
-          {/* FAQ Experience */}
-          <section className="bg-slate-50/50 rounded-[3rem] p-10 md:p-20">
+          <section className="bg-white rounded-3xl border border-slate-200 p-10 md:p-20 shadow-[0_20px_36px_-32px_rgba(15,23,42,0.55)]">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight article-h2">
@@ -421,10 +430,10 @@ export default async function SubtitleExtractorPage({ params }: Props) {
                 {[1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className="group bg-white p-8 rounded-3xl border border-slate-200 transition-all hover:border-blue-400 hover:shadow-xl hover:shadow-blue-900/5"
+                    className="group bg-[var(--surface-page)] p-8 rounded-3xl border border-slate-200 transition-all hover:border-blue-300 hover:shadow-[0_18px_30px_-24px_rgba(37,99,235,0.35)]"
                   >
                     <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-4">
-                      <span className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-black italic">
+                      <span className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold">
                         {i}
                       </span>
                       {t(`faq.q${i}.question`)}
@@ -440,21 +449,5 @@ export default async function SubtitleExtractorPage({ params }: Props) {
         </div>
       </main>
     </div>
-  );
-}
-function ArrowRight({ size }: { size: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" /> <path d="m12 5 7 7-7 7" />
-    </svg>
   );
 }

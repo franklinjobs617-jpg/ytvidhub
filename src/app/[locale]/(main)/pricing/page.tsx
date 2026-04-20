@@ -9,6 +9,14 @@ import PaymentChoiceModal from "@/components/pricing/PaymentChoiceModal";
 import FAQ from "@/components/landing/FAQ";
 import CustomCreditSlider from "@/components/pricing/CustomCreditSlider";
 import { CREDIT_COSTS } from "@/config/credits";
+import {
+  BadgeCheck,
+  Check,
+  Receipt,
+  ShieldCheck,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 const plans = [
   {
@@ -149,34 +157,36 @@ export default function PricingPage() {
     }
   };
 
-  return (
-    <div className="bg-slate-50 min-h-screen relative overflow-hidden">
-      <div className="absolute top-[-20%] left-[-20%] w-[35rem] h-[35rem] bg-blue-400/20 rounded-full blur-[100px] animate-pulse"></div>
-      <div className="absolute bottom-[-20%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-400/20 rounded-full blur-[100px] animate-pulse"></div>
+  const trustItems = [
+    { label: "Secure Payment", icon: ShieldCheck },
+    { label: "Instant Delivery", icon: Zap },
+    { label: "Global VAT Invoice", icon: Receipt },
+  ];
 
-      <section className="relative pt-10 pb-6 text-center px-6 max-w-5xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-4 animate-fade-in">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
-          </span>
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-[var(--surface-page)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.14),rgba(37,99,235,0)_72%)]" />
+
+      <section className="relative mx-auto max-w-5xl px-6 pb-8 pt-12 text-center">
+        <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-700">
+          <BadgeCheck className="h-3.5 w-3.5" />
           Trusted by 10,000+ Researchers
         </div>
-        <h1 className="text-5xl md:text-7xl font-display font-black italic uppercase tracking-tight text-slate-900 mb-6 drop-shadow-sm leading-[0.85]">
-          The Perfect Plan <br /> For Your
-          <span className="text-blue-600">Ambition</span>
-        </h1>
-        <p className="text-base text-slate-500 max-w-xl mx-auto font-medium leading-normal mb-8">
-          Stop wasting hours on manual downloads. Choose a professional plan and
+        <h1 className="mb-5 text-4xl font-bold tracking-tight text-slate-900 md:text-6xl">
+          Choose a plan that fits
           <br />
-          <span className="text-slate-900 font-bold underline decoration-blue-500 decoration-2 underline-offset-4">
+          your subtitle workflow
+        </h1>
+        <p className="mx-auto mb-8 max-w-2xl text-base leading-relaxed text-slate-600">
+          Keep pricing simple and predictable. Credits map directly to actions:
+          <span className="mt-2 block font-semibold text-slate-900">
             {`1 Download = ${CREDIT_COSTS.download} Credit | 1 AI Summary = ${CREDIT_COSTS.summary} Credits`}
           </span>
         </p>
 
         {hasBulkShortfallContext && (
-          <div className="mx-auto mb-8 max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-left">
-            <p className="text-sm font-bold text-amber-900">
+          <div className="mx-auto mb-8 max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-left shadow-[0_16px_30px_-30px_rgba(245,158,11,0.5)]">
+            <p className="text-sm font-semibold text-amber-900">
               Finish your batch with one top-up
             </p>
             <p className="mt-1 text-sm text-amber-800 leading-relaxed">
@@ -194,122 +204,81 @@ export default function PricingPage() {
           </div>
         )}
 
-        {/* Trust Bar - More Compact */}
-        <div className="flex flex-wrap justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500 text-[10px] font-bold uppercase tracking-widest">
-          <div className="flex items-center gap-1.5">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        <div className="mx-auto grid max-w-3xl gap-3 sm:grid-cols-3">
+          {trustItems.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 shadow-[0_10px_22px_-22px_rgba(15,23,42,0.7)]"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m17.236 0a11.955 11.955 0 01-14.717 9.917m14.717-9.917a11.955 11.955 0 01-4.88 15.688M12 20.944a11.955 11.955 0 01-8.618-3.04m17.236 0a11.955 11.955 0 01-4.88-15.688"
-              />
-            </svg>
-            Secure Payment
-          </div>
-          <div className="flex items-center gap-1.5">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-            Instant Delivery
-          </div>
-          <div className="flex items-center gap-1.5">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-              />
-            </svg>
-            Global VAT Invoice
-          </div>
+              <item.icon className="h-4 w-4 text-blue-600" />
+              {item.label}
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="pb-24 px-4 lg:px-8">
-        {/* === Custom Credit Slider (Ultra-Visible) === */}
-        <div className="mb-12 max-w-6xl mx-auto -mt-4">
+        <div className="mb-12 mx-auto max-w-6xl">
           <CustomCreditSlider onRequestLogin={() => setShowLoginModal(true)} />
         </div>
 
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan) => (
             <div
               key={plan.name}
               className={`
-                relative flex flex-col p-8 rounded-3xl border transition-all duration-500 group
+                group relative flex flex-col rounded-3xl border p-8 transition-all duration-300
                 ${
                   hasBulkShortfallContext && plan.id === "a"
-                    ? "bg-white border-amber-300 ring-[10px] ring-amber-500/10 shadow-[0_30px_60px_-20px_rgba(245,158,11,0.4)]"
+                    ? "border-amber-300 bg-white ring-[8px] ring-amber-500/10 shadow-[0_26px_50px_-36px_rgba(245,158,11,0.65)]"
                     : plan.highlight
-                      ? "bg-white border-blue-200 ring-[12px] ring-blue-500/5 shadow-[0_40px_80px_-15px_rgba(59,130,246,0.15)] scale-105 z-10"
-                      : "bg-white/70 backdrop-blur-md border-slate-200/60 hover:border-blue-300 hover:shadow-2xl hover:bg-white"
+                      ? "z-10 scale-[1.02] border-blue-200 bg-white ring-[10px] ring-blue-500/5 shadow-[0_30px_60px_-36px_rgba(59,130,246,0.55)]"
+                      : "border-slate-200 bg-white shadow-[0_20px_40px_-36px_rgba(15,23,42,0.7)] hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_30px_50px_-36px_rgba(37,99,235,0.45)]"
                 }
               `}
             >
               {plan.highlight && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-lg">
-                  Most Popular choice
+                <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white shadow-lg">
+                  Most popular
                 </span>
               )}
               {plan.tag && (
-                <span className="absolute top-6 right-6 bg-emerald-50 text-emerald-600 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter border border-emerald-100">
+                <span className="absolute right-6 top-6 rounded-md border border-emerald-100 bg-emerald-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-emerald-700">
                   {plan.tag}
                 </span>
               )}
               {hasBulkShortfallContext && plan.id === "a" && (
-                <span className="absolute top-6 right-6 bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter border border-amber-200">
+                <span className="absolute right-6 top-6 rounded-md border border-amber-200 bg-amber-100 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-amber-800">
                   Recommended now
                 </span>
               )}
 
               <div className="mb-8">
                 <h3
-                  className={`text-sm font-black uppercase tracking-[0.15em] mb-4 ${
+                  className={`mb-4 text-sm font-semibold uppercase tracking-[0.12em] ${
                     plan.name === "Researcher"
                       ? "text-blue-600"
                       : plan.highlight
                         ? "text-blue-600"
-                        : "text-slate-400"
+                        : "text-slate-500"
                   }`}
                 >
                   {plan.name}
                 </h3>
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-5xl font-display font-black italic text-slate-900 tracking-tighter">
+                <div className="mb-2 flex items-baseline gap-1">
+                  <span className="text-5xl font-bold tracking-tight text-slate-900">
                     {plan.price}
                   </span>
                   {plan.originalPrice && (
-                    <span className="text-lg text-slate-300 line-through font-bold">
+                    <span className="text-lg font-semibold text-slate-300 line-through">
                       {plan.originalPrice}
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mb-6">
+                <p className="mb-6 text-xs font-semibold uppercase tracking-[0.1em] text-slate-400">
                   {plan.period}
                 </p>
-                <p className="text-sm text-slate-500 leading-relaxed min-h-[48px] font-medium">
+                <p className="min-h-[48px] text-sm leading-relaxed text-slate-600">
                   {plan.desc}
                 </p>
               </div>
@@ -320,37 +289,28 @@ export default function PricingPage() {
                 {plan.features.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-start text-[13px] font-medium ${
+                    className={`flex items-start text-[13px] ${
                       feature.disabled
                         ? "text-slate-300 line-through opacity-50"
                         : "text-slate-600"
                     }`}
                   >
-                    <svg
-                      className={`w-5 h-5 mr-3 flex-shrink-0 ${
+                    <Check
+                      className={`mr-3 h-5 w-5 shrink-0 ${
                         feature.disabled ? "text-slate-200" : "text-blue-500"
                       }`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
+                      strokeWidth={2.5}
+                    />
                     <span className="leading-snug">
                       {feature.highlight ? (
-                        <strong className="text-slate-900 font-bold">
+                        <strong className="font-semibold text-slate-900">
                           {feature.text}
                         </strong>
                       ) : (
                         feature.text
                       )}
                       {feature.sub && (
-                        <span className="block text-[11px] text-slate-400 mt-1 font-normal italic">
+                        <span className="mt-1 block text-[11px] text-slate-400">
                           {feature.sub}
                         </span>
                       )}
@@ -359,18 +319,17 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              {/* CTA Button */}
               <button
                 onClick={() => handlePurchase(plan.id)}
                 disabled={!plan.id}
                 className={`
-                  w-full py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all duration-300
+                  w-full rounded-2xl py-4 text-[11px] font-semibold uppercase tracking-[0.12em] transition-all duration-200
                   ${
                     !plan.id
-                      ? "bg-slate-50 text-slate-300 cursor-default border border-slate-100"
+                      ? "cursor-default border border-slate-100 bg-slate-50 text-slate-300"
                       : plan.highlight
-                        ? "bg-blue-600 text-white hover:bg-blue-700 shadow-[0_20px_40px_-10px_rgba(37,99,235,0.4)] hover:-translate-y-1 active:scale-95"
-                        : "bg-slate-900 text-white hover:bg-black shadow-xl hover:-translate-y-1 active:scale-95"
+                        ? "bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] text-white shadow-[0_20px_28px_-18px_rgba(37,99,235,1)] hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
+                        : "border border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700"
                   }
                 `}
               >
@@ -380,31 +339,33 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* === Credits Explanation === */}
-        <div className="mt-20 max-w-4xl mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4 font-display uppercase italic tracking-wide">
+        <div className="mx-auto mt-20 max-w-4xl rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_20px_40px_-34px_rgba(15,23,42,0.6)]">
+          <h2 className="mb-3 text-2xl font-bold text-slate-900">
             How Credits Work
           </h2>
-          <p className="text-slate-600 mb-6">
+          <p className="mb-6 text-slate-600">
             We use a simple credit system so you only pay for what you use. It
             is transparent and fair.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
-              <p className="font-bold text-slate-900 text-lg mb-1">1 Credit</p>
-              <p className="text-slate-600 text-sm">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <Sparkles className="mb-3 h-5 w-5 text-blue-600" />
+              <p className="mb-1 text-lg font-semibold text-slate-900">1 Credit</p>
+              <p className="text-sm text-slate-600">
                 Download subtitles for 1 YouTube URL.
               </p>
             </div>
-            <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
-              <p className="font-bold text-slate-900 text-lg mb-1">{`${CREDIT_COSTS.summary} Credits`}</p>
-              <p className="text-slate-600 text-sm">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <Zap className="mb-3 h-5 w-5 text-blue-600" />
+              <p className="mb-1 text-lg font-semibold text-slate-900">{`${CREDIT_COSTS.summary} Credits`}</p>
+              <p className="text-sm text-slate-600">
                 AI Video Summary & Transcription for 1 URL.
               </p>
             </div>
-            <div className="bg-slate-50 p-5 rounded-xl border border-slate-100">
-              <p className="font-bold text-slate-900 text-lg mb-1">{`${CREDIT_COSTS.studyCards} Credit`}</p>
-              <p className="text-slate-600 text-sm">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <BadgeCheck className="mb-3 h-5 w-5 text-blue-600" />
+              <p className="mb-1 text-lg font-semibold text-slate-900">{`${CREDIT_COSTS.studyCards} Credit`}</p>
+              <p className="text-sm text-slate-600">
                 Generate 1 full set of AI Study Cards.
               </p>
             </div>
@@ -412,10 +373,8 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* === FAQ === */}
       <FAQ />
 
-      {/* === Modals === */}
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
