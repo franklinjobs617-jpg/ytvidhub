@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
 export default function HowToUsePage() {
   const { user } = useAuth();
@@ -96,23 +97,16 @@ export default function HowToUsePage() {
           </div>
         </article>
         
-        <article className="max-w-3xl mx-auto px-6 mb-16">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-8">
-            4. Quick Troubleshooting
-          </h2>
-          <div className="space-y-5">
-            {[
-              { q: "Why does the tool say \"Subtitles not found\"?", a: "This message appears if the YouTube video either does not have captions enabled or is set to private. Our tool can only access publicly available subtitles." },
-              { q: "What's the difference between auto-generated and manual subtitles?", a: "Auto-generated subtitles are created by YouTube's AI and may contain errors. Manual subtitles are uploaded by the video creator and are usually 99% accurate." },
-              { q: "My bulk download failed. What should I do?", a: "Ensure each URL is on a separate line. If it persists, try a smaller batch. Pro members with 1000+ URLs should ensure a stable connection during submission." },
-            ].map((faq, i) => (
-              <div key={i} className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="4. Quick Troubleshooting"
+          items={[
+            { q: "Why does the tool say \"Subtitles not found\"?", a: "This message appears if the YouTube video either does not have captions enabled or is set to private. Our tool can only access publicly available subtitles." },
+            { q: "What's the difference between auto-generated and manual subtitles?", a: "Auto-generated subtitles are created by YouTube's AI and may contain errors. Manual subtitles are uploaded by the video creator and are usually 99% accurate." },
+            { q: "My bulk download failed. What should I do?", a: "Ensure each URL is on a separate line. If it persists, try a smaller batch. Pro members with 1000+ URLs should ensure a stable connection during submission." },
+          ]}
+          sectionClassName="max-w-3xl mx-auto px-6 mb-16 py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
       </main>
 
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />

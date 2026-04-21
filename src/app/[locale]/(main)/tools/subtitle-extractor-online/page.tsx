@@ -1,9 +1,10 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
 export default function SubtitleExtractorPage() {
   const { user } = useAuth();
@@ -38,7 +39,7 @@ export default function SubtitleExtractorPage() {
             Most free tools are just scraping raw data. They don&apos;t clean it. If you&apos;re seeing timestamps, speaker notes, or automatic speech recognition (ASR) errors in your final file, your current workflow is fundamentally broken.
           </p>
           <p className="text-slate-500 leading-relaxed mb-8">
-            Our extraction process targets the final, official caption track and strips out everything irrelevant. We don&apos;t just &quot;download&quot; — we <strong>sanitize</strong> the data for immediate professional use.
+            Our extraction process targets the final, official caption track and strips out everything irrelevant. We don&apos;t just &quot;download&quot; 鈥?we <strong>sanitize</strong> the data for immediate professional use.
           </p>
 
           <h3 className="font-serif text-xl font-bold text-slate-900 mb-4">The Right Format for the Job</h3>
@@ -72,7 +73,7 @@ export default function SubtitleExtractorPage() {
         <article className="max-w-3xl mx-auto px-6 mb-16">
           <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-4">2. Our 3-Step Extraction Workflow: Fast, Clean, Done.</h2>
           <p className="text-slate-500 leading-relaxed mb-8">
-            Here is the exact workflow I use—and the one the tool follows—to guarantee perfect subtitle extraction every time.
+            Here is the exact workflow I use鈥攁nd the one the tool follows鈥攖o guarantee perfect subtitle extraction every time.
           </p>
           <div className="space-y-5">
             {[
@@ -157,26 +158,20 @@ export default function SubtitleExtractorPage() {
             </Link>
           </div>
         </article>
-
-        {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16">
-          <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900 mb-8">Technical Q&amp;A</h2>
-          <div className="space-y-5">
-            {[
-              { q: "What makes this 'Extractor' different from a standard downloader?", a: "Most downloaders just provide the raw file. Our extractor focuses on the 'cleaning' stage—standardizing punctuation, removing speaker cue noise, and handling line-breaks so the text is immediately readable for human analysis or LLM ingestion." },
-              { q: "Does it support auto-generated YouTube subtitles?", a: "Yes. We can extract both manually uploaded CC and auto-generated tracks. For auto-generated tracks, our cleaning engine is particularly effective at removing [Music] and [Applause] tags." },
-              { q: "Can I extract subtitles in multiple languages at once?", a: "Currently, you can select any individual language track available. For Pro users, we offer a dual-subtitle mode and bulk extraction for all languages available on a specific video." },
-            ].map((item, i) => (
-              <div key={i} className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-                <h3 className="font-semibold text-slate-900 mb-2">{item.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{item.a}</p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Technical Q&A"
+          items={[
+            { q: "What makes this 'Extractor' different from a standard downloader?", a: "Most downloaders just provide the raw file. Our extractor focuses on the 'cleaning' stage鈥攕tandardizing punctuation, removing speaker cue noise, and handling line-breaks so the text is immediately readable for human analysis or LLM ingestion." },
+            { q: "Does it support auto-generated YouTube subtitles?", a: "Yes. We can extract both manually uploaded CC and auto-generated tracks. For auto-generated tracks, our cleaning engine is particularly effective at removing [Music] and [Applause] tags." },
+            { q: "Can I extract subtitles in multiple languages at once?", a: "Currently, you can select any individual language track available. For Pro users, we offer a dual-subtitle mode and bulk extraction for all languages available on a specific video." },
+          ]}
+          sectionClassName="max-w-3xl mx-auto px-6 mb-16 py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
       </main>
 
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </div>
   );
 }
+

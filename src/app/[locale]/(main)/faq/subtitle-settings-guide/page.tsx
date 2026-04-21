@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function SubtitleSettingsGuidePage() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -190,33 +191,21 @@ export default function SubtitleSettingsGuidePage() {
             </Link>
           </div>
         </article>
-        {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Quick FAQ
-          </h2>
-          <div className="space-y-5">
-            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              <h3 className="font-semibold text-slate-900 mb-2">
-                How do I sync subtitles if they are lagging?
-              </h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                On standard YouTube settings, you can&apos;t manually shift
-                timing. This requires downloading the SRT file and using a
-                subtitle editor for precise time-code realignment.
-              </p>
-            </div>
-            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
-              <h3 className="font-semibold text-slate-900 mb-2">
-                Can I use these settings on the YouTube TV app?
-              </h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                Yes, though the menu is simplified. While playing a video, press
-                Up on your remote to find the CC and Gear icons.
-              </p>
-            </div>
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Quick FAQ"
+          items={[
+            {
+              q: "How do I sync subtitles if they are lagging?",
+              a: "On standard YouTube settings, you can&apos;t manually shift timing. This requires downloading the SRT file and using a subtitle editor for precise time-code realignment.",
+            },
+            {
+              q: "Can I use these settings on the YouTube TV app?",
+              a: "Yes, though the menu is simplified. While playing a video, press Up on your remote to find the CC and Gear icons.",
+            },
+          ]}
+          sectionClassName="max-w-3xl mx-auto px-6 mb-16 article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
       </main>
       <LoginModal
         isOpen={showLoginModal}

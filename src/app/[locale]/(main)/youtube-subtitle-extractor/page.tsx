@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import SubtitleExtractorHero from "@/components/subtitle/SubtitleExtractorHero";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import {
   ArrowRight,
   ShieldCheck,
@@ -419,33 +420,15 @@ export default async function SubtitleExtractorPage({ params }: Props) {
               </div>
             </div>
           </section>
-          <section className="bg-white rounded-3xl border border-slate-200 p-10 md:p-20 shadow-[0_20px_36px_-32px_rgba(15,23,42,0.55)]">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight article-h2">
-                  {t("faq.title")}
-                </h2>
-              </div>
-              <div className="grid gap-6">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="group bg-[var(--surface-page)] p-8 rounded-3xl border border-slate-200 transition-all hover:border-blue-300 hover:shadow-[0_18px_30px_-24px_rgba(37,99,235,0.35)]"
-                  >
-                    <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-4">
-                      <span className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-100 text-blue-700 flex items-center justify-center text-sm font-semibold">
-                        {i}
-                      </span>
-                      {t(`faq.q${i}.question`)}
-                    </h3>
-                    <p className="text-slate-600 leading-relaxed pl-12">
-                      {t(`faq.q${i}.answer`)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
+          <UnifiedFaqSection
+            title={t("faq.title")}
+            items={[1, 2, 3, 4].map((i) => ({
+              q: t(`faq.q${i}.question`),
+              a: t(`faq.q${i}.answer`),
+            }))}
+            sectionClassName="bg-white rounded-3xl border border-slate-200 p-10 md:p-20 py-0 shadow-[0_20px_36px_-32px_rgba(15,23,42,0.55)]"
+            containerClassName="max-w-4xl px-0 lg:px-0"
+          />
         </div>
       </main>
     </div>

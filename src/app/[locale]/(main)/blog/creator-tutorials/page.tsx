@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import { buildCanonicalUrl } from "@/lib/url";
 
 type Props = {
@@ -338,24 +339,12 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
           </ul>
         </article>
 
-        <article className="article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-5">
-            {faqItems.map((faq, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Frequently Asked Questions"
+          items={faqItems}
+          sectionClassName="article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
 
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">

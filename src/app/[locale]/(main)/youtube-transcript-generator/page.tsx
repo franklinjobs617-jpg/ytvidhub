@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import TranscriptGeneratorHero from "@/components/transcript/TranscriptGeneratorHero";
 import ScrollToTopButton from "@/components/transcript/ScrollToTopButton";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import {
   Zap,
   FileText,
@@ -13,7 +14,6 @@ import {
   Clapperboard,
   Accessibility,
   BarChart3,
-  ChevronDown,
 } from "lucide-react";
 type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -375,33 +375,16 @@ export default async function YouTubeTranscriptGeneratorPage({
               ))}
             </div>
           </section>
-          {/* FAQ Section */}
-          <section className="mb-32">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 article-h2">
-                {faqT("title")}
-              </h2>
-              <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-                {faqT("subtitle")}
-              </p>
-            </div>
-            <div className="max-w-4xl mx-auto space-y-4">
-              {["what", "how", "formats", "free", "accuracy"].map((key) => (
-                <details
-                  key={key}
-                  className="bg-white rounded-xl border border-slate-200 p-6 group"
-                >
-                  <summary className="font-semibold text-slate-900 cursor-pointer list-none flex justify-between items-center">
-                    {faqT(`questions.${key}.question`)}
-                    <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform" />
-                  </summary>
-                  <p className="mt-4 text-slate-600 leading-relaxed">
-                    {faqT(`questions.${key}.answer`)}
-                  </p>
-                </details>
-              ))}
-            </div>
-          </section>
+          <UnifiedFaqSection
+            title={faqT("title")}
+            subtitle={faqT("subtitle")}
+            items={["what", "how", "formats", "free", "accuracy"].map((key) => ({
+              q: faqT(`questions.${key}.question`),
+              a: faqT(`questions.${key}.answer`),
+            }))}
+            sectionClassName="mb-32 py-0 bg-transparent"
+            containerClassName="max-w-4xl px-0 lg:px-0"
+          />
           {/* Final CTA */}
           <section className="text-center">
             <div className="bg-slate-900 rounded-3xl p-12 md:p-16 text-white border border-slate-800">

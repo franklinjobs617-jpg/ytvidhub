@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { buildCanonicalUrl } from "@/lib/url";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -225,38 +226,25 @@ export default async function GuideYoutubeStudio() {
             </table>
           </div>
         </article>
-        {/* FAQ */}
-        <article className="article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-5">
-            {[
-              {
-                q: "Can I download subtitles from YouTube Studio in bulk?",
-                a: "No, YouTube Studio currently only allows downloading subtitles one video at a time. To download multiple subtitles or entire playlists at once, use a dedicated tool like YTVidHub Batch Downloader.",
-              },
-              {
-                q: "What format does YouTube Studio export?",
-                a: "YouTube Studio typically exports captions in .sbv (proprietary), .srt (standard), or .vtt (web) formats. .SBV is rarely supported by video editors, so always choose .SRT if available.",
-              },
-              {
-                q: "How do I download auto-generated captions?",
-                a: "In YouTube Studio, go to the Subtitles tab, find the 'Automatic' language track (often labeled 'English (Automatic)'), hover over the row, click the three dots, and select Download.",
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Frequently Asked Questions"
+          items={[
+            {
+              q: "Can I download subtitles from YouTube Studio in bulk?",
+              a: "No, YouTube Studio currently only allows downloading subtitles one video at a time. To download multiple subtitles or entire playlists at once, use a dedicated tool like YTVidHub Batch Downloader.",
+            },
+            {
+              q: "What format does YouTube Studio export?",
+              a: "YouTube Studio typically exports captions in .sbv (proprietary), .srt (standard), or .vtt (web) formats. .SBV is rarely supported by video editors, so always choose .SRT if available.",
+            },
+            {
+              q: "How do I download auto-generated captions?",
+              a: "In YouTube Studio, go to the Subtitles tab, find the 'Automatic' language track (often labeled 'English (Automatic)'), hover over the row, click the three dots, and select Download.",
+            },
+          ]}
+          sectionClassName="article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">

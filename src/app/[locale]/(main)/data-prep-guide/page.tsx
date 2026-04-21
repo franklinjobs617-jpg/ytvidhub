@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import DataPrepGuideSchema from "@/components/seo/DataPrepGuideSchema";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function DataPrepGuidePage() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -202,50 +203,37 @@ export default function DataPrepGuidePage() {
             </p>
           </div>
         </article>
-        {/* 5. Technical Q&A */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Technical Q&amp;A
-          </h2>
-          <div className="space-y-5">
-            {[
-              {
-                q: "Why is data cleaning essential for LLMs?",
-                a: "LLMs are sensitive to 'noise' in data. Timestamps and speaker tags increase token consumption and can mislead the model's understanding of sentence structure and flow. Clean data leads to better training efficiency and model performance.",
-              },
-              {
-                q: "What is the best format for fine-tuning?",
-                a: "Clean TXT is generally best for fine-tuning as it maximizes data density. For RAG systems, JSON or VTT may be preferred to maintain source traceability.",
-              },
-              {
-                q: "How do you handle ASR noise in YouTube transcripts?",
-                a: "Remove timestamps, speaker labels ([MUSIC], [SPEAKER_01]), and metadata tags. Focus on preserving semantic content while eliminating formatting artifacts.",
-              },
-              {
-                q: "What's the difference between SRT and clean TXT for AI training?",
-                a: "SRT files contain timestamps and formatting that increase token count without adding semantic value. Clean TXT maximizes data density and reduces noise.",
-              },
-              {
-                q: "How much data do I need for effective LLM fine-tuning?",
-                a: "It depends on your use case, but generally 10,000-100,000 high-quality examples work well for domain adaptation. YouTube provides vast amounts of conversational data across all domains.",
-              },
-              {
-                q: "Can I use YouTube data for commercial AI applications?",
-                a: "Always check YouTube's terms of service and the specific video licenses. For research and educational purposes, transcript extraction is generally acceptable.",
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Technical Q&A"
+          items={[
+            {
+              q: "Why is data cleaning essential for LLMs?",
+              a: "LLMs are sensitive to 'noise' in data. Timestamps and speaker tags increase token consumption and can mislead the model's understanding of sentence structure and flow. Clean data leads to better training efficiency and model performance.",
+            },
+            {
+              q: "What is the best format for fine-tuning?",
+              a: "Clean TXT is generally best for fine-tuning as it maximizes data density. For RAG systems, JSON or VTT may be preferred to maintain source traceability.",
+            },
+            {
+              q: "How do you handle ASR noise in YouTube transcripts?",
+              a: "Remove timestamps, speaker labels ([MUSIC], [SPEAKER_01]), and metadata tags. Focus on preserving semantic content while eliminating formatting artifacts.",
+            },
+            {
+              q: "What's the difference between SRT and clean TXT for AI training?",
+              a: "SRT files contain timestamps and formatting that increase token count without adding semantic value. Clean TXT maximizes data density and reduces noise.",
+            },
+            {
+              q: "How much data do I need for effective LLM fine-tuning?",
+              a: "It depends on your use case, but generally 10,000-100,000 high-quality examples work well for domain adaptation. YouTube provides vast amounts of conversational data across all domains.",
+            },
+            {
+              q: "Can I use YouTube data for commercial AI applications?",
+              a: "Always check YouTube's terms of service and the specific video licenses. For research and educational purposes, transcript extraction is generally acceptable.",
+            },
+          ]}
+          sectionClassName="max-w-3xl mx-auto px-6 mb-16 article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import DownloadSubsSchema from "@/components/seo/DownloadSubsSchema";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function DownloadSubsFromYoutubePage() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -174,42 +175,29 @@ export default function DownloadSubsFromYoutubePage() {
             ))}
           </div>
         </article>
-        {/* FAQ */}
-        <article className="max-w-3xl mx-auto px-6 mb-16 article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-5">
-            {[
-              {
-                q: "How do I download YouTube transcript from a video URL?",
-                a: "Paste the video URL, choose TXT, SRT, or VTT, then click download. This gives you a full YouTube transcript download in seconds.",
-              },
-              {
-                q: "Can I download YouTube transcript as text only?",
-                a: "Yes. Choose TXT format to export clean transcript text. This is useful for AI prompts, notes, documentation, and content repurposing.",
-              },
-              {
-                q: "Do you support auto-generated captions?",
-                a: "Yes. We support available auto-generated and creator-uploaded caption tracks, depending on what exists for that video and language.",
-              },
-              {
-                q: "Can I download transcripts from playlists or channels?",
-                a: "Yes. Use the bulk downloader to process playlist and channel URLs when you need high-volume transcript extraction.",
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{item.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {item.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Frequently Asked Questions"
+          items={[
+            {
+              q: "How do I download YouTube transcript from a video URL?",
+              a: "Paste the video URL, choose TXT, SRT, or VTT, then click download. This gives you a full YouTube transcript download in seconds.",
+            },
+            {
+              q: "Can I download YouTube transcript as text only?",
+              a: "Yes. Choose TXT format to export clean transcript text. This is useful for AI prompts, notes, documentation, and content repurposing.",
+            },
+            {
+              q: "Do you support auto-generated captions?",
+              a: "Yes. We support available auto-generated and creator-uploaded caption tracks, depending on what exists for that video and language.",
+            },
+            {
+              q: "Can I download transcripts from playlists or channels?",
+              a: "Yes. Use the bulk downloader to process playlist and channel URLs when you need high-volume transcript extraction.",
+            },
+          ]}
+          sectionClassName="max-w-3xl mx-auto px-6 mb-16 article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-6 mb-16 text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">

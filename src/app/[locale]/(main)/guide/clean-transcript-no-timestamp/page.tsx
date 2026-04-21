@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import LoginModal from "@/components/LoginModel";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function CleanTranscriptGuidePage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const faqItems = [
@@ -137,25 +138,12 @@ export default function CleanTranscriptGuidePage() {
             ))}
           </ol>
         </article>
-        {/* FAQ */}
-        <article className="article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-5">
-            {faqItems.map((item, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{item.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {item.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Frequently Asked Questions"
+          items={faqItems}
+          sectionClassName="article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">

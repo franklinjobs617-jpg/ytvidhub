@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ChevronRight, FileText, Download, Sparkles,
-  Code, Braces, Settings, BarChart3, Layers, FileCode, Cpu, HelpCircle
+  Code, Braces, Settings, BarChart3, Layers, FileCode, Cpu, HelpCircle, FolderOpen, BookmarkCheck
 } from "lucide-react";
 
 const sections = [
+  { id: "how-to-open-srt",    label: "How to Open SRT Files",    icon: <FolderOpen size={12} /> },
+  { id: "how-to-create-srt",  label: "How to Create SRT Files",  icon: <FileCode size={12} /> },
   { id: "anatomy",            label: "1. SRT File Anatomy",      icon: <Code size={12} /> },
   { id: "interactive",        label: "2. Syntax Breakdown",       icon: <Braces size={12} /> },
   { id: "advanced-formatting",label: "3. Advanced Formatting",    icon: <Settings size={12} /> },
@@ -15,11 +17,12 @@ const sections = [
   { id: "conversion",         label: "5. Format Conversion",      icon: <Layers size={12} /> },
   { id: "editing",            label: "6. Editing Tools",          icon: <FileCode size={12} /> },
   { id: "ai-use-cases",       label: "7. AI Research Use",        icon: <Cpu size={12} /> },
-  { id: "faq",                label: "8. SRT FAQ",                icon: <HelpCircle size={12} /> },
+  { id: "references",         label: "8. References",             icon: <BookmarkCheck size={12} /> },
+  { id: "faq",                label: "9. SRT FAQ",                icon: <HelpCircle size={12} /> },
 ];
 
 export default function SrtTocClient() {
-  const [activeSection, setActiveSection] = useState("anatomy");
+  const [activeSection, setActiveSection] = useState("how-to-open-srt");
 
   useEffect(() => {
     const handleScroll = () => {

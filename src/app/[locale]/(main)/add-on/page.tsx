@@ -11,6 +11,7 @@ import {
   ScanSearch,
   Sparkles,
 } from "lucide-react";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
 export const metadata: Metadata = {
   title: "YouTube Subtitle Downloader Chrome Extension - YTVidHub",
@@ -249,29 +250,12 @@ export default function AddOnPage() {
           </div>
         </section>
 
-        <section className="border-t border-slate-200 bg-white py-24">
-          <div className="mx-auto max-w-4xl px-6">
-            <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-              Common Questions
-            </h2>
-            <div className="space-y-4">
-              {FAQ_ITEMS.map((item) => (
-                <details
-                  key={item.q}
-                  className="group overflow-hidden rounded-2xl border border-slate-200 bg-[var(--surface-page)]"
-                >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-slate-800 md:px-6">
-                    <span>{item.q}</span>
-                    <span className="text-slate-400 transition-transform group-open:rotate-45">+</span>
-                  </summary>
-                  <div className="border-t border-slate-200 px-5 py-4 text-sm leading-relaxed text-slate-600 md:px-6">
-                    {item.a}
-                  </div>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
+        <UnifiedFaqSection
+          title="Common Questions"
+          items={FAQ_ITEMS}
+          sectionClassName="border-t border-slate-200 bg-white py-24"
+          containerClassName="max-w-4xl px-6 lg:px-6"
+        />
       </main>
     </div>
   );

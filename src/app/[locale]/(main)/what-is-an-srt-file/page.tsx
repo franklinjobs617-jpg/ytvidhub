@@ -5,6 +5,7 @@ import {
   SrtCtaFinal,
   SrtCtaBulk,
 } from "@/components/srt-page/SrtCtaButtons";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function SrtFileGuidePage() {
   return (
     <div className="bg-white min-h-screen antialiased text-slate-700 article-body">
@@ -23,6 +24,17 @@ export default function SrtFileGuidePage() {
             <strong>timestamp syntax</strong> (<code>HH:MM:SS,ms</code>), how to
             download SRT files from YouTube, and edit them for free.
           </p>
+          <div className="mb-8 rounded-xl border border-blue-200 bg-blue-50 p-4 md:p-5">
+            <p className="text-sm text-slate-700 leading-relaxed">
+              <strong>Quick answer:</strong> An SRT file is a plain-text subtitle
+              file that stores caption lines plus timecodes, so video players can
+              display synchronized subtitles at the right moment.
+            </p>
+            <p className="mt-2 text-xs text-slate-500">
+              Editorially reviewed on April 21, 2026 by YTVidHub content and
+              localization workflow team.
+            </p>
+          </div>
           <SrtCtaHero />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
             {[
@@ -129,6 +141,90 @@ export default function SrtFileGuidePage() {
                       </div>
                     </div>
                   </div>
+                  <section id="how-to-open-srt" className="scroll-mt-32 mb-16">
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+                      How to Open an SRT File (Windows, macOS, Web)
+                    </h2>
+                    <p className="text-slate-600 leading-relaxed mb-8">
+                      You can open <code>.srt</code> in any text editor for manual
+                      edits, or load it directly in video platforms and players for
+                      subtitle playback.
+                    </p>
+                    <div className="grid sm:grid-cols-3 gap-5">
+                      <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+                        <h3 className="font-semibold text-slate-900 mb-2">
+                          Windows / macOS
+                        </h3>
+                        <ul className="text-sm text-slate-600 space-y-1">
+                          <li>Open with Notepad / TextEdit / VS Code</li>
+                          <li>Check timestamp format stays unchanged</li>
+                          <li>Save as UTF-8 after edits</li>
+                        </ul>
+                      </div>
+                      <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+                        <h3 className="font-semibold text-slate-900 mb-2">
+                          Video Players
+                        </h3>
+                        <ul className="text-sm text-slate-600 space-y-1">
+                          <li>VLC: Subtitle → Add Subtitle File</li>
+                          <li>Match file name with video when possible</li>
+                          <li>Use SRT for maximum compatibility</li>
+                        </ul>
+                      </div>
+                      <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+                        <h3 className="font-semibold text-slate-900 mb-2">
+                          Social / Web Upload
+                        </h3>
+                        <ul className="text-sm text-slate-600 space-y-1">
+                          <li>Upload SRT in platform subtitle settings</li>
+                          <li>Use language-coded filenames if required</li>
+                          <li>Preview timing before publishing</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </section>
+                  <section id="how-to-create-srt" className="scroll-mt-32 mb-16">
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+                      How to Create an SRT File (Manual + Tool Workflow)
+                    </h2>
+                    <p className="text-slate-600 leading-relaxed mb-6">
+                      If you need to create an SRT file from scratch, use this
+                      exact four-step structure. It matches the subtitle flow used
+                      by major editors, players, and upload platforms.
+                    </p>
+                    <ol className="space-y-3 text-sm text-slate-600 mb-6">
+                      <li>
+                        <strong>Step 1:</strong> Add sequence number (
+                        <code>1</code>, <code>2</code>, <code>3</code>...).
+                      </li>
+                      <li>
+                        <strong>Step 2:</strong> Add timestamps in{" "}
+                        <code>HH:MM:SS,ms --&gt; HH:MM:SS,ms</code> format.
+                      </li>
+                      <li>
+                        <strong>Step 3:</strong> Add subtitle text (usually 1-2
+                        lines).
+                      </li>
+                      <li>
+                        <strong>Step 4:</strong> Leave one blank line, then repeat
+                        for the next subtitle block.
+                      </li>
+                    </ol>
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                      <p className="text-xs text-slate-500 mb-3">
+                        Minimal valid example
+                      </p>
+                      <pre className="text-sm text-slate-700 overflow-x-auto whitespace-pre-wrap">
+                        {`1
+00:00:01,000 --> 00:00:03,000
+Welcome to the subtitle tutorial.
+
+2
+00:00:03,200 --> 00:00:05,200
+This is a valid SRT block.`}
+                      </pre>
+                    </div>
+                  </section>
                   {/* Comparison Table */}
                   <div className="mb-16">
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 article-h2">
@@ -697,52 +793,90 @@ export default function SrtFileGuidePage() {
                       </div>
                     </div>
                   </section>
-                  {/* 8. FAQ */}
-                  <section id="faq" className="scroll-mt-32 mb-16">
-                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-                      8. SRT File Expert FAQ
+                  <section id="references" className="scroll-mt-32 mb-16">
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+                      8. Editorial References & Verification
                     </h2>
-                    <div className="space-y-5">
-                      {[
-                        {
-                          q: "What is the standard SRT file format structure?",
-                          a: "The standard SRT format consists of four elements per subtitle: 1) Sequence number, 2) Timestamp (HH:MM:SS,ms format), 3) Subtitle text, 4) Blank line separator. This structure must be repeated for each caption.",
-                        },
-                        {
-                          q: "How do I create an SRT file from scratch?",
-                          a: "You can create an SRT file using any text editor. Start with '1' as the sequence number, add your timestamps using comma for milliseconds, write your caption text, and add a blank line before the next sequence. Always save with UTF-8 encoding.",
-                        },
-                        {
-                          q: "What's the difference between SRT and VTT files?",
-                          a: "SRT uses commas for milliseconds (00:01:23,456) while VTT uses dots (00:01:23.456). VTT supports CSS styling and metadata headers, while SRT is simpler and more universally compatible.",
-                        },
-                        {
-                          q: "Can I download YouTube subtitles as SRT files in bulk?",
-                          a: "Yes, using our professional bulk YouTube subtitle downloader, you can extract SRT files from entire playlists or channels simultaneously. The tool automatically formats timestamps correctly and handles multiple languages.",
-                        },
-                        {
-                          q: "How do I convert SRT to TXT for AI training?",
-                          a: "Our bulk processor includes an SRT-to-TXT conversion feature that removes timestamps and sequence numbers, leaving only clean dialogue text perfect for training language models like GPT or Whisper.",
-                        },
-                        {
-                          q: "What encoding should I use for SRT files?",
-                          a: "Always use UTF-8 encoding for SRT files. This ensures proper display of special characters, accents, and multilingual text. Avoid ANSI or other encodings that can cause character corruption.",
-                        },
-                      ].map((faq, i) => (
-                        <div
-                          key={i}
-                          className="p-5 rounded-xl border border-slate-100 bg-slate-50"
+                    <p className="text-slate-600 leading-relaxed mb-6">
+                      This guide is periodically benchmarked against major industry
+                      explainers to keep terminology, workflow guidance, and
+                      practical subtitle operations accurate.
+                    </p>
+                    <ul className="space-y-3 text-sm text-slate-600">
+                      <li>
+                        <a
+                          href="https://www.rev.com/resources/what-is-an-srt-file-format-create-use-srt-files"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
                         >
-                          <h3 className="font-semibold text-slate-900 mb-2">
-                            {faq.q}
-                          </h3>
-                          <p className="text-sm text-slate-500 leading-relaxed">
-                            {faq.a}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+                          Rev — What is an SRT File?
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://www.ai-media.tv/knowledge-hub/insights/what-is-srt-file/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          AI-Media — What is an SRT file? And How To Use One
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://lokalise.com/blog/what-is-an-srt-file-subtitle-format-explained/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          Lokalise — What is an SRT file? Subtitle format explained
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="https://mailchimp.com/resources/what-is-an-srt-file/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          Mailchimp — What is an SRT file?
+                        </a>
+                      </li>
+                    </ul>
                   </section>
+                  <UnifiedFaqSection
+                    id="faq"
+                    title="9. SRT File Expert FAQ"
+                    items={[
+                      {
+                        q: "What is the standard SRT file format structure?",
+                        a: "The standard SRT format consists of four elements per subtitle: 1) Sequence number, 2) Timestamp (HH:MM:SS,ms format), 3) Subtitle text, 4) Blank line separator. This structure must be repeated for each caption.",
+                      },
+                      {
+                        q: "How do I create an SRT file from scratch?",
+                        a: "You can create an SRT file using any text editor. Start with '1' as the sequence number, add your timestamps using comma for milliseconds, write your caption text, and add a blank line before the next sequence. Always save with UTF-8 encoding.",
+                      },
+                      {
+                        q: "What's the difference between SRT and VTT files?",
+                        a: "SRT uses commas for milliseconds (00:01:23,456) while VTT uses dots (00:01:23.456). VTT supports CSS styling and metadata headers, while SRT is simpler and more universally compatible.",
+                      },
+                      {
+                        q: "Can I download YouTube subtitles as SRT files in bulk?",
+                        a: "Yes, using our professional bulk YouTube subtitle downloader, you can extract SRT files from entire playlists or channels simultaneously. The tool automatically formats timestamps correctly and handles multiple languages.",
+                      },
+                      {
+                        q: "How do I convert SRT to TXT for AI training?",
+                        a: "Our bulk processor includes an SRT-to-TXT conversion feature that removes timestamps and sequence numbers, leaving only clean dialogue text perfect for training language models like GPT or Whisper.",
+                      },
+                      {
+                        q: "What encoding should I use for SRT files?",
+                        a: "Always use UTF-8 encoding for SRT files. This ensures proper display of special characters, accents, and multilingual text. Avoid ANSI or other encodings that can cause character corruption.",
+                      },
+                    ]}
+                    sectionClassName="scroll-mt-32 mb-16 py-0 bg-transparent"
+                    containerClassName="max-w-none px-0 lg:px-0"
+                  />
                   {/* Final CTA */}
                   <section className="text-center rounded-2xl bg-slate-900 p-12 md:p-16">
                     <h3 className="text-2xl font-bold text-white mb-4">

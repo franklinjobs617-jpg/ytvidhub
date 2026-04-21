@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function YouTubeApiAlternativeGuide() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -139,38 +140,25 @@ export default function YouTubeApiAlternativeGuide() {
             </p>
           </div>
         </article>
-        {/* FAQ */}
-        <article className="article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Developer Q&amp;A
-          </h2>
-          <div className="space-y-5">
-            {[
-              {
-                q: "How does this avoid YouTube API rate limits?",
-                a: "Our tool doesn't use the YouTube Data API v3 at all. It extracts subtitle data directly, so there are no quota units consumed, no OAuth required, and no 403 rate-limit errors.",
-              },
-              {
-                q: "Can I extract subtitles in multiple languages?",
-                a: "Yes. If a video has subtitles available in multiple languages, you can select your preferred language or download all available tracks in a single batch operation.",
-              },
-              {
-                q: "Is this compliant with YouTube's Terms of Service?",
-                a: "Our tool accesses publicly available subtitle data that YouTube makes accessible for video playback. We do not bypass any DRM or access restricted content.",
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Developer Q&A"
+          items={[
+            {
+              q: "How does this avoid YouTube API rate limits?",
+              a: "Our tool doesn't use the YouTube Data API v3 at all. It extracts subtitle data directly, so there are no quota units consumed, no OAuth required, and no 403 rate-limit errors.",
+            },
+            {
+              q: "Can I extract subtitles in multiple languages?",
+              a: "Yes. If a video has subtitles available in multiple languages, you can select your preferred language or download all available tracks in a single batch operation.",
+            },
+            {
+              q: "Is this compliant with YouTube's Terms of Service?",
+              a: "Our tool accesses publicly available subtitle data that YouTube makes accessible for video playback. We do not bypass any DRM or access restricted content.",
+            },
+          ]}
+          sectionClassName="article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">

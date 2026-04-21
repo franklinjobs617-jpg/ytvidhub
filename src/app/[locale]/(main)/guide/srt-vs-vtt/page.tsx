@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import SrtVsVttSchema from "@/components/seo/SrtVsVttSchema";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function SrtVsVttTechnicalMastery() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -384,46 +385,33 @@ export default function SrtVsVttTechnicalMastery() {
             ))}
           </ol>
         </article>
-        {/* FAQ */}
-        <article className="article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Expert Q&amp;A
-          </h2>
-          <div className="space-y-5">
-            {[
-              {
-                q: "What is the main difference between SRT and VTT?",
-                a: "SRT uses comma separators for milliseconds (00:01:12,450) while VTT uses dots (00:01:12.450). VTT also supports CSS styling and metadata, while SRT is purely text-based, making it ideal for AI training and bulk processing.",
-              },
-              {
-                q: "Which format is better for AI training?",
-                a: "SRT is generally better for AI training because it has minimal metadata overhead and provides cleaner text data with 99.8% signal quality. The lack of styling information means more pure dialogue content for machine learning models.",
-              },
-              {
-                q: "Can I convert between SRT and VTT formats?",
-                a: "Yes, you can convert between formats, but be aware that VTT's styling and metadata will be lost when converting to SRT. Our bulk subtitle downloader can automatically convert between formats while preserving essential timing information.",
-              },
-              {
-                q: "Which format has better browser support?",
-                a: "VTT has native browser support through the HTML5 track element, while SRT requires conversion or JavaScript libraries for web playback. For web video players, VTT is the preferred choice.",
-              },
-              {
-                q: "How do I choose the right format for my project?",
-                a: "Choose SRT for AI training, bulk data processing, and offline video editing. Choose VTT for web video players, accessibility features, and when you need styling or positioning control.",
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Expert Q&A"
+          items={[
+            {
+              q: "What is the main difference between SRT and VTT?",
+              a: "SRT uses comma separators for milliseconds (00:01:12,450) while VTT uses dots (00:01:12.450). VTT also supports CSS styling and metadata, while SRT is purely text-based, making it ideal for AI training and bulk processing.",
+            },
+            {
+              q: "Which format is better for AI training?",
+              a: "SRT is generally better for AI training because it has minimal metadata overhead and provides cleaner text data with 99.8% signal quality. The lack of styling information means more pure dialogue content for machine learning models.",
+            },
+            {
+              q: "Can I convert between SRT and VTT formats?",
+              a: "Yes, you can convert between formats, but be aware that VTT's styling and metadata will be lost when converting to SRT. Our bulk subtitle downloader can automatically convert between formats while preserving essential timing information.",
+            },
+            {
+              q: "Which format has better browser support?",
+              a: "VTT has native browser support through the HTML5 track element, while SRT requires conversion or JavaScript libraries for web playback. For web video players, VTT is the preferred choice.",
+            },
+            {
+              q: "How do I choose the right format for my project?",
+              a: "Choose SRT for AI training, bulk data processing, and offline video editing. Choose VTT for web video players, accessibility features, and when you need styling or positioning control.",
+            },
+          ]}
+          sectionClassName="article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">

@@ -2,13 +2,13 @@ import Link from "next/link";
 import {
   ArrowRight,
   Bot,
-  ChevronDown,
   Copy,
   FileText,
   Languages,
   NotebookPen,
   SearchCheck,
 } from "lucide-react";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
 const steps = [
   {
@@ -198,26 +198,12 @@ export default function YouTubeTranscriptForChatGPTPage() {
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container mx-auto max-w-4xl px-6">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight article-h2">
-                Frequently Asked Questions
-              </h2>
-            </div>
-            <div className="mt-10 space-y-3">
-              {faqs.map((item) => (
-                <details key={item.q} className="group rounded-xl border border-slate-200 bg-white p-5">
-                  <summary className="flex list-none cursor-pointer items-center justify-between font-semibold text-slate-900">
-                    {item.q}
-                    <ChevronDown className="h-4 w-4 text-slate-500 transition-transform group-open:rotate-180" />
-                  </summary>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">{item.a}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
+        <UnifiedFaqSection
+          title="Frequently Asked Questions"
+          items={faqs}
+          sectionClassName="py-20 bg-transparent"
+          containerClassName="max-w-4xl px-6 lg:px-6"
+        />
 
         <section className="border-y border-slate-200 bg-slate-50 py-20">
           <div className="container mx-auto max-w-6xl px-6">

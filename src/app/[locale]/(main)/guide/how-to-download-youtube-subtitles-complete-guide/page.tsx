@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { buildCanonicalUrl } from "@/lib/url";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -544,46 +545,33 @@ export default function HowToDownloadYouTubeSubtitlesPage() {
             ))}
           </div>
         </article>
-        {/* FAQ */}
-        <article className="article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-5">
-            {[
-              {
-                q: "Can I download YouTube subtitles for free?",
-                a: "Yes! You can download YouTube subtitles for free using YouTube's built-in transcript feature or our YTVidHub tool. We offer 5 free downloads daily with no registration required.",
-              },
-              {
-                q: "What subtitle formats can I download?",
-                a: "Our tool supports SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis.",
-              },
-              {
-                q: "Can I batch download subtitles from YouTube playlists?",
-                a: "Yes! Our batch YouTube subtitle downloader can extract subtitles from entire playlists and channels at once. This is perfect for creating large datasets for AI training or research projects.",
-              },
-              {
-                q: "Does this work with different languages?",
-                a: "Absolutely! Our tool can download subtitles in any language available on the YouTube video, including auto-generated captions and manually uploaded subtitles.",
-              },
-              {
-                q: "Is it legal to download YouTube subtitles?",
-                a: "Yes, downloading subtitles for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service.",
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Frequently Asked Questions"
+          items={[
+            {
+              q: "Can I download YouTube subtitles for free?",
+              a: "Yes! You can download YouTube subtitles for free using YouTube's built-in transcript feature or our YTVidHub tool. We offer 5 free downloads daily with no registration required.",
+            },
+            {
+              q: "What subtitle formats can I download?",
+              a: "Our tool supports SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis.",
+            },
+            {
+              q: "Can I batch download subtitles from YouTube playlists?",
+              a: "Yes! Our batch YouTube subtitle downloader can extract subtitles from entire playlists and channels at once. This is perfect for creating large datasets for AI training or research projects.",
+            },
+            {
+              q: "Does this work with different languages?",
+              a: "Absolutely! Our tool can download subtitles in any language available on the YouTube video, including auto-generated captions and manually uploaded subtitles.",
+            },
+            {
+              q: "Is it legal to download YouTube subtitles?",
+              a: "Yes, downloading subtitles for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service.",
+            },
+          ]}
+          sectionClassName="article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">

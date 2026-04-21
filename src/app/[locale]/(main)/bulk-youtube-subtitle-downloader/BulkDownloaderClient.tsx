@@ -5,11 +5,11 @@ import { Link } from "@/i18n/routing";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import BulkDownloaderSchema from "@/components/seo/BulkDownloaderSchema";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import {
   ArrowRight,
   CheckCheck,
   AlertCircle,
-  ChevronDown,
   Download,
   FileText,
   FolderArchive,
@@ -371,31 +371,14 @@ Welcome to our deep dive...
           </div>
         </section>
 
-        <section id="bulk-faq" className="border-y border-slate-200 bg-white py-20">
-          <div className="container mx-auto max-w-4xl px-6">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">FAQ</h2>
-              <p className="mt-3 text-slate-600">Everything important about bulk subtitle extraction.</p>
-            </div>
-
-            <div className="mt-10 space-y-3">
-              {faqItems.map((item) => (
-                <details
-                  key={item.q}
-                  className="group overflow-hidden rounded-xl border border-slate-200 bg-[var(--surface-page)] transition-all hover:border-blue-200"
-                >
-                  <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-left text-sm font-semibold text-slate-900">
-                    <span>{item.q}</span>
-                    <ChevronDown className="h-4 w-4 text-slate-500 transition-transform group-open:rotate-180" />
-                  </summary>
-                  <div className="border-t border-slate-100 px-5 py-4 text-sm leading-relaxed text-slate-600">
-                    {item.a}
-                  </div>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
+        <UnifiedFaqSection
+          id="bulk-faq"
+          title="FAQ"
+          subtitle="Everything important about bulk subtitle extraction."
+          items={faqItems}
+          sectionClassName="border-y border-slate-200 bg-white py-20"
+          containerClassName="max-w-4xl px-6 lg:px-6"
+        />
 
         <section className="bg-[var(--surface-page)] py-20">
           <div className="container mx-auto max-w-6xl px-6">

@@ -3,6 +3,7 @@ import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { TestimonialSection } from "@/components/testimonials/TestimonialSection";
 import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import { Metadata } from "next";
 import { buildCanonicalUrl } from "@/lib/url";
 type Props = { params: Promise<{ locale: string }> };
@@ -507,52 +508,38 @@ export default async function YouTubeSubtitleDownloaderPage() {
             </div>
           </div>
         </section>
-        {/* === 8. FAQ SECTION === */}
-        <section className="py-16 bg-white" id="faq">
-          <div className="container mx-auto px-6 max-w-4xl">
-            <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center article-h2">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-6">
-              {[
-                {
-                  q: "Is it legal to download YouTube subtitles?",
-                  a: "Yes, downloading subtitles for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service.",
-                },
-                {
-                  q: "What subtitle formats do you support?",
-                  a: "We support SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis.",
-                },
-                {
-                  q: "Can I download subtitles from entire YouTube playlists?",
-                  a: "Yes! Our bulk YouTube subtitle downloader can extract captions from entire playlists and channels. This is perfect for creating large datasets for AI training or research projects.",
-                },
-                {
-                  q: "Does this work with different languages?",
-                  a: "Absolutely! Our tool can download subtitles in any language available on the YouTube video, including both auto-generated and manually uploaded captions.",
-                },
-                {
-                  q: "What if I only need transcript text without timestamps?",
-                  a: "Use our dedicated transcript text page for no-timestamp output and AI-ready TXT workflow: /download-youtube-transcript-as-text.",
-                },
-                {
-                  q: "Are there any download limits?",
-                  a: "Free users get 5 daily credits for subtitle downloads. Pro members enjoy unlimited bulk downloads for large-scale projects and commercial use.",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-slate-50 rounded-xl p-6 border border-slate-200"
-                >
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">
-                    {item.q}
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">{item.a}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <UnifiedFaqSection
+          id="faq"
+          title="Frequently Asked Questions"
+          items={[
+            {
+              q: "Is it legal to download YouTube subtitles?",
+              a: "Yes, downloading subtitles for personal use, research, accessibility, or educational purposes is generally legal. However, always respect copyright laws and YouTube's terms of service.",
+            },
+            {
+              q: "What subtitle formats do you support?",
+              a: "We support SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis.",
+            },
+            {
+              q: "Can I download subtitles from entire YouTube playlists?",
+              a: "Yes! Our bulk YouTube subtitle downloader can extract captions from entire playlists and channels. This is perfect for creating large datasets for AI training or research projects.",
+            },
+            {
+              q: "Does this work with different languages?",
+              a: "Absolutely! Our tool can download subtitles in any language available on the YouTube video, including both auto-generated and manually uploaded captions.",
+            },
+            {
+              q: "What if I only need transcript text without timestamps?",
+              a: "Use our dedicated transcript text page for no-timestamp output and AI-ready TXT workflow: /download-youtube-transcript-as-text.",
+            },
+            {
+              q: "Are there any download limits?",
+              a: "Free users get 5 daily credits for subtitle downloads. Pro members enjoy unlimited bulk downloads for large-scale projects and commercial use.",
+            },
+          ]}
+          sectionClassName="py-16 bg-white"
+          containerClassName="max-w-4xl px-6 lg:px-6"
+        />
         <section className="py-16 bg-slate-50">
           <div className="container mx-auto px-6 max-w-4xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-10 text-center article-h2">

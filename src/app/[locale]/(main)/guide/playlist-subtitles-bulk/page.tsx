@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
+import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 export default function PlaylistBulkDownloadGuide() {
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -160,34 +161,21 @@ export default function PlaylistBulkDownloadGuide() {
             ))}
           </div>
         </article>
-        {/* FAQ */}
-        <article className="article-shell article-section">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
-            Technical Q&amp;A
-          </h2>
-          <div className="space-y-5">
-            {[
-              {
-                q: "Does YTVidHub handle all languages in a playlist?",
-                a: "Yes. Our bulk downloader detects all available languages (both original and auto-generated) for every video in the playlist, allowing you to select the required language before you download.",
-              },
-              {
-                q: "Can I download subtitles for a whole YouTube Channel?",
-                a: "Our Bulk Engine is optimized for Playlist URLs. To download all videos from a Channel, simply place the Channel's videos into a temporary playlist on YouTube and use our tool with that URL.",
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="p-5 rounded-xl border border-slate-100 bg-slate-50"
-              >
-                <h3 className="font-semibold text-slate-900 mb-2">{faq.q}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  {faq.a}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
+        <UnifiedFaqSection
+          title="Technical Q&A"
+          items={[
+            {
+              q: "Does YTVidHub handle all languages in a playlist?",
+              a: "Yes. Our bulk downloader detects all available languages (both original and auto-generated) for every video in the playlist, allowing you to select the required language before you download.",
+            },
+            {
+              q: "Can I download subtitles for a whole YouTube Channel?",
+              a: "Our Bulk Engine is optimized for Playlist URLs. To download all videos from a Channel, simply place the Channel's videos into a temporary playlist on YouTube and use our tool with that URL.",
+            },
+          ]}
+          sectionClassName="article-shell article-section py-0 bg-transparent"
+          containerClassName="max-w-none px-0 lg:px-0"
+        />
         {/* CTA */}
         <section className="article-shell article-section text-center">
           <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
