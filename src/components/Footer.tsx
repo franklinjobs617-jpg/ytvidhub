@@ -22,7 +22,6 @@ export default function Footer() {
               target="_blank"
               rel="nofollow"
             >
-              
               <Image
                 width={300}
                 height={54}
@@ -30,7 +29,13 @@ export default function Footer() {
                 alt="Featured on TAAFT"
               />
             </a>
-          
+            <a href="https://submitaitools.org" target="_blank">
+              <img
+                src="https://submitaitools.org/static_submitaitools/images/submitaitools.png"
+                alt="Submit AI Tools"
+                className="border w-[200px] h-[60px] mt-4"
+              />
+            </a>
           </div>
 
           {/* Product Column */}
@@ -348,9 +353,9 @@ export default function Footer() {
               {t("disclaimer")}
             </p>
             <p className="text-[11px] text-slate-400 max-w-3xl mx-auto leading-relaxed">
-              Users must ensure they have lawful rights to access and use subtitle
-              content. YTVidHub provides technical tools only, grants no
-              copyright license, and is not affiliated with YouTube.
+              Users must ensure they have lawful rights to access and use
+              subtitle content. YTVidHub provides technical tools only, grants
+              no copyright license, and is not affiliated with YouTube.
             </p>
           </div>
         </div>
