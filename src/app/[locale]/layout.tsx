@@ -176,7 +176,14 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
         <meta name="saashub-verification" content="myoi6jk5w99z" />
 
-    
+        <Script id="google-tag-manager" strategy="beforeInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TNMMLKN5');`}
+        </Script>
+
         {/* Google AdSense 广告代码 */}
         <Script
           id="adsbygoogle-init"
@@ -200,6 +207,15 @@ export default async function LocaleLayout({ children, params }: Props) {
             gtag('config', 'G-KZZ05YN8TX'); 
           `}
         </Script>
+
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TNMMLKN5"
+            height="0"
+            width="0"
+            className="hidden"
+          ></iframe>
+        </noscript>
 
         {/* Microsoft Clarity */}
         <Script id="microsoft-clarity" strategy="lazyOnload">
