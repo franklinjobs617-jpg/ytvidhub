@@ -36,13 +36,7 @@ export default function Footer() {
                 className="border w-[200px] h-[60px] mt-4"
               />
             </a>
-            <a href="https://fazier.com/launches/ytvidhub.com" target="_blank">
-              <img
-                src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=light"
-                width={120}
-                alt="Fazier badge"
-              />
-            </a>
+   
           </div>
 
           {/* Product Column */}
