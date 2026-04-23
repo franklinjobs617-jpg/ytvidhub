@@ -9,6 +9,7 @@ import { routing } from "@/i18n/routing";
 import { Metadata } from "next";
 import LanguagePreloader from "@/components/LanguagePreloader";
 import SourceCapture from "@/components/SourceCapture";
+import { GlobalAuthModal } from "@/components/GlobalAuthModal";
 import { buildCanonicalUrl, SITE_ORIGIN } from "@/lib/url";
 import { Inter, Space_Grotesk, Noto_Sans_SC } from "next/font/google";
 
@@ -245,6 +246,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <LanguagePreloader />
             <SourceCapture />
             {children}
+            <GlobalAuthModal />
             <Toaster
               richColors
               closeButton

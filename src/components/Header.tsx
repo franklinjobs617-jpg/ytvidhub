@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { Link, usePathname } from '@/i18n/routing';
 import Image from "next/image";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
-import LoginModal from "@/components/LoginModel";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from 'next-intl';
 import {
@@ -36,12 +35,11 @@ const toolLinks = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   const pathname = usePathname();
-  const { user, logout, isLoading } = useAuth();
+  const { user, logout, isLoading, openLoginModal } = useAuth();
   const t = useTranslations('navigation');
   const footerT = useTranslations('footer');
 
@@ -201,7 +199,7 @@ export default function Header() {
               <>
                 <LanguageSwitcher />
                 <button
-                  onClick={() => setShowLoginModal(true)}
+                  onClick={openLoginModal}
                   className="rounded-full bg-[var(--brand-600)] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_24px_-16px_rgba(37,99,235,0.95)] transition-all hover:-translate-y-0.5 hover:bg-[var(--brand-700)] md:px-5"
                 >
                   {t('login')}
@@ -422,7 +420,7 @@ export default function Header() {
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setShowLoginModal(true);
+                  openLoginModal();
                 }}
                 className="w-full bg-[var(--brand-600)] text-white font-semibold py-3 rounded-lg hover:bg-[var(--brand-700)] transition-colors"
               >
@@ -432,11 +430,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
     </>
   );
 }

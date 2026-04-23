@@ -38,6 +38,10 @@ import {
   getPendingAction,
   savePendingAction,
 } from "@/lib/pendingAction";
+import {
+  getGuestLimitMessage,
+  promptLoginForGuestLimit,
+} from "@/lib/guestLimitPrompt";
 import { BatchGridView } from "@/components/workspace/BatchGridView";
 import { BatchProgressModal } from "@/components/workspace/BatchProgressModal";
 import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressModal";
@@ -52,7 +56,7 @@ import { BatchActionConfirmModal } from "@/components/workspace/BatchActionConfi
 function WorkspaceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, refreshUser, login } = useAuth();
+  const { user, refreshUser, openLoginModal } = useAuth();
   const normalizedUserCredits =
     typeof user?.credits === "number"
       ? user.credits
@@ -201,78 +205,11 @@ function WorkspaceContent() {
 
   const [initialSubtitleContent, setInitialSubtitleContent] =
     useState<string>("");
-  const guestLimitLoginLastTriggerRef = useRef(0);
-
-  type GuestQuotaInfo = {
-    attempts_left?: number;
-    attempts_used?: number;
-    daily_limit?: number;
-    reset_in_seconds?: number;
-  };
-
-  type ApiLikeError = {
-    code?: string;
-    message?: string;
-    details?: unknown;
-  };
-
-  const getErrorCode = (error: unknown): string | undefined => {
-    if (!error || typeof error !== "object") return undefined;
-    return (error as ApiLikeError).code;
-  };
-
-  const getErrorMessage = (error: unknown): string => {
-    if (!error || typeof error !== "object") return "";
-    return (error as ApiLikeError).message || "";
-  };
-
-  const getGuestQuota = (error: unknown): GuestQuotaInfo | null => {
-    if (!error || typeof error !== "object") return null;
-    const details = (error as ApiLikeError).details;
-    if (!details || typeof details !== "object") return null;
-    const detailsRecord = details as Record<string, unknown>;
-
-    const quota = detailsRecord.quota;
-    if (quota && typeof quota === "object") {
-      return quota as GuestQuotaInfo;
-    }
-    return detailsRecord as GuestQuotaInfo;
-  };
-
-  const formatResetTime = (seconds: number): string => {
-    if (seconds <= 0) return "less than 1 minute";
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.ceil((seconds % 3600) / 60);
-    if (hours > 0) return `${hours}h ${Math.max(minutes, 1)}m`;
-    return `${Math.max(minutes, 1)}m`;
-  };
 
   const maybePromptLoginForGuestLimit = (error: unknown): boolean => {
     if (user) return false;
-
-    const code = getErrorCode(error);
-    const message = getErrorMessage(error).toLowerCase();
-    const isGuestLimit =
-      code === "GUEST_LIMIT_REACHED" ||
-      message.includes("guest preview limit reached");
-
-    if (!isGuestLimit) return false;
-
-    const quota = getGuestQuota(error);
-    const now = Date.now();
-    if (now - guestLimitLoginLastTriggerRef.current < 1500) {
-      return true;
-    }
-    guestLimitLoginLastTriggerRef.current = now;
-
-    const guestMessage =
-      quota?.reset_in_seconds && quota.reset_in_seconds > 0
-        ? `Guest preview limit reached. Reset in ${formatResetTime(quota.reset_in_seconds)}. Please login to continue.`
-        : "Guest preview limit reached. Please login to continue.";
-
-    setAnalysisError(guestMessage);
-    toast.error(guestMessage);
-    login();
+    if (!promptLoginForGuestLimit(error, openLoginModal)) return false;
+    setAnalysisError(getGuestLimitMessage(error));
     return true;
   };
 
@@ -707,7 +644,7 @@ function WorkspaceContent() {
         },
       });
       toast.info("Please login. We will continue AI Summary automatically.");
-      login();
+      openLoginModal();
       return;
     }
 
@@ -1080,7 +1017,7 @@ function WorkspaceContent() {
                 toast.info(
                   "Please login. We will continue your download automatically.",
                 );
-                login();
+                openLoginModal();
                 return;
               }
               startSingleDownload(video, format, transcriptLang);
@@ -1098,7 +1035,7 @@ function WorkspaceContent() {
                 toast.info(
                   "Please login. We will continue your download automatically.",
                 );
-                login();
+                openLoginModal();
                 return;
               }
               startBulkDownload(videos, format, transcriptLang);

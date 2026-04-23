@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import { promptLoginForGuestLimit } from "@/lib/guestLimitPrompt";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -42,7 +43,7 @@ export function TranscriptArea({
   onLangChange?: (lang: string) => void;
   onTranscriptReadyChange?: (ready: boolean) => void;
 }) {
-  const { user, login } = useAuth();
+  const { user, openLoginModal } = useAuth();
   const [transcriptVtt, setTranscriptVtt] = useState<string>(
     initialSubtitleContent || "",
   );
@@ -54,63 +55,12 @@ export function TranscriptArea({
   const [availableLangs, setAvailableLangs] = useState<
     { code: string; label: string }[]
   >([]);
-  const guestLimitLoginLastTriggerRef = useRef(0);
   const internalSearchRef = useRef<HTMLInputElement>(null);
   const searchRef = searchInputRef || internalSearchRef;
 
-  type GuestQuotaInfo = {
-    reset_in_seconds?: number;
-  };
-
-  type ApiLikeError = {
-    code?: string;
-    message?: string;
-    details?: unknown;
-  };
-
-  const getGuestQuota = (error: unknown): GuestQuotaInfo | null => {
-    if (!error || typeof error !== "object") return null;
-    const details = (error as ApiLikeError).details;
-    if (!details || typeof details !== "object") return null;
-    const detailsRecord = details as Record<string, unknown>;
-
-    const quota = detailsRecord.quota;
-    if (quota && typeof quota === "object") {
-      return quota as GuestQuotaInfo;
-    }
-    return detailsRecord as GuestQuotaInfo;
-  };
-
-  const formatResetTime = (seconds: number): string => {
-    if (seconds <= 0) return "less than 1 minute";
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.ceil((seconds % 3600) / 60);
-    if (hours > 0) return `${hours}h ${Math.max(minutes, 1)}m`;
-    return `${Math.max(minutes, 1)}m`;
-  };
-
   const maybePromptLoginForGuestLimit = (error: unknown): boolean => {
-    if (user || !error || typeof error !== "object") return false;
-    const maybe = error as ApiLikeError;
-    const message = (maybe.message || "").toLowerCase();
-    const isGuestLimit =
-      maybe.code === "GUEST_LIMIT_REACHED" ||
-      message.includes("guest preview limit reached");
-    if (!isGuestLimit) return false;
-
-    const now = Date.now();
-    if (now - guestLimitLoginLastTriggerRef.current < 1500) return true;
-    guestLimitLoginLastTriggerRef.current = now;
-
-    const quota = getGuestQuota(error);
-    const friendlyMessage =
-      quota?.reset_in_seconds && quota.reset_in_seconds > 0
-        ? `Guest preview limit reached. Reset in ${formatResetTime(quota.reset_in_seconds)}. Please login to continue.`
-        : "Guest preview limit reached. Please login to continue.";
-
-    toast.error(friendlyMessage);
-    login();
-    return true;
+    if (user) return false;
+    return promptLoginForGuestLimit(error, openLoginModal);
   };
 
   // 获取可用语言列表

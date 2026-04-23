@@ -23,6 +23,9 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: () => void; // 触发 Google 登录
+  isLoginModalOpen: boolean;
+  openLoginModal: () => void;
+  closeLoginModal: () => void;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -58,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     return true;
   });
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   // 添加防重复请求的标志
   const isRefreshingRef = useRef(false);
@@ -70,6 +74,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("auth_token");
     setUser(null);
     window.location.reload();
+  }, []);
+
+  const openLoginModal = useCallback(() => {
+    setIsLoginModalOpen(true);
+  }, []);
+
+  const closeLoginModal = useCallback(() => {
+    setIsLoginModalOpen(false);
   }, []);
 
   // 2. 刷新用户信息 (获取最新积分)
@@ -147,6 +159,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       "GoogleLogin",
       `width=${width},height=${height},left=${left},top=${top}`
     );
+    if (!popup) return;
 
     // 监听来自弹窗的消息
     const handleMessage = (event: MessageEvent) => {
@@ -161,6 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             localStorage.setItem("auth_token", jwtToken);
             localStorage.setItem("loggedInUser", JSON.stringify(newUser));
             setUser(newUser);
+            setIsLoginModalOpen(false);
 
             window.removeEventListener("message", handleMessage);
           }
@@ -176,7 +190,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isLoading, login, logout, refreshUser }}
+      value={{
+        user,
+        isLoading,
+        login,
+        isLoginModalOpen,
+        openLoginModal,
+        closeLoginModal,
+        logout,
+        refreshUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

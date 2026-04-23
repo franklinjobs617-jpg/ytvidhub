@@ -36,7 +36,7 @@ export function QuickActions({
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number; width: number } | null>(null);
-  const { user, refreshUser, login } = useAuth();
+  const { user, refreshUser, openLoginModal } = useAuth();
   const router = useRouter();
   const canDownload = isTranscriptReady && !isTranscriptLoading;
   const downloadButtonRef = useRef<HTMLButtonElement>(null);
@@ -86,7 +86,7 @@ export function QuickActions({
         },
       });
       toast.info("Please login. We will continue your download automatically.");
-      login();
+      openLoginModal();
       return;
     }
 

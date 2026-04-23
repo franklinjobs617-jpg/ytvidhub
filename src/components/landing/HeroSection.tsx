@@ -41,7 +41,7 @@ type SummaryInputChoiceState = {
 
 export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const router = useRouter();
-  const { user, refreshUser, login } = useAuth();
+  const { user, refreshUser, openLoginModal } = useAuth();
 
   const t = useTranslations("hero");
   const tExamples = useTranslations("hero.examples");
@@ -358,7 +358,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
             {!user ? (
                <div className="text-center">
                  <button
-                   onClick={() => login()}
+                   onClick={openLoginModal}
                    className="inline-flex items-center gap-2 rounded-full border border-[var(--brand-200)] bg-white px-5 py-2.5 text-[13px] font-bold uppercase tracking-wider text-[var(--brand-700)] shadow-[0_8px_24px_-18px_rgba(37,99,235,0.8)] transition-colors hover:bg-[var(--brand-50)]"
                  >
                    <Gift size={14} /> {t("cta.signup")}
