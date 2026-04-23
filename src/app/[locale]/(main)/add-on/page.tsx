@@ -6,10 +6,8 @@ import {
   Chrome,
   Languages,
   ListVideo,
-  Lock,
   MousePointerClick,
   ScanSearch,
-  Sparkles,
 } from "lucide-react";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
@@ -22,82 +20,70 @@ export const metadata: Metadata = {
 const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/ytvidhub-youtube-subtitle/jdkjibjlihlmpcjppdgiejgoiamogdoj";
 
-const STEPS = [
+const EXTENSION_CARDS = [
   {
-    index: "01",
-    title: "Install Extension",
-    desc: "Add YTVidHub from the Chrome Web Store once, then keep it enabled in your browser.",
-    img: "/image/chorme/ytvidhub-extension-step-install.png",
-    alt: "Install YTVidHub extension from Chrome Web Store",
-    icon: Chrome,
-  },
-  {
-    index: "02",
-    title: "Open Any Video",
-    desc: "When a YouTube page loads, YTVidHub detects subtitle tracks automatically.",
-    img: "/image/chorme/ytvidhub-extension-step-video.png",
-    alt: "YTVidHub extension detects subtitles on YouTube video page",
-    icon: ScanSearch,
-  },
-  {
-    index: "03",
-    title: "Export in One Click",
-    desc: "Download SRT, VTT, or clean TXT instantly without switching tabs.",
-    img: "/image/chorme/ytvidhub-extension-step-download.png",
-    alt: "YTVidHub extension subtitle export formats SRT VTT TXT",
+    title: "YouTube Subtitle Downloader Chrome Extension",
+    desc: "Download YouTube subtitles in SRT, VTT, or clean TXT directly on the video page with one click.",
+    href: "/add-on/youtube-subtitle-download",
+    cta: "Open Subtitle Downloader",
     icon: MousePointerClick,
+  },
+  {
+    title: "YouTube Transcript Generator Chrome Extension",
+    desc: "Generate readable YouTube transcripts quickly for notes, research, and content workflows.",
+    href: "/youtube-transcript-generator",
+    cta: "Open Transcript Generator",
+    icon: ScanSearch,
   },
 ];
 
-const FEATURES = [
+const USE_CASES = [
   {
-    title: "One-Click Interface",
-    desc: "A clean download entry is placed directly where subtitle actions happen.",
-    icon: MousePointerClick,
+    title: "AI / LLM Training Data",
+    desc: "Collect and normalize transcript text for prompt testing, corpora building, and model data pipelines.",
+    icon: CheckCircle2,
   },
   {
-    title: "Smart Export",
-    desc: "Use SRT, VTT, and clean TXT for publishing, analysis, or LLM workflows.",
-    icon: Sparkles,
-  },
-  {
-    title: "Language Support",
-    desc: "Supports manual, auto-generated, and translated subtitle tracks.",
+    title: "Learning & Knowledge Capture",
+    desc: "Convert long videos into searchable text for revision notes and structured learning workflows.",
     icon: Languages,
   },
   {
-    title: "Playlist Friendly",
-    desc: "Works with playlist workflows and keeps bulk subtitle collection simple.",
+    title: "Content Creation",
+    desc: "Turn transcripts into outlines, drafts, and repurposed social or blog content with less manual work.",
     icon: ListVideo,
   },
   {
-    title: "Privacy Focused",
-    desc: "Runs on YouTube pages only and does not track browsing across websites.",
-    icon: Lock,
-  },
-  {
-    title: "Chromium Compatible",
-    desc: "Use the same extension on Chrome, Edge, Brave, Arc, and similar browsers.",
-    icon: CheckCircle2,
+    title: "Research & Data Preparation",
+    desc: "Extract multi-video subtitle text for topic analysis, trend mapping, and multilingual review.",
+    icon: ScanSearch,
   },
 ];
 
 const FAQ_ITEMS = [
   {
-    q: "Is it really free?",
-    a: "Yes. The extension is free to install. It uses the same daily credit balance as your YTVidHub account.",
+    q: "What type of Chrome extensions are listed on this page?",
+    a: "This page lists YTVidHub official YouTube extensions, including a subtitle downloader and a transcript generator.",
   },
   {
-    q: "Does it work on Microsoft Edge?",
-    a: "Yes. Edge is Chromium-based, so it supports this Chrome Web Store extension.",
+    q: "Are these extensions free to install?",
+    a: "Yes. They are free to install from Chrome Web Store, and usage follows your YTVidHub workflow and available limits.",
   },
   {
-    q: "Which subtitle formats are supported?",
-    a: "You can export SRT, VTT, and clean TXT for AI workflows or plain reading.",
+    q: "Do I need to log in before using them?",
+    a: "You can start quickly without heavy setup, and account features can be used when needed for extended workflows.",
   },
   {
-    q: "Will it track my browsing data?",
-    a: "No. The extension only activates on YouTube pages and does not collect unrelated browsing history.",
+    q: "Which formats are supported for subtitle export?",
+    a: "The subtitle workflow supports SRT, VTT, and clean TXT formats for editing, analysis, and AI/LLM data preparation.",
+  },
+  {
+    q: "Do the extensions support multiple languages?",
+    a: "Yes. They can work with multilingual subtitle tracks available on YouTube, including translated tracks when provided.",
+  },
+  {
+    q: "Where can I find all YTVidHub extension tools?",
+    a: "Use the /add-on/ page as the central hub, and visit the YTVidHub homepage to access web tools and related resources.",
   },
 ];
 
@@ -107,18 +93,21 @@ export default function AddOnPage() {
       <main>
         <header className="relative overflow-hidden border-b border-slate-200 bg-white">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.14),rgba(37,99,235,0)_72%)]" />
-          <div className="relative mx-auto flex max-w-6xl flex-col gap-14 px-6 py-16 md:py-24 lg:flex-row lg:items-center">
+          <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 py-14 md:py-20 lg:flex-row lg:items-center">
             <div className="flex-1">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-700">
                 <Chrome className="h-3.5 w-3.5" />
-                Official Browser Extension
+                Official Browser Extensions
               </div>
-              <h1 className="mb-6 text-4xl font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
-                Download YouTube subtitles
-                <span className="block text-[var(--brand-600)]">directly inside YouTube</span>
+              <h1 className="mb-4 max-w-2xl text-4xl font-bold leading-[1.08] tracking-tight text-slate-900 md:text-5xl lg:text-[56px]">
+                Chrome Extensions for YouTube
               </h1>
-              <p className="mb-10 max-w-xl text-lg leading-relaxed text-slate-600">
-                Skip manual copy and paste. Install YTVidHub once and export subtitles in SRT, VTT, or clean TXT from the video page.
+              <p className="mb-4 text-base font-semibold text-[var(--brand-600)] md:text-lg">
+                Subtitle Downloader + Transcript Generator
+              </p>
+              <p className="mb-8 max-w-xl text-lg leading-relaxed text-slate-600">
+                Install official YTVidHub extensions to download subtitles and generate transcripts
+                directly on YouTube.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a
@@ -128,20 +117,20 @@ export default function AddOnPage() {
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_20px_30px_-20px_rgba(37,99,235,1)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
                 >
                   <Chrome className="h-4 w-4" />
-                  Add to Chrome
+                  Install Extension
                 </a>
                 <Link
                   href="/"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-[var(--brand-700)]"
                 >
-                  Use web version
-                  <span aria-hidden="true">→</span>
+                  Visit YTVidHub homepage
+                  <span aria-hidden="true">-&gt;</span>
                 </Link>
               </div>
             </div>
 
-            <div className="w-full max-w-xl flex-1">
-              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_26px_50px_-34px_rgba(15,23,42,0.65)]">
+            <div className="w-full max-w-xl flex-1 lg:max-w-2xl">
+              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_26px_50px_-34px_rgba(15,23,42,0.65)] ring-1 ring-blue-100/60">
                 <Image
                   src="/image/chorme/ytvidhub-chrome-store-listing.png"
                   alt="YTVidHub Chrome extension listing preview"
@@ -157,61 +146,81 @@ export default function AddOnPage() {
 
         <section className="py-24">
           <div className="mx-auto max-w-6xl px-6">
-            <div className="mx-auto mb-16 max-w-3xl text-center">
+            <div className="mx-auto mb-14 max-w-3xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-                How it works
+                Official Extension Cards
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-                Three steps, no extra dashboard. Install once and keep your subtitle flow inside the YouTube player experience.
+                Choose the extension that matches your workflow and open its detail page.
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-3">
-              {STEPS.map((item) => {
-                const Icon = item.icon;
+            <div className="grid gap-6 md:grid-cols-2">
+              {EXTENSION_CARDS.map((card) => {
+                const Icon = card.icon;
                 return (
-                  <article
-                    key={item.index}
-                    className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_18px_35px_-30px_rgba(15,23,42,0.55)]"
+                  <Link
+                    key={card.title}
+                    href={card.href}
+                    className="group block h-full rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_18px_35px_-30px_rgba(15,23,42,0.55)] transition-all hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_24px_36px_-30px_rgba(37,99,235,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
                   >
-                    <div className="mb-5 aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                      <Image
-                        src={item.img}
-                        alt={item.alt}
-                        width={480}
-                        height={360}
-                        className="h-full w-full object-cover"
-                      />
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600">
+                      <Icon className="h-5 w-5 transition-transform group-hover:scale-105" />
                     </div>
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="rounded-md border border-blue-100 bg-blue-50 px-2 py-1 text-[11px] font-semibold tracking-[0.08em] text-blue-700">
-                        {item.index}
-                      </span>
-                      <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-blue-100 bg-blue-50 text-blue-600">
-                        <Icon className="h-4 w-4" />
-                      </div>
-                    </div>
-                    <h3 className="text-lg font-semibold text-slate-900">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.desc}</p>
-                  </article>
+                    <h3 className="text-xl font-semibold text-slate-900">{card.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">{card.desc}</p>
+                    <span className="mt-5 inline-flex items-center justify-center rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition-colors group-hover:bg-blue-100">
+                      {card.cta}
+                    </span>
+                  </Link>
                 );
               })}
             </div>
           </div>
         </section>
 
-        <section className="border-y border-slate-200 bg-white py-24">
+        <section className="border-y border-slate-200 bg-white py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <div className="mx-auto mb-16 max-w-3xl text-center">
+            <div className="mx-auto mb-12 max-w-3xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
-                Why users install it
+                Why / What / How
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
-                Built for speed and clarity: practical controls, stable export formats, and minimal setup friction.
-              </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {FEATURES.map((item) => {
+            <div className="grid gap-6 md:grid-cols-3">
+              <article className="rounded-2xl border border-slate-200 bg-[var(--surface-page)] p-6 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.45)]">
+                <h3 className="text-base font-semibold text-slate-900">Why</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  YouTube subtitle and transcript extraction improves note quality, saves manual
+                  time, and supports downstream AI/data workflows.
+                </p>
+              </article>
+              <article className="rounded-2xl border border-slate-200 bg-[var(--surface-page)] p-6 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.45)]">
+                <h3 className="text-base font-semibold text-slate-900">What</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  YTVidHub provides one extension for subtitle download and one for transcript
+                  generation, both focused on fast YouTube-native workflows.
+                </p>
+              </article>
+              <article className="rounded-2xl border border-slate-200 bg-[var(--surface-page)] p-6 shadow-[0_14px_26px_-24px_rgba(15,23,42,0.45)]">
+                <h3 className="text-base font-semibold text-slate-900">How</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  1) Open the detail page and install from Chrome Web Store. 2) Open YouTube and
+                  run subtitle download or transcript generation in a few clicks.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-b border-slate-200 bg-white py-24">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="mx-auto mb-14 max-w-3xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-5xl">
+                Use Cases
+              </h2>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              {USE_CASES.map((item) => {
                 const Icon = item.icon;
                 return (
                   <article
@@ -227,16 +236,28 @@ export default function AddOnPage() {
                 );
               })}
             </div>
+            <p className="mt-8 text-center text-sm text-slate-500">
+              Start from{" "}
+              <Link href="/add-on" className="font-semibold text-[var(--brand-700)] hover:underline">
+                /add-on/
+              </Link>{" "}
+              or go to the{" "}
+              <Link href="/" className="font-semibold text-[var(--brand-700)] hover:underline">
+                YTVidHub homepage
+              </Link>
+              .
+            </p>
           </div>
         </section>
 
         <section className="px-6 py-24">
           <div className="mx-auto max-w-6xl rounded-3xl border border-slate-200 bg-slate-900 px-8 py-14 text-center text-white md:px-12 md:py-16">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              Ready to simplify subtitle capture?
+              Ready to optimize your YouTube workflow?
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-300">
-              Install the extension and keep your existing YTVidHub workflow while reducing click steps on every video.
+              Install the official YTVidHub extension and move from manual copy-paste to structured
+              subtitle and transcript operations.
             </p>
             <a
               href={CHROME_STORE_URL}
@@ -245,13 +266,13 @@ export default function AddOnPage() {
               className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-900 transition-colors hover:bg-slate-100"
             >
               <Chrome className="h-4 w-4" />
-              Install for Chrome
+              Install Now
             </a>
           </div>
         </section>
 
         <UnifiedFaqSection
-          title="Common Questions"
+          title="FAQ"
           items={FAQ_ITEMS}
           sectionClassName="border-t border-slate-200 bg-white py-24"
           containerClassName="max-w-4xl px-6 lg:px-6"

@@ -79,6 +79,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/add-on/youtube-subtitle-download"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  YouTube Subtitle Downloader Extension
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/pricing"
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >
