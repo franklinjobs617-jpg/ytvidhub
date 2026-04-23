@@ -31,7 +31,7 @@ const EXTENSION_CARDS = [
   {
     title: "YouTube Transcript Generator Chrome Extension",
     desc: "Generate readable YouTube transcripts quickly for notes, research, and content workflows.",
-    href: "/youtube-transcript-generator",
+    href: "/add-on/youtube-transcript-generator",
     cta: "Open Transcript Generator",
     icon: ScanSearch,
   },
