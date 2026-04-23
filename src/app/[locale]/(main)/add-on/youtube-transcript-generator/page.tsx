@@ -314,7 +314,14 @@ export default function TranscriptExtensionPage() {
               <Link href="/add-on" className="font-semibold text-[var(--brand-700)] hover:underline">
                 /add-on/
               </Link>{" "}
-              or visit the{" "}
+              and pair it with the{" "}
+              <Link
+                href="/add-on/youtube-subtitle-download"
+                className="font-semibold text-[var(--brand-700)] hover:underline"
+              >
+                YouTube Subtitle Downloader extension
+              </Link>
+              , or visit the{" "}
               <Link href="/" className="font-semibold text-[var(--brand-700)] hover:underline">
                 YTVidHub homepage
               </Link>

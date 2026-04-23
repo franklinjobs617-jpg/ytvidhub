@@ -99,12 +99,9 @@ export default async function YouTubeTranscriptGeneratorPage({
                 Need a YouTube transcript generator for video transcripts?
               </strong>{" "}
               Get transcripts for YouTube videos in under 30 seconds. Download
-              video transcript generator outputs for AI training, research,
-              accessibility, and content repurposing. Download transcript
-              outputs in TXT, SRT, or VTT for AI training, research,
-              accessibility, and content workflows. You can get youtube video
-              transcript, transcript for youtube videos, transcript youtube, and
-              video transcript generator outputs in one click.
+              output in TXT, SRT, VTT, or JSON for AI training, research,
+              accessibility, and content repurposing. You can get a YouTube
+              video transcript or transcript for YouTube videos in one click.
             </p>
           </div>
         </div>
@@ -132,7 +129,7 @@ export default async function YouTubeTranscriptGeneratorPage({
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
                   {t("features.accurate.description")} YTVidHub is a video
-                  transcript generator that can generate AI-powered transcripts
+                  transcript generator that produces AI-powered transcripts
                   from YouTube videos in seconds.
                 </p>
               </div>
@@ -145,7 +142,8 @@ export default async function YouTubeTranscriptGeneratorPage({
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
                   {t("features.formats.description")} YTVidHub supports TXT,
-                  SRT, VTT, and JSON for all YouTube video transcript needs.
+                  SRT, VTT, and JSON output for every YouTube video transcript
+                  workflow.
                 </p>
               </div>
               <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 hover:border-slate-300 transition-colors">
@@ -206,12 +204,12 @@ export default async function YouTubeTranscriptGeneratorPage({
               {[
                 {
                   title: "Content Creators",
-                  desc: "Repurpose video content into blog posts, social media, and SEO-optimized articles from youtube video transcript outputs.",
+                  desc: "Repurpose video content into blog posts, social media, and SEO articles from YouTube video transcript outputs.",
                   icon: <PenSquare size={22} className="text-blue-600" />,
                 },
                 {
                   title: "Educators & Students",
-                  desc: "Create study materials, lecture notes, and accessible learning resources from transcript for youtube videos.",
+                  desc: "Create study materials, lecture notes, and accessible learning resources from transcript for YouTube videos.",
                   icon: <GraduationCap size={22} className="text-blue-600" />,
                 },
                 {
@@ -221,17 +219,17 @@ export default async function YouTubeTranscriptGeneratorPage({
                 },
                 {
                   title: "Video Editors",
-                  desc: "Generate accurate SRT/VTT subtitles for professional video production using youtube video transcript outputs.",
+                  desc: "Generate accurate SRT/VTT subtitles for professional production using YouTube video transcript output.",
                   icon: <Clapperboard size={22} className="text-blue-600" />,
                 },
                 {
                   title: "Accessibility Teams",
-                  desc: "Ensure content compliance with WCAG standards for hearing-impaired audiences using transcript youtube outputs.",
+                  desc: "Ensure content compliance with WCAG standards for hearing-impaired audiences using transcript YouTube output.",
                   icon: <Accessibility size={22} className="text-blue-600" />,
                 },
                 {
                   title: "Market Researchers",
-                  desc: "Analyze video content, extract insights, and perform sentiment analysis from transcript for youtube videos.",
+                  desc: "Analyze video content, extract insights, and perform sentiment analysis from transcript for YouTube videos.",
                   icon: <BarChart3 size={22} className="text-blue-600" />,
                 },
               ].map((item) => (
@@ -258,7 +256,7 @@ export default async function YouTubeTranscriptGeneratorPage({
                 <p className="text-slate-400 text-sm mb-8">
                   These performance stats apply to all YouTube video transcript,
                   video transcript generator, and transcript for youtube videos
-                  use cases we support.
+                  workflows we support.
                 </p>
                 <div className="grid md:grid-cols-3 gap-8">
                   <div className="text-center">
@@ -267,7 +265,7 @@ export default async function YouTubeTranscriptGeneratorPage({
                     </div>
                     <div className="text-slate-400">Shorts / TikToks</div>
                     <div className="text-sm text-slate-500 mt-1">
-                      Instant transcript youtube outputs under 1 second.
+                      Instant transcript YouTube output under 1 second.
                     </div>
                   </div>
                   <div className="text-center">
@@ -277,7 +275,7 @@ export default async function YouTubeTranscriptGeneratorPage({
                     <div className="text-slate-400">EdTech Courses</div>
                     <div className="text-sm text-slate-500 mt-1">~15s / hr</div>
                     <div className="text-sm text-slate-500 mt-1">
-                      99.7% accuracy for youtube video transcript outputs.
+                      99.7% accuracy for YouTube video transcript output.
                     </div>
                   </div>
                   <div className="text-center">
@@ -289,7 +287,7 @@ export default async function YouTubeTranscriptGeneratorPage({
                       &lt;30s / hr
                     </div>
                     <div className="text-sm text-slate-500 mt-1">
-                      99.5% accuracy for transcript for youtube videos outputs.
+                      99.5% accuracy for transcript for YouTube videos output.
                     </div>
                   </div>
                 </div>
@@ -375,8 +373,8 @@ export default async function YouTubeTranscriptGeneratorPage({
                       Best For
                     </td>
                     <td className="px-6 py-4 text-sm text-center font-medium text-blue-600">
-                      YTVidHub: Best for youtube video transcript, transcript
-                      youtube, and video transcript generator use cases.
+                      YTVidHub: Best for YouTube video transcript, transcript
+                      YouTube, and video transcript generator workflows.
                     </td>
                     <td className="px-6 py-4 text-sm text-center text-slate-600">
                       Generic transcript use only

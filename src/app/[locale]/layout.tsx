@@ -61,6 +61,10 @@ export async function generateMetadata({
         return "ja_JP";
       case "ru":
         return "ru_RU";
+      case "tr":
+        return "tr_TR";
+      case "zh":
+        return "zh_CN";
       default:
         return "en_US";
     }
@@ -105,6 +109,8 @@ export async function generateMetadata({
         ko: buildCanonicalUrl({ locale: "ko", pathname: "" }),
         ja: buildCanonicalUrl({ locale: "ja", pathname: "" }),
         ru: buildCanonicalUrl({ locale: "ru", pathname: "" }),
+        tr: buildCanonicalUrl({ locale: "tr", pathname: "" }),
+        zh: buildCanonicalUrl({ locale: "zh", pathname: "" }),
         "x-default": buildCanonicalUrl({ locale: "en", pathname: "" }),
       },
     },

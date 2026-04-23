@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { buildCanonicalUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
   title: "YTVidHub Browser Extension — Download YouTube Subtitles in One Click",
@@ -13,6 +14,10 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://ytvidhub.com/add-on/",
+    languages: {
+      en: buildCanonicalUrl({ locale: "en", pathname: "/add-on" }),
+      "x-default": buildCanonicalUrl({ locale: "en", pathname: "/add-on" }),
+    },
   },
   openGraph: {
     title: "YTVidHub Browser Extension — Download YouTube Subtitles in One Click",

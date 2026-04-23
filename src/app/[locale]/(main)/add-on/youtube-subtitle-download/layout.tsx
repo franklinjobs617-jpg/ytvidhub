@@ -18,11 +18,6 @@ export const metadata: Metadata = {
     canonical: "https://ytvidhub.com/add-on/youtube-subtitle-download/",
     languages: {
       en: buildCanonicalUrl({ locale: "en", pathname }),
-      es: buildCanonicalUrl({ locale: "es", pathname }),
-      de: buildCanonicalUrl({ locale: "de", pathname }),
-      ko: buildCanonicalUrl({ locale: "ko", pathname }),
-      ja: buildCanonicalUrl({ locale: "ja", pathname }),
-      ru: buildCanonicalUrl({ locale: "ru", pathname }),
       "x-default": buildCanonicalUrl({ locale: "en", pathname }),
     },
   },

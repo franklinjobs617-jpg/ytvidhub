@@ -49,11 +49,6 @@ export const metadata: Metadata = {
         canonical: 'https://ytvidhub.com/bulk-youtube-subtitle-downloader/',
         languages: {
             'en': buildCanonicalUrl({ locale: 'en', pathname: '/bulk-youtube-subtitle-downloader' }),
-            'es': buildCanonicalUrl({ locale: 'es', pathname: '/bulk-youtube-subtitle-downloader' }),
-            'de': buildCanonicalUrl({ locale: 'de', pathname: '/bulk-youtube-subtitle-downloader' }),
-            'ko': buildCanonicalUrl({ locale: 'ko', pathname: '/bulk-youtube-subtitle-downloader' }),
-            'ja': buildCanonicalUrl({ locale: 'ja', pathname: '/bulk-youtube-subtitle-downloader' }),
-            'ru': buildCanonicalUrl({ locale: 'ru', pathname: '/bulk-youtube-subtitle-downloader' }),
             'x-default': buildCanonicalUrl({ locale: 'en', pathname: '/bulk-youtube-subtitle-downloader' }),
         },
     },

@@ -319,7 +319,14 @@ export default function AddOnPage() {
               <Link href="/add-on" className="font-semibold text-[var(--brand-700)] hover:underline">
                 /add-on/
               </Link>{" "}
-              or visit the{" "}
+              including the{" "}
+              <Link
+                href="/add-on/youtube-transcript-generator"
+                className="font-semibold text-[var(--brand-700)] hover:underline"
+              >
+                YouTube Transcript Generator extension
+              </Link>
+              , or visit the{" "}
               <Link href="/" className="font-semibold text-[var(--brand-700)] hover:underline">
                 YTVidHub homepage
               </Link>

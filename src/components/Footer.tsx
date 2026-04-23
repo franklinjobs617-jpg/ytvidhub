@@ -87,6 +87,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/add-on/youtube-transcript-generator"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  YouTube Transcript Generator Extension
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/pricing"
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >

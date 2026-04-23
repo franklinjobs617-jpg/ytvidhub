@@ -93,9 +93,10 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
 
     // 使用 startTransition 进行非阻塞更新
     startTransition(() => {
-      // 当前策略：仅首页开放完整多语言。非首页选择非英文时，切换到该语言首页。
+      // Current strategy: only homepage supports full multilingual routes.
+      // On non-home pages, switching to a non-default locale goes to that locale homepage.
       if (!isHomePath && nextLocale !== routing.defaultLocale) {
-        toast.info("当前仅首页支持多语言，已切换到对应语言首页。");
+        toast.info("Only the homepage is fully localized right now. Switched to the selected locale homepage.");
         router.replace("/", { locale: nextLocale });
       } else {
         router.replace(pathname, { locale: nextLocale });
@@ -155,7 +156,7 @@ export default function LanguageSwitcher({ isMobile = false }: { isMobile?: bool
             {!isHomePath && (
               <div className="px-4 pb-2 mb-1 border-b border-slate-100">
                 <p className="text-[11px] text-slate-500">
-                  非首页切换到其他语言时，会先进入对应语言首页。
+                  On non-home pages, switching language redirects to that locale homepage first.
                 </p>
               </div>
             )}

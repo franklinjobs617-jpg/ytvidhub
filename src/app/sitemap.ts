@@ -39,6 +39,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/blog/how-to-get-youtube-video-transcript', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/support', priority: 0.6, changeFreq: 'monthly' as const },
         { path: '/add-on', priority: 0.8, changeFreq: 'monthly' as const },
+        { path: '/add-on/youtube-subtitle-download', priority: 0.8, changeFreq: 'monthly' as const },
+        { path: '/add-on/youtube-transcript-generator', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/faq/subtitle-settings-guide', priority: 0.6, changeFreq: 'monthly' as const },
         { path: '/privacy-policy', priority: 0.3, changeFreq: 'yearly' as const },
         { path: '/terms-of-service', priority: 0.3, changeFreq: 'yearly' as const },
