@@ -74,6 +74,17 @@
       "tryDemo": "デモリンクで試す",
       "tryExample": "サンプルを使う"
     },
+    "examples": {
+      "quickLabel": "Try these examples:",
+      "tabVideo": "Video",
+      "tabPlaylist": "Playlist",
+      "tabChannel": "Channel",
+      "popularTitle": "Try these popular examples",
+      "popularDescription": "Click any video to extract subtitles instantly",
+      "placeholderVideo": "Paste a YouTube video link...",
+      "placeholderPlaylist": "Or paste a playlist link...",
+      "placeholderChannel": "Try pasting a channel URL..."
+    },
     "ticker": {
       "subtitles": "YouTube字幕をダウンロード",
       "caption": "YouTube字幕コピー・抽出",

@@ -74,6 +74,17 @@
       "tryDemo": "Попробовать демо",
       "tryExample": "Использовать пример"
     },
+    "examples": {
+      "quickLabel": "Try these examples:",
+      "tabVideo": "Video",
+      "tabPlaylist": "Playlist",
+      "tabChannel": "Channel",
+      "popularTitle": "Try these popular examples",
+      "popularDescription": "Click any video to extract subtitles instantly",
+      "placeholderVideo": "Paste a YouTube video link...",
+      "placeholderPlaylist": "Or paste a playlist link...",
+      "placeholderChannel": "Try pasting a channel URL..."
+    },
     "ticker": {
       "subtitles": "Скачать субтитры YouTube",
       "caption": "Копировать и извлечь субтитры YouTube",

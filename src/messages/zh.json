@@ -347,6 +347,17 @@
       "tryDemo": "试试演示链接",
       "tryExample": "试试示例"
     },
+    "examples": {
+      "quickLabel": "试试这些示例：",
+      "tabVideo": "视频",
+      "tabPlaylist": "播放列表",
+      "tabChannel": "频道",
+      "popularTitle": "试试这些热门示例",
+      "popularDescription": "点击任意视频即可立即提取字幕",
+      "placeholderVideo": "粘贴 YouTube 视频链接...",
+      "placeholderPlaylist": "或粘贴播放列表链接...",
+      "placeholderChannel": "试着粘贴频道链接..."
+    },
     "ticker": {
       "subtitles": "下载YouTube字幕",
       "caption": "YouTube字幕下载器",

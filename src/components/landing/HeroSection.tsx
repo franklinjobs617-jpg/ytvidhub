@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
 import {
@@ -30,12 +30,6 @@ const isValidYoutubeUrl = (url: string) => {
   return /^(https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be)\/.+$/.test(url.trim());
 };
 
-const PLACEHOLDER_EXAMPLES = [
-  "Paste a YouTube video link...",
-  "Or paste a playlist link...",
-  "Try pasting a channel URL...",
-];
-
 interface HeroSectionProps {
   heroHeader?: React.ReactNode;
 }
@@ -50,6 +44,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const { user, refreshUser, login } = useAuth();
 
   const t = useTranslations("hero");
+  const tExamples = useTranslations("hero.examples");
   const tErrors = useTranslations("errors");
 
   const [urls, setUrls] = useState("");
@@ -66,10 +61,27 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
 
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [typedPlaceholder, setTypedPlaceholder] = useState("");
+  const placeholderExamples = useMemo(
+    () => [
+      tExamples("placeholderVideo"),
+      tExamples("placeholderPlaylist"),
+      tExamples("placeholderChannel"),
+    ],
+    [tExamples],
+  );
+
+  const quickExamples = useMemo(
+    () => [
+      { label: tExamples("tabVideo"), url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
+      { label: tExamples("tabPlaylist"), url: "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME" },
+      { label: tExamples("tabChannel"), url: "https://www.youtube.com/@Google" },
+    ],
+    [tExamples],
+  );
 
   useEffect(() => {
     if (isFocused || urls) return;
-    const target = PLACEHOLDER_EXAMPLES[placeholderIndex];
+    const target = placeholderExamples[placeholderIndex];
     let charIndex = 0;
     let pauseTimer: ReturnType<typeof setTimeout>;
     setTypedPlaceholder("");
@@ -80,7 +92,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
       if (charIndex >= target.length) {
         clearInterval(typeInterval);
         pauseTimer = setTimeout(() => {
-          setPlaceholderIndex((prev) => (prev + 1) % PLACEHOLDER_EXAMPLES.length);
+          setPlaceholderIndex((prev) => (prev + 1) % placeholderExamples.length);
         }, 2000);
       }
     }, 40);
@@ -89,7 +101,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
       clearInterval(typeInterval);
       clearTimeout(pauseTimer);
     };
-  }, [placeholderIndex, isFocused, urls]);
+  }, [placeholderExamples, placeholderIndex, isFocused, urls]);
 
   const refreshCredits = useCallback(async () => {
     if (user) {
@@ -322,13 +334,9 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
           </div>
 
           <div className="relative z-10 mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-             <span className="text-[13px] font-semibold text-slate-400">Try these examples:</span>
+             <span className="text-[13px] font-semibold text-slate-400">{tExamples("quickLabel")}</span>
              <div className="flex items-center gap-2 sm:gap-3">
-              {[
-                { label: "Video", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
-                { label: "Playlist", url: "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME" },
-                { label: "Channel", url: "https://www.youtube.com/@Google" },
-              ].map((item, idx) => (
+              {quickExamples.map((item, idx) => (
                 <div key={item.label} className="flex items-center">
                   <button
                     onClick={() => {
@@ -340,7 +348,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                   >
                     {item.label}
                   </button>
-                  {idx !== 2 && <span className="mx-2 text-slate-200">/</span>}
+                  {idx !== quickExamples.length - 1 && <span className="mx-2 text-slate-200">/</span>}
                 </div>
               ))}
             </div>

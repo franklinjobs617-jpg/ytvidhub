@@ -2,6 +2,7 @@
 
 import { Play, Clock } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const exampleVideos = [
   {
@@ -32,6 +33,7 @@ const exampleVideos = [
 
 export default function ExampleVideos() {
   const router = useRouter();
+  const tExamples = useTranslations("hero.examples");
 
   const handleVideoClick = (url: string) => {
     router.push(`/workspace?urls=${encodeURIComponent(url)}&from=home&mode=download`);
@@ -40,8 +42,8 @@ export default function ExampleVideos() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-2">
-        <h3 className="text-lg font-semibold text-slate-800">Try these popular examples</h3>
-        <p className="text-sm text-slate-500">Click any video to extract subtitles instantly</p>
+        <h3 className="text-lg font-semibold text-slate-800">{tExamples("popularTitle")}</h3>
+        <p className="text-sm text-slate-500">{tExamples("popularDescription")}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

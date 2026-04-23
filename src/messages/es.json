@@ -74,6 +74,17 @@
       "tryDemo": "Probar un enlace de demo",
       "tryExample": "Prueba un ejemplo"
     },
+    "examples": {
+      "quickLabel": "Prueba estos ejemplos:",
+      "tabVideo": "Video",
+      "tabPlaylist": "Lista",
+      "tabChannel": "Canal",
+      "popularTitle": "Prueba estos ejemplos populares",
+      "popularDescription": "Haz clic en cualquier video para extraer subtitulos al instante",
+      "placeholderVideo": "Pega un enlace de video de YouTube...",
+      "placeholderPlaylist": "O pega un enlace de lista de reproduccion...",
+      "placeholderChannel": "Prueba pegando una URL de canal..."
+    },
     "ticker": {
       "subtitles": "Descargar subtitulos de YouTube",
       "caption": "Descargador de subtitulos de YouTube",

@@ -74,6 +74,17 @@
       "tryDemo": "Demo-Link ausprobieren",
       "tryExample": "Beispiel ausprobieren"
     },
+    "examples": {
+      "quickLabel": "Probieren Sie diese Beispiele:",
+      "tabVideo": "Video",
+      "tabPlaylist": "Playlist",
+      "tabChannel": "Kanal",
+      "popularTitle": "Probieren Sie diese beliebten Beispiele",
+      "popularDescription": "Klicken Sie auf ein Video, um Untertitel sofort zu extrahieren",
+      "placeholderVideo": "Fuegen Sie einen YouTube-Video-Link ein...",
+      "placeholderPlaylist": "Oder fuegen Sie einen Playlist-Link ein...",
+      "placeholderChannel": "Versuchen Sie, eine Kanal-URL einzufuegen..."
+    },
     "ticker": {
       "subtitles": "YouTube Untertitel herunterladen",
       "caption": "YouTube Untertitel Download",

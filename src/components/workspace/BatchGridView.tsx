@@ -46,6 +46,7 @@ export function BatchGridView({
   const [downloadFormat, setDownloadFormat] = useState("srt");
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const longPressTriggeredRef = useRef(false);
+  const hasAutoSelectedOnceRef = useRef(false);
 
   const selectableVideos = useMemo(
     () => videos.filter((video) => video.hasSubtitles !== false),
@@ -66,6 +67,9 @@ export function BatchGridView({
 
   useEffect(() => {
     if (!initialSelectedIds) return;
+    if (initialSelectedIds.length > 0) {
+      hasAutoSelectedOnceRef.current = true;
+    }
     setSelectedIds(new Set(initialSelectedIds));
   }, [initialSelectionSignature]);
 
@@ -79,10 +83,17 @@ export function BatchGridView({
       const selectedFromProps = (initialSelectedIds || []).filter((id) =>
         selectableIds.has(id)
       );
-      if (selectedFromProps.length > 0) return new Set(selectedFromProps);
+      if (selectedFromProps.length > 0) {
+        hasAutoSelectedOnceRef.current = true;
+        return new Set(selectedFromProps);
+      }
 
-      if (selectableVideos.length <= 0) return new Set();
-      return new Set(selectableVideos.map((video) => video.id));
+      if (!hasAutoSelectedOnceRef.current && selectableVideos.length > 0) {
+        hasAutoSelectedOnceRef.current = true;
+        return new Set(selectableVideos.map((video) => video.id));
+      }
+
+      return stillValid;
     });
   }, [selectableIds, selectableVideos, initialSelectionSignature, initialSelectedIds]);
 

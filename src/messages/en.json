@@ -347,6 +347,17 @@
       "tryDemo": "Try a demo link",
       "tryExample": "Try an example"
     },
+    "examples": {
+      "quickLabel": "Try these examples:",
+      "tabVideo": "Video",
+      "tabPlaylist": "Playlist",
+      "tabChannel": "Channel",
+      "popularTitle": "Try these popular examples",
+      "popularDescription": "Click any video to extract subtitles instantly",
+      "placeholderVideo": "Paste a YouTube video link...",
+      "placeholderPlaylist": "Or paste a playlist link...",
+      "placeholderChannel": "Try pasting a channel URL..."
+    },
     "ticker": {
       "subtitles": "Download YouTube subtitles",
       "caption": "YouTube caption downloader",

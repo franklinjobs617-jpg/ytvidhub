@@ -74,6 +74,17 @@
       "tryDemo": "Demo linki deneyin",
       "tryExample": "Örnek deneyin"
     },
+    "examples": {
+      "quickLabel": "Su ornekleri deneyin:",
+      "tabVideo": "Video",
+      "tabPlaylist": "Oynatma listesi",
+      "tabChannel": "Kanal",
+      "popularTitle": "Bu populer ornekleri deneyin",
+      "popularDescription": "Altyazilari aninda cikarmak icin herhangi bir videoya tiklayin",
+      "placeholderVideo": "Bir YouTube video baglantisi yapistirin...",
+      "placeholderPlaylist": "Veya bir oynatma listesi baglantisi yapistirin...",
+      "placeholderChannel": "Bir kanal URL'si yapistirmayi deneyin..."
+    },
     "ticker": {
       "subtitles": "YouTube altyazı indir",
       "caption": "YouTube altyazı indirici",

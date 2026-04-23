@@ -74,6 +74,17 @@
             "tryDemo": "데모 링크 시도",
             "tryExample": "예시 사용해보기"
         },
+        "examples": {
+          "quickLabel": "Try these examples:",
+          "tabVideo": "Video",
+          "tabPlaylist": "Playlist",
+          "tabChannel": "Channel",
+          "popularTitle": "Try these popular examples",
+          "popularDescription": "Click any video to extract subtitles instantly",
+          "placeholderVideo": "Paste a YouTube video link...",
+          "placeholderPlaylist": "Or paste a playlist link...",
+          "placeholderChannel": "Try pasting a channel URL..."
+        },
         "ticker": {
             "subtitles": "유튜브 자막 다운로드",
             "caption": "유튜브 자막 다운로더",
