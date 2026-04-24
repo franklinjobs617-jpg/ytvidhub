@@ -1,74 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function POST(request: NextRequest) {
     try {
-        // 获取Authorization header
         const authHeader = request.headers.get('authorization')
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return NextResponse.json(
-                { error: 'Authentication required' },
-                { status: 401 }
-            )
+            return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
         }
 
         const token = authHeader.split(' ')[1]
 
-        // 通过现有的API获取用户信息来验证token
         const userResponse = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
             headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!userResponse.ok) {
-            return NextResponse.json(
-                { error: 'Invalid token' },
-                { status: 401 }
-            )
+            return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
         }
 
         const userData = await userResponse.json()
         const user = userData.data
 
         if (!user || !user.email) {
-            return NextResponse.json(
-                { error: 'User data not found' },
-                { status: 400 }
-            )
+            return NextResponse.json({ error: 'User data not found' }, { status: 400 })
         }
 
-        // 获取请求体
         const body = await request.json()
         const { url, lang, format, title, isPreview } = body
 
         if (!url) {
-            return NextResponse.json(
-                { error: 'Video URL is required' },
-                { status: 400 }
-            )
+            return NextResponse.json({ error: 'Video URL is required' }, { status: 400 })
         }
 
-        // 预览模式不扣积分，下载模式先检查积分是否足够（但不扣除）
+        const userType = (user.type ?? '1').toString()
+
         if (!isPreview) {
             const userCredits = parseInt(user?.credits || "0") || 0;
-
-            console.log('Single download credit check:', {
-                userData: user,
-                userCredits,
-                required: 1
-            });
-
-            if (!user || userCredits < 1) {
+            if (userCredits < 1) {
                 return NextResponse.json(
                     { error: `Insufficient credits. You have ${userCredits} credits, but subtitle download requires 1 credit.` },
                     { status: 402 }
                 )
             }
-
-            console.log('Proxying single download request for URL:', url)
-        } else {
-            console.log('Proxying PREVIEW request (no credit deduction) for URL:', url)
         }
 
-        // 先请求后端API，成功后再扣积分
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/download", {
             method: "POST",
             headers: {
@@ -81,7 +58,6 @@ export async function POST(request: NextRequest) {
         if (!backendResponse.ok) {
             const rawError = await backendResponse.text().catch(() => '')
             let backendMessage = ''
-
             if (rawError) {
                 try {
                     const parsed = JSON.parse(rawError)
@@ -90,46 +66,37 @@ export async function POST(request: NextRequest) {
                     backendMessage = rawError
                 }
             }
-
             if (!backendMessage || /<!doctype html|<html/i.test(backendMessage)) {
                 backendMessage = 'Failed to download subtitle'
             }
-
             console.error('Backend API error:', backendMessage)
-            return NextResponse.json(
-                { error: backendMessage },
-                { status: backendResponse.status }
-            )
+            return NextResponse.json({ error: backendMessage }, { status: backendResponse.status })
         }
 
-        // 后端成功后再扣除积分
+        // 直接通过 Prisma 扣积分，无需内部 HTTP 跳转
         if (!isPreview) {
-            const deductOrigin = process.env.NEXTAUTH_URL?.replace(/\/$/, '')
-                || `${request.headers.get('x-forwarded-proto') || 'https'}://${request.headers.get('host')}`;
-            console.log('[download-single] deduct origin:', deductOrigin);
-
             try {
-                const deductResponse = await fetch(`${deductOrigin}/api/deduct-credits`, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ amount: 1, reason: "Subtitle Download" })
-                });
+                await prisma.$transaction(async (tx: any) => {
+                    const currentUser = await tx.user.findUnique({
+                        where: { email_type: { email: user.email, type: userType } }
+                    });
 
-                if (!deductResponse.ok) {
-                    const deductError = await deductResponse.text().catch(() => '');
-                    console.error('[download-single] Credit deduction failed:', deductResponse.status, deductError);
-                } else {
-                    console.log('[download-single] Credit deduction succeeded for:', user.email);
-                }
+                    if (!currentUser) throw new Error(`User not found: ${user.email} type=${userType}`);
+
+                    const currentCredits = parseInt(currentUser.credits) || 0;
+                    if (currentCredits < 1) throw new Error(`Insufficient credits: ${currentCredits}`);
+
+                    await tx.user.update({
+                        where: { email_type: { email: user.email, type: userType } },
+                        data: { credits: (currentCredits - 1).toString() }
+                    });
+                });
+                console.log('[download-single] Credit deducted for:', user.email);
             } catch (deductErr) {
-                console.error('[download-single] Credit deduction fetch error:', deductErr);
+                console.error('[download-single] Credit deduction failed:', deductErr);
             }
         }
 
-        // 返回文件流
         return new NextResponse(backendResponse.body, {
             status: 200,
             headers: {
@@ -144,5 +111,7 @@ export async function POST(request: NextRequest) {
             { error: `Internal server error: ${error instanceof Error ? error.message : 'Unknown error'}` },
             { status: 500 }
         )
+    } finally {
+        await prisma.$disconnect()
     }
 }
