@@ -1,7 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+function getUserCredits(user: { credits?: string | number } | null | undefined) {
+    if (!user) return 0
+    if (typeof user.credits === 'number') return user.credits
+    return parseInt(user.credits || '0', 10) || 0
+}
+
+async function parseErrorMessage(response: Response, fallback: string) {
+    const payload = await response.json().catch(() => ({}))
+    return payload?.error || payload?.message || fallback
+}
+
+async function deductCredits(request: NextRequest, token: string) {
+    const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            amount: 1,
+            reason: 'Study Cards Generation',
+        }),
+    })
+
+    if (deductResponse.ok) {
+        return null
+    }
+
+    return NextResponse.json(
+        { error: await parseErrorMessage(deductResponse, 'Failed to deduct credits') },
+        { status: deductResponse.status || 500 },
+    )
+}
 
 export async function POST(request: NextRequest) {
     try {
@@ -18,81 +49,47 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Video URL is required' }, { status: 400 })
         }
 
-        return handleStudyCardsRequest(token, url, transcript)
-    } catch (error) {
-        return NextResponse.json(
-            { error: `Internal server error: ${error instanceof Error ? error.message : 'Unknown error'}` },
-            { status: 500 }
-        )
-    }
-}
+        const userResponse = await fetch('https://api.ytvidhub.com/prod-api/g/getUser', {
+            headers: { Authorization: `Bearer ${token}` },
+        })
 
-async function handleStudyCardsRequest(token: string, url: string, transcript?: string): Promise<NextResponse> {
-    // 1. 并行：验证 token + 请求后端
-    const userPromise = fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
-        headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const backendPromise = fetch("https://ytdlp.vistaflyer.com/api/generate_study_cards_stream", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ url, transcript }),
-    });
-
-    // 2. 等用户验证完成
-    const userResponse = await userPromise;
-    if (!userResponse.ok) {
-        return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
-    }
-
-    const { data: user } = await userResponse.json()
-    if (!user?.email) {
-        return NextResponse.json({ error: 'User data not found' }, { status: 400 })
-    }
-
-    // 3. 检查积分（只检查不扣除）
-    try {
-        const dbUser = await prisma.user.findUnique({
-            where: { email_type: { email: user.email, type: user.type.toString() } },
-            select: { credits: true },
-        });
-        if (!dbUser) throw new Error('User not found');
-        const currentCredits = parseInt(dbUser.credits) || 0;
-        if (currentCredits < 1) throw new Error('Insufficient credits');
-    } catch (e: any) {
-        const isInsufficient = e.message?.includes('Insufficient');
-        return NextResponse.json(
-            { error: isInsufficient ? 'Insufficient credits. Study Cards requires 1 credit.' : 'Failed to check credits' },
-            { status: isInsufficient ? 402 : 500 }
-        );
-    }
-
-    // 4. 等待后端响应
-    try {
-        const backendResponse = await backendPromise;
-
-        if (!backendResponse.ok) {
-            return NextResponse.json({ error: 'Failed to generate study cards' }, { status: backendResponse.status })
+        if (!userResponse.ok) {
+            return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
         }
 
-        // 异步扣除积分，不阻塞流转发
-        prisma.$transaction(async (tx: any) => {
-            const fresh = await tx.user.findUnique({
-                where: { email_type: { email: user.email, type: user.type.toString() } },
-                select: { credits: true },
-            });
-            if (!fresh) throw new Error('User not found');
-            const currentCredits = parseInt(fresh.credits) || 0;
-            await tx.user.update({
-                where: { email_type: { email: user.email, type: user.type.toString() } },
-                data: { credits: (Math.max(0, currentCredits - 1)).toString() },
-            });
-        }).catch((deductErr: any) => {
-            console.error('Credit deduction failed after successful study cards:', deductErr);
-        });
+        const { data: user } = await userResponse.json()
+        if (!user?.email) {
+            return NextResponse.json({ error: 'User data not found' }, { status: 400 })
+        }
+
+        const currentCredits = getUserCredits(user)
+        if (currentCredits < 1) {
+            return NextResponse.json(
+                { error: 'Insufficient credits. Study Cards requires 1 credit.' },
+                { status: 402 },
+            )
+        }
+
+        const backendResponse = await fetch('https://ytdlp.vistaflyer.com/api/generate_study_cards_stream', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ url, transcript }),
+        })
+
+        if (!backendResponse.ok) {
+            return NextResponse.json(
+                { error: await parseErrorMessage(backendResponse, 'Failed to generate study cards') },
+                { status: backendResponse.status },
+            )
+        }
+
+        const deductErrorResponse = await deductCredits(request, token)
+        if (deductErrorResponse) {
+            return deductErrorResponse
+        }
 
         return new NextResponse(backendResponse.body, {
             status: 200,
@@ -103,7 +100,10 @@ async function handleStudyCardsRequest(token: string, url: string, transcript?: 
                 'Cache-Control': 'no-cache, no-transform',
             },
         })
-    } catch {
-        return NextResponse.json({ error: 'Backend service unavailable' }, { status: 503 });
+    } catch (error) {
+        return NextResponse.json(
+            { error: `Internal server error: ${error instanceof Error ? error.message : 'Unknown error'}` },
+            { status: 500 },
+        )
     }
 }
