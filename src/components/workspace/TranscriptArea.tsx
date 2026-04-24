@@ -13,6 +13,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { promptLoginForGuestLimit } from "@/lib/guestLimitPrompt";
+import { readTranscriptCache, writeTranscriptCache } from "@/lib/transcriptCache";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -161,11 +162,9 @@ export function TranscriptArea({
 
     // 优先从缓存加载对应语言的字幕
     try {
-      const cached = sessionStorage.getItem(
-        `ytvidhub_transcript_${videoUrl}_${lang}`,
-      );
+      const cached = readTranscriptCache(videoUrl, lang);
       if (cached) {
-        const { text, format } = JSON.parse(cached);
+        const { text, format } = cached;
         if (format === "vtt") {
           setTranscriptVtt(text);
           console.log(`📋 Loaded cached subtitles for language: ${lang}`);
@@ -238,12 +237,10 @@ export function TranscriptArea({
               setTranscriptVtt(fullContent);
 
               // 缓存结果
-              try {
-                sessionStorage.setItem(
-                  `ytvidhub_transcript_${videoUrl}_${lang}`,
-                  JSON.stringify({ text: fullContent, format: "vtt" }),
-                );
-              } catch {}
+              writeTranscriptCache(videoUrl, lang, {
+                text: fullContent,
+                format: "vtt",
+              });
 
               console.log(`✅ Stream completed for language: ${lang}`);
               break;
@@ -334,12 +331,7 @@ export function TranscriptArea({
         }
         console.log(`✅ Successfully loaded subtitles for language: ${lang}`);
         setTranscriptVtt(text);
-        try {
-          sessionStorage.setItem(
-            `ytvidhub_transcript_${videoUrl}_${lang}`,
-            JSON.stringify({ text, format: "vtt" }),
-          );
-        } catch {}
+        writeTranscriptCache(videoUrl, lang, { text, format: "vtt" });
       })
       .catch((err) => {
         clearTimeout(timeoutId);

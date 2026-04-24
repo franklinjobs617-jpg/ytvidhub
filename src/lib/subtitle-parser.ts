@@ -99,3 +99,31 @@ export function generateBilingualSRT(
     })
     .join("\n");
 }
+
+function normalizeSrtTimestamp(value: string): string {
+  const cleaned = value.trim().replace(".", ",");
+  return cleaned.split(":").length === 2 ? `00:${cleaned}` : cleaned;
+}
+
+export function convertVttToSrt(content: string): string {
+  const entries = parseVTT(content);
+  return entries
+    .map(
+      (entry) =>
+        `${entry.index}\n${normalizeSrtTimestamp(entry.startTime)} --> ${normalizeSrtTimestamp(entry.endTime)}\n${entry.text}\n`,
+    )
+    .join("\n");
+}
+
+export function convertVttToTxt(content: string): string {
+  const entries = parseVTT(content);
+  const lines: string[] = [];
+
+  for (const entry of entries) {
+    if (!entry.text) continue;
+    if (lines[lines.length - 1] === entry.text) continue;
+    lines.push(entry.text);
+  }
+
+  return lines.join("\n");
+}

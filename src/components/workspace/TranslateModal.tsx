@@ -10,6 +10,7 @@ import {
 } from "@/lib/subtitle-parser";
 import { translateSubtitles } from "@/lib/translator";
 import { subtitleApi } from "@/lib/api";
+import { readTranscriptCache, writeTranscriptCache } from "@/lib/transcriptCache";
 
 interface TranslateModalProps {
   isOpen: boolean;
