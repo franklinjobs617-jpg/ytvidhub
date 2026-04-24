@@ -97,6 +97,12 @@ interface UserSource {
   timestamp: string;
 }
 
+interface PurchaseItem {
+  item_name: string;
+  quantity?: number;
+  item_variant?: string;
+}
+
 /** 首次落地时捕获来源信息，存入 sessionStorage */
 export function captureUserSource() {
   if (typeof window === 'undefined') return;
@@ -147,4 +153,33 @@ export function trackConversion(eventName: string, params?: Record<string, unkno
     source_utm_campaign: source?.utm_campaign || '(none)',
     source_utm_term: source?.utm_term || '(none)',
   });
+}
+
+export function trackPurchase(params: {
+  transaction_id: string;
+  value: number;
+  currency?: string;
+  items: PurchaseItem[];
+}) {
+  if (typeof window === "undefined" || !window.gtag) return;
+  if (!params.transaction_id) return;
+
+  const dedupeKey = `ga4_purchase_${params.transaction_id}`;
+  if (sessionStorage.getItem(dedupeKey)) return;
+
+  const source = getUserSource();
+  window.gtag("event", "purchase", {
+    transaction_id: params.transaction_id,
+    value: params.value,
+    currency: params.currency || "USD",
+    items: params.items,
+    source_referrer: source?.referrer || "(unknown)",
+    source_landing: source?.landing_page || "(unknown)",
+    source_utm_source: source?.utm_source || "(none)",
+    source_utm_medium: source?.utm_medium || "(none)",
+    source_utm_campaign: source?.utm_campaign || "(none)",
+    source_utm_term: source?.utm_term || "(none)",
+  });
+
+  sessionStorage.setItem(dedupeKey, "1");
 }

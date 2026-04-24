@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { trackConversion } from "@/lib/analytics";
 import { CREDIT_COSTS, CREDIT_LABELS } from "@/config/credits";
+import { saveStripePurchaseContext } from "@/lib/stripePurchaseContext";
 
 interface CustomCreditSliderProps {
   onRequestLogin?: () => void;
@@ -70,6 +71,14 @@ export default function CustomCreditSlider({
 
       const data = await response.json();
       if (data && data.data) {
+        saveStripePurchaseContext({
+          kind: "credits",
+          item_name: "YTVidHub Credits Pack",
+          item_variant: `${quantity} credits`,
+          value: Number(price),
+          quantity: 1,
+          currency: "USD",
+        });
         window.location.href = data.data;
       } else {
         throw new Error("Checkout URL not found.");

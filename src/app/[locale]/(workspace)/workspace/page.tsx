@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, Suspense } from "react";
+import { useCallback, useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
@@ -51,6 +51,10 @@ import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCre
 import { BulkCreditActionModal } from "@/components/workspace/BulkCreditActionModal";
 import { BulkPostPartialUpsellModal } from "@/components/workspace/BulkPostPartialUpsellModal";
 import { BatchActionConfirmModal } from "@/components/workspace/BatchActionConfirmModal";
+
+const getTranscriptUnlockKey = (
+  video?: { id?: string; url?: string } | null,
+) => video?.id || video?.url || "";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -126,11 +130,29 @@ function WorkspaceContent() {
   const [transcriptLang, setTranscriptLang] = useState("en");
   const [isTranscriptLoading, setIsTranscriptLoading] = useState(false);
   const [isTranscriptReady, setIsTranscriptReady] = useState(false);
+  const [unlockedTranscriptKeys, setUnlockedTranscriptKeys] = useState<
+    string[]
+  >([]);
   const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
   const [mobileKeyboardInset, setMobileKeyboardInset] = useState(0);
   const [showTranslateModal, setShowTranslateModal] = useState(false);
 
   const selectedBatchCount = batchSelectedIds.length;
+  const currentTranscriptUnlockKey = getTranscriptUnlockKey(currentVideo);
+  const isCurrentTranscriptUnlocked =
+    !!currentTranscriptUnlockKey &&
+    unlockedTranscriptKeys.includes(currentTranscriptUnlockKey);
+
+  const unlockTranscriptForVideo = useCallback(
+    (video?: { id?: string; url?: string } | null) => {
+      const key = getTranscriptUnlockKey(video);
+      if (!key) return;
+      setUnlockedTranscriptKeys((previous) =>
+        previous.includes(key) ? previous : [...previous, key],
+      );
+    },
+    [],
+  );
 
   const {
     isAiLoading,
@@ -309,6 +331,7 @@ function WorkspaceContent() {
 
           if (savedContent.subtitleContent) {
             setInitialSubtitleContent(savedContent.subtitleContent);
+            unlockTranscriptForVideo(enhancedVideo);
             try {
               sessionStorage.setItem(
                 `ytvidhub_transcript_${urls[0]}`,
@@ -729,11 +752,12 @@ function WorkspaceContent() {
               thumbnail: `https://i.ytimg.com/vi/${extractVideoId(pending.payload.videoUrl)}/hqdefault.jpg`,
             };
 
-          await startSingleDownload(
+          const downloaded = await startSingleDownload(
             targetVideo,
             pending.payload.format,
             pending.payload.lang,
           );
+          if (downloaded) unlockTranscriptForVideo(targetVideo);
           return;
         }
 
@@ -763,6 +787,7 @@ function WorkspaceContent() {
     startSingleDownload,
     startBulkDownload,
     handleRequestAnalysis,
+    unlockTranscriptForVideo,
   ]);
 
   // 新增：处理新 URL 分析
@@ -1003,7 +1028,7 @@ function WorkspaceContent() {
                 return nextSelectedIds;
               });
             }}
-            onDownloadSingle={(video, format) => {
+            onDownloadSingle={async (video, format) => {
               if (!user) {
                 savePendingAction({
                   type: "download_single",
@@ -1020,7 +1045,12 @@ function WorkspaceContent() {
                 openLoginModal();
                 return;
               }
-              startSingleDownload(video, format, transcriptLang);
+              const downloaded = await startSingleDownload(
+                video,
+                format,
+                transcriptLang,
+              );
+              if (downloaded) unlockTranscriptForVideo(video);
             }}
             onDownloadBatch={(videos, format) => {
               if (!user) {
@@ -1277,6 +1307,9 @@ function WorkspaceContent() {
                   isGeneratingAi={isAiLoading}
                   isTranscriptLoading={isTranscriptLoading}
                   isTranscriptReady={isTranscriptReady}
+                  onDownloadSuccess={() =>
+                    unlockTranscriptForVideo(currentVideo)
+                  }
                   onTranslate={() => setShowTranslateModal(true)}
                 />
 
@@ -1292,6 +1325,12 @@ function WorkspaceContent() {
                     lang={transcriptLang}
                     onLangChange={setTranscriptLang}
                     onTranscriptReadyChange={setIsTranscriptReady}
+                    isTranscriptUnlocked={isCurrentTranscriptUnlocked}
+                    onRequestUnlock={() => {
+                      window.dispatchEvent(
+                        new CustomEvent("downloadTranscriptForUnlock"),
+                      );
+                    }}
                   />
                 </div>
               </>

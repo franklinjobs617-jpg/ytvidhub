@@ -660,7 +660,74 @@ def _get_video_info_cached(video_url: str):
 
 # 字幕内存缓存 {cache_key: (timestamp, transcript, title)}
 _subtitle_cache: dict = {}
+_subtitle_raw_cache: dict = {}
+_subtitle_cache_lock = threading.RLock()
 _SUBTITLE_CACHE_TTL = 3600  # 1小时
+
+
+def _get_cached_subtitle_output(cache_key, output_format):
+    now = time.time()
+    with _subtitle_cache_lock:
+        cached_data = _subtitle_cache.get(cache_key)
+        if not cached_data:
+            return None
+
+        # 兼容旧的缓存格式
+        if len(cached_data) == 3:
+            ts, cached_content, cached_filename = cached_data
+        else:
+            ts, cached_content = cached_data
+            cached_filename = f"subtitle.{output_format}"
+
+        if now - ts >= _SUBTITLE_CACHE_TTL:
+            _subtitle_cache.pop(cache_key, None)
+            return None
+
+        return cached_content, cached_filename
+
+
+def _set_cached_subtitle_output(cache_key, content, filename):
+    with _subtitle_cache_lock:
+        _subtitle_cache[cache_key] = (time.time(), content, filename)
+
+
+def _get_cached_raw_subtitle(video_url, lang_code):
+    raw_key = f"{video_url}_{lang_code}"
+    now = time.time()
+    with _subtitle_cache_lock:
+        cached_data = _subtitle_raw_cache.get(raw_key)
+        if not cached_data:
+            return None
+
+        ts, raw_content, title, source_ext = cached_data
+        if now - ts >= _SUBTITLE_CACHE_TTL:
+            _subtitle_raw_cache.pop(raw_key, None)
+            return None
+
+        return raw_content, title, source_ext
+
+
+def _set_cached_raw_subtitle(video_url, lang_code, raw_content, title, source_ext):
+    raw_key = f"{video_url}_{lang_code}"
+    with _subtitle_cache_lock:
+        _subtitle_raw_cache[raw_key] = (
+            time.time(),
+            raw_content,
+            title or "subtitle",
+            source_ext or "",
+        )
+
+
+def _convert_raw_subtitle(raw_content, output_format, source_ext=""):
+    if output_format == 'txt':
+        return parse_srt_to_text(raw_content)
+
+    if output_format == 'srt':
+        if 'WEBVTT' in raw_content or source_ext == 'vtt':
+            return _vtt_to_srt(raw_content)
+        return raw_content
+
+    return raw_content
 
 def get_subtitle_fast(video_url: str, lang_code: str = 'en'):
     """
@@ -813,21 +880,23 @@ def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
     """
     last_error = None
     
-    # 首先检查缓存
+    # 首先检查已转换的格式缓存
     cache_key = f"{video_url}_{lang_code}_{output_format}"
-    now = time.time()
-    if cache_key in _subtitle_cache:
-        cached_data = _subtitle_cache[cache_key]
-        # 兼容旧的缓存格式
-        if len(cached_data) == 3:
-            ts, cached_content, cached_filename = cached_data
-        else:
-            ts, cached_content = cached_data
-            cached_filename = f"subtitle.{output_format}"
-        
-        if now - ts < _SUBTITLE_CACHE_TTL:
-            print(f"✅ Cache hit for {lang_code} subtitle")
-            return cached_content, cached_filename, None
+    cached_output = _get_cached_subtitle_output(cache_key, output_format)
+    if cached_output:
+        cached_content, cached_filename = cached_output
+        print(f"✅ Converted subtitle cache hit: {lang_code}/{output_format}")
+        return cached_content, cached_filename, None
+
+    # 再检查原始字幕缓存：预览拿到 VTT 后，SRT/TXT 下载可以直接内存转换
+    cached_raw = _get_cached_raw_subtitle(video_url, lang_code)
+    if cached_raw:
+        raw_content, title, source_ext = cached_raw
+        content = _convert_raw_subtitle(raw_content, output_format, source_ext)
+        safe_filename = f"{sanitize_filename(title)}.{output_format}"
+        _set_cached_subtitle_output(cache_key, content, safe_filename)
+        print(f"✅ Raw subtitle cache hit: {lang_code} -> {output_format}")
+        return content, safe_filename, None
     
     for retry_attempt in range(2):  # 减少重试次数，加快失败响应
         try:
@@ -853,6 +922,7 @@ def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
             sub_url = None
             target_lang = lang_code
             actual_lang = None
+            source_ext = ""
 
             sources = [info.get('subtitles', {}), info.get('automatic_captions', {})]
 
@@ -921,6 +991,7 @@ def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
                             if fmt.get('ext') == 'vtt':
                                 sub_url = fmt['url']
                                 actual_lang = lang
+                                source_ext = fmt.get('ext') or ''
                                 break
                         
                         # 如果没有 VTT，选择其他格式
@@ -929,6 +1000,7 @@ def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
                                 if fmt.get('ext') in ('json3', 'srv3'):
                                     sub_url = fmt['url']
                                     actual_lang = lang
+                                    source_ext = fmt.get('ext') or ''
                                     break
                         
                         if sub_url:
@@ -971,22 +1043,21 @@ def get_subtitle_content_fast(video_url, lang_code='en', output_format='srt'):
 
             print(f"✅ Downloaded {len(raw_content)} characters of subtitle data")
 
+            _set_cached_raw_subtitle(
+                video_url,
+                lang_code,
+                raw_content,
+                title,
+                source_ext or ('vtt' if sub_url and '.vtt' in sub_url.lower() else ''),
+            )
+
             # 内存中格式转换
-            if output_format == 'txt':
-                content = parse_srt_to_text(raw_content)
-            elif output_format == 'srt':
-                # 如果是 VTT，手动转 SRT；如果是 JSON3，目前只能原样返回或简单清洗
-                if 'WEBVTT' in raw_content or (sub_url and ('.vtt' in sub_url.lower())):
-                    content = _vtt_to_srt(raw_content)
-                else:
-                    content = raw_content # 兜底返回原始格式
-            else:
-                content = raw_content
+            content = _convert_raw_subtitle(raw_content, output_format, source_ext)
 
             safe_filename = f"{sanitize_filename(title)}.{output_format}"
             
             # 缓存结果
-            _subtitle_cache[cache_key] = (now, content, safe_filename)
+            _set_cached_subtitle_output(cache_key, content, safe_filename)
             
             return content, safe_filename, None
 

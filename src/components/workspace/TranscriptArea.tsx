@@ -31,6 +31,8 @@ export function TranscriptArea({
   lang = "en",
   onLangChange,
   onTranscriptReadyChange,
+  isTranscriptUnlocked = false,
+  onRequestUnlock,
 }: {
   videoUrl: string;
   currentTime: number;
@@ -42,6 +44,8 @@ export function TranscriptArea({
   lang?: string;
   onLangChange?: (lang: string) => void;
   onTranscriptReadyChange?: (ready: boolean) => void;
+  isTranscriptUnlocked?: boolean;
+  onRequestUnlock?: () => void;
 }) {
   const { user, openLoginModal } = useAuth();
   const [transcriptVtt, setTranscriptVtt] = useState<string>(
@@ -475,36 +479,47 @@ export function TranscriptArea({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Content restriction logic - show only 40% in preview mode
-  const displayItems = useMemo(() => {
+  const allItems = useMemo(() => {
     if (!transcriptVtt) return [];
     const rawItems = parseVtt(transcriptVtt);
-    const finalItems = isSmartMode
+    return isSmartMode
       ? groupTranscriptByTime(rawItems)
       : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
+  }, [transcriptVtt, isSmartMode]);
 
+  const previewItemCount = useMemo(() => {
+    if (allItems.length === 0) return 0;
+    return Math.max(1, Math.ceil(allItems.length * 0.4));
+  }, [allItems.length]);
+
+  const isPreviewLocked =
+    !isTranscriptUnlocked && allItems.length > previewItemCount;
+
+  const visibleItems = useMemo(() => {
+    if (!isPreviewLocked) return allItems;
+    return allItems.slice(0, previewItemCount);
+  }, [allItems, isPreviewLocked, previewItemCount]);
+
+  const displayItems = useMemo(() => {
     if (searchQuery) {
-      return finalItems.filter((i) =>
+      return visibleItems.filter((i) =>
         i.text.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
-    return finalItems;
-  }, [transcriptVtt, isSmartMode, searchQuery]);
+    return visibleItems;
+  }, [visibleItems, searchQuery]);
 
   // P1: 搜索结果统计和导航
   const searchResults = useMemo(() => {
-    if (!searchQuery || !transcriptVtt) return { total: 0, matches: [] };
-    const rawItems = parseVtt(transcriptVtt);
-    const finalItems = isSmartMode
-      ? groupTranscriptByTime(rawItems)
-      : rawItems.map((item) => ({ startTime: item.start, text: item.text }));
+    if (!searchQuery || visibleItems.length === 0)
+      return { total: 0, matches: [] };
 
-    const matches = finalItems
+    const matches = visibleItems
       .map((item, index) => ({ ...item, originalIndex: index }))
       .filter((i) => i.text.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return { total: matches.length, matches };
-  }, [transcriptVtt, isSmartMode, searchQuery]);
+  }, [visibleItems, searchQuery]);
 
   // P1: 搜索导航功能
   const navigateSearch = (direction: "prev" | "next") => {
@@ -810,6 +825,28 @@ export function TranscriptArea({
                 </div>
               );
             })}
+
+            {isPreviewLocked && (
+              <div className="mx-4 mt-3 rounded-xl border border-blue-100 bg-blue-50/70 p-4 text-center">
+                <p className="text-sm font-semibold text-slate-800">
+                  Preview limited to 40%
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                  {user
+                    ? "Download this transcript to unlock the full text."
+                    : "Log in and download this transcript to unlock the full text."}
+                </p>
+                <button
+                  type="button"
+                  onClick={onRequestUnlock}
+                  className="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-blue-700"
+                >
+                  {user
+                    ? "Download to unlock"
+                    : "Login and download to unlock"}
+                </button>
+              </div>
+            )}
 
             <div className="h-10" />
           </div>

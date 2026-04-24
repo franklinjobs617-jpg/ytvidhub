@@ -1,7 +1,7 @@
 "use client";
 
 import { Download, Copy, ChevronDown, Loader2, Sparkles } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { subtitleApi } from "@/lib/api";
@@ -20,6 +20,7 @@ interface QuickActionsProps {
   lang?: string;
   isTranscriptLoading?: boolean;
   isTranscriptReady?: boolean;
+  onDownloadSuccess?: () => void;
 }
 
 export function QuickActions({
@@ -32,6 +33,7 @@ export function QuickActions({
   lang = "en",
   isTranscriptLoading = false,
   isTranscriptReady = false,
+  onDownloadSuccess,
 }: QuickActionsProps) {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -69,7 +71,7 @@ export function QuickActions({
     };
   }, [isDownloadOpen]);
 
-  const handleDownload = async (format: "srt" | "vtt" | "txt") => {
+  const handleDownload = useCallback(async (format: "srt" | "vtt" | "txt") => {
     if (!canDownload) {
       toast.info("Subtitles are still generating. Please wait.");
       return;
@@ -120,6 +122,7 @@ export function QuickActions({
       URL.revokeObjectURL(url);
 
       toast.success(`${format.toUpperCase()} downloaded successfully!`);
+      onDownloadSuccess?.();
 
       refreshUser();
       setTimeout(() => refreshUser(), 1000);
@@ -137,7 +140,31 @@ export function QuickActions({
     } finally {
       setIsDownloading(false);
     }
-  };
+  }, [
+    canDownload,
+    lang,
+    onDownloadSuccess,
+    openLoginModal,
+    refreshUser,
+    router,
+    user,
+    videoTitle,
+    videoUrl,
+  ]);
+
+  useEffect(() => {
+    const handleUnlockDownload = () => {
+      void handleDownload("vtt");
+    };
+
+    window.addEventListener("downloadTranscriptForUnlock", handleUnlockDownload);
+    return () => {
+      window.removeEventListener(
+        "downloadTranscriptForUnlock",
+        handleUnlockDownload,
+      );
+    };
+  }, [handleDownload]);
 
   const toggleDownloadMenu = () => {
     if (!canDownload) return;

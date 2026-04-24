@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { trackConversion } from "@/lib/analytics";
+import { saveStripePurchaseContext } from "@/lib/stripePurchaseContext";
 
 interface PaymentChoiceModalProps {
   isOpen: boolean;
@@ -28,6 +29,26 @@ export default function PaymentChoiceModal({
     a: process.env.NEXT_PUBLIC_STRIPE_YTVID_A_MONTHLY_PRICE_ID,
     b: process.env.NEXT_PUBLIC_STRIPE_YTVID_B_MONTHLY_PRICE_ID,
     c: process.env.NEXT_PUBLIC_STRIPE_YTVID_C_YEARLY_PRICE_ID,
+  };
+  const STRIPE_PURCHASE_META_MAP: Record<
+    string,
+    { item_name: string; value: number; item_variant: string }
+  > = {
+    a: {
+      item_name: "YTVidHub Pro Subscription",
+      value: 19.99,
+      item_variant: "monthly",
+    },
+    b: {
+      item_name: "YTVidHub Premium Subscription",
+      value: 29.99,
+      item_variant: "monthly",
+    },
+    c: {
+      item_name: "YTVidHub Researcher Subscription",
+      value: 199,
+      item_variant: "yearly",
+    },
   };
   const PAYPAL_SUBSCRIPTION_TYPE_MAP: Record<string, string> = {
     a: "ytvid_a_monthly",
@@ -116,6 +137,17 @@ export default function PaymentChoiceModal({
 
       if (provider === "stripe") {
         if (typeof payload === "string" && payload.startsWith("http")) {
+          const purchaseMeta = STRIPE_PURCHASE_META_MAP[selectedPlanId];
+          if (purchaseMeta) {
+            saveStripePurchaseContext({
+              kind: "subscription",
+              item_name: purchaseMeta.item_name,
+              value: purchaseMeta.value,
+              item_variant: purchaseMeta.item_variant,
+              quantity: 1,
+              currency: "USD",
+            });
+          }
           window.location.href = payload;
           return;
         }

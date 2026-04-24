@@ -84,6 +84,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoginModalOpen(false);
   }, []);
 
+  const fetchAuthenticatedUser = useCallback(async (token: string) => {
+    const response = await fetch(`${BASE_URL}/prod-api/g/getUser`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.data || null;
+  }, []);
+
   // 2. 刷新用户信息 (获取最新积分)
   const refreshUser = useCallback(async () => {
     const token = localStorage.getItem("auth_token");
@@ -106,28 +121,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     lastRefreshTimeRef.current = now;
 
     try {
-      const response = await fetch(`${BASE_URL}/prod-api/g/getUser`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        cache: "no-store",
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.data) {
-          setUser(data.data);
-          localStorage.setItem("loggedInUser", JSON.stringify(data.data));
-        }
+      const freshUser = await fetchAuthenticatedUser(token);
+      if (freshUser) {
+        setUser(freshUser);
+        localStorage.setItem("loggedInUser", JSON.stringify(freshUser));
       }
     } catch (error) {
       console.error("Failed to update user:", error);
     } finally {
       isRefreshingRef.current = false;
     }
-  }, []);
+  }, [fetchAuthenticatedUser]);
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
@@ -162,7 +166,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!popup) return;
 
     // 监听来自弹窗的消息
-    const handleMessage = (event: MessageEvent) => {
+    const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== BASE_URL) return;
 
       if (event.data && typeof event.data.token === "string") {
@@ -172,8 +176,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
           if (newUser && jwtToken) {
             localStorage.setItem("auth_token", jwtToken);
-            localStorage.setItem("loggedInUser", JSON.stringify(newUser));
-            setUser(newUser);
+            const freshUser = await fetchAuthenticatedUser(jwtToken).catch(
+              () => null,
+            );
+            const authenticatedUser = freshUser || newUser;
+            localStorage.setItem("loggedInUser", JSON.stringify(authenticatedUser));
+            setUser(authenticatedUser);
             setIsLoginModalOpen(false);
 
             window.removeEventListener("message", handleMessage);

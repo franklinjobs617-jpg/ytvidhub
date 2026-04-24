@@ -1,20 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
 async function getRemoteAndLocalUser(token: string) {
     const userResponse = await fetch("https://api.ytvidhub.com/prod-api/g/getUser", {
         headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
     })
     if (!userResponse.ok) return null
     const { data: remoteUser } = await userResponse.json()
     if (!remoteUser?.email) return null
 
+    const userType = remoteUser?.type != null ? String(remoteUser.type) : '0'
     const dbUser = await prisma.user.findUnique({
-        where: { email_type: { email: remoteUser.email, type: remoteUser.type.toString() } },
+        where: { email_type: { email: remoteUser.email, type: userType } },
     })
-    return dbUser ? { remoteUser, dbUser } : null
+    return dbUser ? { remoteUser, dbUser, userType } : null
 }
 
 // GET — check claim status
@@ -41,10 +41,9 @@ export async function GET(request: NextRequest) {
             streak: dbUser.currentStreak ?? 0,
             nextClaimAt,
         })
-    } catch {
+    } catch (error) {
+        console.error('daily-reward GET error:', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-    } finally {
-        await prisma.$disconnect()
     }
 }
 
@@ -59,7 +58,7 @@ export async function POST(request: NextRequest) {
         const result = await getRemoteAndLocalUser(token)
         if (!result) return NextResponse.json({ error: 'User not found' }, { status: 404 })
 
-        const { remoteUser, dbUser } = result
+        const { remoteUser, dbUser, userType } = result
         const now = new Date()
         const lastClaim = dbUser.lastDailyReward
         const hoursSinceLast = lastClaim
@@ -77,10 +76,12 @@ export async function POST(request: NextRequest) {
         // Streak: consecutive if last claim was within 48h, otherwise reset
         const newStreak = hoursSinceLast <= 48 ? (dbUser.currentStreak ?? 0) + 1 : 1
         const creditsAdded = 3
-        const newCredits = parseInt(dbUser.credits) + creditsAdded
+        const currentCredits = Number.parseInt(String(dbUser.credits ?? '0'), 10)
+        const safeCurrentCredits = Number.isFinite(currentCredits) ? currentCredits : 0
+        const newCredits = safeCurrentCredits + creditsAdded
 
         await prisma.user.update({
-            where: { email_type: { email: remoteUser.email, type: remoteUser.type.toString() } },
+            where: { email_type: { email: remoteUser.email, type: userType } },
             data: {
                 credits: newCredits.toString(),
                 lastDailyReward: now,
@@ -95,9 +96,8 @@ export async function POST(request: NextRequest) {
             streak: newStreak,
             nextClaimAt: new Date(now.getTime() + 24 * 3600 * 1000).toISOString(),
         })
-    } catch {
+    } catch (error) {
+        console.error('daily-reward POST error:', error)
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-    } finally {
-        await prisma.$disconnect()
     }
 }

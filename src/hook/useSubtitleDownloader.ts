@@ -424,7 +424,11 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     }
   };
 
-  const startSingleDownload = async (video: any, format: string, lang: string = "en") => {
+  const startSingleDownload = async (
+    video: any,
+    format: string,
+    lang: string = "en",
+  ): Promise<boolean> => {
     setIsDownloading(true);
     setProgress(10);
     trackConversion('download_start', { type: 'single', format, lang });
@@ -449,7 +453,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
               });
               setIsCreditsModalOpen(true);
               setIsDownloading(false);
-              return;
+              return false;
             }
 
             // 执行扣费 API
@@ -483,7 +487,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
             }).catch(() => { });
 
             setTimeout(() => setIsDownloading(false), 300);
-            return;
+            return true;
           }
         } catch (e) {
           console.error("Cache parse error:", e);
@@ -498,7 +502,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         triggerDownload(blob, `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`);
         trackConversion('download_success', { type: 'single', format, lang, memory_cached: true });
         setTimeout(() => setIsDownloading(false), 500);
-        return;
+        return true;
       }
 
       setStatusText("Connecting...");
@@ -546,6 +550,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       }, 1000);
 
       setTimeout(() => setIsDownloading(false), 800);
+      return true;
     } catch (err: any) {
       setIsDownloading(false);
 
@@ -573,6 +578,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       } else {
         toast.error(err.message);
       }
+      return false;
     } finally {
       if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     }
