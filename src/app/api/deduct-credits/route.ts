@@ -77,11 +77,12 @@ export async function POST(request: NextRequest) {
             }
         }
 
+        const userType = (user.type ?? '1').toString();
         console.log('Processing credit deduction via database:', {
             email: user.email,
             amount,
             reason,
-            userType: user.type
+            userType
         });
 
         // 直接操作数据库扣除积分
@@ -92,7 +93,7 @@ export async function POST(request: NextRequest) {
                     where: {
                         email_type: {
                             email: user.email,
-                            type: user.type.toString()
+                            type: userType
                         }
                     }
                 });
@@ -114,7 +115,7 @@ export async function POST(request: NextRequest) {
                     where: {
                         email_type: {
                             email: user.email,
-                            type: user.type.toString()
+                            type: userType
                         }
                     },
                     data: {

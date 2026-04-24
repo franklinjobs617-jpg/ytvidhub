@@ -104,17 +104,28 @@ export async function POST(request: NextRequest) {
 
         // 后端成功后再扣除积分
         if (!isPreview) {
-            const deductResponse = await fetch(`${request.nextUrl.origin}/api/deduct-credits`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ amount: 1, reason: "Subtitle Download" })
-            });
+            const deductOrigin = process.env.NEXTAUTH_URL?.replace(/\/$/, '')
+                || `${request.headers.get('x-forwarded-proto') || 'https'}://${request.headers.get('host')}`;
+            console.log('[download-single] deduct origin:', deductOrigin);
 
-            if (!deductResponse.ok) {
-                console.error('Credit deduction failed after successful download')
+            try {
+                const deductResponse = await fetch(`${deductOrigin}/api/deduct-credits`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ amount: 1, reason: "Subtitle Download" })
+                });
+
+                if (!deductResponse.ok) {
+                    const deductError = await deductResponse.text().catch(() => '');
+                    console.error('[download-single] Credit deduction failed:', deductResponse.status, deductError);
+                } else {
+                    console.log('[download-single] Credit deduction succeeded for:', user.email);
+                }
+            } catch (deductErr) {
+                console.error('[download-single] Credit deduction fetch error:', deductErr);
             }
         }
 
