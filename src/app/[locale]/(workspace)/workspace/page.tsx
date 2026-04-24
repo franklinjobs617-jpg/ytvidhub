@@ -17,7 +17,6 @@ import { AnalysisStatus } from "@/components/workspace/AnalysisStatus";
 import { MobileNavigation } from "@/components/workspace/MobileNavigation";
 import { ResponsiveLayout } from "@/components/workspace/ResponsiveLayout";
 import { KeyboardShortcuts } from "@/components/workspace/KeyboardShortcuts";
-import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 import { QuickActions } from "@/components/workspace/QuickActions";
 import { TabSwitcher } from "@/components/workspace/TabSwitcher";
 import {
@@ -969,7 +968,6 @@ function WorkspaceContent() {
               />
               <span className="hidden sm:inline">Upgrade</span>
             </button>
-            <DailyRewardButton />
           </div>
         </header>
 
@@ -1009,7 +1007,6 @@ function WorkspaceContent() {
               </span>
               <span className="text-xs text-amber-600">Credits</span>
             </div>
-            <DailyRewardButton />
           </div>
         </header>
         <div className="flex-1 overflow-hidden">

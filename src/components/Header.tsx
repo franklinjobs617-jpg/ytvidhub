@@ -15,7 +15,6 @@ import {
   Sparkles,
   History,
 } from "lucide-react";
-import { DailyRewardButton } from "@/components/ui/DailyRewardButton";
 
 const resourceLinks = [
   { key: "guides", href: "/guide" },
@@ -252,9 +251,6 @@ export default function Header() {
                         >
                           <History size={16} /> {t('history')}
                         </Link>
-                        <div className="md:hidden">
-                          <DailyRewardButton />
-                        </div>
                         <div className="h-px bg-slate-100 my-2"></div>
                         <button
                           onClick={() => {
@@ -268,9 +264,6 @@ export default function Header() {
                       </div>
                     </div>
                   )}
-                </div>
-                <div className="hidden md:block">
-                  <DailyRewardButton />
                 </div>
                 <LanguageSwitcher />
               </>
@@ -331,7 +324,6 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <DailyRewardButton />
             </div>
           )}
 
