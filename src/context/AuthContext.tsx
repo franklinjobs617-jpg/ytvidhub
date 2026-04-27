@@ -40,13 +40,18 @@ const BACKEND_REDIRECT_URI = "https://api.ytvidhub.com/prod-api/g/callback";
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
     if (typeof window !== "undefined") {
+      const token = localStorage.getItem("auth_token");
       const saved = localStorage.getItem("loggedInUser");
-      if (saved) {
+      if (token && saved) {
         try {
           return JSON.parse(saved);
         } catch {
           return null;
         }
+      }
+
+      if (!token && saved) {
+        localStorage.removeItem("loggedInUser");
       }
     }
     return null;
@@ -137,6 +142,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = localStorage.getItem("auth_token");
     if (token) {
       refreshUser();
+    } else {
+      localStorage.removeItem("loggedInUser");
+      setUser(null);
     }
     setIsLoading(false);
   }, [refreshUser]);

@@ -73,8 +73,8 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
   const quickExamples = useMemo(
     () => [
       { label: tExamples("tabVideo"), url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
-      { label: tExamples("tabPlaylist"), url: "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME" },
-      { label: tExamples("tabChannel"), url: "https://www.youtube.com/@Google" },
+      { label: `${tExamples("tabPlaylist")} (Bulk)`, url: "https://www.youtube.com/playlist?list=PLrAXtmRdnEQy6nuLMHjMZOz59Oq8HmPME" },
+      { label: `${tExamples("tabChannel")} (Bulk)`, url: "https://www.youtube.com/@Google" },
     ],
     [tExamples],
   );
@@ -353,6 +353,9 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
               ))}
             </div>
           </div>
+          <p className="mt-2 text-center text-xs font-medium text-slate-500">
+            Playlist (Bulk) and Channel (Bulk) import multiple videos at once.
+          </p>
 
           <div className="mt-14 sm:mt-16">
             {!user ? (

@@ -1608,6 +1608,89 @@ def parse_playlist():
         "max_requested": max_videos
     })
 
+
+_PLAYLIST_URL_PATTERNS = (
+    'playlist?list=',
+    '/channel/',
+    '/@',
+    '/c/',
+    '/user/'
+)
+
+
+def _is_playlist_or_channel_url(url: str) -> bool:
+    if not url or not isinstance(url, str):
+        return False
+    normalized = url.lower()
+    return any(pattern in normalized for pattern in _PLAYLIST_URL_PATTERNS)
+
+
+def _extract_video_id_from_url(video_url: str) -> str:
+    """从 YouTube URL 提取 video_id，失败时返回空字符串"""
+    try:
+        parsed = urlparse(video_url)
+        host = (parsed.netloc or "").lower()
+
+        if "youtu.be" in host:
+            candidate = parsed.path.strip("/")
+            if len(candidate) >= 11:
+                return candidate[:11]
+
+        video_id = (parse_qs(parsed.query).get("v") or [""])[0].strip()
+        if len(video_id) >= 11:
+            return video_id[:11]
+
+        match = re.search(r'([A-Za-z0-9_-]{11})', video_url)
+        if match:
+            return match.group(1)
+    except Exception:
+        pass
+
+    return ""
+
+
+def _parse_mixed_single_url(url: str, max_per_playlist: int = 100):
+    """并发处理 parse-mixed 的单条 URL，返回 (result_item, videos_to_merge, playlist_meta)"""
+    if not url or not isinstance(url, str):
+        return {"url": url, "type": "error", "error": "Invalid URL format"}, [], None
+
+    if _is_playlist_or_channel_url(url):
+        videos, error = extract_playlist_videos(url, max_per_playlist)
+        if error:
+            return {"url": url, "type": "error", "error": error}, [], None
+
+        playlist_meta = {
+            "url": url,
+            "title": videos[0].get('playlist_title', 'Unknown Playlist') if videos else 'Empty Playlist',
+            "count": len(videos)
+        }
+        result_item = {
+            "url": url,
+            "type": "playlist",
+            "videos": videos,
+            "count": len(videos),
+            "playlist_title": videos[0].get('playlist_title', 'Unknown') if videos else 'Unknown'
+        }
+        return result_item, videos, playlist_meta
+
+    video_info, error = get_video_info_core(url)
+    if error:
+        return {"url": url, "type": "error", "error": error}, [], None
+
+    video_data = {
+        'url': url,
+        'title': video_info.get('title', 'Unknown'),
+        'id': _extract_video_id_from_url(url),
+        'duration': video_info.get('duration', 0),
+        'uploader': video_info.get('uploader', 'Unknown')
+    }
+    result_item = {
+        "url": url,
+        "type": "video",
+        "video_info": video_info
+    }
+    return result_item, [video_data], None
+
 @app.route('/api/parse-mixed', methods=['POST', 'OPTIONS'])
 @require_auth()
 def parse_mixed_urls():
@@ -1633,81 +1716,34 @@ def parse_mixed_urls():
     results = []
     all_videos = []  # 用于最终去重
     playlist_info = []
-    
-    for url in urls:
-        if not url or not isinstance(url, str):
-            results.append({"url": url, "type": "error", "error": "Invalid URL format"})
-            continue
-            
-        try:
-            # 检查URL类型
-            playlist_patterns = [
-                'playlist?list=',
-                '/channel/',
-                '/@',
-                '/c/',
-                '/user/'
-            ]
-            
-            if any(pattern in url for pattern in playlist_patterns):
-                # Playlist/Channel处理 - 使用分级处理
-                max_per_playlist = 100  # 每个playlist最多100个视频
-                videos, error = extract_playlist_videos(url, max_per_playlist)
-                
-                if error:
-                    results.append({"url": url, "type": "error", "error": error})
-                else:
-                    # 收集playlist信息
-                    playlist_info.append({
-                        "url": url,
-                        "title": videos[0].get('playlist_title', 'Unknown Playlist') if videos else 'Empty Playlist',
-                        "count": len(videos)
-                    })
-                    
-                    # 添加到总视频列表
-                    all_videos.extend(videos)
-                    
-                    results.append({
-                        "url": url, 
-                        "type": "playlist", 
-                        "videos": videos,
-                        "count": len(videos),
-                        "playlist_title": videos[0].get('playlist_title', 'Unknown') if videos else 'Unknown'
-                    })
-            else:
-                # 单个视频处理 - 复用现有函数
-                video_info, error = get_video_info_core(url)
-                if error:
-                    results.append({"url": url, "type": "error", "error": error})
-                else:
-                    # 转换为统一格式并添加到总列表
-                    video_id = None
-                    if 'watch?v=' in url:
-                        import re
-                        match = re.search(r'[?&]v=([^&#]+)', url)
-                        video_id = match.group(1) if match else url[-11:]
-                    else:
-                        video_id = url[-11:]
-                    
-                    video_data = {
-                        'url': url,
-                        'title': video_info.get('title', 'Unknown'),
-                        'id': video_id,
-                        'duration': video_info.get('duration', 0),
-                        'uploader': video_info.get('uploader', 'Unknown')
-                    }
-                    all_videos.append(video_data)
-                    
-                    results.append({
-                        "url": url,
-                        "type": "video",
-                        "video_info": video_info
-                    })
-                    
-        except Exception as e:
-            error_msg = str(e)
-            print(f"❌ 处理URL出错 {url}: {error_msg}")
-            results.append({"url": url, "type": "error", "error": error_msg})
+
+    # 核心优化：并发解析多个 URL，避免串行导致“一个完成下一个才开始”
+    max_workers = min(4, max(1, len(urls)))
+    futures = []
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        for url in urls:
+            futures.append(executor.submit(_parse_mixed_single_url, url, 100))
+
+        # 按输入顺序收集，保持返回顺序稳定
+        for index, future in enumerate(futures):
+            source_url = urls[index]
+            try:
+                result_item, videos_chunk, playlist_meta = future.result()
+            except Exception as e:
+                error_msg = str(e)
+                print(f"❌ 处理URL出错 {source_url}: {error_msg}")
+                result_item, videos_chunk, playlist_meta = (
+                    {"url": source_url, "type": "error", "error": error_msg},
+                    [],
+                    None
+                )
+
+            results.append(result_item)
+            if videos_chunk:
+                all_videos.extend(videos_chunk)
+            if playlist_meta:
+                playlist_info.append(playlist_meta)
     
     # 执行去重逻辑
     unique_videos = deduplicate_videos(all_videos)

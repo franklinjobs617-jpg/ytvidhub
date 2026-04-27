@@ -19,6 +19,10 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const { user, refreshUser } = useAuth();
+  const currentCredits =
+    typeof user?.credits === "string"
+      ? parseInt(user.credits, 10) || 0
+      : user?.credits || 0;
   const router = useRouter();
 
   // Listen for download trigger events from TranscriptArea
@@ -168,6 +172,7 @@ export function DownloadButton({ videoUrl, videoTitle }: DownloadButtonProps) {
         onClose={() => setIsCreditsModalOpen(false)}
         requiredAmount={CREDIT_COSTS.download}
         featureName="Subtitle Download"
+        currentAmount={currentCredits}
       />
     </>
   );

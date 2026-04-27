@@ -495,6 +495,7 @@ export function SummaryArea({
         onClose={() => setIsCreditsModalOpen(false)}
         requiredAmount={modalConfig.required}
         featureName={modalConfig.feature}
+        currentAmount={modalConfig.current}
       />
     </div>
   );

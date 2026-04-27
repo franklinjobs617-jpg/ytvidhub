@@ -11,13 +11,7 @@ interface LoginModalProps {
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const { login, user } = useAuth();
-
-  useEffect(() => {
-    if (user && isOpen) {
-      onClose();
-    }
-  }, [user, isOpen, onClose]);
+  const { login } = useAuth();
 
   useEffect(() => {
     if (isOpen) {

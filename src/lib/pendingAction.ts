@@ -19,6 +19,13 @@ export type PendingAction =
       createdAt: number;
     }
   | {
+      type: "playlist_analyze";
+      payload: {
+        url: string;
+      };
+      createdAt: number;
+    }
+  | {
       type: "ai_summary";
       payload: {
         videoUrl: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle, X } from "lucide-react";
 
 interface PlaylistProgressModalProps {
   isOpen: boolean;
@@ -11,6 +11,7 @@ interface PlaylistProgressModalProps {
   currentVideoTitle?: string;
   playlistTitle?: string;
   error?: string;
+  onClose?: () => void;
 }
 
 export function PlaylistProgressModal({
@@ -22,6 +23,7 @@ export function PlaylistProgressModal({
   currentVideoTitle,
   playlistTitle,
   error,
+  onClose,
 }: PlaylistProgressModalProps) {
   if (!isOpen) return null;
 
@@ -30,9 +32,23 @@ export function PlaylistProgressModal({
   const isError = phase === "error";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="p-5 sm:p-6 bg-gradient-to-r from-blue-600 to-indigo-600">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1 text-white/80 hover:text-white hover:bg-white/15 rounded-md transition-all"
+            aria-label="Close modal"
+          >
+            <X size={18} />
+          </button>
+
           <h2 className="text-xl sm:text-2xl font-bold text-white">
             {phase === "expanding" && "Analyzing Playlist"}
             {phase === "checking" && "Checking Subtitles"}
@@ -40,9 +56,7 @@ export function PlaylistProgressModal({
             {phase === "error" && "Analysis Failed"}
           </h2>
           {playlistTitle && (
-            <p className="text-sm text-blue-100 mt-1 truncate">
-              {playlistTitle}
-            </p>
+            <p className="text-sm text-blue-100 mt-1 truncate">{playlistTitle}</p>
           )}
         </div>
 
@@ -61,9 +75,7 @@ export function PlaylistProgressModal({
               <div className="mb-5">
                 <div className="flex justify-between text-sm font-semibold mb-2">
                   <span className="text-slate-600">Checking Progress</span>
-                  <span className="text-slate-900">
-                    {Math.round(progress)}%
-                  </span>
+                  <span className="text-slate-900">{Math.round(progress)}%</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
                   <div
@@ -75,28 +87,16 @@ export function PlaylistProgressModal({
 
               <div className="grid grid-cols-3 gap-3 mb-5">
                 <div className="bg-slate-50 rounded-xl p-4 text-center border border-slate-100">
-                  <div className="text-2xl font-bold text-slate-900">
-                    {totalVideos}
-                  </div>
-                  <div className="text-xs text-slate-500 mt-1 font-medium">
-                    Total
-                  </div>
+                  <div className="text-2xl font-bold text-slate-900">{totalVideos}</div>
+                  <div className="text-xs text-slate-500 mt-1 font-medium">Total</div>
                 </div>
                 <div className="bg-blue-50 rounded-xl p-4 text-center border border-blue-100">
-                  <div className="text-2xl font-bold text-blue-600">
-                    {processedVideos}
-                  </div>
-                  <div className="text-xs text-blue-600 mt-1 font-medium">
-                    Checked
-                  </div>
+                  <div className="text-2xl font-bold text-blue-600">{processedVideos}</div>
+                  <div className="text-xs text-blue-600 mt-1 font-medium">Checked</div>
                 </div>
                 <div className="bg-green-50 rounded-xl p-4 text-center border border-green-100">
-                  <div className="text-2xl font-bold text-green-600">
-                    {videosWithSubtitles}
-                  </div>
-                  <div className="text-xs text-green-600 mt-1 font-medium">
-                    Available
-                  </div>
+                  <div className="text-2xl font-bold text-green-600">{videosWithSubtitles}</div>
+                  <div className="text-xs text-green-600 mt-1 font-medium">Available</div>
                 </div>
               </div>
 
@@ -120,9 +120,7 @@ export function PlaylistProgressModal({
             <div className="bg-green-50 border border-green-200 rounded-xl p-5 flex items-center gap-3">
               <CheckCircle className="w-8 h-8 text-green-600 flex-shrink-0" />
               <div>
-                <div className="text-base font-bold text-green-900">
-                  Analysis Complete
-                </div>
+                <div className="text-base font-bold text-green-900">Analysis Complete</div>
                 <div className="text-sm text-green-700 mt-1">
                   Found {videosWithSubtitles} videos with subtitles
                 </div>
@@ -134,8 +132,9 @@ export function PlaylistProgressModal({
             <div className="bg-red-50 border border-red-200 rounded-xl p-5 flex items-start gap-3">
               <AlertCircle className="w-8 h-8 text-red-600 flex-shrink-0" />
               <div>
-                <div className="text-base font-bold text-red-900">
-                  Analysis Failed
+                <div className="text-base font-bold text-red-900">Analysis Failed</div>
+                <div>
+                  <span className="text-sm text-red-700 mt-1">Please try again later.</span>
                 </div>
                 <div className="text-sm text-red-700 mt-1">{error}</div>
               </div>
@@ -146,3 +145,4 @@ export function PlaylistProgressModal({
     </div>
   );
 }
+

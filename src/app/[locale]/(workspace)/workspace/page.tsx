@@ -77,12 +77,11 @@ function WorkspaceContent() {
   const initialUrls = urlsParam ? decodeURIComponent(urlsParam).split(",") : [];
 
   // 检测是否为批量模式（多个视频或playlist/channel）
-  const shouldShowBatchMode =
+  const initialShouldShowBatchMode =
     initialUrls.length > 1 ||
     (initialUrls.length === 1 && isPlaylistOrChannelUrl(initialUrls[0]));
 
-  const [showBatchView, setShowBatchView] = useState(shouldShowBatchMode);
-  const isBatchMode = shouldShowBatchMode && showBatchView;
+  const [showBatchView, setShowBatchView] = useState(initialShouldShowBatchMode);
   const [batchSelectedIds, setBatchSelectedIds] = useState<string[]>([]);
   const [hasConfirmedPreviewLeave, setHasConfirmedPreviewLeave] =
     useState(false);
@@ -104,6 +103,8 @@ function WorkspaceContent() {
   });
 
   const [videoList, setVideoList] = useState<any[]>(placeholderVideos);
+  const hasBatchContext = initialShouldShowBatchMode || videoList.length > 1;
+  const isBatchMode = hasBatchContext && showBatchView;
   const [currentVideo, setCurrentVideo] = useState<any>(
     placeholderVideos[0] || null,
   );
@@ -176,6 +177,7 @@ function WorkspaceContent() {
     bulkDownloadState,
     playlistProcessing,
     showPlaylistModal,
+    cancelProcessing,
     isCreditsModalOpen,
     setIsCreditsModalOpen,
     modalConfig,
@@ -766,6 +768,20 @@ function WorkspaceContent() {
             pending.payload.format,
             pending.payload.lang,
           );
+          return;
+        }
+
+        if (pending.type === "playlist_analyze") {
+          toast.info("Resuming playlist analysis...");
+          const results = await analyzeUrls([pending.payload.url]);
+          if (results && results.length > 0) {
+            setVideoList(results);
+            setCurrentVideo(results[0]);
+            setSummaryData("");
+            setInputUrl("");
+            setShowBatchView(true);
+            toast.success(`Added ${results.length} videos!`);
+          }
         }
       } catch (error) {
         const message =
@@ -785,6 +801,7 @@ function WorkspaceContent() {
     currentVideo,
     startSingleDownload,
     startBulkDownload,
+    analyzeUrls,
     handleRequestAnalysis,
     unlockTranscriptForVideo,
   ]);
@@ -809,6 +826,18 @@ function WorkspaceContent() {
     const normalizedUrl = normalizeYoutubeUrl(targetUrl);
 
     if (!user) {
+      if (isPlaylistOrChannelUrl(normalizedUrl)) {
+        savePendingAction({
+          type: "playlist_analyze",
+          payload: {
+            url: normalizedUrl,
+          },
+        });
+        toast.info("Please login. We will continue playlist analysis automatically.");
+        openLoginModal();
+        return;
+      }
+
       try {
         const results = await analyzeUrls([normalizedUrl]);
         if (results && results.length > 0) {
@@ -1115,6 +1144,7 @@ function WorkspaceContent() {
             onClose={() => setIsCreditsModalOpen(false)}
             requiredAmount={modalConfig.required}
             featureName={modalConfig.feature}
+            currentAmount={modalConfig.current}
           />
           <PlaylistProgressModal
             isOpen={showPlaylistModal}
@@ -1125,6 +1155,7 @@ function WorkspaceContent() {
             currentVideoTitle={playlistProcessing?.currentVideoTitle}
             playlistTitle={playlistProcessing?.currentPlaylist?.title}
             error={playlistProcessing?.error}
+            onClose={cancelProcessing}
           />
           <BatchActionConfirmModal
             isOpen={!!batchConfirmAction}
@@ -1162,7 +1193,7 @@ function WorkspaceContent() {
         <div className="flex items-center gap-3 shrink-0 relative z-10">
           <button
             onClick={() => {
-              if (shouldShowBatchMode && !showBatchView) {
+              if (hasBatchContext && !showBatchView) {
                 setShowBatchView(true);
                 if (selectedBatchCount > 0) {
                   toast.success(
@@ -1180,7 +1211,7 @@ function WorkspaceContent() {
           >
             <ArrowLeft size={18} className="text-slate-500" />
           </button>
-          {shouldShowBatchMode && !showBatchView && (
+          {hasBatchContext && !showBatchView && (
             <span className="hidden sm:inline text-xs text-slate-500 font-medium">
               Back to Playlist
             </span>
@@ -1435,6 +1466,7 @@ function WorkspaceContent() {
         onClose={() => setIsCreditsModalOpen(false)}
         requiredAmount={modalConfig.required}
         featureName={modalConfig.feature}
+        currentAmount={modalConfig.current}
       />
       {/* Playlist Progress Modal */}
       <PlaylistProgressModal
@@ -1446,6 +1478,7 @@ function WorkspaceContent() {
         currentVideoTitle={playlistProcessing?.currentVideoTitle}
         playlistTitle={playlistProcessing?.currentPlaylist?.title}
         error={playlistProcessing?.error}
+        onClose={cancelProcessing}
       />
 
       {/* Translate Modal */}
