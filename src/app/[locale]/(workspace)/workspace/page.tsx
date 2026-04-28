@@ -287,6 +287,8 @@ function WorkspaceContent() {
 
   const [initialSubtitleContent, setInitialSubtitleContent] =
     useState<string>("");
+  const [initialSubtitleVideoId, setInitialSubtitleVideoId] =
+    useState<string>("");
 
   const maybePromptLoginForGuestLimit = (error: unknown): boolean => {
     if (user) return false;
@@ -391,6 +393,7 @@ function WorkspaceContent() {
 
           if (savedContent.subtitleContent) {
             setInitialSubtitleContent(savedContent.subtitleContent);
+            setInitialSubtitleVideoId(vid);
             unlockTranscriptForVideo(enhancedVideo);
             try {
               sessionStorage.setItem(
@@ -1411,11 +1414,16 @@ function WorkspaceContent() {
                   <TranscriptArea
                     videoUrl={currentVideo.url}
                     videoId={currentVideo.id}
+                    videoTitle={currentVideo.title}
                     currentTime={currentTime}
                     onSeek={setSeekTime}
                     searchInputRef={searchInputRef}
                     onLoadingChange={setIsTranscriptLoading}
-                    initialSubtitleContent={initialSubtitleContent}
+                    initialSubtitleContent={
+                      initialSubtitleVideoId === currentVideo.id
+                        ? initialSubtitleContent
+                        : ""
+                    }
                     lang={transcriptLang}
                     onLangChange={setTranscriptLang}
                     onTranscriptReadyChange={setIsTranscriptReady}

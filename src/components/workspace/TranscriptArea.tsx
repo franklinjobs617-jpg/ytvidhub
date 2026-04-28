@@ -14,6 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import { promptLoginForGuestLimit } from "@/lib/guestLimitPrompt";
 import { readTranscriptCache, writeTranscriptCache } from "@/lib/transcriptCache";
+import { extractVideoId } from "@/lib/youtube";
 import {
   parseVtt,
   groupTranscriptByTime,
@@ -28,6 +29,7 @@ export function TranscriptArea({
   searchInputRef,
   onLoadingChange,
   videoId,
+  videoTitle,
   initialSubtitleContent,
   lang = "en",
   onLangChange,
@@ -41,6 +43,7 @@ export function TranscriptArea({
   searchInputRef?: React.RefObject<HTMLInputElement>;
   onLoadingChange?: (loading: boolean) => void;
   videoId?: string;
+  videoTitle?: string;
   initialSubtitleContent?: string;
   lang?: string;
   onLangChange?: (lang: string) => void;
@@ -159,6 +162,17 @@ export function TranscriptArea({
 
   useEffect(() => {
     if (!videoUrl) return;
+    let isCancelled = false;
+    let cleanupSubtitleLoad: (() => void) | undefined;
+
+    if (initialSubtitleContent?.trim()) {
+      setTranscriptVtt(initialSubtitleContent);
+      writeTranscriptCache(videoUrl, lang, {
+        text: initialSubtitleContent,
+        format: "vtt",
+      });
+      return;
+    }
 
     // 优先从缓存加载对应语言的字幕
     try {
@@ -173,6 +187,32 @@ export function TranscriptArea({
       }
     } catch {}
 
+    const resolvedVideoId = videoId || extractVideoId(videoUrl);
+    if (user && resolvedVideoId) {
+      subtitleApi
+        .getHistoryContent(resolvedVideoId)
+        .then((savedContent) => {
+          if (isCancelled) return;
+          if (savedContent.subtitleContent?.trim()) {
+            setTranscriptVtt(savedContent.subtitleContent);
+            writeTranscriptCache(videoUrl, lang, {
+              text: savedContent.subtitleContent,
+              format: "vtt",
+            });
+            return;
+          }
+          cleanupSubtitleLoad = handleNormalSubtitleLoad();
+        })
+        .catch(() => {
+          if (!isCancelled) cleanupSubtitleLoad = handleNormalSubtitleLoad();
+        });
+
+      return () => {
+        isCancelled = true;
+        cleanupSubtitleLoad?.();
+      };
+    }
+
     console.log(`🔄 Fetching subtitles for language: ${lang}`);
 
     // 对于可能的长视频，使用流式加载
@@ -181,9 +221,12 @@ export function TranscriptArea({
     if (shouldUseStream) {
       handleStreamSubtitleLoad();
     } else {
-      handleNormalSubtitleLoad();
+      cleanupSubtitleLoad = handleNormalSubtitleLoad();
     }
-  }, [videoUrl, lang, onLoadingChange, user]);
+    return () => {
+      cleanupSubtitleLoad?.();
+    };
+  }, [videoUrl, videoId, videoTitle, initialSubtitleContent, lang, onLoadingChange, user]);
 
   const handleStreamSubtitleLoad = async () => {
     setIsStreamLoading(true);
@@ -332,6 +375,20 @@ export function TranscriptArea({
         console.log(`✅ Successfully loaded subtitles for language: ${lang}`);
         setTranscriptVtt(text);
         writeTranscriptCache(videoUrl, lang, { text, format: "vtt" });
+        const resolvedVideoId = videoId || extractVideoId(videoUrl);
+        if (user && resolvedVideoId) {
+          subtitleApi
+            .upsertHistory({
+              videoId: resolvedVideoId,
+              videoUrl,
+              title: videoTitle || "YouTube Video",
+              lastAction: "video_analyze",
+              format: "vtt",
+              lang,
+              subtitleContent: text,
+            })
+            .catch(() => {});
+        }
       })
       .catch((err) => {
         clearTimeout(timeoutId);

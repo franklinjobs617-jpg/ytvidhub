@@ -374,7 +374,9 @@ export default function PricingPage() {
                       ? "cursor-default border border-slate-100 bg-slate-50 text-slate-300"
                       : isRecommended
                         ? "bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] text-white shadow-[0_20px_28px_-18px_rgba(37,99,235,1)] hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
-                        : "border border-slate-200 bg-white text-slate-800 hover:-translate-y-0.5 hover:border-blue-200 hover:text-blue-700"
+                        : plan.id === "c"
+                          ? "border border-emerald-200 bg-emerald-50 text-emerald-900 shadow-[0_12px_22px_-18px_rgba(16,185,129,0.55)] hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-100 hover:text-emerald-950"
+                          : "border border-blue-200 bg-blue-50 text-blue-900 shadow-[0_12px_22px_-18px_rgba(37,99,235,0.45)] hover:-translate-y-0.5 hover:border-blue-300 hover:bg-blue-100 hover:text-blue-950"
                   }
                 `}
               >

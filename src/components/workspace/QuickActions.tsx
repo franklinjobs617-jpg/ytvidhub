@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { savePendingAction } from "@/lib/pendingAction";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 import { CREDIT_COSTS } from "@/config/credits";
+import { extractVideoId } from "@/lib/youtube";
 
 interface QuickActionsProps {
   videoUrl: string;
@@ -134,6 +135,11 @@ export function QuickActions({
           title: videoTitle,
         });
 
+        let subtitleText: string | undefined;
+        try {
+          subtitleText = await blob.text();
+        } catch {}
+
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement("a");
         anchor.href = url;
@@ -144,6 +150,20 @@ export function QuickActions({
         URL.revokeObjectURL(url);
 
         toast.success(`${format.toUpperCase()} downloaded successfully!`);
+        const videoId = extractVideoId(videoUrl);
+        if (videoId) {
+          subtitleApi
+            .upsertHistory({
+              videoId,
+              videoUrl,
+              title: videoTitle,
+              lastAction: "subtitle_download",
+              format,
+              lang,
+              subtitleContent: format === "vtt" ? subtitleText : undefined,
+            })
+            .catch(() => {});
+        }
         onDownloadSuccess?.();
 
         refreshUser();
