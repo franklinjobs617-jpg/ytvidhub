@@ -45,11 +45,20 @@ import { BatchGridView } from "@/components/workspace/BatchGridView";
 import { BatchProgressModal } from "@/components/workspace/BatchProgressModal";
 import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressModal";
 import { TranslateModal } from "@/components/workspace/TranslateModal";
-
+import {
+  clearPendingPurchase,
+  savePendingPurchase,
+  trackPurchaseWithRetry,
+} from "@/lib/analytics";
+import {
+  clearStripePurchaseContext,
+  readStripePurchaseContext,
+} from "@/lib/stripePurchaseContext";
 import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
 import { BulkCreditActionModal } from "@/components/workspace/BulkCreditActionModal";
 import { BulkPostPartialUpsellModal } from "@/components/workspace/BulkPostPartialUpsellModal";
 import { BatchActionConfirmModal } from "@/components/workspace/BatchActionConfirmModal";
+import { getPlanLabel } from "@/lib/plan";
 
 const getTranscriptUnlockKey = (
   video?: { id?: string; url?: string } | null,
@@ -64,6 +73,7 @@ function WorkspaceContent() {
     typeof user?.credits === "number"
       ? user.credits
       : parseInt(String(user?.credits ?? "0"), 10) || 0;
+  const currentPlanLabel = getPlanLabel(user?.plan);
 
   // URL 参数获取
   const urlsParam = searchParams.get("urls");
@@ -123,6 +133,7 @@ function WorkspaceContent() {
   const searchInputRef = useRef<HTMLInputElement>(null!);
   const hasTriedResumeRef = useRef(false);
   const isResumingPendingActionRef = useRef(false);
+  const hasAttemptedWorkspacePurchaseTrackingRef = useRef(false);
 
   const [inputUrl, setInputUrl] = useState("");
   const [isAddingVideo, setIsAddingVideo] = useState(false);
@@ -186,6 +197,53 @@ function WorkspaceContent() {
   } = useSubtitleDownloader(refreshUser);
 
   useEffect(() => {
+    if (hasAttemptedWorkspacePurchaseTrackingRef.current) return;
+    hasAttemptedWorkspacePurchaseTrackingRef.current = true;
+
+    const params = new URLSearchParams(window.location.search);
+    const fromPayment = params.get("fromPayment");
+    const stripeSessionId = params.get("stripeSessionId");
+
+    if (fromPayment !== "1" || !stripeSessionId) return;
+
+    const purchaseContext = readStripePurchaseContext();
+    if (!purchaseContext) return;
+
+    const purchasePayload = {
+      transaction_id: stripeSessionId,
+      value: purchaseContext.value,
+      currency: purchaseContext.currency || "USD",
+      items: [
+        {
+          item_name: purchaseContext.item_name,
+          quantity: purchaseContext.quantity || 1,
+          item_variant: purchaseContext.item_variant,
+        },
+      ],
+    };
+
+    savePendingPurchase(purchasePayload);
+
+    let cancelled = false;
+
+    (async () => {
+      const tracked = await trackPurchaseWithRetry(purchasePayload, {
+        attempts: 10,
+        delayMs: 1000,
+      });
+
+      if (!cancelled && tracked) {
+        clearPendingPurchase();
+        clearStripePurchaseContext();
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     if (resumeBulkParam !== "1" || hasTriedResumeRef.current) return;
     if (!user) return;
 
@@ -201,6 +259,7 @@ function WorkspaceContent() {
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.delete("resumeBulk");
     nextParams.delete("fromPayment");
+    nextParams.delete("stripeSessionId");
     const nextQuery = nextParams.toString();
     router.replace(nextQuery ? `/workspace?${nextQuery}` : "/workspace", {
       scroll: false,
@@ -1249,6 +1308,13 @@ function WorkspaceContent() {
             </span>
             <span className="text-[11px] font-bold text-yellow-600 uppercase tracking-wide">
               Credits
+            </span>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 shadow-sm">
+            <Sparkles size={14} className="text-blue-600" />
+            <span className="text-[11px] font-bold uppercase tracking-wide text-blue-700">
+              {currentPlanLabel}
             </span>
           </div>
 

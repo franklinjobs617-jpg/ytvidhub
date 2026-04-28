@@ -15,7 +15,11 @@ import {
     XCircle,
 } from "lucide-react";
 import { Link } from "@/i18n/routing";
-import { trackPurchase } from "@/lib/analytics";
+import {
+    clearPendingPurchase,
+    savePendingPurchase,
+    trackPurchaseWithRetry,
+} from "@/lib/analytics";
 import {
     clearStripePurchaseContext,
     readStripePurchaseContext,
@@ -24,6 +28,9 @@ import {
 export default function StripeCallback() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get("session_id");
+    const workspaceHref = sessionId
+        ? `/workspace?resumeBulk=1&fromPayment=1&stripeSessionId=${encodeURIComponent(sessionId)}`
+        : "/workspace?resumeBulk=1&fromPayment=1";
 
     const [status, setStatus] = useState<"verifying" | "success" | "error" | "timeout">("verifying");
     const [errorMsg, setErrorMsg] = useState("");
@@ -77,21 +84,43 @@ export default function StripeCallback() {
         if (status !== "success") return;
 
         const purchaseContext = readStripePurchaseContext();
-        if (sessionId && purchaseContext) {
-            trackPurchase({
-                transaction_id: sessionId,
-                value: purchaseContext.value,
-                currency: purchaseContext.currency || "USD",
-                items: [
-                    {
-                        item_name: purchaseContext.item_name,
-                        quantity: purchaseContext.quantity || 1,
-                        item_variant: purchaseContext.item_variant,
-                    },
-                ],
-            });
-            clearStripePurchaseContext();
-        }
+        if (!sessionId || !purchaseContext) return;
+
+        const purchasePayload = {
+            transaction_id: sessionId,
+            value: purchaseContext.value,
+            currency: purchaseContext.currency || "USD",
+            items: [
+                {
+                    item_name: purchaseContext.item_name,
+                    quantity: purchaseContext.quantity || 1,
+                    item_variant: purchaseContext.item_variant,
+                },
+            ],
+        };
+
+        savePendingPurchase(purchasePayload);
+
+        let cancelled = false;
+
+        (async () => {
+            const tracked = await trackPurchaseWithRetry(
+                purchasePayload,
+                {
+                    attempts: 15,
+                    delayMs: 1000,
+                },
+            );
+
+            if (!cancelled && tracked) {
+                clearPendingPurchase();
+                clearStripePurchaseContext();
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
     }, [status, sessionId]);
 
     return (
@@ -215,7 +244,7 @@ export default function StripeCallback() {
 
                             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                                 <Link
-                                    href="/workspace?resumeBulk=1&fromPayment=1"
+                                    href={workspaceHref}
                                     className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-6 py-4 text-sm font-extrabold text-white shadow-[0_18px_40px_-24px_rgba(16,185,129,0.9)] transition-all hover:bg-emerald-600"
                                 >
                                     Continue in Workspace

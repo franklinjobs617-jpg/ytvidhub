@@ -5,6 +5,7 @@ import { Link, usePathname } from '@/i18n/routing';
 import Image from "next/image";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { useAuth } from "@/context/AuthContext";
+import { getPlanLabel } from "@/lib/plan";
 import { useTranslations } from 'next-intl';
 import {
   Menu,
@@ -39,6 +40,7 @@ export default function Header() {
 
   const pathname = usePathname();
   const { user, logout, isLoading, openLoginModal } = useAuth();
+  const planLabel = getPlanLabel(user?.plan);
   const t = useTranslations('navigation');
   const footerT = useTranslations('footer');
 
@@ -234,7 +236,9 @@ export default function Header() {
                         <div className="px-3 py-2 mb-1">
                           <div className="flex items-center gap-2">
                             <Sparkles size={14} className="text-[var(--brand-600)]" />
-                            <span className="text-sm font-semibold text-slate-800">{t('freePlan')}</span>
+                            <span className="text-sm font-semibold text-slate-800">
+                              {planLabel === "Free" ? t('freePlan') : planLabel}
+                            </span>
                           </div>
                         </div>
                         <Link

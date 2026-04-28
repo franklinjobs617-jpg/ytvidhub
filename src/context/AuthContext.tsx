@@ -17,6 +17,7 @@ interface User {
   credits: number;
   googleUserId: string;
   email: string;
+  plan?: string | null;
 }
 
 interface AuthContextType {

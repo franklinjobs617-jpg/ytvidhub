@@ -10,6 +10,7 @@ import { Metadata } from "next";
 import LanguagePreloader from "@/components/LanguagePreloader";
 import SourceCapture from "@/components/SourceCapture";
 import { GlobalAuthModal } from "@/components/GlobalAuthModal";
+import { PendingPurchaseFlush } from "@/components/PendingPurchaseFlush";
 import { buildCanonicalUrl, SITE_ORIGIN } from "@/lib/url";
 import { Inter, Space_Grotesk, Noto_Sans_SC } from "next/font/google";
 
@@ -45,30 +46,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
-
   const currentUrl = buildCanonicalUrl({ locale, pathname: "" });
 
   const getOpenGraphLocale = (locale: string) => {
-    switch (locale) {
-      case "en":
-        return "en_US";
-      case "es":
-        return "es_ES";
-      case "de":
-        return "de_DE";
-      case "ko":
-        return "ko_KR";
-      case "ja":
-        return "ja_JP";
-      case "ru":
-        return "ru_RU";
-      case "tr":
-        return "tr_TR";
-      case "zh":
-        return "zh_CN";
-      default:
-        return "en_US";
-    }
+    const map: Record<string, string> = {
+      en: "en_US", es: "es_ES", de: "de_DE", ko: "ko_KR", 
+      ja: "ja_JP", ru: "ru_RU", tr: "tr_TR", zh: "zh_CN"
+    };
+    return map[locale] || "en_US";
   };
 
   return {
@@ -76,7 +61,6 @@ export async function generateMetadata({
     title: t("title"),
     description: t("description"),
     keywords: t("keywords").split(", "),
-
     openGraph: {
       title: t("title"),
       description: t("description"),
@@ -84,23 +68,14 @@ export async function generateMetadata({
       siteName: "YTVidHub",
       locale: getOpenGraphLocale(locale),
       type: "website",
-      images: [
-        {
-          url: `/image/yyt.png`,
-          width: 1200,
-          height: 630,
-          alt: t("title"),
-        },
-      ],
+      images: [{ url: `/image/yyt.png`, width: 1200, height: 630, alt: t("title") }],
     },
-
     twitter: {
       card: "summary_large_image",
       title: t("title"),
       description: t("description"),
       images: [`/image/yyt.png`],
     },
-
     alternates: {
       canonical: currentUrl,
       languages: {
@@ -115,7 +90,6 @@ export async function generateMetadata({
         "x-default": buildCanonicalUrl({ locale: "en", pathname: "" }),
       },
     },
-
     robots: {
       index: true,
       follow: true,
@@ -134,13 +108,11 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-// 2. 布局组件
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
   const messages = await getMessages();
   const t = await getTranslations({ locale, namespace: "schema" });
 
-  // 结构化数据 (JSON-LD)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -175,23 +147,21 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <head>
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="saashub-verification" content="myoi6jk5w99z" />
 
-        <Script id="google-tag-manager" strategy="beforeInteractive">
+        {/* 1. GTM 初始化 (放在 Head) */}
+        <Script id="gtm-init" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TNMMLKN5');`}
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TNMMLKN5');`}
         </Script>
 
-        {/* Google AdSense 广告代码 */}
+        {/* 2. AdSense (懒加载) */}
         <Script
           id="adsbygoogle-init"
           strategy="lazyOnload"
@@ -200,32 +170,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         />
       </head>
       <body>
-        {/* Google Analytics */}
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="lazyOnload">
+        {/* 3. GA4 变量预定义 (最快速度执行，防止 undefined) */}
+        <Script id="ga-bootstrap" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-KZZ05YN8TX'); 
+            window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
+            window.__ytvidhubGaReady = false;
           `}
         </Script>
+
+        {/* 4. GA4 主脚本加载 */}
+        <Script
+          id="ga-loader"
+          src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
+          strategy="afterInteractive"
+          onLoad={() => {
+            if (typeof window.gtag === 'function') {
+              window.gtag('js', new Date());
+            }
+            if (typeof window.gtag === 'function') {
+              window.gtag('config', 'G-KZZ05YN8TX', {
+                page_path: window.location.pathname,
+              });
+            }
+            window.__ytvidhubGaReady = true; 
+            console.log("GA4 Ready ✅");
+          }}
+        />
 
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-TNMMLKN5"
-            height="0"
-            width="0"
-            className="hidden"
+            height="0" width="0" className="hidden"
           ></iframe>
         </noscript>
 
-        {/* Microsoft Clarity */}
-        <Script id="microsoft-clarity" strategy="lazyOnload">
+        {/* 5. Microsoft Clarity (懒加载) */}
+        <Script id="clarity-init" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -245,14 +226,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <NextTopLoader color="#2563eb" showSpinner={false} />
             <LanguagePreloader />
             <SourceCapture />
+            <PendingPurchaseFlush />
             {children}
             <GlobalAuthModal />
-            <Toaster
-              richColors
-              closeButton
-              position="top-center"
-              offset="90px"
-            />
+            <Toaster richColors closeButton position="top-center" offset="90px" />
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

@@ -6,6 +6,7 @@ declare global {
     gtag?: (...args: unknown[]) => void;
     clarity?: (method: string, ...args: unknown[]) => void;
     dataLayer?: unknown[];
+    __ytvidhubGaReady?: boolean;
   }
 }
 
@@ -103,6 +104,121 @@ interface PurchaseItem {
   item_variant?: string;
 }
 
+export interface PurchaseParams {
+  transaction_id: string;
+  value: number;
+  currency?: string;
+  items: PurchaseItem[];
+}
+
+const PENDING_PURCHASE_KEY = "ga4_pending_purchase";
+const PENDING_PURCHASE_TTL_MS = 24 * 60 * 60 * 1000;
+
+type StoredPurchaseParams = PurchaseParams & {
+  createdAt: number;
+};
+
+function getPurchaseDedupeKey(transactionId: string) {
+  return `ga4_purchase_${transactionId}`;
+}
+
+function safeGetStorageItem(
+  storage: Storage | undefined,
+  key: string,
+) {
+  if (!storage) return null;
+  try {
+    return storage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSetStorageItem(
+  storage: Storage | undefined,
+  key: string,
+  value: string,
+) {
+  if (!storage) return;
+  try {
+    storage.setItem(key, value);
+  } catch {}
+}
+
+function safeRemoveStorageItem(storage: Storage | undefined, key: string) {
+  if (!storage) return;
+  try {
+    storage.removeItem(key);
+  } catch {}
+}
+
+function hasTrackedPurchase(transactionId: string) {
+  if (typeof window === "undefined") return false;
+  const dedupeKey = getPurchaseDedupeKey(transactionId);
+  return (
+    safeGetStorageItem(window.localStorage, dedupeKey) === "1" ||
+    safeGetStorageItem(window.sessionStorage, dedupeKey) === "1"
+  );
+}
+
+function markPurchaseTracked(transactionId: string) {
+  if (typeof window === "undefined") return;
+  const dedupeKey = getPurchaseDedupeKey(transactionId);
+  safeSetStorageItem(window.localStorage, dedupeKey, "1");
+  safeSetStorageItem(window.sessionStorage, dedupeKey, "1");
+}
+
+export function savePendingPurchase(params: PurchaseParams) {
+  if (typeof window === "undefined" || !params.transaction_id) return;
+
+  safeSetStorageItem(
+    window.localStorage,
+    PENDING_PURCHASE_KEY,
+    JSON.stringify({
+      ...params,
+      createdAt: Date.now(),
+    } satisfies StoredPurchaseParams),
+  );
+}
+
+export function readPendingPurchase(): PurchaseParams | null {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const raw = safeGetStorageItem(window.localStorage, PENDING_PURCHASE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as StoredPurchaseParams;
+    if (!parsed?.transaction_id || typeof parsed.value !== "number") {
+      clearPendingPurchase();
+      return null;
+    }
+
+    if (
+      !parsed.createdAt ||
+      Date.now() - parsed.createdAt > PENDING_PURCHASE_TTL_MS
+    ) {
+      clearPendingPurchase();
+      return null;
+    }
+
+    return {
+      transaction_id: parsed.transaction_id,
+      value: parsed.value,
+      currency: parsed.currency,
+      items: parsed.items,
+    };
+  } catch {
+    clearPendingPurchase();
+    return null;
+  }
+}
+
+export function clearPendingPurchase() {
+  if (typeof window === "undefined") return;
+  safeRemoveStorageItem(window.localStorage, PENDING_PURCHASE_KEY);
+}
+
 /** 首次落地时捕获来源信息，存入 sessionStorage */
 export function captureUserSource() {
   if (typeof window === 'undefined') return;
@@ -155,17 +271,17 @@ export function trackConversion(eventName: string, params?: Record<string, unkno
   });
 }
 
-export function trackPurchase(params: {
-  transaction_id: string;
-  value: number;
-  currency?: string;
-  items: PurchaseItem[];
-}) {
-  if (typeof window === "undefined" || !window.gtag) return;
-  if (!params.transaction_id) return;
+export function trackPurchase(params: PurchaseParams) {
+  if (
+    typeof window === "undefined" ||
+    !window.gtag ||
+    !window.__ytvidhubGaReady
+  ) {
+    return false;
+  }
+  if (!params.transaction_id) return false;
 
-  const dedupeKey = `ga4_purchase_${params.transaction_id}`;
-  if (sessionStorage.getItem(dedupeKey)) return;
+  if (hasTrackedPurchase(params.transaction_id)) return true;
 
   const source = getUserSource();
   window.gtag("event", "purchase", {
@@ -179,7 +295,36 @@ export function trackPurchase(params: {
     source_utm_medium: source?.utm_medium || "(none)",
     source_utm_campaign: source?.utm_campaign || "(none)",
     source_utm_term: source?.utm_term || "(none)",
+    transport_type: "beacon",
   });
 
-  sessionStorage.setItem(dedupeKey, "1");
+  markPurchaseTracked(params.transaction_id);
+  return true;
+}
+
+export async function trackPurchaseWithRetry(
+  params: {
+    transaction_id: string;
+    value: number;
+    currency?: string;
+    items: PurchaseItem[];
+  },
+  options?: {
+    attempts?: number;
+    delayMs?: number;
+  },
+) {
+  const attempts = Math.max(1, options?.attempts ?? 10);
+  const delayMs = Math.max(100, options?.delayMs ?? 1000);
+
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const tracked = trackPurchase(params);
+    if (tracked) return true;
+
+    if (attempt < attempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+
+  return false;
 }
