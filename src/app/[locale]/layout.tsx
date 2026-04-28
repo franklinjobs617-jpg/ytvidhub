@@ -178,17 +178,17 @@ export default async function LocaleLayout({ children, params }: Props) {
           id="ga-loader"
           src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
           strategy="afterInteractive"
-          onLoad={() => {
+        />
+        <Script id="ga-config" strategy="afterInteractive">
+          {`
             if (typeof window.gtag === 'function') {
               window.gtag('js', new Date());
-            }
-            if (typeof window.gtag === 'function') {
               window.gtag('config', 'G-KZZ05YN8TX');
             }
             window.__ytvidhubGaReady = true;
-            console.log("GA4 Script Ready ✅");
-          }}
-        />
+            console.log('GA4 Script Ready ✅');
+          `}
+        </Script>
 
         {/* AdSense (懒加载) */}
         <Script
