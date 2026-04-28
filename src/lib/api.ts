@@ -341,8 +341,9 @@ export const subtitleApi = {
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
     if (!token) return;
+    const endpoint = "https://api.ytvidhub.com/prod-api/g/history/upsert";
     try {
-      await fetch("/api/history/upsert", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -350,6 +351,7 @@ export const subtitleApi = {
         },
         body: JSON.stringify(payload),
       });
+      await ensureOk(res, "History save failed", endpoint);
     } catch { }
   },
 
@@ -359,12 +361,14 @@ export const subtitleApi = {
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
     if (!token) return {};
     try {
-      const res = await fetch(`/api/history/content?videoId=${encodeURIComponent(videoId)}`, {
+      const endpoint = `https://api.ytvidhub.com/prod-api/g/history/content?videoId=${encodeURIComponent(videoId)}`;
+      const res = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
         cache: "no-store",
       });
       if (!res.ok) return {};
-      return res.json();
+      const json = await res.json();
+      return json.data ?? {};
     } catch {
       return {};
     }
@@ -376,7 +380,8 @@ export const subtitleApi = {
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
     if (!token) return [];
     try {
-      const res = await fetch(`/api/history?limit=${limit}`, {
+      const endpoint = `https://api.ytvidhub.com/prod-api/g/history?limit=${limit}`;
+      const res = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
         cache: "no-store",
       });
