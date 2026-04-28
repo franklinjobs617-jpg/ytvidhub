@@ -14,6 +14,7 @@ import { PendingPurchaseFlush } from "@/components/PendingPurchaseFlush";
 import { buildCanonicalUrl, SITE_ORIGIN } from "@/lib/url";
 import { Inter, Space_Grotesk, Noto_Sans_SC } from "next/font/google";
 
+// --- 字体配置 ---
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
@@ -48,12 +49,12 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "metadata" });
   const currentUrl = buildCanonicalUrl({ locale, pathname: "" });
 
-  const getOpenGraphLocale = (locale: string) => {
+  const getOpenGraphLocale = (l: string) => {
     const map: Record<string, string> = {
-      en: "en_US", es: "es_ES", de: "de_DE", ko: "ko_KR", 
-      ja: "ja_JP", ru: "ru_RU", tr: "tr_TR", zh: "zh_CN"
+      en: "en_US", es: "es_ES", de: "de_DE", ko: "ko_KR",
+      ja: "ja_JP", ru: "ru_RU", tr: "tr_TR", zh: "zh_CN",
     };
-    return map[locale] || "en_US";
+    return map[l] || "en_US";
   };
 
   return {
@@ -108,11 +109,13 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// 2. 布局组件
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
   const messages = await getMessages();
   const t = await getTranslations({ locale, namespace: "schema" });
 
+  // 结构化数据 (JSON-LD)
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -152,25 +155,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <meta name="saashub-verification" content="myoi6jk5w99z" />
 
-        {/* 1. GTM 初始化 (放在 Head) */}
-        <Script id="gtm-init" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-TNMMLKN5');`}
-        </Script>
-
-        {/* 2. AdSense (懒加载) */}
-        <Script
-          id="adsbygoogle-init"
-          strategy="lazyOnload"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
-          crossOrigin="anonymous"
-        />
-      </head>
-      <body>
-        {/* 3. GA4 变量预定义 (最快速度执行，防止 undefined) */}
+        {/* --- 核心修复：beforeInteractive 脚本必须放在 head --- */}
         <Script id="ga-bootstrap" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -179,7 +164,16 @@ export default async function LocaleLayout({ children, params }: Props) {
           `}
         </Script>
 
-        {/* 4. GA4 主脚本加载 */}
+        {/* GTM 初始化 */}
+        <Script id="gtm-init" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-TNMMLKN5');`}
+        </Script>
+
+        {/* GA4 脚本加载 */}
         <Script
           id="ga-loader"
           src="https://www.googletagmanager.com/gtag/js?id=G-KZZ05YN8TX"
@@ -189,32 +183,28 @@ export default async function LocaleLayout({ children, params }: Props) {
               window.gtag('js', new Date());
             }
             if (typeof window.gtag === 'function') {
-              window.gtag('config', 'G-KZZ05YN8TX', {
-                page_path: window.location.pathname,
-              });
+              window.gtag('config', 'G-KZZ05YN8TX');
             }
-            window.__ytvidhubGaReady = true; 
-            console.log("GA4 Ready ✅");
+            window.__ytvidhubGaReady = true;
+            console.log("GA4 Script Ready ✅");
           }}
         />
 
+        {/* AdSense (懒加载) */}
+        <Script
+          id="adsbygoogle-init"
+          strategy="lazyOnload"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3383070348689557"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-TNMMLKN5"
-            height="0" width="0" className="hidden"
+            height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
-
-        {/* 5. Microsoft Clarity (懒加载) */}
-        <Script id="clarity-init" strategy="lazyOnload">
-          {`
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "uszhcgfose");
-          `}
-        </Script>
 
         <script
           type="application/ld+json"
@@ -232,6 +222,17 @@ export default async function LocaleLayout({ children, params }: Props) {
             <Toaster richColors closeButton position="top-center" offset="90px" />
           </AuthProvider>
         </NextIntlClientProvider>
+
+        {/* Clarity (放在 body 底部懒加载) */}
+        <Script id="microsoft-clarity" strategy="lazyOnload">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "uszhcgfose");
+          `}
+        </Script>
       </body>
     </html>
   );
