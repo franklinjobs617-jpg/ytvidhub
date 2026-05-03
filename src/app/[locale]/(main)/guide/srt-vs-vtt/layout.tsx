@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "SRT vs VTT: Complete Comparison Guide for Developers | YTVidHub",
@@ -131,13 +132,18 @@ const articleSchema = {
   publisher: { "@type": "Organization", name: "YTVidHub", url: "https://ytvidhub.com" },
 };
 
-export default function SrtVsVttLayout({
+export default async function SrtVsVttLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
+  const items = guideBreadcrumbs(locale, "/guide/srt-vs-vtt", "SRT vs VTT");
   return (
     <>
+      <BreadcrumbSchema items={items} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

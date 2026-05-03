@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "Download YouTube Transcript as Text (No Timestamps) | YTVidHub",
@@ -8,6 +9,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CleanTranscriptNoTimestampLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default async function CleanTranscriptNoTimestampLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const items = guideBreadcrumbs(locale, "/guide/clean-transcript-no-timestamp", "Clean Transcript (No Timestamps)");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
+import BreadcrumbSchema, { toolBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
@@ -7,7 +8,7 @@ export async function generateMetadata(
   const { locale } = await params;
 
   return {
-    title: "Download YouTube Transcript as Text (No Timestamps) | YTVidHub",
+    title: "YouTube Transcript to Text | No Timestamps, Clean TXT",
     description:
       "Download YouTube transcript as text in seconds. Remove timestamps and export clean TXT for AI workflows, notes, and research.",
     keywords: [
@@ -18,7 +19,7 @@ export async function generateMetadata(
       "clean youtube transcript text",
     ],
     openGraph: {
-      title: "Download YouTube Transcript as Text (No Timestamps)",
+      title: "YouTube Transcript to Text | No Timestamps, Clean TXT",
       description:
         "Export clean YouTube transcript text without timestamps. Ideal for AI training, notes, and content repurposing.",
       type: "article",
@@ -27,11 +28,20 @@ export async function generateMetadata(
   };
 }
 
-export default function DownloadYouTubeTranscriptAsTextLayout({
+export default async function DownloadYouTubeTranscriptAsTextLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  return children;
+  const { locale } = await params;
+  const items = toolBreadcrumbs(locale, "/download-youtube-transcript-as-text", "Transcript as Text");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }
 

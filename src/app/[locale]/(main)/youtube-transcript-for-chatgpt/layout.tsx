@@ -1,16 +1,17 @@
 import { Metadata } from 'next';
 import { buildAlternates } from '@/lib/seo';
+import BreadcrumbSchema, { toolBreadcrumbs } from '@/components/seo/BreadcrumbSchema';
 
 export async function generateMetadata(
     { params }: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
     const { locale } = await params;
     return {
-        title: 'YouTube Transcript for ChatGPT - Extract & Summarize Videos with AI | YTVidHub',
+        title: 'YouTube Transcript for ChatGPT | Free Copy-Paste Tool (2026)',
         description: 'Get YouTube video transcripts ready for ChatGPT, Claude, and Gemini. Extract, copy, and paste any YouTube transcript into AI chatbots for summarization, translation, and analysis.',
         keywords: ['youtube transcript for chatgpt', 'youtube transcript to chatgpt', 'youtube video summarizer', 'extract youtube transcript for ai', 'youtube to chatgpt'],
         openGraph: {
-            title: 'YouTube Transcript for ChatGPT - Extract & Summarize Videos with AI',
+            title: 'YouTube Transcript for ChatGPT | Free Copy-Paste Tool (2026)',
             description: 'Get YouTube video transcripts ready for ChatGPT, Claude, and Gemini. Extract and summarize any video in seconds.',
             type: 'website',
         },
@@ -89,13 +90,18 @@ const howToSchema = {
     ],
 };
 
-export default function YouTubeTranscriptForChatGPTLayout({
+export default async function YouTubeTranscriptForChatGPTLayout({
     children,
+    params,
 }: {
     children: React.ReactNode;
+    params: Promise<{ locale: string }>;
 }) {
+    const { locale } = await params;
+    const items = toolBreadcrumbs(locale, '/youtube-transcript-for-chatgpt', 'YouTube Transcript for ChatGPT');
     return (
         <>
+            <BreadcrumbSchema items={items} />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

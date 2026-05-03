@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "YouTube Subtitles API Alternatives: Free Export to JSON/TXT",
@@ -8,6 +9,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function YouTubeSubtitlesAPIFreeLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default async function YouTubeSubtitlesAPIFreeLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const items = guideBreadcrumbs(locale, "/guide/youtube-subtitles-api-free", "YouTube Subtitles API Alternatives");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }

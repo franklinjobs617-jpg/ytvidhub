@@ -1,5 +1,8 @@
 import { buildCanonicalUrl } from "@/lib/url";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
+import EditorialToc from "@/components/editorial/EditorialToc";
+import BackToTop from "@/components/editorial/BackToTop";
+import ArticleMeta from "@/components/editorial/ArticleMeta";
 
 type Props = {
   params: { locale: string };
@@ -90,15 +93,13 @@ export default function AISummaryBlogPage({ params }: Props) {
             YouTube video summarizer instantly transforms any YouTube video into
             a concise summary in seconds. No login required.
           </p>
-          <p className="text-sm text-slate-400 mt-4">
-            By YTVidHub Editorial Team | Last reviewed Dec 2025
-          </p>
+          <ArticleMeta author="YTVidHub Editorial Team" date="Dec 2025" readTime="6 min read" />
         </header>
 
         <section className="article-shell article-section pt-0">
           <a
             className="btn-primary inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-            href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+            href="https://ytvidhub.com/"
           >
             Try the AI YouTube video summarizer now
           </a>
@@ -128,7 +129,7 @@ export default function AISummaryBlogPage({ params }: Props) {
             . Ready to try it?
             <a
               className="text-blue-600 hover:text-blue-700 ml-1"
-              href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+              href="https://ytvidhub.com/"
             >
               Launch the tool now.
             </a>
@@ -183,7 +184,7 @@ export default function AISummaryBlogPage({ params }: Props) {
             </a>
             <a
               className="text-blue-600 hover:text-blue-700 ml-1"
-              href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+              href="https://ytvidhub.com/"
             >
               Try this step-by-step in the YTVidHub tool.
             </a>
@@ -200,7 +201,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               long and dense.
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try YTVidHub now.
               </a>
@@ -210,7 +211,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               before deep analysis.
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try it now.
               </a>
@@ -220,7 +221,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               talking points from long videos.
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try YTVidHub.
               </a>
@@ -230,7 +231,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               interviews, and market updates quickly.
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try it now.
               </a>
@@ -249,7 +250,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               extraction. Need this in action?
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try the tool now.
               </a>
@@ -260,7 +261,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               model focuses on meaning. Need this in action?
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try the tool now.
               </a>
@@ -271,7 +272,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               reuse. Need this in action?
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try the tool now.
               </a>
@@ -282,7 +283,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               this in action?
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try the tool now.
               </a>
@@ -293,7 +294,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               this in action?
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try the tool now.
               </a>
@@ -304,7 +305,7 @@ export default function AISummaryBlogPage({ params }: Props) {
               repurposing. Need this in action?
               <a
                 className="text-blue-600 hover:text-blue-700 ml-1"
-                href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+                href="https://ytvidhub.com/"
               >
                 Try the tool now.
               </a>
@@ -312,7 +313,7 @@ export default function AISummaryBlogPage({ params }: Props) {
           </ol>
           <a
             className="btn-primary inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-            href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+            href="https://ytvidhub.com/"
           >
             Launch Tool
           </a>
@@ -348,7 +349,7 @@ export default function AISummaryBlogPage({ params }: Props) {
             Want these benefits now?
             <a
               className="text-blue-600 hover:text-blue-700 ml-1"
-              href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+              href="https://ytvidhub.com/"
             >
               Launch the tool.
             </a>
@@ -365,7 +366,7 @@ export default function AISummaryBlogPage({ params }: Props) {
           </p>
           <a
             className="btn-primary inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-            href="https://ytvidhub.com/ai-youtube-summarizer-tool"
+            href="https://ytvidhub.com/"
           >
             Launch Tool
           </a>
@@ -378,6 +379,8 @@ export default function AISummaryBlogPage({ params }: Props) {
           containerClassName="max-w-none px-0 lg:px-0"
         />
       </main>
+      <EditorialToc />
+      <BackToTop />
     </div>
   );
 }

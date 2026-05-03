@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
+import BreadcrumbSchema, { blogBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 type Props = {
   children: React.ReactNode;
@@ -42,6 +43,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function AIYouTubeVideoSummarizerLayout({ children }: Props) {
-  return children;
+export default async function AIYouTubeVideoSummarizerLayout({ children, params }: Props) {
+  const { locale } = await params;
+  const items = blogBreadcrumbs(locale, "/blog/ai-youtube-video-summarizer", "AI YouTube Video Summarizer");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }

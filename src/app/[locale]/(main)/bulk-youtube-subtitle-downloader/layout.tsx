@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import { buildCanonicalUrl } from '@/lib/url';
+import BreadcrumbSchema, { toolBreadcrumbs } from '@/components/seo/BreadcrumbSchema';
 
 export const metadata: Metadata = {
-    title: 'Bulk YouTube Subtitle Downloader | Extract SRT, VTT & TXT Captions from Playlists | YTVidHub',
+    title: 'Bulk YouTube Subtitle Downloader | Playlist Extract Free',
     description: 'Professional bulk YouTube subtitle downloader for extracting SRT, VTT, and TXT transcripts from multiple videos, playlists, and channels. Perfect for AI training, content creation, and accessibility. Download thousands of subtitles in one click.',
 
     keywords: [
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     authors: [{ name: 'YTVidHub Team' }],
 
     openGraph: {
-        title: 'Bulk YouTube Subtitle Downloader | Extract Captions from Playlists & Channels',
+        title: 'Bulk YouTube Subtitle Downloader | Playlist Extract Free',
         description: 'Download subtitles from thousands of YouTube videos at once. Professional bulk extraction tool for SRT, VTT, and TXT formats. Perfect for AI training and content creation.',
         url: 'https://ytvidhub.com/bulk-youtube-subtitle-downloader/',
         type: 'website',
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Bulk YouTube Subtitle Downloader | Extract Captions at Scale',
+        title: 'Bulk YouTube Subtitle Downloader | Playlist Extract Free',
         description: 'Download subtitles from entire YouTube playlists and channels. Professional bulk extraction for SRT, VTT, and TXT formats.',
         images: ['/image/bulk-youtube-subtitle-downloader-og.webp'],
         creator: '@ytvidhub',
@@ -66,10 +67,19 @@ export const metadata: Metadata = {
     },
 };
 
-export default function BulkDownloaderLayout({
+export default async function BulkDownloaderLayout({
     children,
+    params,
 }: {
     children: React.ReactNode;
+    params: Promise<{ locale: string }>;
 }) {
-    return <>{children}</>;
+    const { locale } = await params;
+    const items = toolBreadcrumbs(locale, '/bulk-youtube-subtitle-downloader', 'Bulk Subtitle Downloader');
+    return (
+        <>
+            <BreadcrumbSchema items={items} />
+            {children}
+        </>
+    );
 }

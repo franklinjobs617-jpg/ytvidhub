@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "Data Prep Toolkit: Complete Guide for YouTube Subtitles",
@@ -8,6 +9,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DataPrepToolkitLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default async function DataPrepToolkitLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const items = guideBreadcrumbs(locale, "/guide/data-prep-toolkit", "Data Prep Toolkit");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }

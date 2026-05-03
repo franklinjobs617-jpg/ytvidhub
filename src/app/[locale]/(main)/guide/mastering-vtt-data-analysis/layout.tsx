@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "Mastering VTT Subtitles: Clean Downloads for Data Analysis",
@@ -8,6 +9,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MasteringVttDataAnalysisLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default async function MasteringVttDataAnalysisLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const items = guideBreadcrumbs(locale, "/guide/mastering-vtt-data-analysis", "Mastering VTT Data Analysis");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }

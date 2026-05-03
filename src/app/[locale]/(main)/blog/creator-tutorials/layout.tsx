@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
+import BreadcrumbSchema, { blogBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 type Props = {
   children: React.ReactNode;
@@ -43,6 +44,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function CreatorTutorialsLayout({ children }: Props) {
-  return children;
+export default async function CreatorTutorialsLayout({ children, params }: Props) {
+  const { locale } = await params;
+  const items = blogBreadcrumbs(locale, "/blog/creator-tutorials", "Creator Tutorials");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }

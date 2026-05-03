@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/design.md": "^0.1.1",
     "@prisma/client": "^6.2.1",
     "@types/jsonwebtoken": "^9.0.10",
     "clsx": "^2.1.1",

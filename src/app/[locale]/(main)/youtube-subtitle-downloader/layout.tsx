@@ -1,7 +1,8 @@
 import { Metadata } from "next";
+import BreadcrumbSchema, { toolBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
-  title: "Free YouTube Subtitle Downloader | Download SRT, VTT, TXT Captions | YTVidHub",
+  title: "Free YouTube Subtitle Downloader | SRT, VTT, TXT (2026)",
   description: "Download YouTube subtitles in SRT, VTT, and TXT formats for free. Extract captions from any video with timestamps or clean text for AI training and accessibility.",
 
   keywords: [
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   ],
 
   openGraph: {
-    title: "Free YouTube Subtitle Downloader | Extract SRT, VTT & TXT Captions",
+    title: "Free YouTube Subtitle Downloader | SRT, VTT, TXT (2026)",
     description: "Download YouTube subtitles in multiple formats instantly. Perfect for accessibility, video editing, AI training, and content creation.",
     url: "https://ytvidhub.com/youtube-subtitle-downloader",
     type: "website",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Free YouTube Subtitle Downloader | SRT, VTT, TXT",
+    title: "Free YouTube Subtitle Downloader | SRT, VTT, TXT (2026)",
     description: "Extract YouTube captions in any format. Free, fast, and reliable subtitle downloads.",
     images: ["/image/og-subtitle-downloader.webp"],
   },
@@ -62,10 +63,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function YouTubeSubtitleDownloaderLayout({
+export default async function YouTubeSubtitleDownloaderLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  return children;
+  const { locale } = await params;
+  const items = toolBreadcrumbs(locale, "/youtube-subtitle-downloader", "YouTube Subtitle Downloader");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }

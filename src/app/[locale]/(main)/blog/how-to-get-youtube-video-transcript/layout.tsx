@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
+import BreadcrumbSchema, { blogBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
@@ -42,7 +43,20 @@ export async function generateMetadata(
   };
 }
 
-export default function HowToGetYouTubeTranscriptLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default async function HowToGetYouTubeTranscriptLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const items = blogBreadcrumbs(locale, "/blog/how-to-get-youtube-video-transcript", "How to Get YouTube Video Transcript");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }
 

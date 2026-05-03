@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = {
   title: "Bulk YouTube Subtitle Extraction for LLM Datasets: The Technical Guide | YTVidHub",
@@ -8,6 +9,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function YouTubeSubtitlesForLLMDataLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default async function YouTubeSubtitlesForLLMDataLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const items = guideBreadcrumbs(locale, "/guide/youtube-subtitles-for-llm-data", "YouTube Subtitles for LLM Data");
+  return (
+    <>
+      <BreadcrumbSchema items={items} />
+      {children}
+    </>
+  );
 }
