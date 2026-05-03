@@ -5,6 +5,7 @@ import { Link } from "@/i18n/routing";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import BulkDownloaderSchema from "@/components/seo/BulkDownloaderSchema";
+import RelatedTools from "@/components/shared/RelatedTools";
 import {
   ArrowRight,
   CheckCheck,
@@ -573,6 +574,9 @@ Welcome to our deep dive...
             </div>
           </div>
         </section>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <RelatedTools currentPath="/bulk-youtube-subtitle-downloader" />
+        </div>
       </main>
 
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />

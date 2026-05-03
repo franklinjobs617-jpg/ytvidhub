@@ -89,7 +89,7 @@ export default function SubtitleDownloaderSchema() {
         "name": "Where should I go for no-timestamp transcript text?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "For clean transcript text without timestamps, use /download-youtube-transcript-as-text. This subtitle page is primarily for caption download workflows."
+          "text": "For clean transcript text without timestamps, use the YouTube Transcript Generator. This subtitle page is primarily for caption download workflows."
         }
       }
     ]

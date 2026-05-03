@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
+import RelatedTools from "@/components/shared/RelatedTools";
 
 export default function HowToUsePage() {
   const { user } = useAuth();
@@ -107,6 +108,9 @@ export default function HowToUsePage() {
           sectionClassName="max-w-3xl mx-auto px-6 mb-16 py-0 bg-transparent"
           containerClassName="max-w-none px-0 lg:px-0"
         />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <RelatedTools currentPath="/how-to-use" />
+        </div>
       </main>
 
       <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />

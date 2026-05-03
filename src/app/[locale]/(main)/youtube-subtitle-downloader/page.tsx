@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { TestimonialSection } from "@/components/testimonials/TestimonialSection";
 import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
+import RelatedTools from "@/components/shared/RelatedTools";
 import { Metadata } from "next";
 import { buildCanonicalUrl } from "@/lib/url";
 type Props = { params: Promise<{ locale: string }> };
@@ -52,10 +53,10 @@ export default async function YouTubeSubtitleDownloaderPage() {
             <p className="text-sm text-slate-500 mb-10">
               Need plain transcript text without timestamps? Use{""}
               <Link
-                href="/download-youtube-transcript-as-text"
+                href="/youtube-transcript-generator"
                 className="text-blue-600 hover:text-blue-700 font-semibold"
               >
-                Download YouTube Transcript as Text
+                YouTube Transcript Generator
               </Link>
               .
             </p>
@@ -530,7 +531,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
             },
             {
               q: "What if I only need transcript text without timestamps?",
-              a: "Use our dedicated transcript text page for no-timestamp output and AI-ready TXT workflow: /download-youtube-transcript-as-text.",
+              a: "Use our YouTube Transcript Generator for no-timestamp output and AI-ready TXT workflow.",
             },
             {
               q: "Are there any download limits?",
@@ -558,23 +559,22 @@ export default async function YouTubeSubtitleDownloaderPage() {
                 </p>
               </Link>
               <Link
-                href="/extract-youtube-subtitles-online-tool"
+                href="/youtube-subtitle-extractor"
                 className="block p-5 rounded-xl border border-slate-200 bg-white hover:shadow-sm transition-shadow"
               >
                 <h3 className="font-bold text-slate-900 mb-2">
                   Subtitle Extractor
                 </h3>
                 <p className="text-sm text-slate-600">
-                  Best for online extraction flow, quick checks, and format
-                  selection.
+                  Best for bulk extraction with AI-powered cleaning.
                 </p>
               </Link>
               <Link
-                href="/download-youtube-transcript-as-text"
+                href="/youtube-transcript-generator"
                 className="block p-5 rounded-xl border border-slate-200 bg-white hover:shadow-sm transition-shadow"
               >
                 <h3 className="font-bold text-slate-900 mb-2">
-                  Transcript as Text
+                  Transcript Generator
                 </h3>
                 <p className="text-sm text-slate-600">
                   Best for clean no-timestamp TXT output for AI and notes.
@@ -583,6 +583,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
             </div>
           </div>
         </section>
+        <RelatedTools currentPath="/youtube-subtitle-downloader" />
       </main>
       <script
         dangerouslySetInnerHTML={{

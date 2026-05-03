@@ -495,7 +495,7 @@ export default function HowToGetYouTubeTranscriptPage({ params }: Props) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/download-subs-from-youtube"
+                href="/youtube-subtitle-downloader"
                 className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
               >
                 Try YTVidHub Free

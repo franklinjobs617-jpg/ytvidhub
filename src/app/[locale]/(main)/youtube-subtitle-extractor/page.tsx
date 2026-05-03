@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import SubtitleExtractorHero from "@/components/subtitle/SubtitleExtractorHero";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
+import RelatedTools from "@/components/shared/RelatedTools";
 import {
   ArrowRight,
   ShieldCheck,
@@ -429,6 +430,7 @@ export default async function SubtitleExtractorPage({ params }: Props) {
             sectionClassName="bg-white rounded-3xl border border-slate-200 p-10 md:p-20 py-0 shadow-[0_20px_36px_-32px_rgba(15,23,42,0.55)]"
             containerClassName="max-w-4xl px-0 lg:px-0"
           />
+          <RelatedTools currentPath="/youtube-subtitle-extractor" />
         </div>
       </main>
     </div>

@@ -12,6 +12,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "Bulk YouTube Subtitle Downloader | Extract Captions from Playlists | YTVidHub",
     description:
       "Professional bulk YouTube subtitle downloader for extracting SRT, VTT, and TXT captions from entire playlists, channels, and multiple videos.",
+    keywords:
+      "bulk youtube subtitle downloader, playlist subtitle download, youtube channel subtitles, batch subtitle extraction, download subtitles from playlist, bulk caption downloader",
     alternates: buildAlternates(locale, pathname),
   };
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
+import RelatedTools from "@/components/shared/RelatedTools";
 export default function FAQPage() {
   useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -154,6 +155,9 @@ export default function FAQPage() {
             </div>
           </div>
         </section>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <RelatedTools currentPath="/faq" />
+        </div>
       </main>
       <LoginModal
         isOpen={showLoginModal}

@@ -137,6 +137,108 @@ const nextConfig: NextConfig = {
           "/:locale/guide/how-to-download-youtube-subtitles-complete-guide/",
         permanent: true,
       },
+
+      // Removed pages — redirect to homepage
+      {
+        source: "/youtube-transcript-for-chatgpt",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/youtube-transcript-for-chatgpt/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/youtube-transcript-for-chatgpt",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/youtube-transcript-for-chatgpt/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/tools/subtitle-extractor-online",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/tools/subtitle-extractor-online/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/tools/subtitle-extractor-online",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/tools/subtitle-extractor-online/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/extract-youtube-subtitles-online-tool",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/extract-youtube-subtitles-online-tool/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/extract-youtube-subtitles-online-tool",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/extract-youtube-subtitles-online-tool/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/download-youtube-transcript-as-text",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/download-youtube-transcript-as-text/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/download-youtube-transcript-as-text",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/download-youtube-transcript-as-text/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/download-subs-from-youtube",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/download-subs-from-youtube/",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/download-subs-from-youtube",
+        destination: "/",
+        statusCode: 308,
+      },
+      {
+        source: "/:locale/download-subs-from-youtube/",
+        destination: "/",
+        statusCode: 308,
+      },
     ];
   },
 

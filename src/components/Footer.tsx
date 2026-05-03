@@ -63,7 +63,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/download-subs-from-youtube"
+                  href="/youtube-subtitle-downloader"
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("downloadSubs")}
@@ -265,7 +265,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/youtube-transcript-for-chatgpt"
+                  href="/youtube-transcript-generator"
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("chatgptTranscripts")}
@@ -289,7 +289,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/tools/subtitle-extractor-online"
+                  href="/youtube-subtitle-extractor"
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("onlineExtractor")}

@@ -4,6 +4,7 @@ import { buildCanonicalUrl } from "@/lib/url";
 import TranscriptGeneratorHero from "@/components/transcript/TranscriptGeneratorHero";
 import ScrollToTopButton from "@/components/transcript/ScrollToTopButton";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
+import RelatedTools from "@/components/shared/RelatedTools";
 import {
   Zap,
   FileText,
@@ -472,6 +473,7 @@ export default async function YouTubeTranscriptGeneratorPage({
               </p>
             </div>
           </section>
+          <RelatedTools currentPath="/youtube-transcript-generator" />
         </div>
       </main>
     </div>

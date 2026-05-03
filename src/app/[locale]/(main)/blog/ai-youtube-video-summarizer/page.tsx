@@ -1,8 +1,5 @@
 import { buildCanonicalUrl } from "@/lib/url";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
-import EditorialToc from "@/components/editorial/EditorialToc";
-import BackToTop from "@/components/editorial/BackToTop";
-import ArticleMeta from "@/components/editorial/ArticleMeta";
 
 type Props = {
   params: { locale: string };
@@ -93,7 +90,9 @@ export default function AISummaryBlogPage({ params }: Props) {
             YouTube video summarizer instantly transforms any YouTube video into
             a concise summary in seconds. No login required.
           </p>
-          <ArticleMeta author="YTVidHub Editorial Team" date="Dec 2025" readTime="6 min read" />
+          <p className="text-sm text-slate-400 mt-4">
+            By YTVidHub Editorial Team | Last reviewed Dec 2025
+          </p>
         </header>
 
         <section className="article-shell article-section pt-0">
@@ -178,7 +177,7 @@ export default function AISummaryBlogPage({ params }: Props) {
             Need transcript-first workflows?
             <a
               className="text-blue-600 hover:text-blue-700 ml-1"
-              href="https://ytvidhub.com/youtube-transcript-for-chatgpt/"
+              href="/youtube-transcript-generator"
             >
               See the YouTube transcript extraction guide.
             </a>
@@ -379,8 +378,6 @@ export default function AISummaryBlogPage({ params }: Props) {
           containerClassName="max-w-none px-0 lg:px-0"
         />
       </main>
-      <EditorialToc />
-      <BackToTop />
     </div>
   );
 }
