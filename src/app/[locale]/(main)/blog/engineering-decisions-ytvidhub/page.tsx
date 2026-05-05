@@ -49,7 +49,7 @@ export default function EngineeringDecisionsBlogPage({ params }: Props) {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: "From Pain Point to Production",
+    headline: "Building a YouTube Subtitle Pipeline: Architecture Decisions & Lessons",
     author: {
       "@type": "Organization",
       name: "YTVidHub Engineering",
@@ -79,11 +79,10 @@ export default function EngineeringDecisionsBlogPage({ params }: Props) {
         <header className="article-shell article-hero">
           <p className="article-kicker">Engineering Blog</p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            From Pain Point to Production
+            Building a YouTube Subtitle Pipeline: Architecture Decisions & Lessons
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            The architectural decisions that moved YTVidHub from a simple idea
-            to a resilient subtitle operation pipeline.
+            The architectural decisions behind YTVidHub's bulk YouTube subtitle downloader — from queue design to clean TXT export for LLM pipelines.
           </p>
           <p className="text-sm text-slate-400 mt-4">
             By YTVidHub Engineering | Updated Oct 26, 2025

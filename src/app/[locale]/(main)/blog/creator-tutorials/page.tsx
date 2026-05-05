@@ -49,7 +49,7 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: "From Pain Point to Production",
+    headline: "How to Repurpose YouTube Transcripts into Blog Posts, Social Media & More",
     author: {
       "@type": "Organization",
       name: "YTVidHub Editorial Team",
@@ -79,11 +79,10 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
         <header className="article-shell article-hero">
           <p className="article-kicker">Creator Tutorials</p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            From Pain Point to Production
+            How to Repurpose YouTube Transcripts into Blog Posts, Social Media & More
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            A practical creator workflow for turning YouTube subtitles into
-            reusable publishing assets.
+            A practical creator workflow for turning YouTube transcripts into blog posts, social media content, and reusable publishing assets.
           </p>
           <p className="text-sm text-slate-400 mt-4">
             By YTVidHub Editorial Team | Last reviewed Oct 2025

@@ -13,9 +13,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalUrl = alternates.canonical;
 
   const title =
-    "The Hidden Problem in Your Data Pipeline: Why Multilingual Subtitles are Rarely 'Ready-to-Use'";
+    "YouTube Subtitle Accuracy: Why Auto-Generated Captions Fail & How to Fix It | YTVidHub";
   const description =
-    "YTVidHub supports all languages, but we analyze why auto-generated multilingual subtitles have low accuracy. A must-read for researchers and data analysts before data prep.";
+    "Auto-generated YouTube subtitles often contain errors that break downstream analysis. Learn why caption accuracy varies by language and how to validate subtitle quality for research and AI pipelines.";
 
   return {
     title,

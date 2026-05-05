@@ -12,9 +12,9 @@ import {
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
 export const metadata: Metadata = {
-  title: "YouTube Subtitle Downloader Chrome Extension - YTVidHub",
+  title: "YouTube Subtitle Downloader Chrome Extension | Free Download 2026",
   description:
-    "Download YouTube subtitles directly from the video page with the YTVidHub Chrome Extension. Supports SRT, VTT, and clean TXT formats with one click.",
+    "Free Chrome extension to download YouTube subtitles in SRT, VTT, and TXT. One-click subtitle download directly from any YouTube video page. No login required.",
 };
 
 const CHROME_STORE_URL =
@@ -100,14 +100,14 @@ export default function AddOnPage() {
                 Official Browser Extensions
               </div>
               <h1 className="mb-4 max-w-2xl text-4xl font-bold leading-[1.08] tracking-tight text-slate-900 md:text-5xl lg:text-[56px]">
-                Chrome Extensions for YouTube
+                YouTube Subtitle Downloader Chrome Extension
               </h1>
               <p className="mb-4 text-base font-semibold text-[var(--brand-600)] md:text-lg">
-                Subtitle Downloader + Transcript Generator
+                Free Download — SRT, VTT, TXT in One Click
               </p>
               <p className="mb-8 max-w-xl text-lg leading-relaxed text-slate-600">
-                Install official YTVidHub extensions to download subtitles and generate transcripts
-                directly on YouTube.
+                Install the free YTVidHub Chrome extension to download YouTube subtitles and generate transcripts
+                directly on any YouTube video page. No login required.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <a

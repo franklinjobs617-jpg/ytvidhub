@@ -127,38 +127,11 @@ export default function TranscriptGeneratorHero() {
 
       <section className="relative pt-16 pb-20 md:pt-20 md:pb-24 article-hero">
         <div className="container mx-auto px-4 md:px-6 lg:px-8 article-shell">
-          {/* Hero Header */}
-          <div className="max-w-4xl mx-auto text-center mb-14">
-            <h1 className="text-4xl md:text-6xl font-display tracking-tight text-slate-900 leading-tight mb-6 article-h1">
+          {/* Hero Header - H1 only */}
+          <div className="max-w-4xl mx-auto text-center mb-8">
+            <h1 className="text-4xl md:text-6xl font-display tracking-tight text-slate-900 leading-tight article-h1">
               YouTube Transcript Generator
             </h1>
-
-            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Use this free online YouTube transcript generator for basic use
-              when you need export-ready text. Generate transcript from YouTube
-              video into clean TXT for notes and AI workflows, or keep
-              timestamps for SRT and VTT subtitle work.
-            </p>
-
-            {/* Key Benefits */}
-            <div className="flex flex-wrap justify-center gap-3 mb-12">
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
-                <CheckCircle size={16} className="text-blue-600" />
-                Free online for basic use
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
-                <CheckCircle size={16} className="text-blue-600" />
-                TXT, SRT, VTT, JSON
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
-                <CheckCircle size={16} className="text-blue-600" />
-                Clean text or timestamps
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
-                <CheckCircle size={16} className="text-blue-600" />
-                Reusable transcript exports
-              </div>
-            </div>
           </div>
 
           {/* Main Generator Interface */}
@@ -310,6 +283,33 @@ export default function TranscriptGeneratorHero() {
             </div>
             <p className="mt-3 text-center text-xs text-slate-400">
               * Typical speed when a transcript track is available on the video.
+            </p>
+
+            {/* Key Benefits - moved below input */}
+            <div className="mt-12 flex flex-wrap justify-center gap-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
+                <CheckCircle size={16} className="text-blue-600" />
+                Free online for basic use
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
+                <CheckCircle size={16} className="text-blue-600" />
+                TXT, SRT, VTT, JSON
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
+                <CheckCircle size={16} className="text-blue-600" />
+                Clean text or timestamps
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
+                <CheckCircle size={16} className="text-blue-600" />
+                Reusable transcript exports
+              </div>
+            </div>
+
+            <p className="mt-6 text-center text-base text-slate-500 max-w-2xl mx-auto leading-relaxed">
+              Use this free online YouTube transcript generator for basic use
+              when you need export-ready text. Generate transcript from YouTube
+              video into clean TXT for notes and AI workflows, or keep
+              timestamps for SRT and VTT subtitle work.
             </p>
           </div>
         </div>

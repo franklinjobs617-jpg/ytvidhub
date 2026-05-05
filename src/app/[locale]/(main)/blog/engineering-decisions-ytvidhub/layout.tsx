@@ -12,9 +12,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const alternates = buildAlternates(locale, "/blog/engineering-decisions-ytvidhub");
   const canonicalUrl = alternates.canonical;
 
-  const title = "Engineering Decisions Behind YTVidHub | Blog";
+  const title = "Building a YouTube Subtitle Pipeline: Architecture Decisions & Lessons | YTVidHub";
   const description =
-    "Technical insights into how we built the world's fastest bulk YouTube subtitle downloader. Scaling, performance, and architecture decisions.";
+    "How we built YTVidHub's bulk YouTube subtitle downloader — queue design, clean TXT export for LLM pipelines, and scaling decisions for high-concurrency subtitle extraction.";
 
   return {
     title,

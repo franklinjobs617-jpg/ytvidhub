@@ -1,36 +1,35 @@
 import { Metadata } from "next";
+import { buildAlternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "What Is an SRT File? Free Download & Edit Guide (2026)",
-  description:
-    "SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.",
-  keywords: [
-    "what is an srt file",
-    "srt file format",
-    "how to open srt file",
-    "how to create srt file",
-    "srt vs vtt",
-    "youtube subtitle downloader",
-  ],
-  alternates: {
-    canonical: "https://ytvidhub.com/what-is-an-srt-file/",
-  },
-  openGraph: {
-    title: "What Is an SRT File? Free Download & Edit Guide (2026)",
-    description:
-      "SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.",
-    type: "article",
-    publishedTime: "2026-01-01",
-    modifiedTime: "2026-04-21",
-    authors: ["YTVidHub"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "What Is an SRT File? Free Download & Edit Guide (2026)",
-    description:
-      "SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.",
-  },
+type Props = {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = buildAlternates(locale, "/what-is-an-srt-file");
+
+  const title = "What Is an SRT File? Free Download & Edit Guide (2026)";
+  const description = "SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.";
+
+  return {
+    title,
+    description,
+    keywords: ["what is an srt file", "srt file format", "how to open srt file", "how to create srt file", "srt vs vtt", "youtube subtitle downloader"],
+    alternates,
+    openGraph: {
+      title,
+      description,
+      url: alternates.canonical,
+      type: "article",
+      publishedTime: "2026-01-01",
+      modifiedTime: "2026-04-21",
+      authors: ["YTVidHub"],
+    },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -157,11 +156,7 @@ const breadcrumbSchema = {
   ],
 };
 
-export default function SRTFileLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function SRTFileLayout({ children }: Props) {
   return (
     <>
       <script

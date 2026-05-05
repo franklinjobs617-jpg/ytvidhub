@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import { buildCanonicalUrl } from "@/lib/url";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
@@ -37,7 +36,7 @@ export default function SubtitleAccuracyBlogPage({ params }: Props) {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: "The Hidden Problem in Your Data Pipeline",
+    headline: "YouTube Subtitle Accuracy: Why Auto-Generated Captions Fail & How to Fix It",
     author: {
       "@type": "Organization",
       name: "YTVidHub Engineering",
@@ -67,11 +66,10 @@ export default function SubtitleAccuracyBlogPage({ params }: Props) {
         <header className="article-shell article-hero">
           <p className="article-kicker">Data Strategy</p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            The Hidden Problem in Your Data Pipeline
+            YouTube Subtitle Accuracy: Why Auto-Generated Captions Fail & How to Fix It
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            YTVidHub can download many subtitle languages, but data quality is
-            still the deciding factor for reliable downstream use.
+            Auto-generated YouTube subtitles often contain errors that break downstream analysis. Learn why caption accuracy varies by language and how to validate subtitle quality before using it in research or AI pipelines.
           </p>
           <p className="text-sm text-slate-400 mt-4">
             By YTVidHub Engineering | Last reviewed Nov 2025
@@ -247,17 +245,66 @@ export default function SubtitleAccuracyBlogPage({ params }: Props) {
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Language-Specific Risk Patterns
+            YouTube Auto-Generated Subtitle Accuracy by Language
           </h2>
-          <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            Subtitle failures differ by language and channel format. Tonal
-            languages often suffer from character substitution when audio
-            quality drops. Fast dialogue channels increase segmentation errors,
-            and domain-heavy videos introduce vocabulary mismatches that look
-            fluent but change meaning.
+          <p className="text-lg text-slate-600 leading-relaxed mb-6">
+            Auto-generated subtitle accuracy varies significantly by language.
+            English captions on clear audio typically reach 85-95% accuracy,
+            but other languages often fall below 70%. Here is what researchers
+            and developers should expect:
           </p>
+          <div className="rounded-xl border border-slate-200 overflow-x-auto mb-6">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50">
+                  <th className="py-3 px-4 text-left font-semibold text-slate-900">Language</th>
+                  <th className="py-3 px-4 text-left font-semibold text-slate-900">Typical Accuracy</th>
+                  <th className="py-3 px-4 text-left font-semibold text-slate-900">Common Error Types</th>
+                  <th className="py-3 px-4 text-left font-semibold text-slate-900">Safe for AI Training?</th>
+                </tr>
+              </thead>
+              <tbody className="text-slate-600">
+                <tr className="border-b border-slate-100">
+                  <td className="py-3 px-4 font-medium text-slate-900">English</td>
+                  <td className="py-3 px-4">85-95%</td>
+                  <td className="py-3 px-4">Homophones, technical terms, proper nouns</td>
+                  <td className="py-3 px-4 text-amber-600 font-medium">With review</td>
+                </tr>
+                <tr className="border-b border-slate-100">
+                  <td className="py-3 px-4 font-medium text-slate-900">Spanish</td>
+                  <td className="py-3 px-4">75-88%</td>
+                  <td className="py-3 px-4">Regional accents, verb conjugation errors</td>
+                  <td className="py-3 px-4 text-amber-600 font-medium">With review</td>
+                </tr>
+                <tr className="border-b border-slate-100">
+                  <td className="py-3 px-4 font-medium text-slate-900">Japanese</td>
+                  <td className="py-3 px-4">65-80%</td>
+                  <td className="py-3 px-4">Particle errors, kanji misrecognition</td>
+                  <td className="py-3 px-4 text-red-600 font-medium">High risk</td>
+                </tr>
+                <tr className="border-b border-slate-100">
+                  <td className="py-3 px-4 font-medium text-slate-900">Arabic</td>
+                  <td className="py-3 px-4">55-75%</td>
+                  <td className="py-3 px-4">Dialect confusion, right-to-left rendering</td>
+                  <td className="py-3 px-4 text-red-600 font-medium">High risk</td>
+                </tr>
+                <tr className="border-b border-slate-100">
+                  <td className="py-3 px-4 font-medium text-slate-900">Hindi</td>
+                  <td className="py-3 px-4">60-78%</td>
+                  <td className="py-3 px-4">Code-mixing with English, script errors</td>
+                  <td className="py-3 px-4 text-red-600 font-medium">High risk</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-medium text-slate-900">Mandarin</td>
+                  <td className="py-3 px-4">60-80%</td>
+                  <td className="py-3 px-4">Tonal homophones, character substitution</td>
+                  <td className="py-3 px-4 text-red-600 font-medium">High risk</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            Because of this, a single global accuracy estimate is not enough.
+            Because of this variance, a single global accuracy estimate is not enough.
             Track quality by language, source type, and domain context. A stream
             acceptable for light content review may still be unsafe for model
             training, sentiment analysis, or entity extraction pipelines.
@@ -266,6 +313,90 @@ export default function SubtitleAccuracyBlogPage({ params }: Props) {
             The practical takeaway: separate access metrics from quality metrics.
             Fast download success does not guarantee reliable semantic output.
           </p>
+        </article>
+
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            How to Check YouTube Subtitle Accuracy Before Using Data
+          </h2>
+          <p className="text-lg text-slate-600 leading-relaxed mb-6">
+            Before feeding auto-generated subtitles into any analysis pipeline,
+            run these quality checks to avoid garbage-in-garbage-out problems:
+          </p>
+          <ol className="space-y-4 text-slate-600 mb-6">
+            <li className="flex gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Spot-check 5-10 segments against the audio</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">Play random segments and compare spoken words with transcript text. Focus on technical terms, names, and numbers.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Measure named entity correctness</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">Check if brand names, people, places, and domain-specific terms are transcribed correctly. These errors are the most damaging for downstream analysis.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Flag non-speech noise ratio</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">Count [Music], (Laughter), and other non-speech tags. High noise ratios indicate the video is not suitable for text-based analysis.</p>
+              </div>
+            </li>
+            <li className="flex gap-4">
+              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Check sentence coherence</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">Auto-generated captions often split sentences at timing windows. Verify that sentence boundaries make logical sense for NLP processing.</p>
+              </div>
+            </li>
+          </ol>
+        </article>
+
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+            Common YouTube Auto-Caption Error Patterns
+          </h2>
+          <p className="text-lg text-slate-600 leading-relaxed mb-6">
+            Understanding the most common error types helps you build better
+            validation rules and decide which subtitle tracks are safe to use:
+          </p>
+          <div className="space-y-5">
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h4 className="font-semibold text-slate-900 mb-1">Homophone Substitution</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                ASR systems frequently confuse words that sound alike: "their" vs "there",
+                "affect" vs "effect", "to" vs "too". These errors are invisible when reading
+                but change meaning in analysis.
+              </p>
+            </div>
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h4 className="font-semibold text-slate-900 mb-1">Technical Vocabulary Mismatch</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                Domain-specific terms (medical, legal, tech jargon) are often misrecognized
+                as common words. "API" becomes "a pie", "Kubernetes" becomes "cooper nets".
+                Always validate technical content manually.
+              </p>
+            </div>
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h4 className="font-semibold text-slate-900 mb-1">Timing-Induced Sentence Breaks</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                YouTube's caption system segments text by timing windows, not sentence structure.
+                This creates mid-sentence breaks that confuse NLP parsers and reduce chunk quality
+                for RAG pipelines.
+              </p>
+            </div>
+            <div className="p-5 rounded-xl border border-slate-100 bg-slate-50">
+              <h4 className="font-semibold text-slate-900 mb-1">Speaker Confusion in Multi-Speaker Videos</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                Auto-captions do not distinguish between speakers. In interviews, podcasts, or
+                panel discussions, all text is merged into one stream, making attribution impossible
+                without manual separation.
+              </p>
+            </div>
+          </div>
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">

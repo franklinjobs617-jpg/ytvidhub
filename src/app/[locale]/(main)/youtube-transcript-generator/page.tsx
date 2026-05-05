@@ -23,9 +23,9 @@ import {
 type Props = { params: Promise<{ locale: string }> };
 
 const PAGE_TITLE =
-  "YouTube Transcript Generator | Free Online TXT, SRT, VTT, JSON Export";
+  "YouTube Transcript Generator - Free Online, No Sign-up";
 const PAGE_DESCRIPTION =
-  "Free online YouTube transcript generator for basic use. Generate transcript from YouTube video and export clean TXT, SRT, VTT, or JSON for notes, research, and subtitle workflows.";
+  "Generate YouTube transcripts for free. Convert any YouTube video to text in seconds. Export as TXT, SRT, VTT, or JSON. No login required.";
 const PAGE_KEYWORDS = [
   "youtube transcript generator",
   "youtube video transcript generator",
@@ -700,6 +700,71 @@ export default async function YouTubeTranscriptGeneratorPage({
                   ))}
                 </div>
               </aside>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-y border-black/5 bg-white py-24">
+          <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+            <LandingSectionHeader
+              badge="Overview"
+              title="What is a YouTube Transcript Generator?"
+              description="A YouTube transcript generator extracts the spoken text from a YouTube video and converts it into a readable, exportable format. Instead of manually copying from YouTube's transcript panel, you get clean text in seconds."
+            />
+            <div className="mt-12 grid gap-8 lg:grid-cols-2">
+              <article className="rounded-[32px] border border-black/5 bg-[#fbfbfa] p-8">
+                <h3 className="text-xl font-bold text-slate-900 mb-4">Why use a YouTube transcript generator?</h3>
+                <ul className="space-y-3 text-sm text-slate-600">
+                  <li><strong>Save time:</strong> No need to manually pause, copy, and clean transcript text from YouTube.</li>
+                  <li><strong>Export formats:</strong> Get TXT for reading, SRT/VTT for subtitle editing, JSON for data pipelines.</li>
+                  <li><strong>Clean output:</strong> Remove timestamp noise and formatting artifacts automatically.</li>
+                  <li><strong>Multi-language:</strong> Works with any language track YouTube exposes on the video.</li>
+                </ul>
+              </article>
+              <article className="rounded-[32px] border border-black/5 bg-[#fbfbfa] p-8">
+                <h3 className="text-xl font-bold text-slate-900 mb-4">YouTube Transcript Generator vs Manual Transcription</h3>
+                <div className="space-y-4 text-sm text-slate-600">
+                  <div className="flex justify-between border-b border-black/5 pb-3">
+                    <span className="font-semibold text-slate-900">Speed</span>
+                    <span>Generator: seconds vs Manual: hours</span>
+                  </div>
+                  <div className="flex justify-between border-b border-black/5 pb-3">
+                    <span className="font-semibold text-slate-900">Cost</span>
+                    <span>Generator: free vs Manual: $1-3/minute</span>
+                  </div>
+                  <div className="flex justify-between border-b border-black/5 pb-3">
+                    <span className="font-semibold text-slate-900">Accuracy</span>
+                    <span>Generator: depends on YouTube's ASR vs Manual: 99%+</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-semibold text-slate-900">Best for</span>
+                    <span>Generator: quick notes, AI, research vs Manual: legal, medical</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24">
+          <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+            <LandingSectionHeader
+              badge="Languages"
+              title="YouTube Transcript Generator for Different Languages"
+              description="This YouTube transcript generator works with any language track available on the video. Whether you need English, Spanish, Arabic, Hindi, or Japanese transcripts, the workflow stays the same."
+            />
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {[
+                { lang: "English", desc: "Most common language for YouTube auto-generated captions. Highest accuracy for clear audio.", flag: "EN" },
+                { lang: "Spanish", desc: "Growing YouTube market. Auto-captions work well for clear speakers, but regional accents can reduce accuracy.", flag: "ES" },
+                { lang: "Arabic & Hindi", desc: "Available when the video exposes these transcript tracks. Quality varies by video and speaker clarity.", flag: "AR" },
+              ].map((item) => (
+                <div key={item.lang} className="rounded-[24px] border border-black/5 bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+                  <span className="inline-flex items-center rounded-full bg-blue-50 border border-blue-100 px-3 py-1 text-xs font-bold text-blue-700 mb-4">{item.flag}</span>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{item.lang}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>

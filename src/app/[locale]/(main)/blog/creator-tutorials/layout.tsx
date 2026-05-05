@@ -13,9 +13,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonicalUrl = alternates.canonical;
 
   const title =
-    "Creator Tutorials: Mastering YouTube Subtitles for Content Creation | YTVidHub";
+    "How to Repurpose YouTube Transcripts into Blog Posts & Social Media | YTVidHub";
   const description =
-    "Learn how to leverage YouTube subtitles for content creation, repurposing, and audience engagement with YTVidHub's comprehensive tutorials.";
+    "Step-by-step creator workflow for turning YouTube transcripts into blog posts, social media content, and reusable publishing assets. Save hours of manual work.";
 
   return {
     title,
