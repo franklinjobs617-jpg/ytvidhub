@@ -13,6 +13,7 @@ import {
   Globe,
   CheckCircle,
   AlertCircle,
+  Info,
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
@@ -33,7 +34,6 @@ const PLACEHOLDER_EXAMPLES = [
 export default function TranscriptGeneratorHero() {
   const router = useRouter();
 
-  const t = useTranslations("transcriptPage");
   const tErrors = useTranslations("errors");
 
   const [url, setUrl] = useState("");
@@ -95,7 +95,7 @@ export default function TranscriptGeneratorHero() {
       const normalizedUrl = normalizeYoutubeUrl(url.trim());
       if (!normalizedUrl.startsWith("http")) return;
 
-      toast.success(t("generating") + "...", {
+      toast.success("Generating transcript...", {
         position: "top-center",
         duration: 2000,
       });
@@ -130,30 +130,33 @@ export default function TranscriptGeneratorHero() {
           {/* Hero Header */}
           <div className="max-w-4xl mx-auto text-center mb-14">
             <h1 className="text-4xl md:text-6xl font-display tracking-tight text-slate-900 leading-tight mb-6 article-h1">
-              {t("hero.title")}
+              YouTube Transcript Generator
             </h1>
 
             <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-              {t("hero.subtitle")}
+              Use this free online YouTube transcript generator for basic use
+              when you need export-ready text. Generate transcript from YouTube
+              video into clean TXT for notes and AI workflows, or keep
+              timestamps for SRT and VTT subtitle work.
             </p>
 
             {/* Key Benefits */}
             <div className="flex flex-wrap justify-center gap-3 mb-12">
               <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
-                {t("hero.benefits.free")}
+                Free online for basic use
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
-                {t("hero.benefits.accurate")}
+                TXT, SRT, VTT, JSON
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
-                {t("hero.benefits.fast")}
+                Clean text or timestamps
               </div>
               <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700">
                 <CheckCircle size={16} className="text-blue-600" />
-                {t("hero.benefits.formats")}
+                Reusable transcript exports
               </div>
             </div>
           </div>
@@ -161,173 +164,153 @@ export default function TranscriptGeneratorHero() {
           {/* Main Generator Interface */}
           <div className="max-w-4xl mx-auto">
             <div
-              className={`relative bg-white rounded-2xl border shadow-xl overflow-hidden transition-all duration-300 ${
-                inputError
-                  ? "border-red-300 shadow-red-100 ring-4 ring-red-50"
-                  : "border-slate-200 shadow-slate-200/60"
+              className={`rounded-3xl border bg-white/95 backdrop-blur transition-all duration-300 ${
+                isFocused
+                  ? "border-[var(--brand-400)] ring-4 ring-[var(--brand-50)] shadow-[0_30px_65px_-40px_rgba(37,99,235,0.75)]"
+                  : inputError
+                    ? "border-red-300 ring-4 ring-red-50"
+                    : "border-slate-200 shadow-[0_28px_65px_-44px_rgba(15,23,42,0.7)] hover:border-slate-300 hover:shadow-[0_30px_70px_-42px_rgba(37,99,235,0.32)]"
               }`}
             >
-              {/* Header */}
-              <div className="bg-slate-50 border-b border-slate-200 px-4 py-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                    <Youtube size={18} className="text-red-500" />
-                  </div>
-                  <div>
-                    <h2 className="text-sm font-bold text-slate-800">
-                      {t("interface.title")}
-                    </h2>
-                    <p className="text-xs text-slate-500">
-                      {t("interface.subtitle")}
-                    </p>
-                  </div>
-                </div>
+              <div className="flex items-start px-5 pb-5 pt-6 sm:px-7">
+                <Youtube
+                  className={`mr-3 mt-1 h-6 w-6 shrink-0 transition-colors ${
+                    isFocused ? "text-red-500" : "text-slate-300"
+                  }`}
+                />
+                <textarea
+                  ref={textareaRef}
+                  value={url}
+                  onChange={(e) => {
+                    handleInputChange(e);
+                    e.target.style.height = "auto";
+                    e.target.style.height = `${Math.min(e.target.scrollHeight, 240)}px`;
+                  }}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => !url && setIsFocused(false)}
+                  rows={1}
+                  className={`min-h-[46px] w-full flex-1 resize-none bg-transparent text-base font-medium leading-relaxed text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400 md:text-[21px] ${
+                    inputError ? "caret-red-500" : "caret-blue-600"
+                  }`}
+                  placeholder={
+                    isFocused || url
+                      ? "Paste YouTube video URL here..."
+                      : typedPlaceholder || "|"
+                  }
+                  spellCheck={false}
+                />
               </div>
 
-              {/* Input Area */}
-              <div className="p-6 md:p-8">
-                <div className="relative group/input">
-                  {/* Input Container */}
-                  <div
-                    className={`relative flex items-center rounded-2xl border bg-white transition-all duration-200 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04)] ${
-                      isFocused
-                        ? "border-blue-400 shadow-lg shadow-blue-100/50 ring-2 ring-blue-50"
-                      : inputError
-                          ? "border-red-400"
-                          : "border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    {/* Icon */}
-                    <div className="pl-5 flex-shrink-0">
-                      <Youtube size={24} className="text-red-500" />
-                    </div>
+              <div className="h-px w-full bg-slate-100" />
 
-                    {/* Input */}
-                    <textarea
-                      ref={textareaRef}
-                      value={url}
-                      onChange={handleInputChange}
-                      onFocus={() => setIsFocused(true)}
-                      onBlur={() => !url && setIsFocused(false)}
-                      rows={1}
-                      className={`flex-1 py-4 px-3 bg-transparent text-lg text-slate-800 outline-none resize-none placeholder:text-slate-400 leading-relaxed ${
-                        inputError ? "caret-red-500" : "caret-blue-600"
-                      }`}
-                      placeholder={
-                        isFocused || url
-                          ? t("interface.placeholder")
-                          : typedPlaceholder || "|"
-                      }
-                      spellCheck={false}
-                    />
+              <div className="flex flex-col items-center justify-between gap-4 rounded-b-3xl bg-white px-5 py-4 sm:flex-row sm:px-7">
+                <div className="flex w-full items-center gap-2 text-[13px] font-medium text-slate-400 sm:w-auto">
+                  <Info size={14} className="text-slate-300" />
+                  Basic transcript export without extra setup
+                </div>
 
-                    {/* Generate Button */}
-                    <div className="pr-3 pt-3 pb-3 flex-shrink-0">
+                <button
+                  onClick={handleGenerateTranscript}
+                  disabled={!url.trim() || isAnalyzing}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_16px_28px_-18px_rgba(37,99,235,0.95)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                >
+                  {isAnalyzing ? (
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  ) : (
+                    <ArrowRight size={16} />
+                  )}
+                  Generate Transcript
+                </button>
+              </div>
+            </div>
+
+            {inputError && (
+              <div className="mt-4 text-center animate-in fade-in slide-in-from-top-2">
+                <span className="inline-flex items-center gap-1.5 rounded-lg border border-red-100 bg-red-50 px-3 py-1.5 text-[13px] font-semibold text-red-600 shadow-sm">
+                  <AlertCircle size={14} /> {tErrors("invalidUrl")}
+                </span>
+              </div>
+            )}
+
+            <div className="relative z-10 mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <span className="text-[13px] font-semibold text-slate-400">
+                Try these examples:
+              </span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                {[
+                  {
+                    label: "Music Video",
+                    icon: Play,
+                    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                  },
+                  {
+                    label: "Tutorial",
+                    icon: FileText,
+                    url: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+                  },
+                  {
+                    label: "Documentary",
+                    icon: Globe,
+                    url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+                  },
+                ].map((item, index, arr) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.label} className="flex items-center">
                       <button
-                        onClick={handleGenerateTranscript}
-                        disabled={!url.trim() || isAnalyzing}
-                        className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-xs tracking-wide transition-all whitespace-nowrap ${
-                          url.trim() && !isAnalyzing
-                            ? "bg-slate-900 text-white hover:bg-slate-800 hover:shadow-md"
-                            : "bg-blue-50 text-blue-300 cursor-not-allowed"
-                        }`}
+                        onClick={() => handleExampleClick(item.url)}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-semibold text-slate-600 transition-colors hover:border-[var(--brand-300)] hover:bg-[var(--brand-50)] hover:text-[var(--brand-700)]"
                       >
-                        {isAnalyzing ? (
-                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <ArrowRight size={15} />
-                        )}
-                        <span className="hidden sm:inline">
-                          {t("interface.generate")}
-                        </span>
+                        <Icon size={12} />
+                        {item.label}
                       </button>
+                      {index !== arr.length - 1 ? (
+                        <span className="mx-2 text-slate-200">/</span>
+                      ) : null}
                     </div>
-                  </div>
-                </div>
-
-                {/* Error Message */}
-                {inputError && (
-                  <div className="flex items-center gap-2 mt-3 text-xs font-bold text-red-600 bg-red-50 px-3 py-2 rounded-lg border border-red-100 animate-in fade-in slide-in-from-top-2">
-                    <AlertCircle size={14} /> {tErrors("invalidUrl")}
-                  </div>
-                )}
-
-                {/* Example Links */}
-                <div className="flex flex-col items-center gap-3 mt-6">
-                  <p className="text-xs font-bold uppercase tracking-widest text-slate-300">
-                    {t("interface.tryExample")}
-                  </p>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    <button
-                      onClick={() =>
-                        handleExampleClick(
-                          "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                        )
-                      }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
-                    >
-                      <Play size={12} /> Music Video
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleExampleClick(
-                          "https://www.youtube.com/watch?v=9bZkp7q19f0",
-                        )
-                      }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
-                    >
-                      <FileText size={12} /> Tutorial
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleExampleClick(
-                          "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-                        )
-                      }
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-500 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 transition-all cursor-pointer"
-                    >
-                      <Globe size={12} /> Documentary
-                    </button>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
-                <div className="text-2xl font-bold text-blue-600 mb-1">
+            <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+              <div className="rounded-xl border border-slate-100 bg-white p-4 text-center shadow-sm">
+                <div className="mb-1 text-2xl font-bold text-blue-600">
                   2.4M+
                 </div>
                 <div className="text-xs text-slate-500 font-medium">
-                  {t("stats.transcripts")}
+                  Transcript exports
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
-                <div className="text-2xl font-bold text-blue-500 mb-1">
+              <div className="rounded-xl border border-slate-100 bg-white p-4 text-center shadow-sm">
+                <div className="mb-1 text-2xl font-bold text-blue-500">
                   100+
                 </div>
                 <div className="text-xs text-slate-500 font-medium">
-                  {t("stats.languages")}
+                  Language tracks
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
-                <div className="text-2xl font-bold text-blue-600 mb-1">
-                  99.5%
+              <div className="rounded-xl border border-slate-100 bg-white p-4 text-center shadow-sm">
+                <div className="mb-1 text-2xl font-bold text-blue-600">
+                  4
                 </div>
                 <div className="text-xs text-slate-500 font-medium">
-                  {t("stats.accuracy")}
+                  Output formats
                 </div>
               </div>
-              <div className="text-center p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
-                <div className="text-2xl font-bold text-blue-700 mb-1">
+              <div className="rounded-xl border border-slate-100 bg-white p-4 text-center shadow-sm">
+                <div className="mb-1 text-2xl font-bold text-blue-700">
                   &lt;30s
                 </div>
                 <div className="text-xs text-slate-500 font-medium">
-                  {t("stats.speed")}
+                  Typical export time*
                 </div>
               </div>
             </div>
+            <p className="mt-3 text-center text-xs text-slate-400">
+              * Typical speed when a transcript track is available on the video.
+            </p>
           </div>
         </div>
       </section>

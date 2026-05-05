@@ -164,12 +164,12 @@ export default function HowToGetYouTubeTranscriptPage({ params }: Props) {
             For AI teams and researchers, YTVidHub offers faster, bulk-friendly
             transcript extraction -{" "}
             <Link
-              href="/bulk-youtube-subtitle-downloader"
+              href="/youtube-transcript-generator"
               className="text-blue-600 hover:text-blue-700"
             >
-              link to our tool
-            </Link>
-            .
+              use the YouTube Transcript Generator
+            </Link>{" "}
+            for export-ready TXT, SRT, VTT, or JSON files.
           </p>
         </article>
         {/* Method 1 */}
