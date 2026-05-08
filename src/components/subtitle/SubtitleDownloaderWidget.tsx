@@ -29,9 +29,11 @@ export default function SubtitleDownloaderWidget() {
 
   const [url, setUrl] = useState("");
   const [format, setFormat] = useState<"srt" | "vtt" | "txt">("srt");
-  const [lang, setLang] = useState<string>("en");
+  const [lang, setLang] = useState<string>("auto");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [downloadedFilename, setDownloadedFilename] = useState("");
+  const [downloadedSize, setDownloadedSize] = useState(0);
 
   const isValidUrl = (u: string) =>
     /^(https?:\/\/)?(www\.|m\.)?(youtube\.com|youtu\.be)\/.+$/.test(u.trim());
@@ -62,6 +64,8 @@ export default function SubtitleDownloaderWidget() {
       }
       const ext = format === "txt" ? "txt" : format;
       const filename = `subtitles.${ext}`;
+      setDownloadedFilename(filename);
+      setDownloadedSize(blob.size);
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
       a.download = filename;
@@ -82,7 +86,14 @@ export default function SubtitleDownloaderWidget() {
     setUrl("");
     setStatus("idle");
     setErrorMsg("");
+    setDownloadedFilename("");
+    setDownloadedSize(0);
     inputRef.current?.focus();
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`;
+    return `${(bytes / 1024).toFixed(1)} KB`;
   };
 
   return (
@@ -118,6 +129,7 @@ export default function SubtitleDownloaderWidget() {
                   key={opt.value}
                   onClick={() => setFormat(opt.value)}
                   disabled={status === "loading"}
+                  title={opt.desc}
                   className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${
                     format === opt.value
                       ? "bg-blue-600 text-white shadow-sm"
@@ -172,10 +184,13 @@ export default function SubtitleDownloaderWidget() {
         {/* Success State */}
         {status === "success" && (
           <div className="text-center animate-in fade-in">
-            <div className="inline-flex items-center gap-2 text-green-600 font-semibold mb-4">
+            <div className="inline-flex items-center gap-2 text-green-600 font-semibold mb-2">
               <CheckCircle size={20} />
               Download complete!
             </div>
+            <p className="text-xs text-slate-400 mb-4">
+              {downloadedFilename} ({formatFileSize(downloadedSize)})
+            </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleReset}

@@ -5,6 +5,7 @@ import { Link } from "@/i18n/routing";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "@/components/LoginModel";
 import BulkDownloaderSchema from "@/components/seo/BulkDownloaderSchema";
+import BulkDownloaderInput from "@/components/subtitle/BulkDownloaderInput";
 import RelatedTools from "@/components/shared/RelatedTools";
 import {
   ArrowRight,
@@ -93,41 +94,13 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
               </h1>
 
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-slate-600">
-                Struggling to collect large volumes of YouTube subtitles for research, moderation,
-                or AI data preparation? Our bulk YouTube subtitle downloader lets you extract SRT,
-                VTT, and clean TXT files from playlists, channels, and multiple videos in one
-                automated flow.
-              </p>
-              <div className="mt-6">
-                <Link
-                  className="btn-primary inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-7 py-3 text-sm font-semibold text-white shadow-[0_20px_28px_-18px_rgba(37,99,235,1)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
-                  href="/workspace?from=bulk-downloader"
-                >
-                  Start bulk subtitle extraction now
-                </Link>
-              </div>
-
-              <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-slate-600">
                 Extract subtitles from playlists, channels, and multiple videos in one flow.
                 Export clean <strong>SRT, VTT, and TXT</strong> files for operations, content,
                 and AI/LLM data preparation.
               </p>
 
-              <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link
-                  href="/"
-                  onClick={handleAction}
-                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-7 py-3 text-sm font-semibold text-white shadow-[0_20px_28px_-18px_rgba(37,99,235,1)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
-                >
-                  Start Batch Download
-                  <ArrowRight size={16} />
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="rounded-xl border border-slate-200 bg-white px-7 py-3 text-sm font-semibold text-slate-700 shadow-[0_12px_24px_-22px_rgba(15,23,42,0.8)] transition-colors hover:border-blue-200 hover:bg-slate-50 hover:text-blue-700"
-                >
-                  View Pricing
-                </Link>
+              <div className="mt-10">
+                <BulkDownloaderInput />
               </div>
             </div>
 
