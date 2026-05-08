@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
+import { useSubtitleDownloader } from "@/hooks/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { Sidebar } from "@/components/workspace/Sidebar";
@@ -37,32 +37,23 @@ import {
   getPendingAction,
   savePendingAction,
 } from "@/lib/pendingAction";
-import {
-  getGuestLimitMessage,
-  promptLoginForGuestLimit,
-} from "@/lib/guestLimitPrompt";
 import { BatchGridView } from "@/components/workspace/BatchGridView";
 import { BatchProgressModal } from "@/components/workspace/BatchProgressModal";
 import { PlaylistProgressModal } from "@/components/workspace/PlaylistProgressModal";
 import { TranslateModal } from "@/components/workspace/TranslateModal";
 import {
-  clearPendingPurchase,
-  savePendingPurchase,
-  trackPurchaseWithRetry,
-} from "@/lib/analytics";
-import {
-  clearStripePurchaseContext,
-  readStripePurchaseContext,
-} from "@/lib/stripePurchaseContext";
+  getTranscriptUnlockKey,
+  shouldHydrateMetadata,
+  createShowAnalysisError,
+  handleSeek as handleSeekUtil,
+  useWorkspacePurchaseTracking,
+  useWorkspaceMobileKeyboard,
+} from "@/hooks/workspace";
 import { InsufficientCreditsModal } from "@/components/workspace/InsufficientCreditsModal";
 import { BulkCreditActionModal } from "@/components/workspace/BulkCreditActionModal";
 import { BulkPostPartialUpsellModal } from "@/components/workspace/BulkPostPartialUpsellModal";
 import { BatchActionConfirmModal } from "@/components/workspace/BatchActionConfirmModal";
 import { getPlanLabel } from "@/lib/plan";
-
-const getTranscriptUnlockKey = (
-  video?: { id?: string; url?: string } | null,
-) => video?.id || video?.url || "";
 
 // === 1. 核心逻辑组件 ===
 function WorkspaceContent() {
@@ -133,7 +124,6 @@ function WorkspaceContent() {
   const searchInputRef = useRef<HTMLInputElement>(null!);
   const hasTriedResumeRef = useRef(false);
   const isResumingPendingActionRef = useRef(false);
-  const hasAttemptedWorkspacePurchaseTrackingRef = useRef(false);
 
   const [inputUrl, setInputUrl] = useState("");
   const [isAddingVideo, setIsAddingVideo] = useState(false);
@@ -145,7 +135,7 @@ function WorkspaceContent() {
     string[]
   >([]);
   const [showMobileUrlInput, setShowMobileUrlInput] = useState(false);
-  const [mobileKeyboardInset, setMobileKeyboardInset] = useState(0);
+  const mobileKeyboardInset = useWorkspaceMobileKeyboard(showMobileUrlInput);
   const [showTranslateModal, setShowTranslateModal] = useState(false);
 
   const selectedBatchCount = batchSelectedIds.length;
@@ -196,52 +186,7 @@ function WorkspaceContent() {
     postPartialUpsell,
   } = useSubtitleDownloader(refreshUser);
 
-  useEffect(() => {
-    if (hasAttemptedWorkspacePurchaseTrackingRef.current) return;
-    hasAttemptedWorkspacePurchaseTrackingRef.current = true;
-
-    const params = new URLSearchParams(window.location.search);
-    const fromPayment = params.get("fromPayment");
-    const stripeSessionId = params.get("stripeSessionId");
-
-    if (fromPayment !== "1" || !stripeSessionId) return;
-
-    const purchaseContext = readStripePurchaseContext();
-    if (!purchaseContext) return;
-
-    const purchasePayload = {
-      transaction_id: stripeSessionId,
-      value: purchaseContext.value,
-      currency: purchaseContext.currency || "USD",
-      items: [
-        {
-          item_name: purchaseContext.item_name,
-          quantity: purchaseContext.quantity || 1,
-          item_variant: purchaseContext.item_variant,
-        },
-      ],
-    };
-
-    savePendingPurchase(purchasePayload);
-
-    let cancelled = false;
-
-    (async () => {
-      const tracked = await trackPurchaseWithRetry(purchasePayload, {
-        attempts: 10,
-        delayMs: 1000,
-      });
-
-      if (!cancelled && tracked) {
-        clearPendingPurchase();
-        clearStripePurchaseContext();
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  useWorkspacePurchaseTracking();
 
   useEffect(() => {
     if (resumeBulkParam !== "1" || hasTriedResumeRef.current) return;
@@ -290,52 +235,12 @@ function WorkspaceContent() {
   const [initialSubtitleVideoId, setInitialSubtitleVideoId] =
     useState<string>("");
 
-  const maybePromptLoginForGuestLimit = (error: unknown): boolean => {
-    if (user) return false;
-    if (!promptLoginForGuestLimit(error, openLoginModal)) return false;
-    setAnalysisError(getGuestLimitMessage(error));
-    return true;
-  };
-
-  const getReadableErrorMessage = (
-    error: unknown,
-    fallback = "Something went wrong. Please try again.",
-  ) => {
-    if (error instanceof Error && error.message?.trim()) return error.message;
-    if (typeof error === "string" && error.trim()) return error;
-    return fallback;
-  };
-
-  const showAnalysisError = (
-    error: unknown,
-    fallback = "Failed to analyze this video. Please try again.",
-  ) => {
-    if (maybePromptLoginForGuestLimit(error)) return;
-    const message = getReadableErrorMessage(error, fallback);
-    setAnalysisError(message);
-    toast.error(message);
-  };
-
-  const shouldHydrateMetadata = (
-    video:
-      | { url?: string; title?: string; uploader?: string }
-      | null
-      | undefined,
-  ) => {
-    if (!video?.url) return false;
-    const title = String(video.title || "").trim();
-    const uploader = String(video.uploader || "").trim();
-
-    const titleNeedsHydration =
-      !title ||
-      title === "YouTube Video" ||
-      title === "Loading video info..." ||
-      title === "Unknown Video";
-    const uploaderNeedsHydration =
-      !uploader || uploader === "Guest Preview" || uploader === "...";
-
-    return titleNeedsHydration || uploaderNeedsHydration;
-  };
+  const showAnalysisError = createShowAnalysisError(
+    user,
+    openLoginModal,
+    setAnalysisError,
+    toast,
+  );
 
   // --- 初始化逻辑 ---
   useEffect(() => {
@@ -561,41 +466,6 @@ function WorkspaceContent() {
       cancelled = true;
     };
   }, [user, currentVideo, currentVideo?.url, currentVideo?.title, currentVideo?.uploader]);
-
-  useEffect(() => {
-    if (!showMobileUrlInput) {
-      setMobileKeyboardInset(0);
-      return;
-    }
-
-    const updateKeyboardInset = () => {
-      const viewport = window.visualViewport;
-      if (!viewport) {
-        setMobileKeyboardInset(0);
-        return;
-      }
-
-      const inset = Math.max(
-        0,
-        Math.round(window.innerHeight - viewport.height - viewport.offsetTop),
-      );
-      setMobileKeyboardInset(inset);
-    };
-
-    updateKeyboardInset();
-
-    const viewport = window.visualViewport;
-    viewport?.addEventListener("resize", updateKeyboardInset);
-    viewport?.addEventListener("scroll", updateKeyboardInset);
-    window.addEventListener("orientationchange", updateKeyboardInset);
-
-    return () => {
-      viewport?.removeEventListener("resize", updateKeyboardInset);
-      viewport?.removeEventListener("scroll", updateKeyboardInset);
-      window.removeEventListener("orientationchange", updateKeyboardInset);
-      setMobileKeyboardInset(0);
-    };
-  }, [showMobileUrlInput]);
 
   useEffect(() => {
     setHasConfirmedPreviewLeave(false);
@@ -1014,15 +884,8 @@ function WorkspaceContent() {
     }
   };
 
-  const handleSeek = (timeStr: string) => {
-    const parts = timeStr.split(":").map(Number);
-    const secs =
-      parts.length === 2
-        ? parts[0] * 60 + parts[1]
-        : parts[0] * 3600 + parts[1] * 60 + parts[2];
-    setSeekTime(secs);
-    if (window.innerWidth < 768) setActiveTab("video");
-  };
+  const handleSeek = (timeStr: string) =>
+    handleSeekUtil(timeStr, setSeekTime, setActiveTab);
 
   if (!currentVideo)
     return (

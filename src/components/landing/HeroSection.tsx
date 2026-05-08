@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
+import { useSubtitleDownloader } from "@/hooks/useSubtitleDownloader";
 import { subtitleApi } from "@/lib/api";
 import {
   extractVideoId,

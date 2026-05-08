@@ -7,12 +7,12 @@
   "subtitleDownloaderPage": {
     "title": "Free YouTube Subtitle Downloader - Download SRT, VTT, TXT Online | YTVidHub",
     "description": "Download YouTube subtitles for free in SRT, VTT, and TXT formats. Extract captions from any YouTube video instantly. No registration required.",
-    "keywords": "youtube subtitle downloader, download youtube subtitles, free subtitle downloader, youtube caption downloader, download youtube captions, youtube cc download"
+    "keywords": "youtube subtitle downloader, download youtube subtitles, free subtitle downloader, youtube caption extractor, youtube closed captions download, youtube subtitles for AI training"
   },
   "transcriptPage": {
     "title": "YouTube Transcript Generator | Free Video to Text (2026)",
     "description": "Stop rewinding videos! Our free YouTube transcript generator converts any YouTube video to text instantly. AI-powered accuracy, supports all languages. No signup needed!",
-    "keywords": "youtube transcript generator, youtube transcript, generate youtube transcript, youtube video transcript, free transcript generator, youtube to text converter",
+    "keywords": "youtube transcript generator, youtube video to text, generate youtube transcript, youtube transcript download, free youtube transcript generator, youtube transcript for AI training, youtube video transcript online, youtube transcript extractor",
     "generating": "Generating transcript",
     "hero": {
       "title": "YouTube Transcript Generator",
@@ -966,12 +966,12 @@
     }
   },
   "subtitleExtractorPage": {
-    "title": "YouTube Subtitle Extractor - Bulk Download 500+ Free (2026)",
-    "description": "Extract YouTube subtitles in bulk for AI/LLM training. Download 500+ videos in SRT/TXT format with one click. No API limits. Free tool for researchers & developers.",
-    "keywords": "youtube subtitle extractor, bulk youtube subtitle download, youtube subtitle to text, youtube transcript for AI training, youtube subtitle API alternative",
+    "title": "YouTube Subtitle Extractor - Extract & Clean Subtitles Online | YTVidHub",
+    "description": "Extract YouTube subtitles and convert to clean text for AI training, research, and content creation. Free online subtitle extractor with 100+ language support.",
+    "keywords": "youtube subtitle extractor, youtube subtitle to text, extract youtube subtitles, youtube subtitle for AI training, youtube subtitle API alternative, free subtitle extractor",
     "hero": {
-      "title": "YouTube Subtitle Extractor - Bulk Download 500+ Free",
-      "subtitle": "Professional YouTube subtitle extractor built for AI researchers and developers. Bulk download subtitles from 500+ videos in one click. Convert to clean text for LLM training. No API rate limits.",
+      "title": "YouTube Subtitle Extractor - Free Online Tool",
+      "subtitle": "Professional YouTube subtitle extractor built for AI researchers and developers. Extract subtitles and convert to clean text for LLM training. Supports 100+ languages. No API rate limits.",
       "benefits": {
         "bulk": "Bulk Extraction",
         "formats": "SRT, VTT, TXT",
@@ -1014,7 +1014,7 @@
       }
     },
     "performance": {
-      "title": "2026 Performance & Accuracy Audit",
+      "title": "How Our Subtitle Extractor Ensures Accuracy",
       "description": "We continuously benchmark our extraction engine to ensure zero data loss across platforms.",
       "benchmarks": [
         "Sync-correction Algorithm v2.4",
@@ -1028,7 +1028,7 @@
       }
     },
     "workflow": {
-      "title": "Seamless Integration into Your Workflow",
+      "title": "YouTube Subtitle to Text for Any Workflow",
       "items": {
         "ai": {
           "title": "Clean Text for AI",
@@ -1106,5 +1106,10 @@
         "answer": "Our 2026 internal audit across 1,500 playlist extractions shows 99.8% accuracy for playlists up to 500 videos. The tool uses a custom sync-correction algorithm to handle YouTube's auto-generated caption drift, ensuring professional-grade SRT files."
       }
     }
+  },
+  "bulkDownloaderPage": {
+    "title": "Bulk YouTube Subtitle Downloader | Extract Captions from Playlists | YTVidHub",
+    "description": "Professional bulk YouTube subtitle downloader for extracting SRT, VTT, and TXT captions from entire playlists, channels, and multiple videos.",
+    "keywords": "bulk youtube subtitle downloader, playlist subtitle download, youtube channel subtitles, batch subtitle extraction, download subtitles from playlist, bulk caption downloader"
   }
 }

@@ -5,6 +5,7 @@ import { TestimonialSection } from "@/components/testimonials/TestimonialSection
 import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import RelatedTools from "@/components/shared/RelatedTools";
+import SubtitleDownloaderWidget from "@/components/subtitle/SubtitleDownloaderWidget";
 import { Metadata } from "next";
 import { buildCanonicalUrl } from "@/lib/url";
 type Props = { params: Promise<{ locale: string }> };
@@ -51,7 +52,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
               VTT.
             </p>
             <p className="text-sm text-slate-500 mb-10">
-              Need plain transcript text without timestamps? Use{""}
+              Need plain transcript text without timestamps? Use{" "}
               <Link
                 href="/youtube-transcript-generator"
                 className="text-blue-600 hover:text-blue-700 font-semibold"
@@ -60,80 +61,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
               </Link>
               .
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Link
-                href="/"
-                className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all hover:-translate-y-1 text-sm uppercase tracking-wide"
-              >
-                Start Downloading Subtitles
-              </Link>
-              <Link
-                href="/bulk-youtube-subtitle-downloader"
-                className="px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-xl border-2 border-slate-200 shadow-sm transition-all hover:-translate-y-1 text-sm uppercase tracking-wide"
-              >
-                Bulk Download Tool
-              </Link>
-            </div>
-            {/* Visual Demo */}
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-xl p-6">
-                <div className="grid md:grid-cols-3 gap-6 items-center">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <svg
-                        className="w-8 h-8 text-red-600"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                      </svg>
-                    </div>
-                    <p className="text-sm font-semibold text-slate-700">
-                      YouTube Video
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-8 h-8 mx-auto mb-4 text-blue-600">
-                      <svg
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
-                    </div>
-                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">
-                      Extract
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <svg
-                        className="w-8 h-8 text-blue-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                    </div>
-                    <p className="text-sm font-semibold text-slate-700">
-                      SRT/VTT/TXT Files
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SubtitleDownloaderWidget />
           </div>
         </section>
         {/* === 2. WHAT IS YOUTUBE SUBTITLE DOWNLOADER === */}
@@ -163,7 +91,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
         <section className="py-16 bg-slate-50">
           <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-4 text-center article-h2">
-              Download YouTube Subtitles in Multiple Formats
+              Supported Formats: SRT, VTT, and TXT
             </h2>
             <p className="text-lg text-slate-600 text-center mb-12 max-w-2xl mx-auto">
               Choose the perfect format for your needs - from video editing to
@@ -230,7 +158,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
         <section className="py-16 bg-white">
           <div className="container mx-auto px-6 max-w-5xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center article-h2">
-              How to Download YouTube Subtitles
+              How to Extract Captions from Any YouTube Video
             </h2>
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
@@ -306,7 +234,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
         <section className="py-16 bg-slate-50">
           <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-4 text-center article-h2">
-              Why Download YouTube Subtitles?
+              Why Use a Free Subtitle Downloader?
             </h2>
             <p className="text-lg text-slate-600 text-center mb-12 max-w-2xl mx-auto">
               From accessibility to AI training, discover the many uses for
@@ -449,7 +377,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
         <section className="py-16 bg-slate-50">
           <div className="container mx-auto px-6 max-w-4xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center article-h2">
-              Technical Specifications
+              Subtitle Download Technical Specs
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-white rounded-xl p-6 border border-slate-200">
@@ -544,18 +472,18 @@ export default async function YouTubeSubtitleDownloaderPage() {
         <section className="py-16 bg-slate-50">
           <div className="container mx-auto px-6 max-w-4xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-10 text-center article-h2">
-              Choose the Right Page by Intent
+              Related Tools for Subtitle &amp; Transcript Workflows
             </h2>
             <div className="grid md:grid-cols-3 gap-5">
               <Link
-                href="/youtube-subtitle-downloader"
+                href="/bulk-youtube-subtitle-downloader"
                 className="block p-5 rounded-xl border border-blue-200 bg-blue-50 hover:shadow-sm transition-shadow"
               >
                 <h3 className="font-bold text-slate-900 mb-2">
-                  Subtitle Downloader
+                  Bulk Subtitle Downloader
                 </h3>
                 <p className="text-sm text-slate-600">
-                  Best for SRT/VTT caption download and editing workflows.
+                  Best for batch extraction from playlists and channels.
                 </p>
               </Link>
               <Link

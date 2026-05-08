@@ -101,7 +101,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
               <div className="mt-6">
                 <a
                   className="btn-primary inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-7 py-3 text-sm font-semibold text-white shadow-[0_20px_28px_-18px_rgba(37,99,235,1)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
-                  href="https://ytvidhub.com/bulk-youtube-subtitle-downloader-tool"
+                  href="/workspace?from=bulk-downloader"
                 >
                   Start bulk subtitle extraction now
                 </a>
@@ -158,7 +158,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-6xl px-6">
             <div className="max-w-3xl">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                Built for high-volume subtitle extraction
+                Bulk YouTube Subtitle Downloader for Playlists &amp; Channels
               </h2>
               <p className="mt-4 text-slate-600">
                 A practical, production-style bulk YouTube subtitle downloader for teams and
@@ -187,7 +187,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-6xl px-6">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                Manual workflow vs batch workflow
+                Why Use a Bulk Subtitle Downloader?
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-slate-600">
                 Replace repetitive copy-paste operations with a single batch pipeline.
@@ -247,7 +247,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
         <section className="bg-[var(--surface-page)] py-20">
           <div className="container mx-auto max-w-5xl px-6">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-              Use Cases
+              Use Cases for Bulk Subtitle Extraction
             </h2>
             <div className="mt-8 space-y-6 text-slate-600">
               <p>
@@ -256,7 +256,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 testing workflows.{" "}
                 <a
                   className="text-blue-600 hover:text-blue-700"
-                  href="https://ytvidhub.com/bulk-youtube-subtitle-downloader-tool"
+                  href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for AI/LLM data prep -&gt;
                 </a>
@@ -267,7 +267,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 manual one-by-one extraction.{" "}
                 <a
                   className="text-blue-600 hover:text-blue-700"
-                  href="https://ytvidhub.com/bulk-youtube-subtitle-downloader-tool"
+                  href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for multilingual workflows -&gt;
                 </a>
@@ -278,7 +278,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 narratives at scale.{" "}
                 <a
                   className="text-blue-600 hover:text-blue-700"
-                  href="https://ytvidhub.com/bulk-youtube-subtitle-downloader-tool"
+                  href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for content analysis -&gt;
                 </a>
@@ -288,7 +288,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 subtitle batches for faster audit reviews, policy checks, and compliance workflows.{" "}
                 <a
                   className="text-blue-600 hover:text-blue-700"
-                  href="https://ytvidhub.com/bulk-youtube-subtitle-downloader-tool"
+                  href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for moderation tasks -&gt;
                 </a>
@@ -299,7 +299,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 media research.{" "}
                 <a
                   className="text-blue-600 hover:text-blue-700"
-                  href="https://ytvidhub.com/bulk-youtube-subtitle-downloader-tool"
+                  href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for research projects -&gt;
                 </a>
@@ -312,7 +312,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-6xl px-6">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                3-step batch process
+                How to Download Subtitles from a YouTube Playlist
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-slate-600">
                 A clear flow from URL ingestion to final ZIP delivery.
@@ -347,7 +347,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
         <section className="bg-slate-900 py-20 text-white">
           <div className="container mx-auto max-w-6xl px-6">
             <div className="max-w-3xl">
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Use cases that convert</h2>
+              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Real-World Bulk Subtitle Extraction Scenarios</h2>
               <p className="mt-4 text-slate-300">
                 The bulk downloader solves practical work, not just demo-style extraction.
               </p>
@@ -391,7 +391,7 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
           <div className="container mx-auto max-w-5xl px-6">
             <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-                Output format clarity
+                Supported Formats: SRT, VTT, TXT for Batch Download
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-slate-600">
                 Choose the right format for playback, editing, or dataset use.
@@ -429,7 +429,7 @@ Welcome to our deep dive...
 
         <section id="bulk-faq" className="border-y border-slate-200 bg-white py-20">
           <div className="container mx-auto max-w-4xl px-6 lg:px-6">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">FAQ</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">FAQ About Bulk YouTube Subtitle Downloads</h2>
             <p className="mt-3 text-slate-600">
               Everything important about bulk subtitle extraction.
             </p>
@@ -551,7 +551,7 @@ Welcome to our deep dive...
         <section className="px-4 pb-20 md:px-6">
           <div className="mx-auto max-w-6xl rounded-3xl bg-slate-900 px-8 py-14 text-center text-white md:px-14">
             <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
-              Ready to scale subtitle extraction?
+              Start Bulk YouTube Subtitle Extraction Now
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-300">
               Move from manual downloads to a structured bulk pipeline built for repeatable output.

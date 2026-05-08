@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useSubtitleDownloader } from "@/hook/useSubtitleDownloader";
+import { useSubtitleDownloader } from "@/hooks/useSubtitleDownloader";
 import { normalizeYoutubeUrl } from "@/lib/youtube";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";

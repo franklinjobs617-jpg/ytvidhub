@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { buildCanonicalUrl } from "@/lib/url";
@@ -28,13 +29,13 @@ const PAGE_DESCRIPTION =
   "Generate YouTube transcripts for free. Convert any YouTube video to text in seconds. Export as TXT, SRT, VTT, or JSON. No login required.";
 const PAGE_KEYWORDS = [
   "youtube transcript generator",
-  "youtube video transcript generator",
-  "generate transcript from youtube video",
-  "free youtube transcript generator",
-  "youtube transcript generator free",
+  "youtube video to text",
   "generate youtube transcript",
   "youtube transcript download",
-  "online youtube transcript generator",
+  "free youtube transcript generator",
+  "youtube transcript for AI training",
+  "youtube video transcript online",
+  "youtube transcript extractor",
 ];
 const LAST_UPDATED = "May 5, 2026";
 
@@ -225,11 +226,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const pathname = "/youtube-transcript-generator";
   const canonicalUrl = buildCanonicalUrl({ locale, pathname });
+  const t = await getTranslations({ locale, namespace: "transcriptPage" });
 
   return {
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    keywords: PAGE_KEYWORDS,
+    title: t("title"),
+    description: t("description"),
+    keywords: t("keywords"),
     alternates: {
       canonical: canonicalUrl,
       languages: {
@@ -399,7 +401,7 @@ export default async function YouTubeTranscriptGeneratorPage({
           <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
             <LandingSectionHeader
               badge="Formats"
-              title="Choose the output, then judge the transcript source"
+              title="YouTube Transcript Formats: TXT, SRT, VTT, JSON"
               description="The page should feel useful before it feels long. Start by deciding the export format you need, then check what type of transcript track is actually available on the video."
             />
 
@@ -566,7 +568,7 @@ export default async function YouTubeTranscriptGeneratorPage({
           <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
             <LandingSectionHeader
               badge="Compare"
-              title="Compare the workflow before you export"
+              title="Why Use a Transcript Generator Instead of Copy-Paste?"
               description="The page should explain why the workflow is different, not just say it is better. Comparison and quality notes now sit in one visual block instead of two separate card-heavy sections."
             />
 
@@ -617,7 +619,7 @@ export default async function YouTubeTranscriptGeneratorPage({
           <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
             <LandingSectionHeader
               badge="Use Cases"
-              title="Where this page is most useful"
+              title="YouTube Transcript for AI & Research"
               description="Use cases and internal navigation work better as guided lists than as another wall of equal-weight cards."
             />
 
