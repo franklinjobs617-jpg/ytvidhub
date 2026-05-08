@@ -4,7 +4,6 @@ import { getTranslations } from "next-intl/server";
 import { TestimonialSection } from "@/components/testimonials/TestimonialSection";
 import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
-import RelatedTools from "@/components/shared/RelatedTools";
 import SubtitleDownloaderWidget from "@/components/subtitle/SubtitleDownloaderWidget";
 import { Metadata } from "next";
 import { buildCanonicalUrl } from "@/lib/url";
@@ -511,13 +510,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
             </div>
           </div>
         </section>
-        <RelatedTools currentPath="/youtube-subtitle-downloader" />
       </main>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: ` if (typeof window !== 'undefined') { // This will only run on client side } `,
-        }}
-      />
     </div>
   );
 }

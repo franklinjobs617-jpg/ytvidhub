@@ -28,7 +28,7 @@ export default function SubtitleDownloaderWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [url, setUrl] = useState("");
-  const [format, setFormat] = useState<string>("srt");
+  const [format, setFormat] = useState<"srt" | "vtt" | "txt">("srt");
   const [lang, setLang] = useState<string>("en");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -55,6 +55,11 @@ export default function SubtitleDownloaderWidget() {
 
     try {
       const blob = await subtitleApi.guestDownload(normalized, lang, format);
+      if (blob.size === 0) {
+        setStatus("error");
+        setErrorMsg("No subtitles found for this video. It may not have captions available.");
+        return;
+      }
       const ext = format === "txt" ? "txt" : format;
       const filename = `subtitles.${ext}`;
       const a = document.createElement("a");

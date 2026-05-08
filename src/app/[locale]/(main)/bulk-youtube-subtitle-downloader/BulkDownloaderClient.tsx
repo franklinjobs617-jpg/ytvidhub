@@ -99,12 +99,12 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 automated flow.
               </p>
               <div className="mt-6">
-                <a
+                <Link
                   className="btn-primary inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--brand-600)] to-[var(--brand-700)] px-7 py-3 text-sm font-semibold text-white shadow-[0_20px_28px_-18px_rgba(37,99,235,1)] transition-all hover:-translate-y-0.5 hover:from-[var(--brand-700)] hover:to-[var(--brand-700)]"
                   href="/workspace?from=bulk-downloader"
                 >
                   Start bulk subtitle extraction now
-                </a>
+                </Link>
               </div>
 
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-slate-600">
@@ -254,55 +254,55 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 <strong className="text-slate-900">AI/LLM training data preparation:</strong>{" "}
                 Build large subtitle corpora quickly for model training, evaluation, and prompt
                 testing workflows.{" "}
-                <a
+                <Link
                   className="text-blue-600 hover:text-blue-700"
                   href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for AI/LLM data prep -&gt;
-                </a>
+                </Link>
               </p>
               <p>
                 <strong className="text-slate-900">Multilingual subtitle collection:</strong>{" "}
                 Gather subtitles across different languages from playlists and channels without
                 manual one-by-one extraction.{" "}
-                <a
+                <Link
                   className="text-blue-600 hover:text-blue-700"
                   href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for multilingual workflows -&gt;
-                </a>
+                </Link>
               </p>
               <p>
                 <strong className="text-slate-900">Content library analysis:</strong> Export
                 subtitle text from large video libraries to analyze themes, topics, and recurring
                 narratives at scale.{" "}
-                <a
+                <Link
                   className="text-blue-600 hover:text-blue-700"
                   href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for content analysis -&gt;
-                </a>
+                </Link>
               </p>
               <p>
                 <strong className="text-slate-900">Video review and moderation:</strong> Pull
                 subtitle batches for faster audit reviews, policy checks, and compliance workflows.{" "}
-                <a
+                <Link
                   className="text-blue-600 hover:text-blue-700"
                   href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for moderation tasks -&gt;
-                </a>
+                </Link>
               </p>
               <p>
                 <strong className="text-slate-900">Research and transcription projects:</strong>{" "}
                 Speed up transcript collection for qualitative studies, interviews, and long-form
                 media research.{" "}
-                <a
+                <Link
                   className="text-blue-600 hover:text-blue-700"
                   href="/workspace?from=bulk-downloader"
                 >
                   Try YTVidHub for research projects -&gt;
-                </a>
+                </Link>
               </p>
             </div>
           </div>

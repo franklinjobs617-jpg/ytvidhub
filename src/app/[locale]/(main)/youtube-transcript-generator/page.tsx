@@ -23,20 +23,8 @@ import {
 
 type Props = { params: Promise<{ locale: string }> };
 
-const PAGE_TITLE =
-  "YouTube Transcript Generator - Free Online, No Sign-up";
 const PAGE_DESCRIPTION =
   "Generate YouTube transcripts for free. Convert any YouTube video to text in seconds. Export as TXT, SRT, VTT, or JSON. No login required.";
-const PAGE_KEYWORDS = [
-  "youtube transcript generator",
-  "youtube video to text",
-  "generate youtube transcript",
-  "youtube transcript download",
-  "free youtube transcript generator",
-  "youtube transcript for AI training",
-  "youtube video transcript online",
-  "youtube transcript extractor",
-];
 const LAST_UPDATED = "May 5, 2026";
 
 const HOW_TO_STEPS = [
