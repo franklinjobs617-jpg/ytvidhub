@@ -36,7 +36,8 @@ export default function Footer() {
                 className="border w-[200px] h-[60px] mt-4"
               />
             </a>
-   
+            <a href="https://directive8020.top" target="_blank">
+            </a>
           </div>
 
           {/* Product Column */}

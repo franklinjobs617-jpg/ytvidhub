@@ -51,7 +51,7 @@ export function CardsView({
         try {
           localStorage.setItem(
             `study-progress-${videoUrl}`,
-            JSON.stringify([...next]),
+            JSON.stringify([...next])
           );
         } catch {}
       }
@@ -139,7 +139,8 @@ export function CardsView({
                   <span className="text-green-600 font-semibold">
                     {masteredCards.size}
                   </span>
-                  mastered &middot; {cards.length - masteredCards.size} remaining
+                  mastered &middot; {cards.length - masteredCards.size}{" "}
+                  remaining
                 </>
               )}
             </p>
@@ -177,7 +178,9 @@ export function CardsView({
           {cards.map((_: StudyCard, i: number) => (
             <div
               key={i}
-              className={`h-1 flex-1 rounded-full transition-colors duration-300 ${masteredCards.has(i) ? "bg-green-500" : "bg-slate-200"}`}
+              className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
+                masteredCards.has(i) ? "bg-green-500" : "bg-slate-200"
+              }`}
             />
           ))}
         </div>
@@ -211,7 +214,7 @@ export function CardsView({
                   {typeInfo.label} ({typeCards.length})
                 </button>
               );
-            },
+            }
           )}
         </div>
       </div>
@@ -251,7 +254,11 @@ function BrowseCards({
 }: {
   cards: StudyCard[];
   onSeek: (time: string) => void;
-  toast: { success: (msg: string) => void; error: (msg: string) => void; info: (msg: string) => void };
+  toast: {
+    success: (msg: string) => void;
+    error: (msg: string) => void;
+    info: (msg: string) => void;
+  };
   masteredCards: Set<number>;
   onToggleMastered: (index: number) => void;
 }) {
@@ -341,10 +348,10 @@ function StudyCards({
                   masteredCards.has(i)
                     ? "bg-green-500"
                     : i < currentIndex
-                      ? "bg-slate-300"
-                      : i === currentIndex
-                        ? "bg-blue-400"
-                        : "bg-slate-200"
+                    ? "bg-slate-300"
+                    : i === currentIndex
+                    ? "bg-blue-400"
+                    : "bg-slate-200"
                 }`}
               />
             ))}
@@ -423,7 +430,9 @@ function CompletionScreen({
           {cards.map((_: StudyCard, i: number) => (
             <div
               key={i}
-              className={`h-2 flex-1 rounded-full ${masteredCards.has(i) ? "bg-green-500" : "bg-slate-200"}`}
+              className={`h-2 flex-1 rounded-full ${
+                masteredCards.has(i) ? "bg-green-500" : "bg-slate-200"
+              }`}
             />
           ))}
         </div>
@@ -451,7 +460,11 @@ function EnhancedCardItem({
   card: StudyCard;
   index: number;
   onSeek: (time: string) => void;
-  toast: { success: (msg: string) => void; error: (msg: string) => void; info: (msg: string) => void };
+  toast: {
+    success: (msg: string) => void;
+    error: (msg: string) => void;
+    info: (msg: string) => void;
+  };
   isMastered: boolean;
   onToggleMastered: () => void;
 }) {
@@ -467,7 +480,9 @@ function EnhancedCardItem({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04 }}
-      className={`bg-white rounded-xl border shadow-sm hover:shadow-md transition-all overflow-hidden ${isMastered ? "border-green-200" : "border-slate-200"}`}
+      className={`bg-white rounded-xl border shadow-sm hover:shadow-md transition-all overflow-hidden ${
+        isMastered ? "border-green-200" : "border-slate-200"
+      }`}
     >
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
@@ -508,7 +523,11 @@ function EnhancedCardItem({
             )}
             <button
               onClick={onToggleMastered}
-              className={`p-1.5 rounded-lg transition-all ${isMastered ? "text-green-600 bg-green-50" : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"}`}
+              className={`p-1.5 rounded-lg transition-all ${
+                isMastered
+                  ? "text-green-600 bg-green-50"
+                  : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+              }`}
               title={isMastered ? "Mark as not mastered" : "Mark as mastered"}
             >
               <Check size={15} />
@@ -519,7 +538,9 @@ function EnhancedCardItem({
             >
               <ChevronRight
                 size={15}
-                className={`transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                className={`transition-transform ${
+                  isExpanded ? "rotate-90" : ""
+                }`}
               />
             </button>
           </div>
@@ -547,7 +568,7 @@ function EnhancedCardItem({
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `Q: ${card.question}\n\nA: ${card.answer}`,
+                    `Q: ${card.question}\n\nA: ${card.answer}`
                   );
                   toast.success("Card copied to clipboard");
                 }}
