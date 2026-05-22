@@ -52,7 +52,10 @@ export function BulkCreditActionModal({
       id: "a" as const,
       name: "Pro",
       price: "$19.99",
-      detail: `500 Credits | Covers this batch + ${Math.max(0, 500 - requiredCredits)} more!`,
+      detail: `500 Credits | Covers this batch + ${Math.max(
+        0,
+        500 - requiredCredits
+      )} more!`,
     },
     {
       id: "b" as const,
@@ -129,8 +132,15 @@ export function BulkCreditActionModal({
               <p className="flex items-start gap-2 text-[15px] leading-relaxed text-slate-700 font-medium">
                 <Wallet size={17} className="mt-[1px] text-slate-500" />
                 <span>
-                  You need <span className="font-extrabold text-slate-900">{requiredCredits} credits</span> to
-                  download this batch. Your current balance is <span className="font-extrabold text-slate-900">{currentCredits}</span>.
+                  You need{" "}
+                  <span className="font-extrabold text-slate-900">
+                    {requiredCredits} credits
+                  </span>{" "}
+                  to download this batch. Your current balance is{" "}
+                  <span className="font-extrabold text-slate-900">
+                    {currentCredits}
+                  </span>
+                  .
                 </span>
               </p>
               <p className="mt-2 flex items-start gap-2 text-[14px] leading-relaxed font-bold text-orange-600">
@@ -140,7 +150,9 @@ export function BulkCreditActionModal({
             </div>
 
             <div className="rounded-xl border border-blue-100 bg-gradient-to-b from-blue-50 to-blue-50/30 p-3.5">
-              <p className="text-[11px] uppercase tracking-wider text-blue-700 font-bold mb-2.5">Select a plan</p>
+              <p className="text-[11px] uppercase tracking-wider text-blue-700 font-bold mb-2.5">
+                Select a plan
+              </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {planHints.map((plan) => {
                   const isSelected = selectedPlanId === plan.id;
@@ -161,18 +173,31 @@ export function BulkCreditActionModal({
                           {plan.badge}
                         </span>
                       )}
-                      <p className="text-[12px] font-black text-slate-900">{plan.name}</p>
-                      <p className="mt-0.5 text-[24px] leading-none font-extrabold text-slate-900">{plan.price}</p>
-                      <p className="mt-1.5 text-[11px] leading-snug text-slate-600 font-medium">{plan.detail}</p>
+                      <p className="text-[12px] font-black text-slate-900">
+                        {plan.name}
+                      </p>
+                      <p className="mt-0.5 text-[24px] leading-none font-extrabold text-slate-900">
+                        {plan.price}
+                      </p>
+                      <p className="mt-1.5 text-[11px] leading-snug text-slate-600 font-medium">
+                        {plan.detail}
+                      </p>
                     </button>
                   );
                 })}
               </div>
             </div>
-      
+
             <p className="text-sm text-slate-600 leading-relaxed">
-              You can download <span className="font-semibold text-slate-900">{affordableCount}</span> now, then
-              continue the remaining <span className="font-semibold text-slate-900">{remainingCount}</span> after top-up.
+              You can download{" "}
+              <span className="font-semibold text-slate-900">
+                {affordableCount}
+              </span>{" "}
+              now, then continue the remaining{" "}
+              <span className="font-semibold text-slate-900">
+                {remainingCount}
+              </span>{" "}
+              after top-up.
             </p>
 
             <div className="space-y-3 pt-1">
@@ -216,4 +241,3 @@ export function BulkCreditActionModal({
     </AnimatePresence>
   );
 }
-
