@@ -41,16 +41,6 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
-      {
-        source: "/:path*.html",
-        destination: "/:path*/",
-        permanent: true,
-      },
-      {
-        source: "/:path*.html/",
-        destination: "/:path*/",
-        permanent: true,
-      },
       // Legacy SEO URLs from old structure
       {
         source: "/ai-summarizer",
@@ -112,10 +102,8 @@ const nextConfig: NextConfig = {
         destination: "/:path*/",
         permanent: true,
       },
-
-      // Redirect HTML extensions to clean URLs
-    
-      // NOTE: Do not globally redirect *.html, it breaks verification files in /public.
+      // Explicit HTML cleanup only. Avoid a global *.html redirect because
+      // public verification files must remain directly accessible.
       {
         source: "/index",
         destination: "/",
@@ -129,12 +117,32 @@ const nextConfig: NextConfig = {
       {
         source: "/what-is-an-srt-file.html",
         destination: "/what-is-an-srt-file/",
-        permanent: true,
+        statusCode: 301,
       },
       {
         source: "/what-is-an-srt-file.html/",
         destination: "/what-is-an-srt-file/",
-        permanent: true,
+        statusCode: 301,
+      },
+      {
+        source: "/:locale/what-is-an-srt-file",
+        destination: "/what-is-an-srt-file/",
+        statusCode: 301,
+      },
+      {
+        source: "/:locale/what-is-an-srt-file/",
+        destination: "/what-is-an-srt-file/",
+        statusCode: 301,
+      },
+      {
+        source: "/:locale/what-is-an-srt-file.html",
+        destination: "/what-is-an-srt-file/",
+        statusCode: 301,
+      },
+      {
+        source: "/:locale/what-is-an-srt-file.html/",
+        destination: "/what-is-an-srt-file/",
+        statusCode: 301,
       },
       {
         source: "/youtube-caption-download",

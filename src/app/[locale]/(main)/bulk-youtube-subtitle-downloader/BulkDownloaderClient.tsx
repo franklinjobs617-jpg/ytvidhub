@@ -35,8 +35,21 @@ const featureCards = [
   {
     icon: <FileText className="text-blue-600" size={20} />,
     title: "SRT, VTT, and Clean TXT",
-    desc: "Export standard subtitle formats for players, editors, SEO content workflows, and AI/LLM datasets.",
+    desc: "Export subtitle files for players, editors, translation review, archives, and readable transcript libraries.",
   },
+];
+
+const bulkAudiences = [
+  ["Course teams", "Download captions from a full lesson playlist and keep files named by video title."],
+  ["Localization teams", "Collect available language tracks before translation review or subtitle QA."],
+  ["Researchers", "Build a searchable transcript library from many public videos without opening each one manually."],
+  ["Content teams", "Turn channel or playlist captions into reusable notes, outlines, and editorial source material."],
+];
+
+const packageDetails = [
+  ["One ZIP package", "Keep a full batch together instead of managing many separate browser downloads."],
+  ["Clear file names", "Map exported subtitle files back to source video titles so review work stays organized."],
+  ["Consistent format", "Apply SRT, VTT, or TXT across the whole batch instead of switching formats video by video."],
 ];
 
 const processSteps = [
@@ -95,13 +108,13 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
 
               <p className="mx-auto mt-5 max-w-3xl text-lg leading-relaxed text-slate-600">
                 Extract subtitles from playlists, channels, and multiple videos in one flow.
-                Export clean <strong>SRT, VTT, and TXT</strong> files for operations, content,
-                and AI/LLM data preparation.
+                Export clean <strong>SRT, VTT, and TXT</strong> files for editing,
+                translation, accessibility review, transcript libraries, and archive work.
               </p>
               <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-500">
-                Built for searches like <strong>youtube playlist subtitle downloader</strong>,{" "}
-                <strong>batch download subtitles</strong>, and{" "}
-                <strong>download YouTube playlist subtitles</strong>.
+                Use it when one-by-one downloads are too slow: paste a playlist,
+                channel, or list of videos and keep every subtitle file in one
+                organized package.
               </p>
 
               <div className="mt-10">
@@ -142,8 +155,8 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 Yes. A playlist subtitle downloader extracts captions from every video in a
                 YouTube playlist and packages the results as SRT, VTT, or clean TXT files. This is
                 faster than opening each video manually, especially when you need captions for
-                research, translation, accessibility checks, content repurposing, or AI dataset
-                preparation.
+                research, translation, accessibility checks, content repurposing, or long-term
+                archives.
               </p>
             </div>
             <div className="max-w-3xl">
@@ -151,8 +164,8 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 Bulk YouTube Subtitle Downloader for Playlists &amp; Channels
               </h2>
               <p className="mt-4 text-slate-600">
-                A practical, production-style bulk YouTube subtitle downloader for teams and
-                individual operators.
+                A practical bulk YouTube subtitle downloader for anyone who needs repeatable
+                subtitle exports without opening each video one by one.
               </p>
             </div>
 
@@ -265,63 +278,20 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
         <section className="bg-[var(--surface-page)] py-20">
           <div className="container mx-auto max-w-5xl px-6">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
-              Use Cases for Bulk Subtitle Extraction
+              Who Should Use Bulk Subtitle Extraction?
             </h2>
-            <div className="mt-8 space-y-6 text-slate-600">
-              <p>
-                <strong className="text-slate-900">AI/LLM training data preparation:</strong>{" "}
-                Build large subtitle corpora quickly for model training, evaluation, and prompt
-                testing workflows.{" "}
-                <Link
-                  className="text-blue-600 hover:text-blue-700"
-                  href="/workspace?from=bulk-downloader"
-                >
-                  Try YTVidHub for AI/LLM data prep -&gt;
-                </Link>
-              </p>
-              <p>
-                <strong className="text-slate-900">Multilingual subtitle collection:</strong>{" "}
-                Gather subtitles across different languages from playlists and channels without
-                manual one-by-one extraction.{" "}
-                <Link
-                  className="text-blue-600 hover:text-blue-700"
-                  href="/workspace?from=bulk-downloader"
-                >
-                  Try YTVidHub for multilingual workflows -&gt;
-                </Link>
-              </p>
-              <p>
-                <strong className="text-slate-900">Content library analysis:</strong> Export
-                subtitle text from large video libraries to analyze themes, topics, and recurring
-                narratives at scale.{" "}
-                <Link
-                  className="text-blue-600 hover:text-blue-700"
-                  href="/workspace?from=bulk-downloader"
-                >
-                  Try YTVidHub for content analysis -&gt;
-                </Link>
-              </p>
-              <p>
-                <strong className="text-slate-900">Video review and moderation:</strong> Pull
-                subtitle batches for faster audit reviews, policy checks, and compliance workflows.{" "}
-                <Link
-                  className="text-blue-600 hover:text-blue-700"
-                  href="/workspace?from=bulk-downloader"
-                >
-                  Try YTVidHub for moderation tasks -&gt;
-                </Link>
-              </p>
-              <p>
-                <strong className="text-slate-900">Research and transcription projects:</strong>{" "}
-                Speed up transcript collection for qualitative studies, interviews, and long-form
-                media research.{" "}
-                <Link
-                  className="text-blue-600 hover:text-blue-700"
-                  href="/workspace?from=bulk-downloader"
-                >
-                  Try YTVidHub for research projects -&gt;
-                </Link>
-              </p>
+            <p className="mt-4 max-w-3xl text-slate-600">
+              Bulk extraction is useful when the work is bigger than one video:
+              playlists, channels, recurring research, course libraries, and
+              repeated caption review.
+            </p>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {bulkAudiences.map(([title, desc]) => (
+                <div key={title} className="rounded-2xl border border-slate-200 bg-white p-5">
+                  <h3 className="font-semibold text-slate-900">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -365,42 +335,33 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
         <section className="bg-slate-900 py-20 text-white">
           <div className="container mx-auto max-w-6xl px-6">
             <div className="max-w-3xl">
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Real-World Bulk Subtitle Extraction Scenarios</h2>
+              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">What You Get After a Bulk Download</h2>
               <p className="mt-4 text-slate-300">
-                The bulk downloader solves practical work, not just demo-style extraction.
+                The goal is not just extraction. The goal is a clean package that
+                is easy to review, share, and reuse.
               </p>
             </div>
 
             <div className="mt-10 grid gap-5 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_22px_34px_-30px_rgba(15,23,42,0.9)]">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/10">
-                  <Layers size={18} className="text-blue-300" />
-                </div>
-                <h3 className="text-lg font-semibold">AI & LLM Data Prep</h3>
-                <p className="mt-2 text-sm text-slate-300">
-                  Build large clean-text corpora from YouTube channels and playlists for training
-                  and evaluation.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_22px_34px_-30px_rgba(15,23,42,0.9)]">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/10">
-                  <FileText size={18} className="text-blue-300" />
-                </div>
-                <h3 className="text-lg font-semibold">Content Repurposing</h3>
-                <p className="mt-2 text-sm text-slate-300">
-                  Turn subtitle archives into article drafts, notes, and structured knowledge assets.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_22px_34px_-30px_rgba(15,23,42,0.9)]">
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/10">
-                  <HistoryIcon size={18} className="text-blue-300" />
-                </div>
-                <h3 className="text-lg font-semibold">Compliance & Archive</h3>
-                <p className="mt-2 text-sm text-slate-300">
-                  Keep subtitle records organized for accessibility review, translation audits, and
-                  long-term archives.
-                </p>
-              </div>
+              {packageDetails.map(([title, desc], index) => {
+                const icons = [
+                  <FolderArchive key="zip" size={18} className="text-blue-300" />,
+                  <FileText key="file" size={18} className="text-blue-300" />,
+                  <Layers key="layers" size={18} className="text-blue-300" />,
+                ];
+                return (
+                  <div
+                    key={title}
+                    className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_22px_34px_-30px_rgba(15,23,42,0.9)]"
+                  >
+                    <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/10">
+                      {icons[index]}
+                    </div>
+                    <h3 className="text-lg font-semibold">{title}</h3>
+                    <p className="mt-2 text-sm text-slate-300">{desc}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -418,11 +379,11 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
 
             <div className="mt-10 grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl border border-slate-200 bg-white p-7 shadow-[0_16px_30px_-26px_rgba(15,23,42,0.52)]">
-                <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">For AI & Research</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">For reading & review</p>
                 <h3 className="mt-2 text-xl font-semibold text-slate-900">Clean TXT</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                  Timestamp-free transcript text for reading, semantic processing, and dataset
-                  ingestion workflows.
+                  Timestamp-free transcript text for reading, search, translation review, and
+                  notes.
                 </p>
                 <pre className="mt-5 rounded-lg border border-slate-200 bg-white p-4 text-[11px] text-slate-500">
 Welcome to our deep dive into the future of media...
@@ -486,7 +447,7 @@ Welcome to our deep dive...
                 </h3>
                 <p className="mt-2 text-slate-600">
                   You can export SRT, VTT, and clean TXT formats. This makes it easy to integrate
-                  subtitles into playback, editing, and AI/LLM training data workflows.
+                  subtitles into playback, editing, translation, review, and archive workflows.
                 </p>
               </div>
               <div>

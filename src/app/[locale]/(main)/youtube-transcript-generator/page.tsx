@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 import TranscriptGeneratorHero from "@/components/transcript/TranscriptGeneratorHero";
 import ScrollToTopButton from "@/components/transcript/ScrollToTopButton";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
@@ -213,20 +214,13 @@ const FAQ_ITEMS = [
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const pathname = "/youtube-transcript-generator";
-  const canonicalUrl = buildCanonicalUrl({ locale, pathname });
   const t = await getTranslations({ locale, namespace: "transcriptPage" });
 
   return {
     title: t("title"),
     description: t("description"),
     keywords: t("keywords"),
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        en: buildCanonicalUrl({ locale: "en", pathname }),
-        "x-default": buildCanonicalUrl({ locale: "en", pathname }),
-      },
-    },
+    alternates: buildAlternates(locale, pathname),
   };
 }
 
@@ -672,7 +666,7 @@ export default async function YouTubeTranscriptGeneratorPage({
                       href: "/add-on/youtube-transcript-generator",
                       title: "YouTube Transcript Generator Chrome Extension",
                       description:
-                        "Use the extension workflow when your query intent is browser-side transcript generation on YouTube pages.",
+                        "Use the extension workflow when you want browser-side transcript generation on YouTube pages.",
                     },
                   ].map((item) => (
                     <Link

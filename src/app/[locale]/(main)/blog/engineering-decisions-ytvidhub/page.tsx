@@ -188,21 +188,21 @@ export default function EngineeringDecisionsBlogPage({ params }: Props) {
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Keyword Coverage: Bulk YouTube Subtitle Downloader Architecture
+            Bulk YouTube Subtitle Downloader Architecture
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            This engineering page supports technical search intents around
+            This engineering guide focuses on
             <strong> bulk YouTube subtitle downloader architecture</strong>,
-            queue reliability, and scalable transcript processing. Readers in
-            this segment care less about UI features and more about retry
+            queue reliability, and scalable transcript processing. Technical
+            readers usually care less about UI features and more about retry
             strategy, fault isolation, and predictable throughput.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            To meet those intents, the article highlights three proof points:
-            asynchronous queue orchestration, clean TXT data shaping, and
-            accuracy trade-offs for ASR tracks. These are the elements that
-            usually decide whether a subtitle pipeline can be trusted in
-            high-volume analytics or model-ingestion workflows.
+            The system has three important proof points: asynchronous queue
+            orchestration, clean TXT data shaping, and accuracy trade-offs for
+            ASR tracks. These are the elements that usually decide whether a
+            subtitle pipeline can be trusted in high-volume analytics or
+            model-ingestion workflows.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
             We also position this content as a bridge between product and
@@ -277,7 +277,7 @@ export default function EngineeringDecisionsBlogPage({ params }: Props) {
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Why This Matters for SEO and Content Systems
+            Why This Matters for Content Systems
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed">
             Reliable subtitle infrastructure is not only an engineering win. It

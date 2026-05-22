@@ -5,7 +5,7 @@ export default function BulkDownloaderSchema() {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Bulk YouTube Subtitle Downloader",
-    "description": "Professional bulk YouTube subtitle downloader for extracting SRT, VTT, and TXT transcripts from multiple videos, playlists, and channels.",
+    "description": "Bulk YouTube subtitle downloader for exporting SRT, VTT, and TXT files from multiple videos, playlists, and channels in one organized workflow.",
     "url": "https://ytvidhub.com/bulk-youtube-subtitle-downloader/",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Web Browser",
@@ -23,7 +23,7 @@ export default function BulkDownloaderSchema() {
       "VTT format support",
       "TXT format support",
       "Batch processing",
-      "ZIP file delivery"
+      "Organized ZIP file delivery"
     ],
     "screenshot": "https://ytvidhub.com/image/bulk-youtube-subtitle-downloader-screenshot.webp"
   };
@@ -37,7 +37,7 @@ export default function BulkDownloaderSchema() {
         "name": "How do I download an entire YouTube playlist with subtitles?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "To download a YouTube playlist with subtitles, simply copy the playlist URL from your browser and paste it into YTVidHub's bulk tool. Our engine will crawl the entire list, extract the captions for each video, and bundle them into a ZIP file for you."
+          "text": "To download subtitles from a YouTube playlist, copy the playlist URL and paste it into YTVidHub's bulk tool. The workflow extracts available captions for the videos and bundles the results into an organized ZIP file."
         }
       },
       {
@@ -45,7 +45,7 @@ export default function BulkDownloaderSchema() {
         "name": "Can I extract subtitles from multiple YouTube videos at once?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes! You can paste a list of multiple individual video URLs or a channel link. YTVidHub is the leading batch youtube subtitle downloader, allowing for unlimited URLs for Pro members."
+          "text": "Yes. You can paste multiple individual video URLs, a playlist URL, or a channel link to export available subtitles in one batch workflow."
         }
       },
       {
@@ -61,7 +61,7 @@ export default function BulkDownloaderSchema() {
         "name": "Does this tool support auto-generated YouTube subtitles?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Absolutely. Our youtube transcript downloader can extract both manually uploaded subtitles and YouTube's auto-generated closed captions (CC) in any available language."
+          "text": "Yes. The bulk downloader can extract both manually uploaded subtitles and YouTube's auto-generated closed captions when those tracks are available."
         }
       },
       {
@@ -69,7 +69,7 @@ export default function BulkDownloaderSchema() {
         "name": "Is there a limit to how many subtitles I can download?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Free users have a daily quota. Pro members enjoy unlimited bulk extraction, allowing them to download subtitles for thousands of videos in a single operation."
+          "text": "Free users have a daily quota. Paid plans are available for larger recurring batches and higher-volume subtitle workflows."
         }
       }
     ]

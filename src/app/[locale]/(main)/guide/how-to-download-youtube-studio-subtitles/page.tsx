@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const pathname = "/guide/how-to-download-youtube-studio-subtitles";
-  const canonicalUrl = buildCanonicalUrl({ locale, pathname });
+  const alternates = buildAlternates(locale, pathname);
   const title =
     "How to Download YouTube Studio Subtitles (Step-by-Step Guide) | YTVidHub";
   const description =
@@ -22,13 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     keywords:
       "how to download youtube studio subtitles, youtube studio subtitle export, youtube caption download guide, subtitle workflow for creators",
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates,
     openGraph: {
       title,
       description,
-      url: canonicalUrl,
+      url: alternates.canonical,
       type: "article",
       images: [
         {

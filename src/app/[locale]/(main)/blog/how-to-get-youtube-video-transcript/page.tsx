@@ -84,7 +84,7 @@ export default function HowToGetYouTubeTranscriptPage({ params }: Props) {
         {/* Hero */}
         <header className="article-shell article-hero">
           <p className="article-kicker">
-            SEO Guide 2026
+            Transcript Guide 2026
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
             How to Get Transcript of YouTube Video: 3 Easy Ways in 2026
@@ -357,15 +357,15 @@ export default function HowToGetYouTubeTranscriptPage({ params }: Props) {
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Keyword Workflow: How to Get Transcript of YouTube Video at Scale
+            Workflow: How to Get Transcript of YouTube Video at Scale
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            If your target query is <strong>how to get transcript of YouTube video</strong>,
-            users usually have three intents: quick copy from one video,
+            When someone needs to get a YouTube video transcript, they usually
+            need one of three workflows: quick copy from one video,
             <strong> download transcript from YouTube </strong>
             for repeated work, or export
             <strong> YouTube transcript to text </strong>
-            for AI and SEO workflows. The fastest way to satisfy all three is a
+            for AI and content workflows. The fastest way to support all three is a
             mixed process: use native transcript view for one-off checks, then
             switch to batch extraction when volume increases.
           </p>

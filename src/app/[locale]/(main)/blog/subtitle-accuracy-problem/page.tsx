@@ -174,21 +174,18 @@ export default function SubtitleAccuracyBlogPage({ params }: Props) {
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Keyword Focus: Subtitle Accuracy in Multilingual Pipelines
+            Subtitle Accuracy in Multilingual Pipelines
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            This page targets practical queries like
-            <strong> subtitle accuracy</strong>,
-            <strong> YouTube subtitle errors</strong>, and
-            <strong> multilingual caption quality</strong>. Search intent is not
-            just informational. Most readers are trying to decide whether a
-            dataset is safe for model training, analytics, or public publishing.
+            Most teams are not just asking whether subtitles are available.
+            They need to decide whether a caption dataset is safe for model
+            training, analytics, translation review, or public publishing.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            To satisfy that intent, we separate source types and failure modes:
-            manual captions, auto-generated ASR captions, and auto-translated
-            captions. This structure helps teams estimate downstream risk before
-            they invest in chunking, embedding, or retrieval pipelines.
+            Separate source types and failure modes before ingestion: manual
+            captions, auto-generated ASR captions, and auto-translated captions.
+            This structure helps teams estimate downstream risk before they
+            invest in chunking, embedding, or retrieval pipelines.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
             The practical takeaway is simple: subtitle access is a logistics

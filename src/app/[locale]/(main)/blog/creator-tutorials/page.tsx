@@ -145,22 +145,19 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Keyword Focus: YouTube Subtitles for Content Creation
+            YouTube Subtitles for Content Creation
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            This page targets creators looking for
-            <strong> YouTube subtitles for content creation </strong>
-            and
-            <strong> transcript repurposing workflows</strong>. Search intent is
-            usually operational: how to turn one video into many publishable
-            assets while preserving meaning and source accuracy.
+            Creators usually need a practical answer: how to turn one video
+            into many publishable assets while preserving meaning and source
+            accuracy. A clean transcript gives writers a searchable base for
+            blog posts, newsletters, social clips, and internal notes.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            Instead of generic tips, a stronger SEO pattern is task-first
-            guidance. Cover ingestion, segmentation, drafting, and verification
-            with real execution details. This aligns with long-tail queries like
-            “repurpose YouTube transcript into blog post” and “creator subtitle
-            workflow for social content.”
+            Start with task-first guidance. Cover ingestion, segmentation,
+            drafting, and verification with real execution details, then keep
+            the original transcript close enough that every claim can be checked
+            against the source video.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
             If your team publishes frequently, keep a transcript library by
@@ -195,7 +192,7 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
                     Best Transcript Slice
                   </th>
                   <th className="py-3 px-4 text-left font-semibold text-slate-900">
-                    SEO Intent
+                    Main Goal
                   </th>
                 </tr>
               </thead>
@@ -203,22 +200,22 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
                 <tr className="border-b border-slate-100">
                   <td className="py-3 px-4">Blog Post</td>
                   <td className="py-3 px-4">Thesis + evidence sections</td>
-                  <td className="py-3 px-4">Informational, long-tail ranking</td>
+                  <td className="py-3 px-4">Explain a topic with source-backed detail</td>
                 </tr>
                 <tr className="border-b border-slate-100">
                   <td className="py-3 px-4">Newsletter</td>
                   <td className="py-3 px-4">Key lessons + takeaway summary</td>
-                  <td className="py-3 px-4">Retention and repeat visits</td>
+                  <td className="py-3 px-4">Keep subscribers updated with concise takeaways</td>
                 </tr>
                 <tr className="border-b border-slate-100">
                   <td className="py-3 px-4">Short-Form Script</td>
                   <td className="py-3 px-4">Hooks + quotable lines</td>
-                  <td className="py-3 px-4">Top-of-funnel discovery</td>
+                  <td className="py-3 px-4">Create fast hooks for social discovery</td>
                 </tr>
                 <tr>
                   <td className="py-3 px-4">Knowledge Base Note</td>
                   <td className="py-3 px-4">Definitions + process blocks</td>
-                  <td className="py-3 px-4">Internal search and reuse</td>
+                  <td className="py-3 px-4">Make ideas easy for the team to find again</td>
                 </tr>
               </tbody>
             </table>
@@ -244,20 +241,20 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
             intent shifts.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
-            For teams targeting SEO growth, align each publish cycle to one
-            primary keyword and two supporting intents. Then map transcript
-            evidence blocks directly to those intents to reduce generic writing
-            and increase topical authority.
+            For teams publishing on a schedule, align each piece with one clear
+            reader question and a small set of supporting subtopics. Then map
+            transcript evidence blocks directly to those sections to reduce
+            generic writing and improve editorial depth.
           </p>
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            SEO Pitfalls in Transcript Repurposing
+            Common Pitfalls in Transcript Repurposing
           </h2>
           <ul className="space-y-3 text-slate-600">
             <li>
-              Publishing near-raw transcript dumps with no structure or intent
-              coverage.
+              Publishing near-raw transcript dumps with no structure, summary,
+              examples, or reader-focused sections.
             </li>
             <li>
               Repeating identical keyword phrases without adding task-level
@@ -268,8 +265,8 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
               transparent process notes.
             </li>
             <li>
-              Forgetting internal links, which weakens topical cluster strength
-              and crawl paths.
+              Forgetting related reading links, which makes it harder for
+              readers to continue the workflow.
             </li>
           </ul>
         </article>
@@ -281,10 +278,9 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
             Suppose a creator publishes a 40-minute tutorial. The first step is
             transcript extraction and cleanup. Next, segment the transcript into
             problem, method, results, and mistakes. Then map those segments to
-            search intent blocks: quick answer, step-by-step method,
+            reader sections: quick answer, step-by-step method,
             troubleshooting, and FAQ. This structure transforms raw spoken
-            content into a page format that is easier for both users and search
-            engines to understand.
+            content into a page format that is easier to scan and use.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
             The same transcript can then feed short-form content. Pull one
@@ -294,10 +290,9 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
             channels and preserve editorial consistency.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
-            Finally, run a publish review: keyword alignment in headings,
-            internal links to related guides, and trust signals such as author
-            byline and review date. This closes the loop between production
-            speed and search quality.
+            Finally, run a publish review: clear headings, related guide links,
+            source-backed claims, author byline, and review date. This closes
+            the loop between production speed and content quality.
           </p>
         </article>
         <article className="article-shell article-section">
@@ -312,11 +307,11 @@ export default function CreatorTutorialsBlogPage({ params }: Props) {
             than rewatching full videos.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
-            If you target multiple keywords each month, assign one primary
-            keyword per page and two supporting intents. Then maintain a simple
-            update cadence: refresh examples every quarter, add new FAQ items
-            from user support questions, and improve internal links whenever new
-            related guides are published.
+            If you publish several pieces each month, give each page one clear
+            reader problem and a few supporting questions. Then maintain a
+            simple update cadence: refresh examples every quarter, add new FAQ
+            items from user support questions, and improve related links
+            whenever new guides are published.
           </p>
         </article>
 

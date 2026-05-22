@@ -221,7 +221,7 @@ export default function SpanishYTChannelsBlogPage({ params }: Props) {
         </article>
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
-            Keyword Intent: Spanish YouTube Channels With Subtitles
+            Spanish YouTube Channels With Subtitles
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
             People searching
@@ -232,12 +232,9 @@ export default function SpanishYTChannelsBlogPage({ params }: Props) {
             consistency.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed mb-4">
-            This also aligns with long-tail variations such as
-            <strong> learn Spanish with YouTube subtitles</strong> and
-            <strong> Spanish immersion channels for beginners</strong>. Adding
-            method sections, proficiency guidance, and transcript workflow
-            examples helps this page satisfy informational and practical intent
-            at the same time.
+            A stronger study resource includes method sections, proficiency
+            guidance, and transcript workflow examples, so learners can move
+            from watching videos to building a repeatable listening routine.
           </p>
           <p className="text-lg text-slate-600 leading-relaxed">
             If you are building weekly study plans, combine one slow channel,

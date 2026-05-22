@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 import SubtitleExtractorHero from "@/components/subtitle/SubtitleExtractorHero";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import RelatedTools from "@/components/shared/RelatedTools";
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     namespace: "subtitleExtractorPage",
   });
   const canonicalUrl = buildCanonicalUrl({
-    locale,
+    locale: "en",
     pathname: "/youtube-subtitle-extractor",
   });
   return {
@@ -48,19 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: t("title"),
       description: t("description"),
     },
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        en: buildCanonicalUrl({
-          locale: "en",
-          pathname: "/youtube-subtitle-extractor",
-        }),
-        "x-default": buildCanonicalUrl({
-          locale: "en",
-          pathname: "/youtube-subtitle-extractor",
-        }),
-      },
-    },
+    alternates: buildAlternates(locale, "/youtube-subtitle-extractor"),
   };
 }
 export default async function SubtitleExtractorPage({ params }: Props) {

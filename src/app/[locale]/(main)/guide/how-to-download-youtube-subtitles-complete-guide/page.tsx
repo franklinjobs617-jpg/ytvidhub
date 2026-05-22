@@ -2,12 +2,13 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const pathname = "/guide/how-to-download-youtube-subtitles-complete-guide";
-  const canonicalUrl = buildCanonicalUrl({ locale, pathname });
+  const alternates = buildAlternates(locale, pathname);
   return {
     title:
       "How to Download YouTube Subtitles Free in Seconds (2026) — SRT, VTT, TXT",
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         "How to Download YouTube Subtitles Free in Seconds (2026) — SRT, VTT, TXT",
       description:
         "Download YouTube subtitles instantly — no software, no login. Paste any YouTube URL and get SRT/VTT/TXT files in seconds. Works for single videos, playlists & bulk.",
-      url: canonicalUrl,
+      url: alternates.canonical,
     },
     twitter: {
       card: "summary_large_image",
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description:
         "Download YouTube subtitles instantly — no software, no login. Paste any YouTube URL and get SRT/VTT/TXT files in seconds.",
     },
-    alternates: { canonical: canonicalUrl },
+    alternates,
   };
 }
 export default function HowToDownloadYouTubeSubtitlesPage() {

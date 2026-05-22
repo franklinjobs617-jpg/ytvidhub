@@ -2,6 +2,7 @@ import { buildCanonicalUrl } from './url'
 import { routing } from '@/i18n/routing'
 
 export function buildAlternates(locale: string, pathname: string, isMultilingual = false) {
+  const canonicalLocale = isMultilingual ? locale : 'en';
   const languages: Record<string, string> = {
     'en': buildCanonicalUrl({ locale: 'en', pathname }),
     'x-default': buildCanonicalUrl({ locale: 'en', pathname }),
@@ -16,7 +17,7 @@ export function buildAlternates(locale: string, pathname: string, isMultilingual
   }
 
   return {
-    canonical: buildCanonicalUrl({ locale, pathname }),
+    canonical: buildCanonicalUrl({ locale: canonicalLocale, pathname }),
     languages,
   };
 }

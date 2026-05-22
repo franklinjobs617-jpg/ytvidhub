@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 import { guideEntries } from "@/lib/content-index";
 import EditorialCardList from "@/components/editorial/EditorialCardList";
 
@@ -9,20 +10,18 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const canonicalUrl = buildCanonicalUrl({ locale, pathname: "/guide" });
+  const alternates = buildAlternates(locale, "/guide");
 
   return {
     title: "YTVidHub Guides | Tutorials for Subtitle and Transcript Workflows",
     description:
       "Step-by-step guides for downloading, cleaning, structuring, and scaling YouTube subtitle workflows.",
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    alternates,
     openGraph: {
       title: "YTVidHub Guides",
       description:
         "A focused tutorial library for subtitle extraction, data cleaning, and bulk processing.",
-      url: canonicalUrl,
+      url: alternates.canonical,
       type: "website",
     },
   };

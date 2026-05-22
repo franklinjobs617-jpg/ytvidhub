@@ -6,8 +6,42 @@ import SubtitleDownloaderSchema from "@/components/seo/SubtitleDownloaderSchema"
 import UnifiedFaqSection from "@/components/shared/UnifiedFaqSection";
 import SubtitleDownloaderWidget from "@/components/subtitle/SubtitleDownloaderWidget";
 import { Metadata } from "next";
-import { buildCanonicalUrl } from "@/lib/url";
+import { buildAlternates } from "@/lib/seo";
 type Props = { params: Promise<{ locale: string }> };
+
+const singleVideoChecks = [
+  ["Use a direct video URL", "Paste a regular YouTube video link instead of a playlist link when you only need one subtitle file."],
+  ["Check available tracks", "Some videos include manual subtitles, some only have auto-generated captions, and some have no captions at all."],
+  ["Pick the output before downloading", "Choose SRT for editors, VTT for web players, or TXT for readable transcript text."],
+];
+
+const relatedWorkflows = [
+  {
+    href: "/youtube-caption-downloader",
+    title: "Need closed captions or CC tracks?",
+    desc: "Use the caption downloader when your task is accessibility review, CC export, or caption quality checking.",
+    cta: "Open caption downloader",
+  },
+  {
+    href: "/bulk-youtube-subtitle-downloader",
+    title: "Need subtitles from many videos?",
+    desc: "Use the bulk downloader for playlists, channels, or repeated subtitle exports in one organized package.",
+    cta: "Open bulk downloader",
+  },
+  {
+    href: "/youtube-vtt-downloader",
+    title: "Need WebVTT for a website?",
+    desc: "Use the VTT-focused page for HTML5 video, web players, and browser caption workflows.",
+    cta: "Open VTT downloader",
+  },
+  {
+    href: "/youtube-transcript-generator",
+    title: "Need plain transcript text?",
+    desc: "Use the transcript generator when you want readable text without subtitle timestamps.",
+    cta: "Open transcript generator",
+  },
+];
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({
@@ -15,18 +49,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     namespace: "subtitleDownloaderPage",
   });
   const pathname = "/youtube-subtitle-downloader";
-  const canonicalUrl = buildCanonicalUrl({ locale, pathname });
   return {
     title: t("title"),
     description: t("description"),
     keywords: t("keywords"),
-    alternates: {
-      canonical: canonicalUrl,
-      languages: {
-        en: buildCanonicalUrl({ locale: "en", pathname }),
-        "x-default": buildCanonicalUrl({ locale: "en", pathname }),
-      },
-    },
+    alternates: buildAlternates(locale, pathname),
   };
 }
 export default async function YouTubeSubtitleDownloaderPage() {
@@ -39,16 +66,14 @@ export default async function YouTubeSubtitleDownloaderPage() {
           <div className="absolute top-[-10%] left-[-10%] w-[25rem] h-[25rem] bg-blue-400/10 rounded-full blur-[80px] animate-pulse"></div>
           <div className="absolute bottom-[-10%] right-[-5%] w-[20rem] h-[20rem] bg-blue-400/10 rounded-full blur-[80px] animate-pulse"></div>
           <div className="relative pt-16 pb-20 text-center px-6 z-10 article-shell">
-            {/* H1 - Primary Keyword Target */}
             <h1 className="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mb-6 leading-tight article-h1">
               Free <span className="text-blue-600">YouTube Subtitle</span>
               Downloader
             </h1>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto font-medium mb-8 leading-relaxed">
               Extract <strong>YouTube captions</strong> in SRT, VTT, and TXT
-              formats instantly. This page is optimized for subtitle and caption
-              download workflows, especially timing-based formats like SRT and
-              VTT.
+              formats instantly. Keep timestamps for editing and playback, or
+              export clean transcript text for notes, research, and reuse.
             </p>
             <p className="text-sm text-slate-500 mb-10">
               Need plain transcript text without timestamps? Use{" "}
@@ -133,27 +158,65 @@ export default async function YouTubeSubtitleDownloaderPage() {
                   <tr>
                     <th className="px-4 py-3 font-semibold">Format</th>
                     <th className="px-4 py-3 font-semibold">Use it for</th>
-                    <th className="px-4 py-3 font-semibold">Search intent covered</th>
+                    <th className="px-4 py-3 font-semibold">Best next step</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-600">
                   <tr>
                     <td className="px-4 py-3 font-semibold text-slate-900">SRT</td>
                     <td className="px-4 py-3">Premiere Pro, VLC, translation, accessibility upload.</td>
-                    <td className="px-4 py-3">download YouTube SRT, YouTube subtitle downloader SRT</td>
+                    <td className="px-4 py-3">Use when your video editor or player expects timecoded subtitles.</td>
                   </tr>
                   <tr>
                     <td className="px-4 py-3 font-semibold text-slate-900">VTT</td>
                     <td className="px-4 py-3">HTML5 video, web players, browser-based caption workflows.</td>
-                    <td className="px-4 py-3">VTT download, YouTube VTT downloader</td>
+                    <td className="px-4 py-3">Use when subtitles need to work in a browser or online course player.</td>
                   </tr>
                   <tr>
                     <td className="px-4 py-3 font-semibold text-slate-900">TXT</td>
                     <td className="px-4 py-3">Reading, notes, AI prompts, content repurposing, research.</td>
-                    <td className="px-4 py-3">download YouTube transcript, clean caption text</td>
+                    <td className="px-4 py-3">Use when you want readable text without subtitle timing markup.</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+        <section className="py-16 bg-white">
+          <div className="container mx-auto max-w-5xl px-6">
+            <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+              <div>
+                <h2 className="article-h2 text-3xl font-bold text-slate-900">
+                  Best for Single-Video Subtitle Downloads
+                </h2>
+                <p className="mt-4 text-slate-600 leading-relaxed">
+                  This page is built for one YouTube video at a time. It is the
+                  right place when you need a single subtitle file for editing,
+                  playback, translation, accessibility review, or clean text
+                  notes.
+                </p>
+                <p className="mt-4 text-slate-600 leading-relaxed">
+                  If the source is a playlist, channel, or a long list of URLs,
+                  move to the{" "}
+                  <Link href="/bulk-youtube-subtitle-downloader" className="font-semibold text-blue-600 hover:text-blue-700">
+                    Bulk YouTube Subtitle Downloader
+                  </Link>{" "}
+                  so you do not repeat the same download steps manually.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 md:p-6">
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Before you download
+                </h3>
+                <div className="mt-5 space-y-4">
+                  {singleVideoChecks.map(([title, desc]) => (
+                    <div key={title} className="rounded-xl border border-slate-200 bg-white p-4">
+                      <h4 className="font-semibold text-slate-900">{title}</h4>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-600">{desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -164,8 +227,8 @@ export default async function YouTubeSubtitleDownloaderPage() {
               Supported Formats: SRT, VTT, and TXT
             </h2>
             <p className="text-lg text-slate-600 text-center mb-12 max-w-2xl mx-auto">
-              Choose the perfect format for your needs - from video editing to
-              AI training
+              Choose the right format for editing, web playback, notes,
+              research, or structured text workflows.
             </p>
             <div className="grid md:grid-cols-3 gap-8">
               {/* SRT Format */}
@@ -195,7 +258,7 @@ export default async function YouTubeSubtitleDownloaderPage() {
                 </h3>
                 <p className="text-slate-600 mb-6 leading-relaxed">
                   WebVTT format for web players and HTML5 video. Includes
-                  styling options and web-optimized formatting.
+                  cue formatting for browser-based video.
                 </p>
                 <div className="bg-slate-50 rounded-lg p-4 font-mono text-xs text-slate-500">
                   WEBVTT
@@ -349,8 +412,8 @@ export default async function YouTubeSubtitleDownloaderPage() {
                 },
                 {
                   icon: "🔍",
-                  title: "SEO Optimization",
-                  desc: "Extract text content to improve search engine optimization and content discoverability.",
+                  title: "Searchable Archives",
+                  desc: "Turn spoken video content into text that can be searched, organized, and reused later.",
                 },
               ].map((item, i) => (
                 <div
@@ -517,11 +580,11 @@ export default async function YouTubeSubtitleDownloaderPage() {
             },
             {
               q: "What subtitle formats do you support?",
-              a: "We support SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is perfect for video editing, VTT for web players, and TXT for AI training and text analysis.",
+              a: "We support SRT (SubRip), VTT (WebVTT), and clean TXT formats. SRT is best for video editing and players, VTT is best for web players, and TXT is best for readable transcript text.",
             },
             {
               q: "Can I download subtitles from entire YouTube playlists?",
-              a: "Yes! Our bulk YouTube subtitle downloader can extract captions from entire playlists and channels. This is perfect for creating large datasets for AI training or research projects.",
+              a: "Yes. Use the Bulk YouTube Subtitle Downloader when you need subtitles from playlists, channels, or multiple video URLs in one package.",
             },
             {
               q: "Does this work with different languages?",
@@ -529,7 +592,11 @@ export default async function YouTubeSubtitleDownloaderPage() {
             },
             {
               q: "What if I only need transcript text without timestamps?",
-              a: "Use our YouTube Transcript Generator for no-timestamp output and AI-ready TXT workflow.",
+              a: "Use the YouTube Transcript Generator when you want no-timestamp TXT output for reading, notes, summaries, or text review.",
+            },
+            {
+              q: "Why does a video sometimes show no subtitle tracks?",
+              a: "A YouTube video may not have captions enabled, or the available tracks may be restricted. Try another language track if one is available, or use a different source video.",
             },
             {
               q: "Are there any download limits?",
@@ -540,44 +607,28 @@ export default async function YouTubeSubtitleDownloaderPage() {
           containerClassName="max-w-4xl px-6 lg:px-6"
         />
         <section className="py-16 bg-slate-50">
-          <div className="container mx-auto px-6 max-w-4xl">
+          <div className="container mx-auto px-6 max-w-6xl">
             <h2 className="text-3xl font-bold text-slate-900 mb-10 text-center article-h2">
-              Related Tools for Subtitle &amp; Transcript Workflows
+              Choose the Right Subtitle Workflow
             </h2>
-            <div className="grid md:grid-cols-3 gap-5">
-              <Link
-                href="/bulk-youtube-subtitle-downloader"
-                className="block p-5 rounded-xl border border-blue-200 bg-blue-50 hover:shadow-sm transition-shadow"
-              >
-                <h3 className="font-bold text-slate-900 mb-2">
-                  Bulk Subtitle Downloader
-                </h3>
-                <p className="text-sm text-slate-600">
-                  Best for batch extraction from playlists and channels.
-                </p>
-              </Link>
-              <Link
-                href="/youtube-subtitle-extractor"
-                className="block p-5 rounded-xl border border-slate-200 bg-white hover:shadow-sm transition-shadow"
-              >
-                <h3 className="font-bold text-slate-900 mb-2">
-                  Subtitle Extractor
-                </h3>
-                <p className="text-sm text-slate-600">
-                  Best for bulk extraction with AI-powered cleaning.
-                </p>
-              </Link>
-              <Link
-                href="/youtube-transcript-generator"
-                className="block p-5 rounded-xl border border-slate-200 bg-white hover:shadow-sm transition-shadow"
-              >
-                <h3 className="font-bold text-slate-900 mb-2">
-                  Transcript Generator
-                </h3>
-                <p className="text-sm text-slate-600">
-                  Best for clean no-timestamp TXT output for AI and notes.
-                </p>
-              </Link>
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+              {relatedWorkflows.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm"
+                >
+                  <h3 className="font-bold text-slate-900 group-hover:text-blue-700">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                    {item.desc}
+                  </p>
+                  <span className="mt-4 inline-flex text-sm font-semibold text-blue-600">
+                    {item.cta}
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </section>

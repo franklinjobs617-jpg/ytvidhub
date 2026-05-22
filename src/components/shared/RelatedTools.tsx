@@ -40,12 +40,12 @@ const allTools: ToolLink[] = [
   {
     href: "/youtube-subtitle-extractor",
     title: "YouTube Subtitle Extractor",
-    desc: "Extract clean subtitle data from 500+ videos with AI-powered cleaning.",
+    desc: "Extract subtitle text from many videos for review, notes, and reusable content.",
   },
   {
     href: "/youtube-transcript-generator",
     title: "YouTube Transcript Generator",
-    desc: "Generate clean text transcripts from YouTube videos for AI training.",
+    desc: "Generate readable YouTube transcripts for notes, summaries, and text review.",
   },
 ];
 

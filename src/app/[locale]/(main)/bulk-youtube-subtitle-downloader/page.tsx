@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import BulkDownloaderClient from "./BulkDownloaderClient";
-import { buildCanonicalUrl } from "@/lib/url";
 import { buildAlternates } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -9,7 +8,6 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const pathname = "/bulk-youtube-subtitle-downloader";
-  const canonicalUrl = buildCanonicalUrl({ locale, pathname });
   const t = await getTranslations({ locale, namespace: "bulkDownloaderPage" });
 
   return {
