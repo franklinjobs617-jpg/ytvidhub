@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const alternates = buildAlternates(locale, "/what-is-an-srt-file");
 
-  const title = "What Is an SRT File? Free Download & Edit Guide (2026)";
-  const description = "SRT (SubRip Text) is the #1 subtitle format. Download YouTube SRT files free, edit timestamps in seconds, and convert to VTT/TXT. Works with VLC, Premiere Pro & all players.";
+  const title = "What Is an SRT File? Format, Example & Timestamp Rules";
+  const description = "Learn what an SRT file is, the exact timestamp format, sequence number rules, and how to download YouTube subtitles as SRT, VTT, or TXT.";
 
   return {
     title,

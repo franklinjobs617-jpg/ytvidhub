@@ -4,7 +4,7 @@ export default function WorkspaceLayout({
     children: React.ReactNode;
   }) {
     return (
-      <div className="workspace-wrapper">
+      <div className="workspace-wrapper site-dot-grid">
         {children}
       </div>
     );

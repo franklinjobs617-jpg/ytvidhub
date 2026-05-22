@@ -1,0 +1,26 @@
+# YTVidHub
+> YTVidHub is a browser-based YouTube subtitle and transcript toolkit for exporting captions as SRT, VTT, TXT, and structured text for editing, accessibility, research, and AI workflows.
+
+## Main Tools
+- [YouTube Subtitle Downloader](https://ytvidhub.com/youtube-subtitle-downloader/): Download YouTube subtitles from a single video as SRT, VTT, or TXT.
+- [Download YouTube Subtitles Online](https://ytvidhub.com/download-youtube-subtitles-online/): Online subtitle download workflow for users who want a browser-based tool with no software install.
+- [YouTube Caption Downloader](https://ytvidhub.com/youtube-caption-downloader/): Export YouTube captions and closed caption tracks for accessibility, editing, and web publishing.
+- [Bulk YouTube Subtitle Downloader](https://ytvidhub.com/bulk-youtube-subtitle-downloader/): Extract subtitles from playlists, channels, or multiple video URLs and download organized outputs.
+- [YouTube VTT Downloader](https://ytvidhub.com/youtube-vtt-downloader/): Download WebVTT caption files for HTML5 video and web players.
+- [YouTube Transcript Generator](https://ytvidhub.com/youtube-transcript-generator/): Generate readable YouTube transcript text for notes, summaries, and AI workflows.
+- [DownSub Alternative](https://ytvidhub.com/downsub-alternative/): Fair comparison page for users evaluating YTVidHub against DownSub and similar subtitle download sites.
+- [Chinese YouTube Subtitle Downloader](https://ytvidhub.com/zh/): Chinese homepage for YouTube字幕下载, YouTube字幕提取, 字幕下载, and 视频字幕提取 searches.
+- [Spanish YouTube Subtitle Downloader](https://ytvidhub.com/es/): Spanish homepage for descargar subtitulos de YouTube and related subtitle download searches.
+
+## Guides
+- [What Is an SRT File?](https://ytvidhub.com/what-is-an-srt-file/): SRT subtitle format rules, timestamp syntax, examples, and editing guidance.
+- [SRT vs VTT](https://ytvidhub.com/guide/srt-vs-vtt/): Comparison of SRT and WebVTT subtitle formats.
+- [YouTube Subtitles API Alternative](https://ytvidhub.com/guide/youtube-subtitles-api-free/): No-API subtitle export workflow for JSON, TXT, SRT, and VTT.
+- [Download YouTube Studio Subtitles](https://ytvidhub.com/guide/how-to-download-youtube-studio-subtitles/): Step-by-step YouTube Studio subtitle export guide and faster alternatives.
+- [Playlist Subtitles Bulk Guide](https://ytvidhub.com/guide/playlist-subtitles-bulk/): Workflow for collecting playlist subtitles in bulk.
+
+## Key Facts
+- Supported subtitle outputs include SRT, VTT, and TXT.
+- Bulk workflows support videos, playlists, and channels.
+- The product runs in the browser and focuses on subtitle extraction, transcript cleanup, and AI-ready text preparation.
+- Primary user groups include video editors, educators, researchers, localization teams, accessibility reviewers, and AI data teams.

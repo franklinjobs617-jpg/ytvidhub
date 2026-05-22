@@ -30,6 +30,11 @@ export default function SrtFileGuidePage() {
               file that stores caption lines plus timecodes, so video players can
               display synchronized subtitles at the right moment.
             </p>
+            <p className="mt-3 text-sm text-slate-700 leading-relaxed">
+              A valid SRT block uses a sequence number, a timestamp line such as{" "}
+              <code>00:00:01,000 --&gt; 00:00:04,000</code>, the subtitle text,
+              and one blank line before the next block.
+            </p>
             <p className="mt-2 text-xs text-slate-500">
               Editorially reviewed on April 21, 2026 by YTVidHub content and
               localization workflow team.
@@ -141,6 +146,50 @@ export default function SrtFileGuidePage() {
                       </div>
                     </div>
                   </div>
+                  <section id="srt-format-rules" className="scroll-mt-32 mb-16">
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
+                      SRT File Format Rules: Sequence Number, Timestamp, Text
+                    </h2>
+                    <p className="text-slate-600 leading-relaxed mb-6">
+                      Search engines often surface SRT pages for exact syntax
+                      questions. Use these rules to validate a subtitle file
+                      before uploading it to YouTube, VLC, Premiere Pro, or a
+                      translation workflow.
+                    </p>
+                    <div className="overflow-hidden rounded-xl border border-slate-200">
+                      <table className="w-full text-left text-sm">
+                        <thead className="bg-slate-50 text-slate-900">
+                          <tr>
+                            <th className="px-4 py-3 font-semibold">Line</th>
+                            <th className="px-4 py-3 font-semibold">Required value</th>
+                            <th className="px-4 py-3 font-semibold">Example</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-600">
+                          <tr>
+                            <td className="px-4 py-3 font-semibold text-slate-900">1</td>
+                            <td className="px-4 py-3">Sequential subtitle number</td>
+                            <td className="px-4 py-3"><code>1</code></td>
+                          </tr>
+                          <tr>
+                            <td className="px-4 py-3 font-semibold text-slate-900">2</td>
+                            <td className="px-4 py-3">Start and end timestamp with comma milliseconds</td>
+                            <td className="px-4 py-3"><code>00:00:01,000 --&gt; 00:00:04,000</code></td>
+                          </tr>
+                          <tr>
+                            <td className="px-4 py-3 font-semibold text-slate-900">3+</td>
+                            <td className="px-4 py-3">One or two readable subtitle lines</td>
+                            <td className="px-4 py-3">Welcome to the tutorial.</td>
+                          </tr>
+                          <tr>
+                            <td className="px-4 py-3 font-semibold text-slate-900">Blank</td>
+                            <td className="px-4 py-3">Empty line before the next subtitle block</td>
+                            <td className="px-4 py-3">Required</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
                   <section id="how-to-open-srt" className="scroll-mt-32 mb-16">
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
                       How to Open an SRT File (Windows, macOS, Web)

@@ -98,6 +98,11 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                 Export clean <strong>SRT, VTT, and TXT</strong> files for operations, content,
                 and AI/LLM data preparation.
               </p>
+              <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-500">
+                Built for searches like <strong>youtube playlist subtitle downloader</strong>,{" "}
+                <strong>batch download subtitles</strong>, and{" "}
+                <strong>download YouTube playlist subtitles</strong>.
+              </p>
 
               <div className="mt-10">
                 <BulkDownloaderInput />
@@ -129,6 +134,18 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
 
         <section className="bg-[var(--surface-page)] py-20">
           <div className="container mx-auto max-w-6xl px-6">
+            <div className="mb-12 rounded-2xl border border-blue-100 bg-white p-6 shadow-[0_14px_26px_-24px_rgba(37,99,235,0.35)] md:p-8">
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                Quick Answer: Can you download subtitles from an entire YouTube playlist?
+              </h2>
+              <p className="mt-4 leading-relaxed text-slate-600">
+                Yes. A playlist subtitle downloader extracts captions from every video in a
+                YouTube playlist and packages the results as SRT, VTT, or clean TXT files. This is
+                faster than opening each video manually, especially when you need captions for
+                research, translation, accessibility checks, content repurposing, or AI dataset
+                preparation.
+              </p>
+            </div>
             <div className="max-w-3xl">
               <h2 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
                 Bulk YouTube Subtitle Downloader for Playlists &amp; Channels
@@ -213,6 +230,34 @@ export default function BulkDownloaderClient({ locale }: { locale: string }) {
                   </li>
                 </ul>
               </div>
+            </div>
+            <div className="mt-10 overflow-hidden rounded-2xl border border-slate-200">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-slate-50 text-slate-900">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Task</th>
+                    <th className="px-4 py-3 font-semibold">Manual workflow</th>
+                    <th className="px-4 py-3 font-semibold">Bulk downloader workflow</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-600">
+                  <tr>
+                    <td className="px-4 py-3 font-semibold text-slate-900">Playlist captions</td>
+                    <td className="px-4 py-3">Open videos one by one and repeat the same download steps.</td>
+                    <td className="px-4 py-3">Paste the playlist URL once and export all available subtitles.</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-semibold text-slate-900">File organization</td>
+                    <td className="px-4 py-3">Rename downloaded files manually after each export.</td>
+                    <td className="px-4 py-3">Receive an organized ZIP with files mapped to video titles.</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-semibold text-slate-900">Output formats</td>
+                    <td className="px-4 py-3">Format support depends on the source interface.</td>
+                    <td className="px-4 py-3">Choose SRT, VTT, or TXT for the whole batch.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>

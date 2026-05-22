@@ -11,7 +11,7 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      <main className="min-h-screen">{children}</main>
+      <main className="site-dot-grid min-h-screen">{children}</main>
       <Footer />
 
       {/* 悬浮小组件放在这里 */}

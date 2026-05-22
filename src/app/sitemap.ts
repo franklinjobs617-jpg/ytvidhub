@@ -6,6 +6,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const currentDate = new Date().toISOString().split('T')[0]
     const englishOnlyPages = [
         { path: '/youtube-subtitle-downloader', priority: 0.95, changeFreq: 'monthly' as const },
+        { path: '/download-youtube-subtitles-online', priority: 0.92, changeFreq: 'monthly' as const },
+        { path: '/youtube-caption-downloader', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/youtube-vtt-downloader', priority: 0.85, changeFreq: 'monthly' as const },
+        { path: '/downsub-alternative', priority: 0.75, changeFreq: 'monthly' as const },
         { path: '/youtube-transcript-generator', priority: 0.95, changeFreq: 'monthly' as const },
         { path: '/blog', priority: 0.85, changeFreq: 'weekly' as const },
         { path: '/guide', priority: 0.85, changeFreq: 'weekly' as const },

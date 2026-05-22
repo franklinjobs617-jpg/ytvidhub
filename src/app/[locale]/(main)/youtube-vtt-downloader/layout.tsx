@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
-import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
+import BreadcrumbSchema, { toolBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 type Props = {
   children: React.ReactNode;
@@ -9,22 +9,23 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = buildAlternates(locale, "/guide/youtube-subtitles-api-free");
-  const canonicalUrl = alternates.canonical;
-
-  const title = "Free YouTube Subtitles API Alternative - Export JSON, TXT, SRT";
+  const pathname = "/youtube-vtt-downloader";
+  const alternates = buildAlternates(locale, pathname);
+  const title = "YouTube VTT Downloader Free - Download WebVTT Captions";
   const description =
-    "Use a free YouTube subtitles API alternative to export captions as JSON, TXT, SRT, or VTT without OAuth setup, quota costs, or caption.download limits.";
+    "Download YouTube subtitles as VTT files for HTML5 video and web players. Paste a YouTube URL and export WebVTT captions online.";
 
   return {
     title,
     description,
+    keywords:
+      "youtube vtt downloader, vtt download, vtt subtitles download, download youtube vtt, webvtt captions",
     alternates,
     openGraph: {
       title,
       description,
-      url: canonicalUrl,
-      type: "article",
+      url: alternates.canonical,
+      type: "website",
       images: [{ url: "/image/og-image.webp", width: 1200, height: 630, alt: title }],
     },
     twitter: {
@@ -36,9 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function YouTubeSubtitlesAPIFreeLayout({ children, params }: Props) {
+export default async function YouTubeVttDownloaderLayout({ children, params }: Props) {
   const { locale } = await params;
-  const items = guideBreadcrumbs(locale, "/guide/youtube-subtitles-api-free", "YouTube Subtitles API Alternatives");
+  const items = toolBreadcrumbs(locale, "/youtube-vtt-downloader", "YouTube VTT Downloader");
+
   return (
     <>
       <BreadcrumbSchema items={items} />

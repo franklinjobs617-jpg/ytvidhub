@@ -60,7 +60,43 @@ export default async function YouTubeSubtitleDownloaderPage() {
               </Link>
               .
             </p>
+            <div className="mx-auto mb-10 grid max-w-4xl gap-3 text-left md:grid-cols-3">
+              {[
+                ["Best for", "Downloading YouTube subtitles, captions, and CC tracks from a single video."],
+                ["Formats", "Export SRT for editors, VTT for web players, or TXT for clean transcript text."],
+                ["Setup", "No browser extension or desktop software is required for basic subtitle downloads."],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="rounded-xl border border-blue-100 bg-white/80 p-4 shadow-sm"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+                    {label}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                    {value}
+                  </p>
+                </div>
+              ))}
+            </div>
             <SubtitleDownloaderWidget />
+          </div>
+        </section>
+        <section className="py-14 bg-white">
+          <div className="container mx-auto px-6 max-w-4xl">
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 md:p-8">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4 article-h2">
+                Quick Answer: How do you download YouTube subtitles online?
+              </h2>
+              <p className="text-slate-600 leading-relaxed">
+                To download YouTube subtitles online, copy the video URL, paste
+                it into YTVidHub, choose an available caption language, then
+                export the file as SRT, VTT, or TXT. SRT is best for video
+                editors and players, VTT is best for web video, and TXT is best
+                when you need readable transcript text without subtitle timing
+                markup.
+              </p>
+            </div>
           </div>
         </section>
         {/* === 2. WHAT IS YOUTUBE SUBTITLE DOWNLOADER === */}
@@ -83,6 +119,41 @@ export default async function YouTubeSubtitleDownloaderPage() {
                 TXT files, making it perfect for video editing, accessibility
                 compliance, language learning, and AI training datasets.
               </p>
+            </div>
+          </div>
+        </section>
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-6 max-w-5xl">
+            <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center article-h2">
+              Which Subtitle Format Should You Download?
+            </h2>
+            <div className="overflow-hidden rounded-2xl border border-slate-200">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-slate-50 text-slate-900">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Format</th>
+                    <th className="px-4 py-3 font-semibold">Use it for</th>
+                    <th className="px-4 py-3 font-semibold">Search intent covered</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-600">
+                  <tr>
+                    <td className="px-4 py-3 font-semibold text-slate-900">SRT</td>
+                    <td className="px-4 py-3">Premiere Pro, VLC, translation, accessibility upload.</td>
+                    <td className="px-4 py-3">download YouTube SRT, YouTube subtitle downloader SRT</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-semibold text-slate-900">VTT</td>
+                    <td className="px-4 py-3">HTML5 video, web players, browser-based caption workflows.</td>
+                    <td className="px-4 py-3">VTT download, YouTube VTT downloader</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-semibold text-slate-900">TXT</td>
+                    <td className="px-4 py-3">Reading, notes, AI prompts, content repurposing, research.</td>
+                    <td className="px-4 py-3">download YouTube transcript, clean caption text</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>

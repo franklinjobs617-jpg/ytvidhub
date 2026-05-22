@@ -13,6 +13,26 @@ const allTools: ToolLink[] = [
     desc: "Download subtitles from any YouTube video in SRT, VTT, and TXT formats.",
   },
   {
+    href: "/download-youtube-subtitles-online",
+    title: "Download Subtitles Online",
+    desc: "Use the browser-based downloader for fast single-video subtitle exports.",
+  },
+  {
+    href: "/youtube-caption-downloader",
+    title: "YouTube Caption Downloader",
+    desc: "Download YouTube captions and CC tracks for accessibility and editing.",
+  },
+  {
+    href: "/youtube-vtt-downloader",
+    title: "YouTube VTT Downloader",
+    desc: "Export WebVTT captions for HTML5 video and web players.",
+  },
+  {
+    href: "/downsub-alternative",
+    title: "DownSub Alternative",
+    desc: "Compare YTVidHub with DownSub for subtitle and transcript workflows.",
+  },
+  {
     href: "/bulk-youtube-subtitle-downloader",
     title: "Bulk Subtitle Downloader",
     desc: "Extract subtitles from entire playlists and channels at once.",

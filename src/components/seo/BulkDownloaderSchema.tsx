@@ -6,7 +6,7 @@ export default function BulkDownloaderSchema() {
     "@type": "WebApplication",
     "name": "Bulk YouTube Subtitle Downloader",
     "description": "Professional bulk YouTube subtitle downloader for extracting SRT, VTT, and TXT transcripts from multiple videos, playlists, and channels.",
-    "url": "https://ytvidhub.com/bulk-youtube-subtitle-downloader",
+    "url": "https://ytvidhub.com/bulk-youtube-subtitle-downloader/",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Web Browser",
     "offers": {
@@ -26,52 +26,6 @@ export default function BulkDownloaderSchema() {
       "ZIP file delivery"
     ],
     "screenshot": "https://ytvidhub.com/image/bulk-youtube-subtitle-downloader-screenshot.webp"
-  };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Download YouTube Subtitles in Bulk",
-    "description": "Step-by-step guide to download subtitles from multiple YouTube videos, playlists, or channels at once.",
-    "image": "https://ytvidhub.com/image/bulk-guide-step1-paste-url.webp",
-    "totalTime": "PT5M",
-    "estimatedCost": {
-      "@type": "MonetaryAmount",
-      "currency": "USD",
-      "value": "0"
-    },
-    "supply": [
-      {
-        "@type": "HowToSupply",
-        "name": "YouTube playlist or channel URL"
-      }
-    ],
-    "tool": [
-      {
-        "@type": "HowToTool",
-        "name": "YTVidHub Bulk Downloader"
-      }
-    ],
-    "step": [
-      {
-        "@type": "HowToStep",
-        "name": "Paste URLs",
-        "text": "Copy and paste your YouTube playlist, channel, or multiple video URLs into the bulk downloader.",
-        "image": "https://ytvidhub.com/image/bulk-guide-step1-paste-url.webp"
-      },
-      {
-        "@type": "HowToStep", 
-        "name": "Select Format",
-        "text": "Choose your preferred subtitle format: SRT for video players, VTT for web, or TXT for clean text.",
-        "image": "https://ytvidhub.com/image/bulk-guide-step2-select-format.webp"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Download ZIP",
-        "text": "Click download and receive a ZIP file with all subtitles organized by video title.",
-        "image": "https://ytvidhub.com/image/bulk-guide-step3-download-zip.webp"
-      }
-    ]
   };
 
   const faqSchema = {
@@ -126,10 +80,6 @@ export default function BulkDownloaderSchema() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
       <script
         type="application/ld+json"

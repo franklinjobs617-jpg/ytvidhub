@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
-import BreadcrumbSchema, { guideBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
+import BreadcrumbSchema, { resourceBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 
 type Props = {
   children: React.ReactNode;
@@ -9,21 +9,22 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const alternates = buildAlternates(locale, "/guide/youtube-subtitles-api-free");
-  const canonicalUrl = alternates.canonical;
-
-  const title = "Free YouTube Subtitles API Alternative - Export JSON, TXT, SRT";
+  const pathname = "/downsub-alternative";
+  const alternates = buildAlternates(locale, pathname);
+  const title = "DownSub Alternative for YouTube Subtitles | YTVidHub";
   const description =
-    "Use a free YouTube subtitles API alternative to export captions as JSON, TXT, SRT, or VTT without OAuth setup, quota costs, or caption.download limits.";
+    "Compare YTVidHub as a DownSub alternative for downloading YouTube subtitles, captions, SRT, VTT, TXT, playlists, and AI-ready transcript workflows.";
 
   return {
     title,
     description,
+    keywords:
+      "downsub alternative, downsub vs ytvidhub, sites like downsub, youtube subtitle downloader alternative",
     alternates,
     openGraph: {
       title,
       description,
-      url: canonicalUrl,
+      url: alternates.canonical,
       type: "article",
       images: [{ url: "/image/og-image.webp", width: 1200, height: 630, alt: title }],
     },
@@ -36,9 +37,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function YouTubeSubtitlesAPIFreeLayout({ children, params }: Props) {
+export default async function DownSubAlternativeLayout({ children, params }: Props) {
   const { locale } = await params;
-  const items = guideBreadcrumbs(locale, "/guide/youtube-subtitles-api-free", "YouTube Subtitles API Alternatives");
+  const items = resourceBreadcrumbs(locale, "/downsub-alternative", "DownSub Alternative");
+
   return (
     <>
       <BreadcrumbSchema items={items} />

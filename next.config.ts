@@ -127,6 +127,26 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/what-is-an-srt-file.html",
+        destination: "/what-is-an-srt-file/",
+        permanent: true,
+      },
+      {
+        source: "/what-is-an-srt-file.html/",
+        destination: "/what-is-an-srt-file/",
+        permanent: true,
+      },
+      {
+        source: "/youtube-caption-download",
+        destination: "/youtube-caption-downloader/",
+        permanent: true,
+      },
+      {
+        source: "/youtube-caption-download/",
+        destination: "/youtube-caption-downloader/",
+        permanent: true,
+      },
+      {
         source: "/how-to-download-youtube-subtitles-complete-guide/",
         destination: "/guide/how-to-download-youtube-subtitles-complete-guide/",
         permanent: true,

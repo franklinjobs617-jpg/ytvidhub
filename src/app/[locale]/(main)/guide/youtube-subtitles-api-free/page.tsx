@@ -22,14 +22,30 @@ export default function YouTubeApiAlternativeGuide() {
             Developer Documentation
           </p>
           <h1 className="text-3xl md:text-5xl font-bold text-slate-900 leading-tight mb-6 article-h1">
-            Ditch the API. Get Subtitles Directly.
+            Free YouTube Subtitles API Alternative
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed">
-            API quotas and complexity are major hurdles for data projects.
-            Discover a professional, no-API alternative to get structured JSON
-            or clean TXT data instantly.
+            Export YouTube captions as JSON, TXT, SRT, or VTT without OAuth,
+            API quota planning, or captions.download limits. Built for
+            developers, researchers, and data teams that need repeatable
+            subtitle exports.
           </p>
         </header>
+        <article className="article-shell article-section">
+          <div className="rounded-xl border border-blue-100 bg-blue-50 p-5">
+            <h2 className="text-2xl font-bold text-slate-900 mb-3 article-h2">
+              Quick Answer: Is there a free YouTube subtitles API?
+            </h2>
+            <p className="text-slate-700 leading-relaxed">
+              The official YouTube Data API can access caption resources, but
+              practical subtitle downloads require OAuth authorization and can
+              consume significant quota. YTVidHub works as a no-API alternative:
+              paste a video, playlist, or channel URL and export available
+              subtitles into JSON, TXT, SRT, or VTT for development and research
+              workflows.
+            </p>
+          </div>
+        </article>
         {/* API Bottleneck */}
         <article className="article-shell article-section">
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 article-h2">
@@ -74,6 +90,42 @@ export default function YouTubeApiAlternativeGuide() {
               alt="YouTube API quota costs vs direct export"
               className="w-full h-auto"
             />
+          </div>
+        </article>
+        <article className="article-shell article-section">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
+            YouTube API vs No-API Subtitle Export
+          </h2>
+          <div className="rounded-xl border border-slate-200 overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50">
+                  <th className="py-3 px-4 text-left font-semibold text-slate-900">
+                    Requirement
+                  </th>
+                  <th className="py-3 px-4 text-left font-semibold text-slate-900">
+                    Official API workflow
+                  </th>
+                  <th className="py-3 px-4 text-left font-semibold text-blue-600">
+                    YTVidHub workflow
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-slate-600">
+                {[
+                  ["Authentication", "OAuth setup and user permission flow", "Paste a URL in the browser"],
+                  ["Bulk playlists", "Custom pagination, retries, and quota tracking", "Playlist URL ingestion in one workflow"],
+                  ["Output formats", "Requires your own conversion pipeline", "JSON, TXT, SRT, and VTT exports"],
+                  ["Operational risk", "Quota errors, 403s, and token handling", "No API key or OAuth token to maintain"],
+                ].map(([feature, api, ytvidhub]) => (
+                  <tr key={feature} className="border-b border-slate-100 last:border-0">
+                    <td className="py-3 px-4 font-medium text-slate-900">{feature}</td>
+                    <td className="py-3 px-4">{api}</td>
+                    <td className="py-3 px-4">{ytvidhub}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </article>
         {/* No-API Alternative */}

@@ -5,8 +5,8 @@ export default function SubtitleDownloaderSchema() {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "YouTube Subtitle Downloader",
-    "description": "Free tool to download YouTube subtitles in SRT, VTT, and TXT formats. Extract captions from any YouTube video instantly.",
-    "url": "https://ytvidhub.com/youtube-subtitle-downloader",
+    "description": "Free online YouTube subtitle downloader for SRT, VTT, and TXT caption exports. Paste a video URL and extract available subtitles or auto-generated captions in your browser.",
+    "url": "https://ytvidhub.com/youtube-subtitle-downloader/",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Web Browser",
     "offers": {
@@ -24,7 +24,7 @@ export default function SubtitleDownloaderSchema() {
       "Bulk playlist subtitle downloads",
       "No registration required for basic use"
     ],
-    "screenshot": "https://ytvidhub.com/image/subtitle-downloader-screenshot.webp",
+    "screenshot": "https://ytvidhub.com/image/yytvidhub-download.gif",
     "softwareVersion": "2.0",
     "author": {
       "@type": "Organization",
@@ -95,56 +95,6 @@ export default function SubtitleDownloaderSchema() {
     ]
   };
 
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Download YouTube Subtitles",
-    "description": "Step-by-step guide to download subtitles from YouTube videos in SRT, VTT, or TXT format",
-    "image": "https://ytvidhub.com/image/how-to-download-subtitles.webp",
-    "totalTime": "PT2M",
-    "estimatedCost": {
-      "@type": "MonetaryAmount",
-      "currency": "USD",
-      "value": "0"
-    },
-    "supply": [
-      {
-        "@type": "HowToSupply",
-        "name": "YouTube video URL"
-      },
-      {
-        "@type": "HowToSupply", 
-        "name": "Internet connection"
-      }
-    ],
-    "tool": [
-      {
-        "@type": "HowToTool",
-        "name": "YTVidHub Subtitle Downloader"
-      }
-    ],
-    "step": [
-      {
-        "@type": "HowToStep",
-        "name": "Copy YouTube URL",
-        "text": "Copy the URL of any YouTube video that has captions or subtitles available.",
-        "image": "https://ytvidhub.com/image/step1-copy-url.webp"
-      },
-      {
-        "@type": "HowToStep", 
-        "name": "Paste and Select Format",
-        "text": "Paste the URL into our tool and choose your preferred format: SRT, VTT, or TXT.",
-        "image": "https://ytvidhub.com/image/step2-select-format.webp"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Download Instantly", 
-        "text": "Click download and get your subtitle file immediately. No registration required for basic use.",
-        "image": "https://ytvidhub.com/image/step3-download.webp"
-      }
-    ]
-  };
-
   return (
     <>
       <Script
@@ -159,13 +109,6 @@ export default function SubtitleDownloaderSchema() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(faqSchema),
-        }}
-      />
-      <Script
-        id="subtitle-downloader-howto-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(howToSchema),
         }}
       />
     </>

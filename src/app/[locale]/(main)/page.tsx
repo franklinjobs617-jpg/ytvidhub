@@ -6,6 +6,7 @@ import FeaturesGrid from "@/components/landing/FeaturesGrid";
 import HowItWorks from "@/components/landing/HowItWorks";
 import CoreCapabilities from "@/components/landing/CoreCapabilities";
 import FAQ from "@/components/landing/FAQ";
+import SeoIntentSections from "@/components/landing/SeoIntentSections";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import { buildAlternates } from "@/lib/seo";
@@ -67,26 +68,76 @@ export default async function Home({ params }: Props) {
       }
     }))
   };
+  const localizedApplicationNames: Record<string, string> = {
+    zh: "YouTube字幕下载工具",
+    es: "Descargador de Subtitulos de YouTube",
+  };
+  const localizedApplicationDescriptions: Record<string, string> = {
+    zh: "在线下载YouTube字幕，支持SRT、VTT、TXT格式，可从视频、播放列表和频道提取字幕。",
+    es: "Herramienta online para descargar subtitulos de YouTube en SRT, VTT y TXT desde videos, playlists y canales.",
+  };
+  const webApplicationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: localizedApplicationNames[locale] ?? "YouTube Subtitle Downloader",
+    description:
+      localizedApplicationDescriptions[locale] ??
+      "Download YouTube subtitles, captions, and transcripts as SRT, VTT, or TXT from videos, playlists, and channels.",
+    url: buildCanonicalUrl({ locale, pathname: "" }),
+    applicationCategory: "MultimediaApplication",
+    operatingSystem: "Web Browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    featureList:
+      locale === "zh"
+        ? [
+            "YouTube字幕下载",
+            "YouTube字幕提取",
+            "SRT字幕下载",
+            "VTT字幕下载",
+            "TXT字幕导出",
+            "播放列表和频道批量字幕下载",
+          ]
+        : locale === "es"
+        ? [
+            "Descargar subtitulos de YouTube",
+            "Exportar subtitulos SRT",
+            "Exportar captions VTT",
+            "Descargar TXT limpio",
+            "Descarga masiva desde playlists y canales",
+          ]
+        : [
+            "Download YouTube subtitles",
+            "Download YouTube captions",
+            "Export SRT subtitles",
+            "Export VTT captions",
+            "Export clean TXT transcripts",
+            "Bulk playlist and channel subtitle downloads",
+          ],
+  };
 
   const heroHeader = (
-    <div className="mx-auto mb-12 max-w-4xl">
-      <h1 className="mb-4 text-4xl font-display leading-[1.05] tracking-[-0.025em] text-slate-900 md:text-6xl">
+    <div className="mx-auto mb-10 max-w-4xl">
+      <h1 className="mb-4 text-[42px] font-semibold leading-[1.08] tracking-tight text-[#0a0a0a] sm:text-5xl md:text-6xl">
         {t('title')}
       </h1>
-      <h2 className="mx-auto mb-5 max-w-2xl text-base font-medium text-slate-600 md:text-lg">
+      <h2 className="mx-auto mb-5 max-w-2xl text-base font-normal leading-7 text-[#404040] md:text-lg">
         {t.rich('subtitle', {
           highlight: (chunks) => (
-            <span className="rounded-md bg-[var(--brand-50)] px-1.5 py-0.5 font-semibold text-[var(--brand-700)]">
+            <span className="font-semibold text-[#0a0a0a] underline decoration-[#3b82f6] decoration-2 underline-offset-4">
               {chunks}
             </span>
           )
         })}
       </h2>
-      <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
-        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.subtitles')}</span>
-        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.caption')}</span>
-        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.transcript')}</span>
-        <span className="rounded-full border border-slate-200 bg-white px-3 py-1 font-medium">{t('ticker.bulk')}</span>
+      <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-2 text-xs text-[#404040]">
+        <span className="rounded-full border border-[#e5e5e5] bg-white px-3 py-1 font-medium">{t('ticker.subtitles')}</span>
+        <span className="rounded-full border border-[#e5e5e5] bg-white px-3 py-1 font-medium">{t('ticker.caption')}</span>
+        <span className="rounded-full border border-[#e5e5e5] bg-white px-3 py-1 font-medium">{t('ticker.transcript')}</span>
+        <span className="rounded-full border border-[#e5e5e5] bg-white px-3 py-1 font-medium">{t('ticker.bulk')}</span>
       </div>
     </div>
   );
@@ -97,7 +148,12 @@ export default async function Home({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationJsonLd) }}
+      />
       <HeroSection heroHeader={heroHeader} />
+      <SeoIntentSections locale={locale} />
       <ExtensionBanner />
       <ComparisonSlider />
       <FeaturesGrid />
