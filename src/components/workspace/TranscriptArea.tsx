@@ -929,30 +929,59 @@ export function TranscriptArea({
       </div>
 
       {/*
-        解锁引导 bar：在 flex-col 容器的底层，shrink-0 保证它不被压缩。
-        位于 overflow-y-auto 的滚动区域之外，所以始终可见，无需下滑。
-        仅在 isPreviewLocked 时渲染，不占用已解锁用户的空间。
+        解锁引导 bar — 双模式：
+        PC端（md:）：shrink-0 正常流，在 flex-col 底部，始终可见
+        移动端（<md）：fixed 定位，z-[80] 高于 MobileNavigation 的 z-[70]
+                       bottom 精确计算：nav bar高度(~42px) + bottom偏移(10px) + safe-area + bar自身间距(8px)
+                       这样 bar 贴在 nav bar 正上方，不被遮挡
       */}
       {isPreviewLocked && (
-        <div className="shrink-0 border-t border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 flex flex-col sm:flex-row items-center gap-3">
-          <div className="flex-1 text-center sm:text-left">
-            <p className="text-[13px] font-bold text-slate-800 leading-tight">
-              Preview limited to 40%
-            </p>
-            <p className="text-[11px] text-slate-500 mt-0.5">
-              {user
-                ? "Download to unlock the full transcript."
-                : "Sign in free · Get 5 credits · Unlock full text instantly."}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onRequestUnlock}
-            className="shrink-0 rounded-lg bg-blue-600 px-5 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap shadow-sm"
+        <>
+          {/* 移动端：fixed定位，贴在MobileNavigation上方 */}
+          <div
+            className="md:hidden fixed left-0 right-0 z-[80] border-t border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-2.5 flex flex-row items-center gap-3 shadow-[0_-4px_16px_-8px_rgba(15,23,42,0.15)]"
+            style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 62px)" }}
           >
-            {user ? "Download to unlock" : "Login & unlock free →"}
-          </button>
-        </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[12px] font-bold text-slate-800 leading-tight">
+                Preview limited to 40%
+              </p>
+              <p className="text-[10px] text-slate-500 mt-0.5 truncate">
+                {user
+                  ? "Download to unlock the full transcript."
+                  : "Sign in free · Get 5 credits · Unlock instantly."}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onRequestUnlock}
+              className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap shadow-sm"
+            >
+              {user ? "Unlock →" : "Login free →"}
+            </button>
+          </div>
+
+          {/* PC端：shrink-0 正常流，在 flex-col 底部 */}
+          <div className="hidden md:flex shrink-0 border-t border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 flex-row items-center gap-3">
+            <div className="flex-1">
+              <p className="text-[13px] font-bold text-slate-800 leading-tight">
+                Preview limited to 40%
+              </p>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                {user
+                  ? "Download to unlock the full transcript."
+                  : "Sign in free · Get 5 credits · Unlock full text instantly."}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onRequestUnlock}
+              className="shrink-0 rounded-lg bg-blue-600 px-5 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap shadow-sm"
+            >
+              {user ? "Download to unlock" : "Login & unlock free →"}
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
