@@ -876,24 +876,9 @@ export function TranscriptArea({
             })}
 
             {isPreviewLocked && (
-              <div className="mx-4 mt-3 rounded-xl border border-blue-100 bg-blue-50/70 p-4 text-center">
-                <p className="text-sm font-semibold text-slate-800">
-                  Preview limited to 40%
-                </p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                  {user
-                    ? "Download this transcript to unlock the full text."
-                    : "Log in and download this transcript to unlock the full text."}
-                </p>
-                <button
-                  type="button"
-                  onClick={onRequestUnlock}
-                  className="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-blue-700"
-                >
-                  {user
-                    ? "Download to unlock"
-                    : "Login and download to unlock"}
-                </button>
+              /* 滚动区内的淡出遮罩提示，视觉上暗示内容被截断 */
+              <div className="mx-4 mt-2 mb-1 text-center">
+                <p className="text-xs text-slate-400">· · ·</p>
               </div>
             )}
 
@@ -942,6 +927,33 @@ export function TranscriptArea({
           </div>
         )}
       </div>
+
+      {/*
+        解锁引导 bar：在 flex-col 容器的底层，shrink-0 保证它不被压缩。
+        位于 overflow-y-auto 的滚动区域之外，所以始终可见，无需下滑。
+        仅在 isPreviewLocked 时渲染，不占用已解锁用户的空间。
+      */}
+      {isPreviewLocked && (
+        <div className="shrink-0 border-t border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 flex flex-col sm:flex-row items-center gap-3">
+          <div className="flex-1 text-center sm:text-left">
+            <p className="text-[13px] font-bold text-slate-800 leading-tight">
+              Preview limited to 40%
+            </p>
+            <p className="text-[11px] text-slate-500 mt-0.5">
+              {user
+                ? "Download to unlock the full transcript."
+                : "Sign in free · Get 5 credits · Unlock full text instantly."}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onRequestUnlock}
+            className="shrink-0 rounded-lg bg-blue-600 px-5 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap shadow-sm"
+          >
+            {user ? "Download to unlock" : "Login & unlock free →"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -926,6 +926,44 @@ This is a valid SRT block.`}
                     sectionClassName="scroll-mt-32 mb-16 py-0 bg-transparent"
                     containerClassName="max-w-none px-0 lg:px-0"
                   />
+                  {/* 工具体验入口 — 新增内容，不改H1/TDH
+                      目的：把13,000次曝光的信息流量导入工具漏斗
+                      位置：FAQ之后、Final CTA之前 */}
+                  <section className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-8 mb-10">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                      <div className="flex-1">
+                        <p className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-1">Try it now — free</p>
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">
+                          Download a YouTube SRT file in 10 seconds
+                        </h3>
+                        <p className="text-sm text-slate-600 leading-relaxed">
+                          Paste any YouTube URL and get a properly formatted SRT file instantly.
+                          Works with single videos, playlists, and channels. No software needed.
+                        </p>
+                        <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
+                          <li>✓ SRT, VTT, TXT formats</li>
+                          <li>✓ 100+ languages</li>
+                          <li>✓ Bulk playlist download</li>
+                          <li>✓ 5 free downloads on signup</li>
+                        </ul>
+                      </div>
+                      <div className="shrink-0 flex flex-col gap-3 w-full sm:w-auto">
+                        <Link
+                          href="/?ref=srt-guide"
+                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-700 transition-colors shadow-sm"
+                        >
+                          Download SRT Free →
+                        </Link>
+                        <Link
+                          href="/bulk-youtube-subtitle-downloader/?ref=srt-guide"
+                          className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50 transition-colors"
+                        >
+                          Bulk playlist download
+                        </Link>
+                      </div>
+                    </div>
+                  </section>
+
                   {/* Final CTA */}
                   <section className="text-center rounded-2xl bg-slate-900 p-12 md:p-16">
                     <h3 className="text-2xl font-bold text-white mb-4">

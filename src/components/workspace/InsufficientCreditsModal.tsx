@@ -197,6 +197,12 @@ export function InsufficientCreditsModal({
         });
       }
 
+      // 跳Stripe前把当前历史记录替换为workspace，
+      // 用户在Stripe页点浏览器返回时回到workspace而非pricing页
+      if (typeof window !== "undefined") {
+        window.history.replaceState(null, "", "/workspace?resumeBulk=1");
+      }
+
       window.location.href = checkoutUrl;
     } catch (error) {
       const message =
@@ -220,105 +226,116 @@ export function InsufficientCreditsModal({
           className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
         />
 
+        {/*
+          移动端修复说明：
+          原结构：单个 overflow-y-auto 容器，CTA在内部，sticky无效（内容不足以触发scroll）
+          新结构：flex-col 分两层
+            - 上层：overflow-y-auto，放图片+积分信息+套餐选择（可滚动内容）
+            - 下层：shrink-0，放CTA按钮（固定在弹窗底部，始终可见）
+        */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.98, y: 10 }}
-          className="relative w-full max-w-[560px] rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+          className="relative w-full max-w-[560px] rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
         >
-          <div className="relative h-44">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage:
-                  "url('/YouTube%20Subtitle%20Batch%20Download%20Illustration.webp')",
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-slate-900/55 to-slate-900/70" />
-
-            <button
-              onClick={onClose}
-              className="absolute right-3 top-3 z-10 rounded-md bg-black/35 p-1.5 text-white/90 transition-all hover:bg-black/50 hover:text-white"
-              aria-label="Close"
-            >
-              <X size={18} />
-            </button>
-
-            <div className="absolute inset-x-0 bottom-0 px-6 pb-5">
-              <p className="text-2xl sm:text-[30px] leading-tight font-black tracking-tight text-white drop-shadow-lg">
-                {copy.title}
-              </p>
-            </div>
-          </div>
-
-          <div className="px-6 py-5 space-y-4">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <p className="flex items-start gap-2 text-[15px] leading-relaxed text-slate-700 font-medium">
-                <Wallet size={17} className="mt-[1px] text-slate-500" />
-                <span>
-                  You need <span className="font-extrabold text-slate-900">{requiredAmount} credits</span> to
-                  {" "}
-                  {copy.verb}. Your current balance is <span className="font-extrabold text-slate-900">{currentCredits}</span>.
-                </span>
-              </p>
-              <p className="mt-2 flex items-start gap-2 text-[14px] leading-relaxed font-bold text-orange-600">
-                <Flame size={16} className="mt-[1px]" />
-                Limited Time: Top up now and get +10% extra credits!
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-blue-100 bg-gradient-to-b from-blue-50 to-blue-50/30 p-3.5">
-              <p className="text-[11px] uppercase tracking-wider text-blue-700 font-bold mb-2.5">Select a plan</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                {planHints.map((plan) => {
-                  const isSelected = selectedPlanId === plan.id;
-                  const isBestValue = plan.id === "b";
-                  return (
-                    <button
-                      key={plan.id}
-                      type="button"
-                      onClick={() => setSelectedPlanId(plan.id)}
-                      className={`relative rounded-xl border bg-white px-3 py-3 text-left transition-all ${
-                        isSelected
-                          ? "border-blue-500 ring-2 ring-blue-200 shadow-sm"
-                          : "border-blue-100 hover:border-blue-300"
-                      }`}
-                    >
-                      {isBestValue && (
-                        <span className="absolute -top-2 right-2 rounded-full bg-blue-600 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
-                          {plan.badge}
-                        </span>
-                      )}
-                      <p className="text-[12px] font-black text-slate-900">{plan.name}</p>
-                      <p className="mt-0.5 text-[24px] leading-none font-extrabold text-slate-900">{plan.price}</p>
-                      <p className="mt-1.5 text-[11px] leading-snug text-slate-600 font-medium">{plan.detail}</p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="space-y-3 pt-1">
-              <button
-                onClick={handleUpgrade}
-                disabled={isSubmittingUpgrade}
-                className="w-full h-12 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed"
-              >
-                <CreditCard size={16} />
-                {isSubmittingUpgrade
-                  ? "Opening Stripe checkout..."
-                  : `Continue with ${selectedPlan.name} on Stripe`}
-                <ArrowRight size={14} />
-              </button>
+          {/* 上层：可滚动内容区 */}
+          <div className="overflow-y-auto flex-1">
+            <div className="relative h-44">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage:
+                    "url('/YouTube%20Subtitle%20Batch%20Download%20Illustration.webp')",
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-slate-900/55 to-slate-900/70" />
 
               <button
                 onClick={onClose}
-                disabled={isSubmittingUpgrade}
-                className="w-full h-11 rounded-xl text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition-all"
+                className="absolute right-3 top-3 z-10 rounded-md bg-black/35 p-1.5 text-white/90 transition-all hover:bg-black/50 hover:text-white"
+                aria-label="Close"
               >
-                Maybe later
+                <X size={18} />
               </button>
+
+              <div className="absolute inset-x-0 bottom-0 px-6 pb-5">
+                <p className="text-2xl sm:text-[30px] leading-tight font-black tracking-tight text-white drop-shadow-lg">
+                  {copy.title}
+                </p>
+              </div>
             </div>
+
+            <div className="px-6 py-5 space-y-4">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <p className="flex items-start gap-2 text-[15px] leading-relaxed text-slate-700 font-medium">
+                  <Wallet size={17} className="mt-[1px] text-slate-500" />
+                  <span>
+                    You need <span className="font-extrabold text-slate-900">{requiredAmount} credits</span> to
+                    {" "}
+                    {copy.verb}. Your current balance is <span className="font-extrabold text-slate-900">{currentCredits}</span>.
+                  </span>
+                </p>
+                <p className="mt-2 flex items-start gap-2 text-[14px] leading-relaxed font-bold text-orange-600">
+                  <Flame size={16} className="mt-[1px]" />
+                  Limited Time: Top up now and get +10% extra credits!
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-blue-100 bg-gradient-to-b from-blue-50 to-blue-50/30 p-3.5">
+                <p className="text-[11px] uppercase tracking-wider text-blue-700 font-bold mb-2.5">Select a plan</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  {planHints.map((plan) => {
+                    const isSelected = selectedPlanId === plan.id;
+                    const isBestValue = plan.id === "b";
+                    return (
+                      <button
+                        key={plan.id}
+                        type="button"
+                        onClick={() => setSelectedPlanId(plan.id)}
+                        className={`relative rounded-xl border bg-white px-3 py-3 text-left transition-all ${
+                          isSelected
+                            ? "border-blue-500 ring-2 ring-blue-200 shadow-sm"
+                            : "border-blue-100 hover:border-blue-300"
+                        }`}
+                      >
+                        {isBestValue && (
+                          <span className="absolute -top-2 right-2 rounded-full bg-blue-600 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white">
+                            {plan.badge}
+                          </span>
+                        )}
+                        <p className="text-[12px] font-black text-slate-900">{plan.name}</p>
+                        <p className="mt-0.5 text-[24px] leading-none font-extrabold text-slate-900">{plan.price}</p>
+                        <p className="mt-1.5 text-[11px] leading-snug text-slate-600 font-medium">{plan.detail}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 下层：CTA固定区，始终在弹窗底部可见，移动端无需下滑 */}
+          <div className="shrink-0 border-t border-slate-100 bg-white px-6 py-4 space-y-2.5">
+            <button
+              onClick={handleUpgrade}
+              disabled={isSubmittingUpgrade}
+              className="w-full h-12 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed"
+            >
+              <CreditCard size={16} />
+              {isSubmittingUpgrade
+                ? "Opening Stripe checkout..."
+                : `Continue with ${selectedPlan.name} on Stripe`}
+              <ArrowRight size={14} />
+            </button>
+
+            <button
+              onClick={onClose}
+              disabled={isSubmittingUpgrade}
+              className="w-full h-10 rounded-xl text-sm font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-50 transition-all"
+            >
+              Maybe later
+            </button>
           </div>
         </motion.div>
       </div>
