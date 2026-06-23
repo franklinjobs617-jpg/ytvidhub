@@ -131,6 +131,11 @@ const contentByLocale: Record<"en" | "es" | "zh", LocalizedSeoContent> = {
         body: "Step-by-step guide to downloading every subtitle from a playlist in one click.",
       },
       {
+        href: "/youtube-transcript-generator",
+        text: "YouTube transcript generator",
+        body: "Convert any YouTube video to clean text — no timestamps, ready for notes and AI tools.",
+      },
+      {
         href: "/youtube-vtt-downloader",
         text: "YouTube VTT downloader",
         body: "A WebVTT-focused page for HTML5 video and web players.",

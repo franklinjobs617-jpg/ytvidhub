@@ -753,6 +753,59 @@ export default async function YouTubeTranscriptGeneratorPage({
           </div>
         </section>
 
+        </section>
+
+        {/* 新增内容 section：覆盖 "youtube transcript without timestamp" 相关关键词
+            GSC数据：该词排名9，接近前10，加内容可推进排名
+            策略：加内容+内链，不改TDH（CTR 4.44% 已正常，只需提升曝光） */}
+        <section className="py-16 bg-slate-50/50">
+          <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                How to get a YouTube transcript without timestamps
+              </h2>
+              <p className="text-slate-600 leading-relaxed mb-8">
+                By default, YouTube transcripts include timestamps like <code className="bg-slate-100 rounded px-1.5 py-0.5 text-sm font-mono">[00:00]</code> before each line. These are useful for subtitle editing, but get in the way when you need clean readable text for notes, research, or AI prompts.
+              </p>
+              <div className="grid gap-4 md:grid-cols-2 mb-8">
+                <div className="rounded-xl border border-slate-200 bg-white p-5">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">With timestamps (SRT)</p>
+                  <pre className="text-xs text-slate-600 leading-relaxed font-mono whitespace-pre-wrap">{`1
+00:00:01,000 --> 00:00:04,000
+Welcome to today's session.
+
+2
+00:00:04,200 --> 00:00:08,000
+We'll cover three key topics.`}</pre>
+                </div>
+                <div className="rounded-xl border border-blue-100 bg-blue-50/40 p-5">
+                  <p className="text-xs font-bold uppercase tracking-widest text-blue-500 mb-3">Without timestamps (TXT)</p>
+                  <pre className="text-xs text-slate-700 leading-relaxed font-mono whitespace-pre-wrap">{`Welcome to today's session.
+We'll cover three key topics.`}</pre>
+                  <p className="text-xs text-blue-600 font-semibold mt-3">→ Ready for notes, AI, and search</p>
+                </div>
+              </div>
+              <div className="rounded-xl border border-slate-200 bg-white p-6">
+                <h3 className="text-base font-bold text-slate-900 mb-3">Three ways to get a clean transcript</h3>
+                <ol className="space-y-3 text-sm text-slate-600">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white text-xs font-bold">1</span>
+                    <span><strong className="text-slate-800">Export as TXT</strong> — When downloading, choose TXT format. This strips all timestamp blocks and gives you plain paragraph text.</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white text-xs font-bold">2</span>
+                    <span><strong className="text-slate-800">Use "Copy All"</strong> — In the workspace, the Copy All button copies the full transcript text without timestamp formatting.</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white text-xs font-bold">3</span>
+                    <span><strong className="text-slate-800">Use Paragraph View</strong> — Switch to Paragraph View in the workspace to read and copy transcript text in clean, readable blocks.</span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="container mx-auto max-w-6xl px-4 pt-24 md:px-6 lg:px-8">
           <UnifiedFaqSection
             title="Frequently Asked Questions"
