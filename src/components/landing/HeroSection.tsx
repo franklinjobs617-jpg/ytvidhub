@@ -357,6 +357,78 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
             Playlist (Bulk) and Channel (Bulk) import multiple videos at once.
           </p>
 
+          {/* 真实输出示例卡片
+              目的：让用户在操作前看到"我能得到什么"，解决13秒首页停留问题
+              实现：纯静态JSX，零API调用，不影响首页性能
+              内容：模拟一个TED playlist的真实处理结果
+              SEO：不动TDH，只新增可见内容 */}
+          <div className="mx-auto mt-10 max-w-2xl">
+            <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-widest text-slate-400">
+              What you get — example output
+            </p>
+            <div className="rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_-8px_rgba(15,23,42,0.08)] overflow-hidden">
+              {/* 卡片顶部：playlist信息 */}
+              <div className="flex items-center gap-3 border-b border-slate-100 bg-slate-50/60 px-5 py-3.5">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500">
+                  <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                  </svg>
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="truncate text-[13px] font-semibold text-slate-800">
+                    TED Talks Playlist · 8 videos
+                  </p>
+                  <p className="text-[11px] text-slate-400">youtube.com/playlist?list=PLrAX…</p>
+                </div>
+                <div className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1">
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+                  <span className="text-[11px] font-semibold text-emerald-700">8 / 8 done</span>
+                </div>
+              </div>
+
+              {/* 文件列表 */}
+              <div className="divide-y divide-slate-50 px-5">
+                {[
+                  { name: "Grit — Angela Duckworth · TED", size: "28.6 KB", lang: "EN" },
+                  { name: "The Power of Vulnerability · TED", size: "34.1 KB", lang: "EN" },
+                  { name: "How Great Leaders Inspire · TED", size: "19.8 KB", lang: "EN" },
+                ].map((file) => (
+                  <div key={file.name} className="flex items-center gap-3 py-2.5">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-blue-100 bg-blue-50">
+                      <svg className="h-3.5 w-3.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0 flex-1 text-left">
+                      <p className="truncate text-[12px] font-medium text-slate-700">{file.name}</p>
+                      <p className="text-[11px] text-slate-400">{file.size} · .srt</p>
+                    </div>
+                    <span className="rounded border border-slate-100 bg-slate-50 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">{file.lang}</span>
+                  </div>
+                ))}
+
+                {/* 折叠提示：还有5个文件 */}
+                <div className="flex items-center justify-center gap-1.5 py-2.5 text-[11px] text-slate-400">
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                  5 more files included in download
+                </div>
+              </div>
+
+              {/* 卡片底部：下载按钮样式（静态，视觉引导） */}
+              <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/60 px-5 py-3">
+                <p className="text-[12px] text-slate-500">
+                  <span className="font-semibold text-slate-700">8 SRT files</span> · bulk_subs.zip · 186 KB
+                </p>
+                <div className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-[12px] font-semibold text-white">
+                  <Download size={12} />
+                  Download all
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-14 sm:mt-16">
             {!user ? (
                <div className="text-center">
