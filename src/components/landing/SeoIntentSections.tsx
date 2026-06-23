@@ -126,6 +126,11 @@ const contentByLocale: Record<"en" | "es" | "zh", LocalizedSeoContent> = {
         body: "A playlist and channel workflow for large subtitle collections.",
       },
       {
+        href: "/guide/playlist-subtitles-bulk",
+        text: "Playlist subtitle download guide",
+        body: "Step-by-step guide to downloading every subtitle from a playlist in one click.",
+      },
+      {
         href: "/youtube-vtt-downloader",
         text: "YouTube VTT downloader",
         body: "A WebVTT-focused page for HTML5 video and web players.",

@@ -926,9 +926,9 @@ This is a valid SRT block.`}
                     sectionClassName="scroll-mt-32 mb-16 py-0 bg-transparent"
                     containerClassName="max-w-none px-0 lg:px-0"
                   />
-                  {/* 工具体验入口 — 新增内容，不改H1/TDH
-                      目的：把13,000次曝光的信息流量导入工具漏斗
-                      位置：FAQ之后、Final CTA之前 */}
+                  {/* 工具入口 + 内链 — 新增内容，不改H1/TDH
+                      目的1：把13,000次曝光的信息流量导入工具使用漏斗
+                      目的2：给 /guide/playlist-subtitles-bulk/ 加权重内链（排名6.7冲前5） */}
                   <section className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-8 mb-10">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                       <div className="flex-1">
@@ -955,10 +955,10 @@ This is a valid SRT block.`}
                           Download SRT Free →
                         </Link>
                         <Link
-                          href="/bulk-youtube-subtitle-downloader/?ref=srt-guide"
+                          href="/guide/playlist-subtitles-bulk"
                           className="inline-flex items-center justify-center gap-2 rounded-xl border border-blue-200 bg-white px-6 py-3 text-sm font-semibold text-blue-700 hover:bg-blue-50 transition-colors"
                         >
-                          Bulk playlist download
+                          Playlist bulk download guide
                         </Link>
                       </div>
                     </div>
