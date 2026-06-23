@@ -32,7 +32,7 @@ type LocalizedSeoContent = {
   links: Array<{ href: string; text: string; body: string }>;
 };
 
-const contentByLocale: Record<"en" | "es" | "zh", LocalizedSeoContent> = {
+const contentByLocale: Record<"en" | "es" | "zh" | "tr", LocalizedSeoContent> = {
   en: {
     badge: "Quick Guide",
     answerTitle: "Download subtitles from YouTube in a few clicks",
@@ -124,16 +124,6 @@ const contentByLocale: Record<"en" | "es" | "zh", LocalizedSeoContent> = {
         href: "/bulk-youtube-subtitle-downloader",
         text: "Bulk subtitle downloader",
         body: "A playlist and channel workflow for large subtitle collections.",
-      },
-      {
-        href: "/guide/playlist-subtitles-bulk",
-        text: "Playlist subtitle download guide",
-        body: "Step-by-step guide to downloading every subtitle from a playlist in one click.",
-      },
-      {
-        href: "/youtube-transcript-generator",
-        text: "YouTube transcript generator",
-        body: "Convert any YouTube video to clean text — no timestamps, ready for notes and AI tools.",
       },
       {
         href: "/youtube-vtt-downloader",
@@ -331,11 +321,109 @@ const contentByLocale: Record<"en" | "es" | "zh", LocalizedSeoContent> = {
       },
     ],
   },
+  // 土耳其语内容
+  // 来源：基于 tr.json 现有文案风格，覆盖 GSC 高价值关键词
+  // 目的：修复 /tr/ 首页 Google 显示英文 description 的问题
+  tr: {
+    badge: "Hızlı Rehber",
+    answerTitle: "YouTube altyazılarını birkaç adımda indir",
+    answerBody:
+      "Bir YouTube video, oynatma listesi veya kanal bağlantısı yapıştır, mevcut dil seçeneklerinden birini seç ve altyazıları SRT, VTT veya TXT formatında dışa aktar. SRT video editörler için, VTT web oynatıcıları için, TXT ise okunabilir transkript metni için idealdir.",
+    intentTitle: "YTVidHub ile neler indirebilirsiniz?",
+    intentSubtitle:
+      "YouTube altyazı ihtiyacınıza uygun iş akışını seçin.",
+    intents: [
+      {
+        title: "YouTube altyazı indir",
+        body: "YouTube videolarından içerik üreticisi tarafından yüklenen veya otomatik oluşturulan altyazıları düzenleme, çeviri, erişilebilirlik ve araştırma için çıkar.",
+      },
+      {
+        title: "YouTube altyazı çıkarma",
+        body: "Video, oynatma listesi veya kanal URL'si yapıştır ve manuel kopyala-yapıştır yönteminden yapılandırılmış altyazı dışa aktarmaya geç.",
+      },
+      {
+        title: "Toplu altyazı indir",
+        body: "Tüm oynatma listelerini ve kanalları tek seferde işle. Büyük altyazı koleksiyonları için toplu indirme iş akışı.",
+      },
+      {
+        title: "SRT, VTT veya TXT olarak dışa aktar",
+        body: "İş akışınıza uygun dosya türünü seçin: video editörler, web oynatıcıları, temiz notlar veya yapay zeka için hazır metin.",
+      },
+    ],
+    formatTitle: "SRT, VTT veya TXT: doğru altyazı formatını seç",
+    formatRows: [
+      {
+        label: "SRT",
+        bestFor:
+          "Video editörler, VLC, altyazı yüklemeleri, çeviri iş akışları ve geniş oynatıcı uyumluluğu için idealdir.",
+        link: { href: "/what-is-an-srt-file", text: "SRT formatını öğren" },
+      },
+      {
+        label: "VTT",
+        bestFor:
+          "HTML5 video, kurs platformları, tarayıcı oynatma ve WebVTT altyazı iş akışları için idealdir.",
+        link: { href: "/youtube-vtt-downloader", text: "VTT altyazı indir" },
+      },
+      {
+        label: "TXT",
+        bestFor:
+          "Notlar, içerik yeniden kullanımı, arama, araştırma ve yapay zeka istemleri için okunabilir transkript metni.",
+        link: { href: "/youtube-transcript-generator", text: "Transkript oluştur" },
+      },
+    ],
+    workflowTitle: "Altyazı, Altyazı CC ve Transkript farkı",
+    workflowRows: [
+      {
+        label: "Altyazı indirici",
+        bestFor:
+          "Tek bir YouTube videosundan zamanlanmış SRT/VTT dosyalarına ihtiyaç duyduğunuzda.",
+        link: { href: "/youtube-subtitle-downloader", text: "Altyazı indiriciyi aç" },
+      },
+      {
+        label: "Altyazı CC indirici",
+        bestFor:
+          "CC parçaları, kapalı altyazılar ve erişilebilirlik incelemesine ihtiyaç duyduğunuzda.",
+        link: { href: "/youtube-caption-downloader", text: "CC indiriciyi aç" },
+      },
+      {
+        label: "Toplu indirici",
+        bestFor:
+          "Oynatma listelerinden, kanallardan veya birden fazla videodan altyazı indirmeniz gerektiğinde.",
+        link: { href: "/bulk-youtube-subtitle-downloader", text: "Toplu indiriciyi aç" },
+      },
+    ],
+    linkTitle: "Daha odaklı altyazı araçlarına geç",
+    linkBody:
+      "Ana iş akışı için ana sayfayı kullan, ardından altyazı görevinize uygun odaklanmış sayfayı seç.",
+    links: [
+      {
+        href: "/youtube-subtitle-downloader",
+        text: "YouTube altyazı indirici",
+        body: "Tek video indirmeleri için SRT/VTT/TXT odaklı araç sayfası.",
+      },
+      {
+        href: "/bulk-youtube-subtitle-downloader",
+        text: "Toplu altyazı indirici",
+        body: "Büyük altyazı koleksiyonları için oynatma listesi ve kanal iş akışı.",
+      },
+      {
+        href: "/youtube-transcript-generator",
+        text: "YouTube transkript oluşturucu",
+        body: "Notlar ve yapay zeka araçları için herhangi bir YouTube videosunu metne dönüştür.",
+      },
+      {
+        href: "/youtube-vtt-downloader",
+        text: "YouTube VTT indirici",
+        body: "HTML5 video ve web oynatıcıları için WebVTT odaklı sayfa.",
+      },
+    ],
+  },
 };
 
 const getContent = (locale: Locale) => {
   if (locale === "zh") return contentByLocale.zh;
   if (locale === "es") return contentByLocale.es;
+  if (locale === "tr") return contentByLocale.tr;
   return contentByLocale.en;
 };
 
