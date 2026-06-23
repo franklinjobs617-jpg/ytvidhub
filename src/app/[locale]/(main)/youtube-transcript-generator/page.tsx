@@ -753,8 +753,6 @@ export default async function YouTubeTranscriptGeneratorPage({
           </div>
         </section>
 
-        </section>
-
         {/* 新增内容 section：覆盖 "youtube transcript without timestamp" 相关关键词
             GSC数据：该词排名9，接近前10，加内容可推进排名
             策略：加内容+内链，不改TDH（CTR 4.44% 已正常，只需提升曝光） */}
