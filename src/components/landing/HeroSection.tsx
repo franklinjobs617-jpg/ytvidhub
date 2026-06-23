@@ -360,8 +360,9 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
           {/* 真实输出示例卡片
               目的：让用户在操作前看到"我能得到什么"，解决13秒首页停留问题
               实现：纯静态JSX，零API调用，不影响首页性能
-              内容：模拟一个TED playlist的真实处理结果
-              SEO：不动TDH，只新增可见内容 */}
+              内容：通用playlist场景，覆盖学习/研究/创作三类用户
+              SEO：不动TDH，只新增可见内容
+              v2：图标换为通用playlist icon，按钮改为滚动到输入框 */}
           <div className="mx-auto mt-10 max-w-2xl">
             <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-widest text-slate-400">
               What you get — example output
@@ -369,14 +370,15 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
             <div className="rounded-2xl border border-slate-200 bg-white shadow-[0_4px_24px_-8px_rgba(15,23,42,0.08)] overflow-hidden">
               {/* 卡片顶部：playlist信息 */}
               <div className="flex items-center gap-3 border-b border-slate-100 bg-slate-50/60 px-5 py-3.5">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500">
-                  <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                {/* 通用playlist图标，Heroicons outline，无版权风险 */}
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-700">
+                  <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h10M4 18h10" />
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1 text-left">
                   <p className="truncate text-[13px] font-semibold text-slate-800">
-                    TED Talks Playlist · 8 videos
+                    YouTube Playlist · 8 videos
                   </p>
                   <p className="text-[11px] text-slate-400">youtube.com/playlist?list=PLrAX…</p>
                 </div>
@@ -386,12 +388,12 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                 </div>
               </div>
 
-              {/* 文件列表 */}
+              {/* 文件列表：覆盖学习/研究/创作三类用户场景 */}
               <div className="divide-y divide-slate-50 px-5">
                 {[
-                  { name: "Grit — Angela Duckworth · TED", size: "28.6 KB", lang: "EN" },
-                  { name: "The Power of Vulnerability · TED", size: "34.1 KB", lang: "EN" },
-                  { name: "How Great Leaders Inspire · TED", size: "19.8 KB", lang: "EN" },
+                  { name: "How to Learn Anything Fast — Ali Abdaal", size: "28.6 KB", lang: "EN" },
+                  { name: "The Science of Productivity — Kurzgesagt", size: "34.1 KB", lang: "EN" },
+                  { name: "Build in Public — Lex Fridman Podcast", size: "19.8 KB", lang: "EN" },
                 ].map((file) => (
                   <div key={file.name} className="flex items-center gap-3 py-2.5">
                     <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-blue-100 bg-blue-50">
@@ -416,15 +418,22 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                 </div>
               </div>
 
-              {/* 卡片底部：下载按钮样式（静态，视觉引导） */}
+              {/* 卡片底部：点击滚动到输入框，引导用户立刻操作 */}
               <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/60 px-5 py-3">
                 <p className="text-[12px] text-slate-500">
                   <span className="font-semibold text-slate-700">8 SRT files</span> · bulk_subs.zip · 186 KB
                 </p>
-                <div className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-[12px] font-semibold text-white">
+                <button
+                  type="button"
+                  onClick={() => {
+                    textareaRef.current?.focus();
+                    textareaRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-[12px] font-semibold text-white hover:bg-blue-700 transition-colors"
+                >
                   <Download size={12} />
-                  Download all
-                </div>
+                  Try bulk download →
+                </button>
               </div>
             </div>
           </div>
