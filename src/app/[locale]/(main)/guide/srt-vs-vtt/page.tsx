@@ -413,8 +413,25 @@ export default function SrtVsVttTechnicalMastery() {
           containerClassName="max-w-none px-0 lg:px-0"
         />
         {/* CTA */}
-        <section className="article-shell article-section text-center">
-          <div className="rounded-2xl bg-slate-900 p-12 md:p-16">
+        <section className="article-shell article-section">
+          {/* VTT 格式深度指南内链 — 读完对比后自然引导至 VTT 专题页 */}
+          <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-slate-800">
+                Want to go deeper on VTT format?
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Full WebVTT syntax guide with real examples, use cases, and how to download YouTube subtitles as VTT free.
+              </p>
+            </div>
+            <Link
+              href="/what-is-vtt-file/"
+              className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap"
+            >
+              What Is a VTT File? →
+            </Link>
+          </div>
+          <div className="rounded-2xl bg-slate-900 p-12 md:p-16 text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 article-h2">
               Master Your Data Pipeline
             </h2>

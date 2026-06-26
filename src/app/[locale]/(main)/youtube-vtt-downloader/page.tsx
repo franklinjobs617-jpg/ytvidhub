@@ -99,6 +99,26 @@ export default function YouTubeVttDownloaderPage() {
           ]}
         />
 
+        {/* VTT 格式深度指南内链 — 交叉链接，加强主题权重 */}
+        <div className="mx-auto max-w-6xl px-6 mb-8">
+          <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-slate-800">
+                New to WebVTT format?
+              </p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Learn the full VTT syntax, timestamp rules, and how it differs from SRT — with real examples.
+              </p>
+            </div>
+            <Link
+              href="/what-is-vtt-file/"
+              className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap"
+            >
+              What Is a VTT File? →
+            </Link>
+          </div>
+        </div>
+
         <div className="mx-auto max-w-6xl px-6">
           <RelatedTools currentPath="/youtube-vtt-downloader" />
         </div>
