@@ -130,6 +130,11 @@ const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko", LocalizedSeoCont
         text: "YouTube VTT downloader",
         body: "A WebVTT-focused page for HTML5 video and web players.",
       },
+      {
+        href: "/what-is-vtt-file",
+        text: "What is a VTT file?",
+        body: "Complete guide to the WebVTT subtitle format — syntax, use cases, and free download.",
+      },
     ],
   },
   zh: {
