@@ -32,7 +32,7 @@ type LocalizedSeoContent = {
   links: Array<{ href: string; text: string; body: string }>;
 };
 
-const contentByLocale: Record<"en" | "es" | "zh" | "tr", LocalizedSeoContent> = {
+const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko", LocalizedSeoContent> = {
   en: {
     badge: "Quick Guide",
     answerTitle: "Download subtitles from YouTube in a few clicks",
@@ -321,6 +321,106 @@ const contentByLocale: Record<"en" | "es" | "zh" | "tr", LocalizedSeoContent> = 
       },
     ],
   },
+
+  // 韩语内容
+  // 来源：基于 ko.json 现有文案，覆盖 Semrush 确认的 S 级关键词
+  // 目标词：유튜브 자막 추출（4400月搜 KD15）유튜브 자막 다운로드（1900月搜 KD13）
+  // 目的：修复 /ko/ 首页 Google 显示英文 description 的问题，抢占韩语低竞争市场
+  ko: {
+    badge: "빠른 시작 가이드",
+    answerTitle: "유튜브 자막 추출 및 다운로드 방법",
+    answerBody:
+      "유튜브 영상, 재생목록 또는 채널 URL을 붙여넣고 원하는 언어를 선택한 후 SRT, VTT, TXT 형식으로 자막을 바로 내보내세요. 단일 영상부터 전체 재생목록 일괄 다운로드까지 지원합니다. 설치나 회원가입 없이 무료로 이용 가능합니다.",
+    intentTitle: "YTVidHub로 무엇을 할 수 있나요?",
+    intentSubtitle:
+      "유튜브 자막 추출 목적에 맞는 워크플로우를 선택하세요.",
+    intents: [
+      {
+        title: "유튜브 자막 추출",
+        body: "유튜브 영상에서 크리에이터가 업로드한 자막 또는 자동 생성 자막을 SRT, VTT, TXT 형식으로 추출하세요. 편집, 번역, 접근성 향상, AI 학습에 활용할 수 있습니다.",
+      },
+      {
+        title: "유튜브 자막 다운로드",
+        body: "영상, 재생목록, 채널 URL을 붙여넣어 수동 복사 없이 구조화된 자막 파일을 즉시 다운로드하세요. SRT, VTT, TXT 형식을 지원합니다.",
+      },
+      {
+        title: "재생목록 자막 일괄 다운로드",
+        body: "전체 재생목록이나 채널에서 자막을 한 번에 처리하세요. 대량 자막 수집을 위한 일괄 다운로드 워크플로우입니다.",
+      },
+      {
+        title: "SRT, VTT 또는 TXT 형식으로 내보내기",
+        body: "워크플로우에 맞는 파일 형식을 선택하세요. 영상 편집에는 SRT, 웹 플레이어에는 VTT, AI 프롬프트 및 분석에는 TXT가 적합합니다.",
+      },
+    ],
+    formatTitle: "SRT, VTT, TXT: 올바른 자막 형식 선택하기",
+    formatRows: [
+      {
+        label: "SRT",
+        bestFor:
+          "영상 편집기, VLC, 자막 업로드, 번역 작업 및 광범위한 플레이어 호환성에 최적입니다.",
+        link: { href: "/what-is-an-srt-file", text: "SRT 형식 알아보기" },
+      },
+      {
+        label: "VTT",
+        bestFor:
+          "HTML5 동영상, 강의 플랫폼, 브라우저 재생 및 WebVTT 자막 워크플로우에 최적입니다.",
+        link: { href: "/youtube-vtt-downloader", text: "VTT 자막 다운로드" },
+      },
+      {
+        label: "TXT",
+        bestFor:
+          "메모, 콘텐츠 재활용, 검색, 연구 및 AI 프롬프트를 위한 타임스탬프 없는 깔끔한 텍스트입니다.",
+        link: { href: "/youtube-transcript-generator", text: "트랜스크립트 생성" },
+      },
+    ],
+    workflowTitle: "자막, 캡션, 트랜스크립트 차이점",
+    workflowRows: [
+      {
+        label: "자막 다운로더",
+        bestFor:
+          "단일 유튜브 영상에서 시간 동기화된 SRT/VTT 파일이 필요할 때.",
+        link: { href: "/youtube-subtitle-downloader", text: "자막 다운로더 열기" },
+      },
+      {
+        label: "캡션 다운로더",
+        bestFor:
+          "CC 트랙, 폐쇄 자막 및 접근성 검토가 필요할 때.",
+        link: { href: "/youtube-caption-downloader", text: "캡션 다운로더 열기" },
+      },
+      {
+        label: "일괄 다운로더",
+        bestFor:
+          "재생목록, 채널, 또는 여러 영상에서 한 번에 자막을 다운로드할 때.",
+        link: { href: "/bulk-youtube-subtitle-downloader", text: "일괄 다운로더 열기" },
+      },
+    ],
+    linkTitle: "목적에 맞는 전문 자막 도구",
+    linkBody:
+      "메인 워크플로우는 홈페이지를 이용하고, 세부 자막 작업에 맞는 전문 페이지를 선택하세요.",
+    links: [
+      {
+        href: "/youtube-subtitle-downloader",
+        text: "유튜브 자막 다운로더",
+        body: "단일 영상 다운로드를 위한 SRT/VTT/TXT 전문 도구 페이지.",
+      },
+      {
+        href: "/bulk-youtube-subtitle-downloader",
+        text: "일괄 자막 다운로더",
+        body: "대용량 자막 수집을 위한 재생목록 및 채널 워크플로우.",
+      },
+      {
+        href: "/guide/playlist-subtitles-bulk",
+        text: "재생목록 자막 일괄 다운로드 가이드",
+        body: "재생목록에서 자막을 한 번에 다운로드하는 단계별 가이드.",
+      },
+      {
+        href: "/youtube-transcript-generator",
+        text: "유튜브 트랜스크립트 생성기",
+        body: "메모 및 AI 도구를 위해 유튜브 영상을 텍스트로 변환하세요.",
+      },
+    ],
+  },
+
   // 土耳其语内容
   // 来源：基于 tr.json 现有文案风格，覆盖 GSC 高价值关键词
   // 目的：修复 /tr/ 首页 Google 显示英文 description 的问题
@@ -424,6 +524,7 @@ const getContent = (locale: Locale) => {
   if (locale === "zh") return contentByLocale.zh;
   if (locale === "es") return contentByLocale.es;
   if (locale === "tr") return contentByLocale.tr;
+  if (locale === "ko") return contentByLocale.ko;
   return contentByLocale.en;
 };
 
