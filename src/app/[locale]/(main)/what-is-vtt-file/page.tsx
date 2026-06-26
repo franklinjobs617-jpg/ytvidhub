@@ -60,17 +60,16 @@ export default function WhatIsVttFilePage() {
             What Is a VTT File? Complete WebVTT Format Guide
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed mb-8">
-            A <strong>VTT file (WebVTT)</strong> is the standard subtitle format
+            A <strong>.vtt file (WebVTT)</strong> is the standard subtitle format
             for HTML5 web video. Learn the exact{" "}
-            <strong>timestamp syntax</strong>, how VTT compares to SRT, and how
+            <strong>timestamp syntax</strong>, how a <strong>.vtt file</strong> compares to SRT, and how
             to download YouTube subtitles as VTT in seconds — free.
           </p>
 
           {/* Quick answer box — AI GEO: 首段直接回答，Perplexity 优先引用 */}
           <div className="mb-8 rounded-xl border border-blue-200 bg-blue-50 p-4 md:p-5">
             <p className="text-sm text-slate-700 leading-relaxed">
-              <strong>Quick answer:</strong> A VTT (Web Video Text Tracks) file
-              stores subtitle cues with timestamps in the format{" "}
+              <strong>Quick answer:</strong> A <strong>.vtt file</strong> (Web Video Text Tracks) stores subtitle cues with timestamps in the format{" "}
               <code className="bg-white px-1 rounded text-blue-700">
                 HH:MM:SS.mmm --&gt; HH:MM:SS.mmm
               </code>
