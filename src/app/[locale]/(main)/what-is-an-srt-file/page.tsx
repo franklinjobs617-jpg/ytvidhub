@@ -620,7 +620,26 @@ This is a valid SRT block.`}
                         </ul>
                       </div>
                     </div>
+
+                    {/* VTT 深度指南内链 — 交叉链接，提升两个页面的主题权重 */}
+                    <div className="mt-6 rounded-xl border border-blue-100 bg-blue-50/50 p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-slate-800">
+                          Want a deeper dive into VTT format?
+                        </p>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          Full WebVTT syntax guide, use cases, and how to download YouTube subtitles as VTT free.
+                        </p>
+                      </div>
+                      <Link
+                        href="/what-is-vtt-file/"
+                        className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap"
+                      >
+                        What Is a VTT File? →
+                      </Link>
+                    </div>
                   </section>
+
                   {/* 5. Conversion Guide */}
                   <section id="conversion" className="scroll-mt-32 mb-16">
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 article-h2">
@@ -926,9 +945,9 @@ This is a valid SRT block.`}
                     sectionClassName="scroll-mt-32 mb-16 py-0 bg-transparent"
                     containerClassName="max-w-none px-0 lg:px-0"
                   />
-                  {/* 工具入口 + 内链 — 新增内容，不改H1/TDH
-                      目的1：把13,000次曝光的信息流量导入工具使用漏斗
-                      目的2：给 /guide/playlist-subtitles-bulk/ 加权重内链（排名6.7冲前5） */}
+                  {/* 工具体验入口 + 内链 — 新增内容，不改H1/TDH
+                      目的1：把信息流量导入工具漏斗
+                      目的2：给 /guide/playlist-subtitles-bulk/ 加权重内链 */}
                   <section className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-8 mb-10">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                       <div className="flex-1">
