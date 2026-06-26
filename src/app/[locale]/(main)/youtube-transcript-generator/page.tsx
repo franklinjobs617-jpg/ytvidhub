@@ -209,6 +209,18 @@ const FAQ_ITEMS = [
     q: "Can I use this for more than one video workflow?",
     a: "Yes. This page is designed for recurring transcript tasks, and you can also move to our bulk subtitle and transcript workflows when volume grows.",
   },
+  {
+    q: "Can I convert a YouTube transcript to SRT format?",
+    a: "Yes. When you export as SRT, the transcript includes properly formatted timestamps in the 00:00:00,000 --> 00:00:00,000 format — ready for video editing tools, subtitle uploads, and caption workflows. Choose SRT in the format dropdown before downloading.",
+  },
+  {
+    q: "How do I convert YouTube subtitles to SRT?",
+    a: "Paste the YouTube URL, select SRT as the output format, and click Extract. YTVidHub downloads the subtitle track and formats it as a valid .srt file with sequence numbers and timestamps — no manual conversion needed.",
+  },
+  {
+    q: "What is the difference between a YouTube transcript and an SRT file?",
+    a: "A YouTube transcript is the raw text shown in YouTube's transcript panel — it has basic timestamps but no subtitle formatting. An SRT file is a structured subtitle file with sequence numbers, precise HH:MM:SS,ms timestamps, and proper block formatting that video players and editing tools can read directly.",
+  },
 ];
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -798,6 +810,71 @@ We'll cover three key topics.`}</pre>
                     <span className="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white text-xs font-bold">3</span>
                     <span><strong className="text-slate-800">Use Paragraph View</strong> — Switch to Paragraph View in the workspace to read and copy transcript text in clean, readable blocks.</span>
                   </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Convert to SRT section
+            覆盖关键词群：convert youtube transcript to srt / youtube to srt converter
+            这些词 Semrush 数据 Vol=20 各，但加起来 300+ 月搜，KD 未知意味着竞争极小 */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                How to convert a YouTube transcript to SRT
+              </h2>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                An SRT file is a structured subtitle format with sequence numbers
+                and precise timestamps — ready for video editors, caption uploads,
+                and subtitle tools. Converting a YouTube transcript to SRT takes
+                one step: choose SRT as the output format when downloading.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
+                    YouTube transcript (raw)
+                  </p>
+                  <pre className="text-xs text-slate-600 font-mono leading-relaxed whitespace-pre-wrap">{`0:00 Welcome to today's session.
+0:04 We'll cover three key topics.
+0:08 Let's start with the basics.`}</pre>
+                  <p className="text-xs text-slate-400 mt-2">Basic timestamps, no subtitle structure</p>
+                </div>
+                <div className="rounded-xl border border-blue-100 bg-blue-50/40 p-5">
+                  <p className="text-xs font-bold uppercase tracking-widest text-blue-500 mb-3">
+                    SRT file (structured)
+                  </p>
+                  <pre className="text-xs text-slate-700 font-mono leading-relaxed whitespace-pre-wrap">{`1
+00:00:00,000 --> 00:00:04,000
+Welcome to today's session.
+
+2
+00:00:04,000 --> 00:00:08,000
+We'll cover three key topics.`}</pre>
+                  <p className="text-xs text-blue-600 font-semibold mt-2">→ Ready for video editors and caption tools</p>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 bg-white p-5">
+                <h3 className="text-sm font-bold text-slate-800 mb-3">
+                  Steps to get an SRT file from YouTube
+                </h3>
+                <ol className="space-y-2.5">
+                  {[
+                    "Paste the YouTube video URL into the input field above",
+                    "In the format dropdown, select SRT",
+                    "Click Extract Subtitles",
+                    "Download the .srt file — sequence numbers and timestamps are formatted automatically",
+                  ].map((step, i) => (
+                    <li key={i} className="flex gap-3 text-sm text-slate-600">
+                      <span className="flex-shrink-0 flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white text-[10px] font-bold mt-0.5">
+                        {i + 1}
+                      </span>
+                      {step}
+                    </li>
+                  ))}
                 </ol>
               </div>
             </div>
