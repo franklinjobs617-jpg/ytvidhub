@@ -135,6 +135,11 @@ const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko", LocalizedSeoCont
         text: "What is a VTT file?",
         body: "Complete guide to the WebVTT subtitle format — syntax, use cases, and free download.",
       },
+      {
+        href: "/youtube-transcript-downloader",
+        text: "YouTube transcript downloader",
+        body: "Download YouTube transcripts as TXT, SRT, or VTT — single videos, playlists, and channels.",
+      },
     ],
   },
   zh: {
