@@ -27,9 +27,11 @@ const resourceLinks = [
 ];
 
 const toolLinks = [
-  { key: "transcriptGenerator", href: "/youtube-transcript-generator" },
-  { key: "subtitleExtractor", href: "/youtube-subtitle-extractor" },
-  { key: "bulkDownloader", href: "/bulk-youtube-subtitle-downloader" },
+  { key: "transcriptGenerator", href: "/youtube-transcript-generator", label: "" },
+  { key: "subtitleExtractor", href: "/youtube-subtitle-extractor", label: "" },
+  { key: "bulkDownloader", href: "/bulk-youtube-subtitle-downloader", label: "" },
+  { key: "videoSummarizer", href: "/youtube-video-summarizer", label: "Video Summarizer" },
+  { key: "transcriptDownloader", href: "/youtube-transcript-downloader", label: "Transcript Downloader" },
 ];
 
 export default function Header() {
@@ -128,7 +130,7 @@ export default function Header() {
                         : "text-slate-600 hover:bg-slate-50"
                         }`}
                     >
-                      {t(item.key)}
+                      {item.label || t(item.key)}
                     </Link>
                   ))}
                 </div>
@@ -351,7 +353,7 @@ export default function Header() {
                   onClick={closeFloatingMenus}
                   className={`block pl-3 py-1.5 text-sm font-medium ${isActive(item.href) ? "text-[var(--brand-600)]" : "text-slate-600"}`}
                 >
-                  {t(item.key)}
+                  {item.label || t(item.key)}
                 </Link>
               ))}
             </div>

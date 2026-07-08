@@ -96,6 +96,22 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/youtube-video-summarizer"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  YouTube Video Summarizer
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/youtube-transcript-downloader"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  YouTube Transcript Downloader
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/pricing"
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >
@@ -181,6 +197,14 @@ export default function Footer() {
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("playlistBulk")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/what-is-vtt-file"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  What Is a VTT File?
                 </Link>
               </li>
               <li>
@@ -278,6 +302,22 @@ export default function Footer() {
                   className="hover:text-[var(--brand-400)] transition-colors"
                 >
                   {t("whatIsSrt")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/downsub-alternative"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  DownSub Alternative
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tactiq-alternative"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  Tactiq Alternative
                 </Link>
               </li>
               <li>
