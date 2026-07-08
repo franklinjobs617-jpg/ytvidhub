@@ -26,7 +26,7 @@ type Props = { params: Promise<{ locale: string }> };
 
 const PAGE_DESCRIPTION =
   "Generate YouTube transcripts for free. Convert any YouTube video to text in seconds. Export as TXT, SRT, VTT, or JSON. No login required.";
-const LAST_UPDATED = "May 5, 2026";
+const LAST_UPDATED = "July 8, 2026";
 
 const HOW_TO_STEPS = [
   {
@@ -208,6 +208,34 @@ const FAQ_ITEMS = [
   {
     q: "Can I use this for more than one video workflow?",
     a: "Yes. This page is designed for recurring transcript tasks, and you can also move to our bulk subtitle and transcript workflows when volume grows.",
+  },
+  {
+    q: "How do I get a transcript of a YouTube video?",
+    a: (
+      <span>
+        There are two ways. <strong>YouTube's built-in transcript</strong>: open any video, click the three-dot menu below the title, and select "Show transcript" — this gives you a basic timestamped view you can copy manually. <strong>YTVidHub</strong>: paste the video URL above and click Extract to get a clean downloadable TXT, SRT, or VTT file in seconds — no manual copying needed.
+      </span>
+    ),
+  },
+  {
+    q: "Is there a free YouTube transcript generator?",
+    a: "Yes. YTVidHub is free to start — no signup required for guest tries, and free accounts get 5 credits on signup. Each transcript download uses 1 credit. For bulk or recurring needs, Pro plans start at $19.99/month.",
+  },
+  {
+    q: "How do I use a YouTube transcript with ChatGPT or Claude?",
+    a: (
+      <span>
+        Export the transcript as <strong>TXT</strong> (no timestamps, clean text), then paste it directly into ChatGPT or Claude's chat window. From there you can ask the AI to summarize, answer questions about the content, extract key points, or rewrite the transcript as a blog post. TXT format works best because it removes the timestamp noise that can confuse AI models.
+      </span>
+    ),
+  },
+  {
+    q: "What is the shortcut to see a transcript on YouTube?",
+    a: "On desktop: open a YouTube video, click the three-dot (⋯) menu below the video title, then select 'Show transcript'. On mobile, tap the video description, scroll down, and tap 'Show transcript'. Note that this only gives you a read-only view — you can't download or export it directly from YouTube. Use YTVidHub to download the transcript as a file.",
+  },
+  {
+    q: "Can I download a YouTube transcript as a text file?",
+    a: "Yes. Paste the YouTube URL into YTVidHub and select TXT as the export format. You get a plain text file with no timestamps — ready for notes, documents, or AI tools. SRT and VTT formats are also available if you need timestamps for video editing or web playback.",
   },
 ];
 
@@ -804,6 +832,143 @@ We'll cover three key topics.`}</pre>
           </div>
         </section>
 
+        {/* ── 新增 section A：How to get a YouTube transcript
+            覆盖：how to get transcript of youtube video (5.4K KD63)
+                  how to see transcript on youtube (1.3K KD30)
+                  shortcut to show transcript on youtube (1.9K KD35)
+            出站权威链接：YouTube 官方帮助文档（规则要求 ≥1条）*/}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                How to get a YouTube transcript
+              </h2>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                There are two ways to get a transcript from a YouTube video —
+                YouTube's built-in viewer, or a dedicated transcript tool like YTVidHub
+                that lets you download the file in any format.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-5 mb-6">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
+                    YouTube built-in (read only)
+                  </p>
+                  <ol className="space-y-2 text-sm text-slate-600">
+                    {[
+                      "Open any YouTube video",
+                      "Click the three-dot ⋯ menu below the title",
+                      'Select "Show transcript"',
+                      "Copy-paste manually — no download option",
+                    ].map((s, i) => (
+                      <li key={i} className="flex gap-2">
+                        <span className="font-semibold text-slate-400 flex-shrink-0">{i + 1}.</span>
+                        {s}
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="text-xs text-slate-400 mt-3">
+                    Works for viewing only. No file export, no format options.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-blue-100 bg-blue-50/40 p-5">
+                  <p className="text-xs font-bold uppercase tracking-widest text-blue-500 mb-3">
+                    YTVidHub (download in seconds)
+                  </p>
+                  <ol className="space-y-2 text-sm text-slate-700">
+                    {[
+                      "Paste the YouTube URL above",
+                      "Select TXT, SRT, or VTT format",
+                      "Click Extract Subtitles",
+                      "Download your transcript file instantly",
+                    ].map((s, i) => (
+                      <li key={i} className="flex gap-2">
+                        <span className="font-bold text-blue-600 flex-shrink-0">{i + 1}.</span>
+                        {s}
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="text-xs text-blue-600 font-semibold mt-3">
+                    → Supports playlists, channels, and bulk export
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                <strong>Shortcut tip:</strong> On desktop, press{" "}
+                <kbd className="bg-white border border-slate-300 rounded px-1.5 py-0.5 text-xs font-mono">⋯</kbd>{" "}
+                below the video to open the transcript panel. On mobile, tap the
+                video description and scroll to "Show transcript." This only shows a
+                read-only view —{" "}
+                <a
+                  href="https://support.google.com/youtube/answer/15930243"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  learn more on YouTube's support page
+                </a>.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 新增 section B：YouTube transcript for AI tools
+            覆盖：how to get youtube transcript for claude (1.9K KD—极低)
+                  youtube transcript for chatgpt / AI workflow 词群 */}
+        <section className="py-16 bg-slate-50">
+          <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                How to use a YouTube transcript with ChatGPT, Claude, or Perplexity
+              </h2>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                AI tools like ChatGPT and Claude can analyze, summarize, and answer
+                questions about YouTube content — but they need the transcript as text
+                input first. Here's the fastest workflow:
+              </p>
+
+              <ol className="space-y-4 mb-6">
+                {[
+                  {
+                    step: "1",
+                    title: "Get the transcript as TXT",
+                    desc: 'Paste the YouTube URL above, select TXT format, and click Extract. TXT gives you clean text with no timestamp noise — exactly what AI models work best with.',
+                  },
+                  {
+                    step: "2",
+                    title: "Copy and paste into your AI tool",
+                    desc: "Open ChatGPT, Claude, Perplexity, or any AI tool. Paste the transcript text into the chat window.",
+                  },
+                  {
+                    step: "3",
+                    title: "Ask your question",
+                    desc: 'Try: "Summarize this in 5 bullet points", "What are the key arguments?", "Extract all action items", or "Rewrite this as a blog post."',
+                  },
+                ].map((item) => (
+                  <li key={item.step} className="flex gap-4">
+                    <span className="flex-shrink-0 h-7 w-7 rounded-full bg-blue-600 text-white text-sm font-bold flex items-center justify-center mt-0.5">
+                      {item.step}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-slate-800 mb-1">{item.title}</p>
+                      <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-4 text-sm text-slate-600">
+                <strong>Why TXT and not SRT?</strong> SRT files include sequence numbers
+                and timestamps on every line (<code className="bg-white rounded px-1 text-xs font-mono">00:00:01,000 --&gt; 00:00:04,000</code>).
+                This formatting adds noise that can confuse AI models or waste context window tokens.
+                TXT gives you only the spoken words — cleaner input, better AI output.
+              </div>
+            </div>
+          </div>
+        </section>
+
         <div className="container mx-auto max-w-6xl px-4 pt-24 md:px-6 lg:px-8">
           <UnifiedFaqSection
             title="Frequently Asked Questions"
@@ -815,7 +980,7 @@ We'll cover three key topics.`}</pre>
 
           {/* transcript-downloader 交叉内链
               用户读完 generator 页后，引导有"下载"意图的用户到专门的 downloader 页 */}
-          <div className="mx-auto max-w-4xl px-4 mb-4 md:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl px-4 mb-8 md:px-6 lg:px-8">
             <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-800">
@@ -830,27 +995,6 @@ We'll cover three key topics.`}</pre>
                 className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap"
               >
                 Transcript Downloader →
-              </Link>
-            </div>
-          </div>
-
-          {/* summarizer 交叉内链
-              引导有"摘要/理解"意图的用户到 AI summarizer 页 */}
-          <div className="mx-auto max-w-4xl px-4 mb-8 md:px-6 lg:px-8">
-            <div className="rounded-xl border border-indigo-100 bg-indigo-50/50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-slate-800">
-                  Want an AI summary instead of the full transcript?
-                </p>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  The YouTube Video Summarizer generates key points and chapter breakdowns in under 60 seconds — no reading required.
-                </p>
-              </div>
-              <Link
-                href="/youtube-video-summarizer/"
-                className="shrink-0 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-700 transition-colors whitespace-nowrap"
-              >
-                AI Summarizer →
               </Link>
             </div>
           </div>
