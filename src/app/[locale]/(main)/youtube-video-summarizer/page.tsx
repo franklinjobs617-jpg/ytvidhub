@@ -51,6 +51,32 @@ const FAQ_ITEMS = [
     q: "How is this different from YouTube's own summary feature?",
     a: "YouTube's built-in summary is only available on select videos and regions and cannot be exported. YTVidHub works on any public video with captions, generates a structured exportable summary, and also creates study cards and notes.",
   },
+  {
+    q: "What is the best YouTube video summary prompt for ChatGPT?",
+    a: (
+      <span>
+        After downloading the transcript as TXT, try these prompts in ChatGPT or Claude:{" "}
+        <em>"Summarize this transcript in 5 bullet points"</em>,{" "}
+        <em>"Extract the 3 most important actionable takeaways"</em>, or{" "}
+        <em>"Rewrite this as a blog post introduction."</em>{" "}
+        For research, try{" "}
+        <em>"List all claims made and identify which have evidence."</em>{" "}
+        TXT format (no timestamps) gives the cleanest input for AI models.
+      </span>
+    ),
+  },
+  {
+    q: "Is there a YouTube video summarizer API?",
+    a: "YTVidHub does not currently offer a public API for video summarization. For automated workflows, you can download transcripts via the tool and then pass them to OpenAI, Anthropic, or any LLM API of your choice. This gives you full control over the summarization model and prompt.",
+  },
+  {
+    q: "Is there a free AI YouTube video summarizer?",
+    a: "Yes. YTVidHub offers free AI summary tries without creating an account. Sign up for a free account to get 5 credits — each AI summary uses 2 credits, giving you 2 free summaries to start. No credit card required.",
+  },
+  {
+    q: "Can I summarize YouTube videos for research or academic use?",
+    a: "Yes. Researchers use YTVidHub to screen large numbers of videos quickly, extract key arguments and timestamps, and build structured notes from lecture or conference content. The TXT export is clean enough to feed directly into citation tools and literature review workflows.",
+  },
 ];
 
 // ── Inline AI Summary 输入组件（工具在第一屏，三合一公式核心）────────────
@@ -422,6 +448,136 @@ export default function YouTubeVideoSummarizerPage() {
                     Bulk subtitle download
                   </Link>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 新增 section：Best YouTube summary prompts
+            覆盖：best youtube video summary prompt (880, KD=12 极低)
+                  youtube summary with chatgpt (1.3K, KD=63)
+            AI GEO 价值高：具体可引用的提示词列表 */}
+        <section className="py-16 bg-slate-50">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                Best YouTube video summary prompts for AI
+              </h2>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                After generating a summary or downloading the transcript as TXT,
+                paste it into ChatGPT, Claude, or Perplexity with one of these
+                prompts to get exactly the output you need:
+              </p>
+
+              <div className="space-y-3 mb-6">
+                {[
+                  {
+                    label: "Quick summary",
+                    prompt: "Summarize this YouTube transcript in 5 bullet points. Focus on the main ideas only.",
+                    use: "General overview, time-saving",
+                  },
+                  {
+                    label: "Key takeaways",
+                    prompt: "Extract the 3 most important actionable takeaways from this transcript. Be specific.",
+                    use: "Learning, self-improvement videos",
+                  },
+                  {
+                    label: "Blog post",
+                    prompt: "Rewrite this transcript as a 400-word blog post with a headline, introduction, and 3 sections.",
+                    use: "Content repurposing",
+                  },
+                  {
+                    label: "Research analysis",
+                    prompt: "List all claims made in this transcript. For each claim, note whether evidence is provided.",
+                    use: "Academic and fact-checking use",
+                  },
+                  {
+                    label: "Study notes",
+                    prompt: "Convert this transcript into structured study notes with headers, sub-points, and a 5-question quiz at the end.",
+                    use: "Students and online learners",
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="rounded-xl border border-slate-200 bg-white p-4">
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <span className="text-xs font-bold uppercase tracking-widest text-blue-600">
+                        {item.label}
+                      </span>
+                      <span className="text-xs text-slate-400 flex-shrink-0">{item.use}</span>
+                    </div>
+                    <p className="text-sm text-slate-700 font-mono bg-slate-50 rounded-lg px-3 py-2 leading-relaxed">
+                      &ldquo;{item.prompt}&rdquo;
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-xl border border-blue-100 bg-blue-50/40 p-4 text-sm text-slate-600">
+                <strong>Tip:</strong> Always export as <strong>TXT</strong> (not SRT or VTT)
+                before pasting into AI tools. TXT removes timestamps and sequence numbers
+                that waste context window tokens and can confuse the model.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 新增 section：API / developer use case
+            覆盖：youtube video summarizer api key (1.0K, KD=22 极低)
+            开发者用户意图，高商业价值 */}
+        <section className="py-16 bg-white">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                Using YouTube video summarization in automated workflows
+              </h2>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                YTVidHub does not currently offer a public summarization API. For
+                developers and researchers who need automated YouTube summarization at
+                scale, here is the recommended workflow:
+              </p>
+
+              <ol className="space-y-4 mb-6">
+                {[
+                  {
+                    step: "1",
+                    title: "Download transcripts in bulk",
+                    desc: "Use the YTVidHub bulk downloader to export TXT transcripts from entire playlists or channels. One ZIP file, all transcripts — no manual work.",
+                  },
+                  {
+                    step: "2",
+                    title: "Pass transcripts to your LLM API",
+                    desc: "Send each TXT file to OpenAI (GPT-4o), Anthropic (Claude), or any other LLM via their standard API. You control the model, the prompt, and the output format.",
+                  },
+                  {
+                    step: "3",
+                    title: "Build your summary pipeline",
+                    desc: "Combine with your existing data pipeline, CMS, or research database. TXT output is clean and requires no preprocessing.",
+                  },
+                ].map((item) => (
+                  <li key={item.step} className="flex gap-4">
+                    <span className="flex-shrink-0 h-7 w-7 rounded-full bg-blue-600 text-white text-sm font-bold flex items-center justify-center mt-0.5">
+                      {item.step}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-slate-800 mb-1">{item.title}</p>
+                      <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a
+                  href="/bulk-youtube-subtitle-downloader/"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-700 transition-colors"
+                >
+                  Bulk transcript download →
+                </a>
+                <a
+                  href="/youtube-transcript-downloader/"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
+                >
+                  Transcript downloader
+                </a>
               </div>
             </div>
           </div>
