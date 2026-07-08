@@ -140,6 +140,11 @@ const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko", LocalizedSeoCont
         text: "YouTube transcript downloader",
         body: "Download YouTube transcripts as TXT, SRT, or VTT — single videos, playlists, and channels.",
       },
+      {
+        href: "/youtube-video-summarizer",
+        text: "YouTube video summarizer",
+        body: "Get an AI-powered summary of any YouTube video or playlist in seconds — free.",
+      },
     ],
   },
   zh: {

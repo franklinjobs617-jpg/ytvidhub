@@ -815,7 +815,7 @@ We'll cover three key topics.`}</pre>
 
           {/* transcript-downloader 交叉内链
               用户读完 generator 页后，引导有"下载"意图的用户到专门的 downloader 页 */}
-          <div className="mx-auto max-w-4xl px-4 mb-8 md:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl px-4 mb-4 md:px-6 lg:px-8">
             <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-800">
@@ -830,6 +830,27 @@ We'll cover three key topics.`}</pre>
                 className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors whitespace-nowrap"
               >
                 Transcript Downloader →
+              </Link>
+            </div>
+          </div>
+
+          {/* summarizer 交叉内链
+              引导有"摘要/理解"意图的用户到 AI summarizer 页 */}
+          <div className="mx-auto max-w-4xl px-4 mb-8 md:px-6 lg:px-8">
+            <div className="rounded-xl border border-indigo-100 bg-indigo-50/50 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-slate-800">
+                  Want an AI summary instead of the full transcript?
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  The YouTube Video Summarizer generates key points and chapter breakdowns in under 60 seconds — no reading required.
+                </p>
+              </div>
+              <Link
+                href="/youtube-video-summarizer/"
+                className="shrink-0 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-700 transition-colors whitespace-nowrap"
+              >
+                AI Summarizer →
               </Link>
             </div>
           </div>
