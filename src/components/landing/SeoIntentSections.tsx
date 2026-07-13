@@ -32,7 +32,7 @@ type LocalizedSeoContent = {
   links: Array<{ href: string; text: string; body: string }>;
 };
 
-const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko", LocalizedSeoContent> = {
+const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko" | "de", LocalizedSeoContent> = {
   en: {
     badge: "Quick Guide",
     answerTitle: "Download subtitles from YouTube in a few clicks",
@@ -139,11 +139,6 @@ const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko", LocalizedSeoCont
         href: "/youtube-transcript-downloader",
         text: "YouTube transcript downloader",
         body: "Download YouTube transcripts as TXT, SRT, or VTT — single videos, playlists, and channels.",
-      },
-      {
-        href: "/youtube-video-summarizer",
-        text: "YouTube video summarizer",
-        body: "Get an AI-powered summary of any YouTube video or playlist in seconds — free.",
       },
     ],
   },
@@ -436,6 +431,105 @@ const contentByLocale: Record<"en" | "es" | "zh" | "tr" | "ko", LocalizedSeoCont
     ],
   },
 
+  // 독일어 콘텐츠
+  // 근거：Semrush DE 데이터 - youtube untertitel download(KD18, Vol210), herunterladen(KD17, Vol110)
+  //       youtube transkript herunterladen(KD14, Vol110) - 전부 KD≤20 저경쟁
+  // 목적：/de/ 홈페이지 Google이 영어 description 표시하는 문제 수정
+  de: {
+    badge: "Schnellstart-Anleitung",
+    answerTitle: "YouTube Untertitel herunterladen — SRT, VTT und TXT",
+    answerBody:
+      "Fügen Sie einen YouTube-Video-, Playlist- oder Kanal-Link ein, wählen Sie die gewünschte Sprache und exportieren Sie Untertitel als SRT, VTT oder TXT. SRT ist ideal für Videobearbeitung, VTT für Web-Player und TXT für saubere Transkripte ohne Zeitstempel — perfekt für KI-Tools wie ChatGPT.",
+    intentTitle: "Was können Sie mit YTVidHub tun?",
+    intentSubtitle:
+      "Wählen Sie den Workflow, der Ihrem YouTube Untertitel-Bedarf entspricht.",
+    intents: [
+      {
+        title: "YouTube Untertitel herunterladen",
+        body: "Laden Sie von Erstellern hochgeladene oder automatisch generierte Untertitel aus YouTube-Videos herunter — für Bearbeitung, Übersetzung, Barrierefreiheit und Forschung.",
+      },
+      {
+        title: "YouTube Untertitel downloaden",
+        body: "Video-, Playlist- oder Kanal-URL einfügen und von manueller Kopierarbeit zu strukturiertem Untertitel-Export wechseln. SRT, VTT und TXT werden unterstützt.",
+      },
+      {
+        title: "Massen-Download von Playlists",
+        body: "Ganze Playlists und Kanäle auf einmal verarbeiten. Alle Untertitel-Dateien werden automatisch als ZIP-Archiv gebündelt.",
+      },
+      {
+        title: "Als SRT, VTT oder TXT exportieren",
+        body: "Wählen Sie das Format, das zu Ihrem Workflow passt: SRT für Videoeditoren, VTT für Web-Player, TXT für KI-Prompts und saubere Textanalyse.",
+      },
+    ],
+    formatTitle: "SRT, VTT oder TXT — das richtige Untertitelformat wählen",
+    formatRows: [
+      {
+        label: "SRT",
+        bestFor:
+          "Videoeditoren, VLC, Untertitel-Uploads, Übersetzungs-Workflows und breite Player-Kompatibilität.",
+        link: { href: "/what-is-an-srt-file", text: "SRT-Format kennenlernen" },
+      },
+      {
+        label: "VTT",
+        bestFor:
+          "HTML5-Video, Online-Kursplattformen, Browser-Wiedergabe und WebVTT-Untertitel-Workflows.",
+        link: { href: "/youtube-vtt-downloader", text: "VTT-Untertitel herunterladen" },
+      },
+      {
+        label: "TXT",
+        bestFor:
+          "Lesbare Transkript-Texte für Notizen, Content-Wiederverwendung, Suche, Forschung und KI-Prompts.",
+        link: { href: "/youtube-transcript-generator", text: "Transkript erstellen" },
+      },
+    ],
+    workflowTitle: "Untertitel, CC und Transkript im Vergleich",
+    workflowRows: [
+      {
+        label: "Untertitel-Downloader",
+        bestFor:
+          "Wenn Sie zeitgesteuerte SRT/VTT-Dateien von einem einzelnen YouTube-Video benötigen.",
+        link: { href: "/youtube-subtitle-downloader", text: "Untertitel-Downloader öffnen" },
+      },
+      {
+        label: "CC-Downloader",
+        bestFor:
+          "Wenn Sie CC-Tracks, geschlossene Untertitel und Barrierefreiheitsprüfungen benötigen.",
+        link: { href: "/youtube-caption-downloader", text: "CC-Downloader öffnen" },
+      },
+      {
+        label: "Massen-Downloader",
+        bestFor:
+          "Wenn Sie Untertitel von Playlists, Kanälen oder mehreren Videos auf einmal benötigen.",
+        link: { href: "/bulk-youtube-subtitle-downloader", text: "Massen-Downloader öffnen" },
+      },
+    ],
+    linkTitle: "Auf spezialisierte Untertitel-Tools zugreifen",
+    linkBody:
+      "Nutzen Sie die Startseite für den Haupt-Workflow und wählen Sie dann die spezialisierte Seite für Ihre genaue Aufgabe.",
+    links: [
+      {
+        href: "/youtube-subtitle-downloader",
+        text: "YouTube Untertitel-Downloader",
+        body: "SRT/VTT/TXT-fokussierte Tool-Seite für einzelne Video-Downloads.",
+      },
+      {
+        href: "/bulk-youtube-subtitle-downloader",
+        text: "Massen-Untertitel-Downloader",
+        body: "Playlist- und Kanal-Workflow für große Untertitel-Sammlungen.",
+      },
+      {
+        href: "/youtube-transcript-generator",
+        text: "YouTube Transkript-Generator",
+        body: "YouTube Transkript herunterladen als TXT — bereit für Notizen und KI-Tools.",
+      },
+      {
+        href: "/youtube-video-summarizer",
+        text: "YouTube Video-Zusammenfasser",
+        body: "KI-gestützte Zusammenfassungen mit Kernpunkten in Sekunden — kostenlos.",
+      },
+    ],
+  },
+
   // 土耳其语内容
   // 来源：基于 tr.json 现有文案风格，覆盖 GSC 高价值关键词
   // 目的：修复 /tr/ 首页 Google 显示英文 description 的问题
@@ -540,6 +634,7 @@ const getContent = (locale: Locale) => {
   if (locale === "es") return contentByLocale.es;
   if (locale === "tr") return contentByLocale.tr;
   if (locale === "ko") return contentByLocale.ko;
+  if (locale === "de") return contentByLocale.de;
   return contentByLocale.en;
 };
 
