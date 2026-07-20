@@ -96,7 +96,7 @@ export default function PaymentChoiceModal({
     if (loadingProvider) return;
 
     setLoadingProvider(provider);
-    trackConversion('payment_initiated', { provider, plan_id: selectedPlanId });
+    trackConversion('payment_initiated', { provider, plan_id: selectedPlanId, source: 'pricing_page' });
     const endpoint =
       provider === "stripe"
         ? "/prod-api/stripe/getPayUrl"
@@ -148,9 +148,22 @@ export default function PaymentChoiceModal({
               currency: "USD",
             });
           }
+          // 新增埋点：确认真正跳转到支付页面（区分"点击意图"与"实际到达"）
+          trackConversion("checkout_redirect_success", {
+            provider,
+            plan_id: selectedPlanId,
+            source: "pricing_page",
+          });
           window.location.href = payload;
           return;
         }
+        // 新增埋点：拿到响应但没有有效支付URL，属于静默失败，之前完全不可见
+        trackConversion("checkout_redirect_failed", {
+          provider,
+          plan_id: selectedPlanId,
+          source: "pricing_page",
+          reason: "no_valid_url",
+        });
         throw new Error("Stripe checkout URL not found.");
       }
 
@@ -201,6 +214,13 @@ export default function PaymentChoiceModal({
       throw new Error("PayPal subscription redirect URL not found.");
     } catch (error: unknown) {
       console.error("Payment failed:", error);
+      // 兜底埋点：捕获所有未被前面具体场景覆盖的失败（网络错误、PayPal流程失败等）
+      trackConversion("checkout_flow_error", {
+        provider: loadingProvider,
+        plan_id: selectedPlanId,
+        source: "pricing_page",
+        error_message: getErrorMessage(error),
+      });
       alert(`Payment failed: ${getErrorMessage(error)}`);
     } finally {
       setLoadingProvider(null);
