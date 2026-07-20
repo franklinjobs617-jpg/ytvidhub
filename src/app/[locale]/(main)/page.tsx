@@ -7,6 +7,7 @@ import HowItWorks from "@/components/landing/HowItWorks";
 import CoreCapabilities from "@/components/landing/CoreCapabilities";
 import FAQ from "@/components/landing/FAQ";
 import SeoIntentSections from "@/components/landing/SeoIntentSections";
+import ScrollDepthTracker from "@/components/ScrollDepthTracker";
 import { getTranslations } from "next-intl/server";
 import { buildCanonicalUrl } from "@/lib/url";
 import { buildAlternates } from "@/lib/seo";
@@ -144,6 +145,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <>
+      <ScrollDepthTracker page="home" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
