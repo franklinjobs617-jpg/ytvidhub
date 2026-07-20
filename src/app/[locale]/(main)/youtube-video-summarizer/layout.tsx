@@ -117,7 +117,7 @@ const faqSchema = {
       name: "Is this YouTube summarizer free?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. YTVidHub offers free AI summary tries without signing up. Create a free account to get 5 credits — each AI summary uses 2 credits. Pro plans start at $19.99/month for 500 credits (250 AI summaries).",
+        text: "Yes. YTVidHub offers free AI summary tries without signing up. Create a free account to get 8 credits — each AI summary uses 2 credits. Pro plans start at $19.99/month for 500 credits (250 AI summaries).",
       },
     },
     {

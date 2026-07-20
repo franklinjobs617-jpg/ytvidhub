@@ -27,7 +27,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is this YouTube transcript downloader free?",
-    a: "Yes. Free accounts get 5 download credits on signup — no credit card required. Pro plans start at $19.99/month for 500 credits, supporting large-scale playlist and channel downloads.",
+    a: "Yes. Free accounts get 8 download credits on signup — no credit card required. Pro plans start at $19.99/month for 500 credits, supporting large-scale playlist and channel downloads.",
   },
   {
     q: "Does it work for YouTube channels?",
@@ -39,7 +39,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How many videos can I download transcripts from at once?",
-    a: "Guest users get 2 tries per 24 hours. Free accounts get 5 credits. Pro accounts (500 credits/month) can process playlists of any size — credits are used one per video.",
+    a: "Guest users get 2 tries per 24 hours. Free accounts get 8 credits. Pro accounts (500 credits/month) can process playlists of any size — credits are used one per video.",
   },
   {
     q: "What languages are supported?",

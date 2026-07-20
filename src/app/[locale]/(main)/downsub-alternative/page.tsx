@@ -47,7 +47,7 @@ const comparisonRows = [
   {
     feature: "Free tier",
     downsub: "Free to use for basic downloads.",
-    ytvidhub: "5 free credits on signup. Guest tries available without account.",
+    ytvidhub: "8 free credits on signup. Guest tries available without account.",
   },
 ];
 
@@ -55,7 +55,7 @@ const comparisonRows = [
 const FAQ_ITEMS = [
   {
     q: "What is a good free alternative to DownSub?",
-    a: "YTVidHub is a free DownSub alternative for downloading YouTube subtitles, captions, and transcripts. It supports SRT, VTT, and TXT formats, bulk playlist and channel downloads, and AI-powered video summaries. Free accounts get 5 credits on signup — no credit card required.",
+    a: "YTVidHub is a free DownSub alternative for downloading YouTube subtitles, captions, and transcripts. It supports SRT, VTT, and TXT formats, bulk playlist and channel downloads, and AI-powered video summaries. Free accounts get 8 credits on signup — no credit card required.",
   },
   {
     q: "How does YTVidHub compare to DownSub?",
@@ -87,7 +87,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is YTVidHub free to use?",
-    a: "Yes. Guest users get 2 free tries per 24 hours without creating an account. Free accounts get 5 credits on signup. Pro plans start at $19.99/month for 500 credits (500 downloads or 250 AI summaries).",
+    a: "Yes. Guest users get 2 free tries per 24 hours without creating an account. Free accounts get 8 credits on signup. Pro plans start at $19.99/month for 500 credits (500 downloads or 250 AI summaries).",
   },
 ];
 

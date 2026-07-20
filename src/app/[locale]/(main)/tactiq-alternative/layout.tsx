@@ -69,7 +69,7 @@ const faqSchema = {
       name: "Is there a free alternative to Tactiq for YouTube transcripts?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. YTVidHub is a free Tactiq alternative for YouTube transcript generation. It works directly in the browser without a Chrome extension, supports bulk playlist downloads, and includes AI-powered summaries. Free accounts get 5 credits on signup.",
+        text: "Yes. YTVidHub is a free Tactiq alternative for YouTube transcript generation. It works directly in the browser without a Chrome extension, supports bulk playlist downloads, and includes AI-powered summaries. Free accounts get 8 credits on signup.",
       },
     },
     {

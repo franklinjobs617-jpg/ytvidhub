@@ -219,7 +219,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is there a free YouTube transcript generator?",
-    a: "Yes. YTVidHub is free to start — no signup required for guest tries, and free accounts get 5 credits on signup. Each transcript download uses 1 credit. For bulk or recurring needs, Pro plans start at $19.99/month.",
+    a: "Yes. YTVidHub is free to start — no signup required for guest tries, and free accounts get 8 credits on signup. Each transcript download uses 1 credit. For bulk or recurring needs, Pro plans start at $19.99/month.",
   },
   {
     q: "How do I use a YouTube transcript with ChatGPT or Claude?",

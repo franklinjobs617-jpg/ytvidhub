@@ -136,7 +136,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </div>
             <div>
               <h3 className="font-bold text-slate-900 text-sm">
-                Get 5 Free Credits Daily
+                Get 8 Free Credits
               </h3>
               <p className="text-xs text-slate-500 mt-1 leading-normal">
                 Create an account to start downloading subtitles and generating

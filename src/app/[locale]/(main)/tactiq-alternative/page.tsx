@@ -42,7 +42,7 @@ const comparisonRows = [
   {
     feature: "Free tier",
     tactiq: "Limited free plan. Paid plans start ~$12/month.",
-    ytvidhub: "5 free credits on signup. Pro from $19.99/month (500 credits).",
+    ytvidhub: "8 free credits on signup. Pro from $19.99/month (500 credits).",
   },
   {
     feature: "100+ language support",
@@ -55,7 +55,7 @@ const comparisonRows = [
 const FAQ_ITEMS = [
   {
     q: "Is there a free alternative to Tactiq for YouTube transcripts?",
-    a: "Yes. YTVidHub is a free Tactiq alternative for YouTube transcript generation. It works in any browser without a Chrome extension, supports bulk playlist downloads, and includes AI-powered summaries. Free accounts get 5 credits on signup — no credit card required.",
+    a: "Yes. YTVidHub is a free Tactiq alternative for YouTube transcript generation. It works in any browser without a Chrome extension, supports bulk playlist downloads, and includes AI-powered summaries. Free accounts get 8 credits on signup — no credit card required.",
   },
   {
     q: "What is Tactiq used for?",
@@ -282,7 +282,7 @@ export default function TactiqAlternativePage() {
               Generate transcript free →
             </Link>
             <p className="text-xs text-slate-400 mt-3">
-              5 free credits on signup · No credit card required
+              8 free credits on signup · No credit card required
             </p>
           </div>
         </section>

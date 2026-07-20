@@ -25,7 +25,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is this YouTube summarizer free?",
-    a: "Yes. YTVidHub offers free AI summary tries without signing up. Create a free account to get 5 credits — each AI summary uses 2 credits. Pro plans start at $19.99/month for 500 credits (250 AI summaries).",
+    a: "Yes. YTVidHub offers free AI summary tries without signing up. Create a free account to get 8 credits — each AI summary uses 2 credits. Pro plans start at $19.99/month for 500 credits (250 AI summaries).",
   },
   {
     q: "Can I summarize a YouTube playlist?",
@@ -71,7 +71,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is there a free AI YouTube video summarizer?",
-    a: "Yes. YTVidHub offers free AI summary tries without creating an account. Sign up for a free account to get 5 credits — each AI summary uses 2 credits, giving you 2 free summaries to start. No credit card required.",
+    a: "Yes. YTVidHub offers free AI summary tries without creating an account. Sign up for a free account to get 8 credits — each AI summary uses 2 credits, giving you 4 free summaries to start. No credit card required.",
   },
   {
     q: "Can I summarize YouTube videos for research or academic use?",
