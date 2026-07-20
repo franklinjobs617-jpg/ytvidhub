@@ -541,8 +541,13 @@ export function TranscriptArea({
     return Math.max(1, Math.ceil(allItems.length * 0.4));
   }, [allItems.length]);
 
-  const isPreviewLocked =
-    !isTranscriptUnlocked && allItems.length > previewItemCount;
+  // 预览 40% 限制已移除（2026-07-20 UX调整）：
+  // 阅读字幕文本对后端零边际成本，完全开放建立用户信任；
+  // 免费额度限制改为作用在"下载"动作上（guest额度状态机，见后端改动）。
+  // isTranscriptUnlocked / previewItemCount 保留不删除，避免牵动父组件传参，
+  // 后续如需恢复预览限制，只需还原这一行判断逻辑。
+  const isPreviewLocked = false;
+  void isTranscriptUnlocked;
 
   const visibleItems = useMemo(() => {
     if (!isPreviewLocked) return allItems;
