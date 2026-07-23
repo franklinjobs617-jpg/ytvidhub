@@ -27,6 +27,14 @@ import {
   clearPendingBulkTask,
 } from "./pendingBulkTask";
 
+const createSummaryUnavailableError = () => {
+  const error = new Error(
+    "The summary is temporarily unavailable. Please try again in a moment."
+  );
+  error.name = "AiSummaryUnavailableError";
+  return error;
+};
+
 export function useSubtitleDownloader(onCreditsChanged?: () => void) {
   const { user, openLoginModal } = useAuth();
   const { startStripeCheckout } = useStripeCheckout();
@@ -1066,11 +1074,13 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
 
         const chunk = decoder.decode(value, { stream: true });
 
-        // 处理混合了状态信息和内容的 chunk
-        if (chunk.includes("__STATUS__:")) {
+        // 错误标记优先处理，避免与状态信息合并时被忽略
+        if (chunk.includes("__ERROR__:")) {
+          throw createSummaryUnavailableError();
+        } else if (chunk.includes("__STATUS__:")) {
           const parts = chunk.split("__STATUS__:");
           for (let i = 0; i < parts.length; i++) {
-            let part = parts[i];
+            const part = parts[i];
             if (!part) continue;
 
             const lineEndIndex = part.indexOf("\n");
@@ -1090,10 +1100,6 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
               if (onChunk) onChunk(accumulatedText);
             }
           }
-        } else if (chunk.includes("__ERROR__:")) {
-          const errorMsg = chunk.split("__ERROR__:")[1];
-          toast.error("AI Generation Error", { description: errorMsg });
-          break;
         } else {
           accumulatedText += chunk;
           setSummaryData(accumulatedText);
@@ -1108,6 +1114,15 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       console.error("❌ Summary Stream Error:", err);
 
       if (!user && promptLoginForGuestLimit(err, openLoginModal)) {
+        throw err;
+      }
+
+      if (err?.name === "AiSummaryUnavailableError") {
+        setSummaryData("");
+        setStatusText("");
+        toast.info("Summary is temporarily unavailable", {
+          description: "Please try again in a moment.",
+        });
         throw err;
       }
 

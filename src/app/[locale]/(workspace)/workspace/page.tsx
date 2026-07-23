@@ -634,6 +634,7 @@ function WorkspaceContent() {
         });
       }
     } catch (error: any) {
+      if (error?.name === "AiSummaryUnavailableError") return;
       showAnalysisError(error, "Analysis failed. Please try again.");
       // announceToScreenReader(`Analysis failed: ${error?.message || "Please try again"}`);
     } finally {
