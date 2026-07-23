@@ -591,19 +591,6 @@ function WorkspaceContent() {
 
     if (!targetUrl || !targetId) return;
 
-    if (!user) {
-      savePendingAction({
-        type: "ai_summary",
-        payload: {
-          videoUrl: targetUrl,
-          videoId: targetId,
-        },
-      });
-      toast.info("Please login. We will continue AI Summary automatically.");
-      openLoginModal();
-      return;
-    }
-
     if (isAiLoading && !forceRegenerate) return;
     if (isAnalyzing.current.has(targetId) && !forceRegenerate) return;
 
@@ -980,22 +967,6 @@ function WorkspaceContent() {
               });
             }}
             onDownloadSingle={async (video, format) => {
-              if (!user) {
-                savePendingAction({
-                  type: "download_single",
-                  payload: {
-                    videoUrl: video.url,
-                    title: video.title || "subtitle",
-                    format: format as "srt" | "vtt" | "txt",
-                    lang: transcriptLang,
-                  },
-                });
-                toast.info(
-                  "Please login. We will continue your download automatically.",
-                );
-                openLoginModal();
-                return;
-              }
               const downloaded = await startSingleDownload(
                 video,
                 format,

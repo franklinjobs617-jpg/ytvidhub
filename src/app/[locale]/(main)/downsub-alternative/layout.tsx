@@ -79,7 +79,7 @@ const faqSchema = {
       name: "Is YTVidHub free to use?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. YTVidHub is free to start. Guest users get 2 free tries per 24 hours. Free accounts get 8 credits on signup with no credit card required. Pro plans start at $19.99/month for 500 credits.",
+        text: "Yes. YTVidHub is free to start. Guest users get 3 starter credits: subtitle downloads use 1 credit and AI Summaries use 2. Free accounts get 8 credits on signup with no credit card required. Pro plans start at $19.99/month for 500 credits.",
       },
     },
   ],

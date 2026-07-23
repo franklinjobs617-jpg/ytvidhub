@@ -48,7 +48,8 @@ export const isGuestLimitError = (error: unknown): boolean => {
 
   return (
     maybe.code === "GUEST_LIMIT_REACHED" ||
-    message.includes("guest preview limit reached")
+    message.includes("guest preview limit reached") ||
+    message.includes("guest credits")
   );
 };
 
@@ -57,7 +58,7 @@ export const getGuestLimitMessage = (error: unknown): string => {
 
   return quota?.reset_in_seconds && quota.reset_in_seconds > 0
     ? `Guest preview limit reached. Reset in ${formatResetTime(quota.reset_in_seconds)}. Please login to continue.`
-    : "Guest preview limit reached. Please login to continue.";
+    : "Guest credits are not enough for this action. Please login to continue.";
 };
 
 export const promptLoginForGuestLimit = (

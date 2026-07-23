@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { subtitleApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { savePendingAction } from "@/lib/pendingAction";
+import { promptLoginForGuestLimit } from "@/lib/guestLimitPrompt";
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal";
 import { CREDIT_COSTS } from "@/config/credits";
 import { extractVideoId } from "@/lib/youtube";
@@ -95,22 +95,7 @@ export function QuickActions({
         return;
       }
 
-      if (!user) {
-        savePendingAction({
-          type: "download_single",
-          payload: {
-            videoUrl,
-            title: videoTitle,
-            format,
-            lang,
-          },
-        });
-        toast.info("Please login. We will continue your download automatically.");
-        openLoginModal();
-        return;
-      }
-
-      if ((user.credits || 0) <= 0) {
+      if (user && (user.credits || 0) <= 0) {
         setIsDownloadOpen(false);
         setIsCreditsModalOpen(true);
         toast.error("Insufficient credits", {
@@ -128,12 +113,14 @@ export function QuickActions({
       try {
         toast.info(`Preparing ${format.toUpperCase()} download...`);
 
-        const blob = await subtitleApi.downloadSingle({
-          url: videoUrl,
-          lang,
-          format,
-          title: videoTitle,
-        });
+        const blob = user
+          ? await subtitleApi.downloadSingle({
+              url: videoUrl,
+              lang,
+              format,
+              title: videoTitle,
+            })
+          : await subtitleApi.guestDownload(videoUrl, lang, format);
 
         let subtitleText: string | undefined;
         try {
@@ -151,7 +138,7 @@ export function QuickActions({
 
         toast.success(`${format.toUpperCase()} downloaded successfully!`);
         const videoId = extractVideoId(videoUrl);
-        if (videoId) {
+        if (user && videoId) {
           subtitleApi
             .upsertHistory({
               videoId,
@@ -166,11 +153,16 @@ export function QuickActions({
         }
         onDownloadSuccess?.();
 
-        refreshUser();
-        setTimeout(() => refreshUser(), 1000);
-        setTimeout(() => refreshUser(), 2000);
+        if (user) {
+          refreshUser();
+          setTimeout(() => refreshUser(), 1000);
+          setTimeout(() => refreshUser(), 2000);
+        }
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "";
+        if (!user && promptLoginForGuestLimit(error, openLoginModal)) {
+          return;
+        }
         if (message.includes("Insufficient credits") || message.includes("credit")) {
           setIsDownloadOpen(false);
           setIsCreditsModalOpen(true);
@@ -352,4 +344,3 @@ export function QuickActions({
     </>
   );
 }
-

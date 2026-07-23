@@ -39,7 +39,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How many videos can I download transcripts from at once?",
-    a: "Guest users get 2 tries per 24 hours. Free accounts get 8 credits. Pro accounts (500 credits/month) can process playlists of any size — credits are used one per video.",
+    a: "Guest users get 3 starter credits. Each subtitle download uses 1 credit, while AI Summary uses 2. Free accounts get 8 credits. Pro accounts (500 credits/month) can process playlists of any size — credits are used one per video.",
   },
   {
     q: "What languages are supported?",

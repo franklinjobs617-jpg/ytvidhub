@@ -296,7 +296,7 @@ export default function HeroSection({ heroHeader }: HeroSectionProps) {
                   ) : (
                     <>
                       <Info size={14} className="text-slate-300" />
-                      2 free guest tries / 24h · Sign in for full workflow
+                      3 guest credits · Download 1 · AI Summary 2
                     </>
                   )}
                 </div>

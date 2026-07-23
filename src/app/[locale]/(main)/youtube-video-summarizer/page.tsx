@@ -122,7 +122,7 @@ function SummarizerWidget() {
         {/* 按钮行 */}
         <div className="flex items-center justify-between gap-3">
           <span className="text-xs text-slate-400">
-            2 free guest tries · 24h · No signup needed
+            3 guest credits · AI Summary uses 2 · No signup needed
           </span>
           <button
             onClick={handleSummarize}

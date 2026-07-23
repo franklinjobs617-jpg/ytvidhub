@@ -47,7 +47,7 @@ const comparisonRows = [
   {
     feature: "Free tier",
     downsub: "Free to use for basic downloads.",
-    ytvidhub: "8 free credits on signup. Guest tries available without account.",
+    ytvidhub: "3 starter guest credits. Download uses 1; AI Summary uses 2.",
   },
 ];
 
@@ -87,7 +87,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is YTVidHub free to use?",
-    a: "Yes. Guest users get 2 free tries per 24 hours without creating an account. Free accounts get 8 credits on signup. Pro plans start at $19.99/month for 500 credits (500 downloads or 250 AI summaries).",
+    a: "Yes. Guest users get 3 starter credits without creating an account. A subtitle download uses 1 credit and an AI Summary uses 2. Free accounts get 8 credits on signup. Pro plans start at $19.99/month for 500 credits (500 downloads or 250 AI summaries).",
   },
 ];
 

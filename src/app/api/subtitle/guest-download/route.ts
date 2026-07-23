@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+type BackendErrorPayload = {
+    error?: string
+    message?: string
+    quota?: unknown
+    code?: string
+}
+
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
-        const { url, lang = 'en', format = 'vtt' } = body
+        const { url, lang = 'en', format = 'vtt', action = 'preview' } = body
 
         if (!url) {
             return NextResponse.json({ error: 'URL is required' }, { status: 400 })
@@ -12,7 +19,7 @@ export async function POST(request: NextRequest) {
         const forwardedFor = request.headers.get('x-forwarded-for') || ''
         const userAgent = request.headers.get('user-agent') || ''
 
-        // 调用后端游客预览接口（服务端限制 24h 内最多 2 次）
+        // 预览免费；下载由后端扣除 1 个游客积分
         const backendResponse = await fetch("https://ytdlp.vistaflyer.com/api/subtitle/guest-download", {
             method: "POST",
             headers: {
@@ -20,17 +27,17 @@ export async function POST(request: NextRequest) {
                 ...(forwardedFor ? { "X-Forwarded-For": forwardedFor } : {}),
                 ...(userAgent ? { "User-Agent": userAgent } : {})
             },
-            body: JSON.stringify({ url, lang, format }),
+            body: JSON.stringify({ url, lang, format, action }),
         })
 
         if (!backendResponse.ok) {
             const rawError = await backendResponse.text().catch(() => '')
             let backendMessage = ''
-            let backendPayload: any = {}
+            let backendPayload: BackendErrorPayload = {}
 
             if (rawError) {
                 try {
-                    backendPayload = JSON.parse(rawError)
+                    backendPayload = JSON.parse(rawError) as BackendErrorPayload
                     backendMessage = backendPayload?.error || backendPayload?.message || rawError
                 } catch {
                     backendMessage = rawError

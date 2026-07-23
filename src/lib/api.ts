@@ -300,11 +300,14 @@ export const subtitleApi = {
 
   // 9. AI总结流式接口 (通过Next.js代理)
   async generateSummaryStream(url: string) {
-    // 先检查用户是否登录
     const token =
       typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
     if (!token) {
-      throw new Error("Please login to use AI Summary feature");
+      return fetch("/api/guest-ai-summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
     }
 
     // 调用我们的Next.js代理API
@@ -393,13 +396,13 @@ export const subtitleApi = {
     }
   },
 
-  // 14. 访客字幕解析（无需登录，后端按 24h 配额限制）
+  // 14. 访客字幕：预览免费，实际下载由后端扣除 1 个游客积分
   async guestPreviewSubtitle(url: string, lang: string = "en", format: string = "vtt") {
     const endpoint = "/api/subtitle/guest-download";
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url, lang, format }),
+      body: JSON.stringify({ url, lang, format, action: "preview" }),
     });
     await ensureOk(res, "Guest subtitle preview failed", endpoint);
     return res.json();
@@ -407,8 +410,15 @@ export const subtitleApi = {
 
   // 兼容保留：历史调用仍可拿到 Blob
   async guestDownload(url: string, lang: string = "en", format: string = "vtt") {
-    const preview = await this.guestPreviewSubtitle(url, lang, format);
-    const text = typeof preview?.text === "string" ? preview.text : "";
+    const endpoint = "/api/subtitle/guest-download";
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, lang, format, action: "download" }),
+    });
+    await ensureOk(res, "Guest subtitle download failed", endpoint);
+    const result = await res.json();
+    const text = typeof result?.text === "string" ? result.text : "";
     return new Blob([text], { type: "text/plain;charset=utf-8" });
   },
 

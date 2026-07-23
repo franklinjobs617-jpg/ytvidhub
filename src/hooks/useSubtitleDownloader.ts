@@ -11,6 +11,7 @@ import { trackConversion } from "@/lib/analytics";
 import { useAuth } from "@/context/AuthContext";
 import { CREDIT_COSTS } from "@/config/credits";
 import { savePendingAction } from "@/lib/pendingAction";
+import { promptLoginForGuestLimit } from "@/lib/guestLimitPrompt";
 import { useStripeCheckout } from "./useStripeCheckout";
 import {
   PlaylistProcessingState,
@@ -107,7 +108,7 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
         isPlaylistOrChannelUrl(url)
       );
 
-      // 未登录用户：仅支持单链接访客解析（后端 24h 限额 2 次）
+      // 未登录用户：单链接字幕预览免费；下载和 AI 总结再分别消耗游客积分
       if (!user) {
         if (hasPlaylistOrChannel || urls.length !== 1) {
           if (hasPlaylistOrChannel && urls.length === 1) {
@@ -408,6 +409,23 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
     trackConversion("download_start", { type: "single", format, lang });
 
     try {
+      if (!user) {
+        const blob = await subtitleApi.guestDownload(video.url, lang, format);
+        triggerDownload(
+          blob,
+          `${video.title.replace(/[\\/:*?"<>|]/g, "_")}.${format}`
+        );
+        trackConversion("download_success", {
+          type: "single",
+          format,
+          lang,
+          guest: true,
+        });
+        setProgress(100);
+        setTimeout(() => setIsDownloading(false), 300);
+        return true;
+      }
+
       // 1. 优先检查 sessionStorage 缓存（针对极速下载优化）
       const cacheKey = `ytvidhub_transcript_${video.url}_${lang}`;
       const cached = sessionStorage.getItem(cacheKey);
@@ -559,6 +577,10 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       return true;
     } catch (err: any) {
       setIsDownloading(false);
+
+      if (!user && promptLoginForGuestLimit(err, openLoginModal)) {
+        return false;
+      }
 
       // 特殊处理积分不足的错误
       if (
@@ -1084,6 +1106,10 @@ export function useSubtitleDownloader(onCreditsChanged?: () => void) {
       return accumulatedText;
     } catch (err: any) {
       console.error("❌ Summary Stream Error:", err);
+
+      if (!user && promptLoginForGuestLimit(err, openLoginModal)) {
+        throw err;
+      }
 
       if (
         err.message.includes("Insufficient credits") ||

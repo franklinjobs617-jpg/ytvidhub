@@ -5,6 +5,8 @@ import { Youtube, Download, CheckCircle, AlertCircle, ArrowRight } from "lucide-
 import { normalizeYoutubeUrl } from "@/lib/youtube";
 import { subtitleApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { promptLoginForGuestLimit } from "@/lib/guestLimitPrompt";
 
 const FORMAT_OPTIONS = [
   { value: "srt", label: "SRT", desc: "With timestamps" },
@@ -25,6 +27,7 @@ const LANG_OPTIONS = [
 
 export default function SubtitleDownloaderWidget() {
   const router = useRouter();
+  const { openLoginModal } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [url, setUrl] = useState("");
@@ -75,6 +78,11 @@ export default function SubtitleDownloaderWidget() {
       URL.revokeObjectURL(a.href);
       setStatus("success");
     } catch (err) {
+      if (promptLoginForGuestLimit(err, openLoginModal)) {
+        setStatus("error");
+        setErrorMsg("Guest credits are used up. Please login to continue.");
+        return;
+      }
       setStatus("error");
       setErrorMsg(
         err instanceof Error ? err.message : "Download failed. The video may not have subtitles."
@@ -219,7 +227,7 @@ export default function SubtitleDownloaderWidget() {
       </div>
 
       <p className="mt-4 text-center text-xs text-slate-400">
-        Free tier: 5 downloads per day. No registration required.
+        Guest access includes 3 starter credits. Each subtitle download uses 1 credit.
       </p>
     </div>
   );
