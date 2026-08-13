@@ -111,6 +111,15 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <a
+                  href="https://yttotext.com/"
+                  target="_blank"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  YouTube Transcript Generator
+                </a>
+              </li>
+              <li>
                 <Link
                   href="/pricing"
                   className="hover:text-[var(--brand-400)] transition-colors"
