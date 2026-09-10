@@ -111,6 +111,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/youtube-comments-viewer"
+                  className="hover:text-[var(--brand-400)] transition-colors"
+                >
+                  YouTube Comments Viewer
+                </Link>
+              </li>
+              <li>
                 <a
                   href="https://yttotext.com/"
                   target="_blank"

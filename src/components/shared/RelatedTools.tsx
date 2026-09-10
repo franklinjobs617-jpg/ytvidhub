@@ -47,6 +47,11 @@ const allTools: ToolLink[] = [
     title: "YouTube Transcript Generator",
     desc: "Generate readable YouTube transcripts for notes, summaries, and text review.",
   },
+  {
+    href: "/youtube-comments-viewer",
+    title: "YouTube Comments Viewer",
+    desc: "Load all comments on a video, sort by date or likes, filter by date range, and chart the discussion over time.",
+  },
 ];
 
 type Props = {

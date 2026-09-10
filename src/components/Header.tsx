@@ -32,6 +32,7 @@ const toolLinks = [
   { key: "bulkDownloader", href: "/bulk-youtube-subtitle-downloader", label: "" },
   { key: "videoSummarizer", href: "/youtube-video-summarizer", label: "Video Summarizer" },
   { key: "transcriptDownloader", href: "/youtube-transcript-downloader", label: "Transcript Downloader" },
+  { key: "commentsViewer", href: "/youtube-comments-viewer", label: "Comments Viewer" },
 ];
 
 export default function Header() {
@@ -136,6 +137,17 @@ export default function Header() {
                 </div>
               </div>
             </div>
+
+            <Link
+              href="/youtube-comments-viewer"
+              onClick={closeFloatingMenus}
+              className={`rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${isActive("/youtube-comments-viewer")
+                ? "bg-[var(--brand-50)] text-[var(--brand-700)]"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                }`}
+            >
+              Comments Viewer
+            </Link>
 
             <Link
               href="/pricing"
@@ -358,6 +370,13 @@ export default function Header() {
               ))}
             </div>
 
+            <Link
+              href="/youtube-comments-viewer"
+              onClick={closeFloatingMenus}
+              className={`block text-base font-semibold ${isActive("/youtube-comments-viewer") ? "text-[var(--brand-600)]" : "text-slate-900"}`}
+            >
+              Comments Viewer
+            </Link>
             <Link
               href="/pricing"
               onClick={closeFloatingMenus}

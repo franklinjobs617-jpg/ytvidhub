@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { path: '/faq', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/about', priority: 0.5, changeFreq: 'yearly' as const },
         { path: '/youtube-subtitle-extractor', priority: 0.9, changeFreq: 'monthly' as const },
+        { path: '/youtube-comments-viewer', priority: 0.7, changeFreq: 'monthly' as const },
         { path: '/bulk-youtube-subtitle-downloader', priority: 0.95, changeFreq: 'monthly' as const },
         { path: '/guide/how-to-download-youtube-studio-subtitles', priority: 0.8, changeFreq: 'monthly' as const },
         { path: '/data-prep-guide', priority: 0.8, changeFreq: 'monthly' as const },
