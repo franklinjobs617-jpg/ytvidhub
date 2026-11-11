@@ -100,7 +100,34 @@ export default function PricingPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const [pendingPlanId, setPendingPlanId] = useState<string | null>(null);
   const { user } = useAuth();
+
+  useEffect(() => {
+    const clearPendingIntent = () => {
+      setPendingPlanId(null);
+      setSelectedPlanId(null);
+      setShowLoginModal(false);
+      setShowPaymentModal(false);
+    };
+
+    window.addEventListener("pagehide", clearPendingIntent);
+    return () => {
+      window.removeEventListener("pagehide", clearPendingIntent);
+    };
+  }, []);
+
+  const closeLoginModal = () => {
+    setPendingPlanId(null);
+    setSelectedPlanId(null);
+    setShowLoginModal(false);
+  };
+
+  const closePaymentModal = () => {
+    setPendingPlanId(null);
+    setSelectedPlanId(null);
+    setShowPaymentModal(false);
+  };
 
   const from = searchParams.get("from");
   const selectedCount = Number(searchParams.get("selected") || "0");
@@ -130,10 +157,20 @@ export default function PricingPage() {
     });
   }, [user, from, selectedCount, missingCredits]);
 
+  // Adjust this component's state before committing the authenticated UI.
+  // Consuming the intent makes later user refreshes and StrictMode harmless.
+  if (pendingPlanId && showLoginModal && user?.googleUserId) {
+    setPendingPlanId(null);
+    setShowLoginModal(false);
+    setSelectedPlanId(pendingPlanId);
+    setShowPaymentModal(true);
+  }
+
   const handlePurchase = (planId: string | null) => {
     if (!planId) return;
 
     const plan = plans.find((p) => p.id === planId);
+    if (!plan) return;
     trackConversion("plan_click", {
       plan_name: plan?.name,
       plan_price: plan?.price,
@@ -144,10 +181,12 @@ export default function PricingPage() {
       missing_credits: missingCredits || 0,
     });
 
+    setSelectedPlanId(planId);
     if (!user) {
+      setPendingPlanId(planId);
       setShowLoginModal(true);
     } else {
-      setSelectedPlanId(planId);
+      setPendingPlanId(null);
       setShowPaymentModal(true);
     }
   };
@@ -474,11 +513,11 @@ export default function PricingPage() {
 
       <LoginModal
         isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
+        onClose={closeLoginModal}
       />
       <PaymentChoiceModal
         isOpen={showPaymentModal}
-        onClose={() => setShowPaymentModal(false)}
+        onClose={closePaymentModal}
         selectedPlanId={selectedPlanId}
       />
     </div>
